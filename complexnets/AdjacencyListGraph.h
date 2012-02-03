@@ -41,7 +41,7 @@ public:
     typedef CAutonomousIterator<VertexContainer>  VerticesConstIterator;
     typedef AutonomousIterator<VertexContainer>  VerticesIterator;
 
-    /*~AdjacencyListGraph()
+    ~AdjacencyListGraph()
     {
         VerticesConstIterator it = verticesConstIterator();
         while (!it.end())
@@ -49,7 +49,7 @@ public:
             delete *it;
             ++it;
         }
-    }*/
+    }
 
     /**
     * Method: addVertex
