@@ -3,68 +3,68 @@
 
 namespace graphpp
 {
-    template <class Graph, class Vertex>
-    class ClusteringCoefficient
+template <class Graph, class Vertex>
+class ClusteringCoefficient
+{
+public:
+
+    typedef double Coefficient;
+    typedef typename Graph::VerticesIterator VerticesIterator;
+    typedef typename Vertex::VerticesIterator NeighborsIterator;
+    typedef typename Vertex::Degree Degree;
+
+    static Coefficient clusteringCoefficient(Graph& g, Degree d)
     {
-    public:
-            
-        typedef double Coefficient;
-        typedef typename Graph::VerticesIterator VerticesIterator;
-        typedef typename Vertex::VerticesIterator NeighborsIterator;
-        typedef typename Vertex::Degree Degree;
-        
-        static Coefficient clusteringCoefficient(Graph& g, Degree d)
+        VerticesIterator it = g.verticesIterator();
+        unsigned int count = 0;
+        Coefficient clusteringCoefSums = 0.0;
+
+        while (!it.end())
         {
-            VerticesIterator it = g.verticesIterator();
-            unsigned int count = 0;
-            Coefficient clusteringCoefSums = 0.0;
-            
-            while(!it.end())
+            Vertex* v = *it;
+
+            if (v->degree() == d)
             {
-                Vertex* v = *it;
-                
-                if(v->degree() == d)
-                {
-                    count++;
-                    clusteringCoefSums += vertexClusteringCoefficient(v);
-                }
-                
-                ++it;
+                count++;
+                clusteringCoefSums += vertexClusteringCoefficient(v);
             }
-            
-            return clusteringCoefSums / count;
+
+            ++it;
         }
-        
-        static Coefficient vertexClusteringCoefficient(Vertex* vertex)
+
+        return clusteringCoefSums / count;
+    }
+
+    static Coefficient vertexClusteringCoefficient(Vertex* vertex)
+    {
+        Coefficient links = 0.0;
+        NeighborsIterator it = vertex->neighborsIterator();
+
+        while (!it.end())
         {
-            Coefficient links = 0.0;
-            NeighborsIterator it = vertex->neighborsIterator();
-            
-            while(!it.end())
+            Vertex* n = *it;
+
+            NeighborsIterator innerIter = n->neighborsIterator();
+
+            while (!innerIter.end())
             {
-                Vertex* n = *it;
-                
-                NeighborsIterator innerIter = n->neighborsIterator();
-                
-                while(!innerIter.end())
+                Vertex* i = *innerIter;
+                //if i is neighbour of vertex, we close a triangle
+                if (i->isNeighbourOf(vertex))
                 {
-                    Vertex* i = *innerIter;
-                    //if i is neighbour of vertex, we close a triangle
-                    if(i->isNeighbourOf(vertex))
-                    {
-                        links += 1.0;
-                    }
-                        
-                    ++innerIter;
+                    links += 1.0;
                 }
-                
-                ++it;
+
+                ++innerIter;
             }
-            
-            return links / (vertex->degree() * (vertex->degree() - 1));
-            
-        }              
-    };
+
+            ++it;
+        }
+
+        return links / (vertex->degree() * (vertex->degree() - 1));
+
+    }
+};
 }
 
 #endif

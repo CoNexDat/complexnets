@@ -14,6 +14,6 @@ typedef GenericException<GraphExceptionHierarchy> GraphException;
 DEFINE_SPECIFIC_EXCEPTION_TEXT(DuplicateEdge,
                                GraphExceptionHierarchy,
                                "Graph doesn't allow duplicate edges");
-                               
-                               
+
+
 #endif

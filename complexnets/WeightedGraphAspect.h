@@ -3,21 +3,21 @@
 
 namespace graphpp
 {
-    template <class WeightedVertex, class T>
-    class WeightedGraphAspect : public T
+template <class WeightedVertex, class T>
+class WeightedGraphAspect : public T
+{
+public:
+
+    typedef double Weight;
+
+    WeightedGraphAspect() {}
+
+    void addEdge(WeightedVertex* s, WeightedVertex* d, Weight weight)
     {
-    public:
-        
-        typedef double Weight;
-        
-        WeightedGraphAspect() {}
-        
-        void addEdge(WeightedVertex* s, WeightedVertex* d, Weight weight)
-        {
-            s->addEdge(d, weight);
-            d->addEdge(s, weight);
-        }
-    };
+        s->addEdge(d, weight);
+        d->addEdge(s, weight);
+    }
+};
 }
 
 #endif
