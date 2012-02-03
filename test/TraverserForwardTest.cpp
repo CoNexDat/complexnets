@@ -80,11 +80,6 @@ TEST_F(TraverserForwardTest, TraverseForwardIndexedTest)
     ASSERT_EQ(visitor.visits.count(3), 1);
     ASSERT_EQ(visitor.visits.count(4), 1);
     ASSERT_EQ(visitor.visits.count(5), 0);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 TEST_F(TraverserForwardTest, TraverseForwardIndexedIteratorTest)
@@ -116,11 +111,6 @@ TEST_F(TraverserForwardTest, TraverseForwardIndexedIteratorTest)
     ASSERT_EQ(visitor.visits.count(3), excluded == 3 ? 0 : 1);
     ASSERT_EQ(visitor.visits.count(4), excluded == 4 ? 0 : 1);
     ASSERT_EQ(visitor.visits.count(5), 0);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 TEST_F(TraverserForwardTest, TraverseForwardListTest)
@@ -148,11 +138,6 @@ TEST_F(TraverserForwardTest, TraverseForwardListTest)
     ASSERT_EQ(visitor.visits.count(3), 1);
     ASSERT_EQ(visitor.visits.count(4), 1);
     ASSERT_EQ(visitor.visits.count(5), 0);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 TEST_F(TraverserForwardTest, TraverseForwardListIteratorTest)
@@ -184,11 +169,6 @@ TEST_F(TraverserForwardTest, TraverseForwardListIteratorTest)
     ASSERT_EQ(visitor.visits.count(3), excluded == 3 ? 0 : 1);
     ASSERT_EQ(visitor.visits.count(4), excluded == 4 ? 0 : 1);
     ASSERT_EQ(visitor.visits.count(5), 0);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 TEST_F(TraverserForwardTest, TraverseForwardVectorTest)
@@ -216,11 +196,6 @@ TEST_F(TraverserForwardTest, TraverseForwardVectorTest)
     ASSERT_EQ(visitor.visits.count(3), 1);
     ASSERT_EQ(visitor.visits.count(4), 1);
     ASSERT_EQ(visitor.visits.count(5), 0);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 TEST_F(TraverserForwardTest, TraverseForwardVectorIteratorTest)
@@ -252,11 +227,6 @@ TEST_F(TraverserForwardTest, TraverseForwardVectorIteratorTest)
     ASSERT_EQ(visitor.visits.count(3), excluded == 3 ? 0 : 1);
     ASSERT_EQ(visitor.visits.count(4), excluded == 4 ? 0 : 1);
     ASSERT_EQ(visitor.visits.count(5), 0);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 }

@@ -79,12 +79,6 @@ TEST_F(ClusteringCoefficientTest , VertexGeneralTest)
 
     Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.16667) <  epsilon);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
-    delete v4;
 }
 
 TEST_F(ClusteringCoefficientTest, FullGraphTest)
@@ -97,7 +91,6 @@ TEST_F(ClusteringCoefficientTest, FullGraphTest)
     Vertex* v1 = new Vertex(2);
     Vertex* v2 = new Vertex(3);
     Vertex* v3 = new Vertex(4);
-    Vertex* v4 = new Vertex(5);
 
     ig.addVertex(x);
     ig.addVertex(v1);
@@ -122,13 +115,6 @@ TEST_F(ClusteringCoefficientTest, FullGraphTest)
 
     Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(3));
     ASSERT_TRUE(fabs(c2 - 1.0) <  epsilon);
-
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
-    delete v4;
 }
 
 TEST_F(ClusteringCoefficientTest, AcyclicGraphTest)
@@ -164,13 +150,6 @@ TEST_F(ClusteringCoefficientTest, AcyclicGraphTest)
 
     Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
-
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
-    delete v4;
 }
 }
 

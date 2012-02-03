@@ -74,11 +74,6 @@ TEST_F(AdjacencyListGraphTest, IndexedAddVertexIterationTest)
     //iterate found and verify all 4 elements were found
     for (unsigned int i = 0; i < 4; i++)
         ASSERT_TRUE(found[i]);
-
-    delete v;
-    delete n1;
-    delete n2;
-    delete n3;
 }
 
 TEST_F(AdjacencyListGraphTest, IndexedAddEdgeTest)
@@ -107,11 +102,6 @@ TEST_F(AdjacencyListGraphTest, IndexedAddEdgeTest)
     g.addEdge(v, n3);
 
     ASSERT_TRUE(v->isNeighbourOf(n3));
-
-    delete v;
-    delete n1;
-    delete n2;
-    delete n3;
 }
 
 TEST_F(AdjacencyListGraphTest, VerticesCountTest)
@@ -134,11 +124,6 @@ TEST_F(AdjacencyListGraphTest, VerticesCountTest)
 
 
     ASSERT_EQ(g.verticesCount(), 4);
-
-    delete v;
-    delete n1;
-    delete n2;
-    delete n3;
 }
 
 TEST_F(AdjacencyListGraphTest, IndexedDuplicateEdgeTest)
@@ -160,9 +145,6 @@ TEST_F(AdjacencyListGraphTest, IndexedDuplicateEdgeTest)
     //the expected behaviour when adding duplicate edge to base graph class
     //is to get DuplicateEdge generic Exception
     ASSERT_THROW(g.addEdge(v, n1), DuplicateEdge);
-
-    delete v;
-    delete n1;
 }
 
 TEST_F(AdjacencyListGraphTest, ListAddVertexIterationTest)
@@ -193,11 +175,6 @@ TEST_F(AdjacencyListGraphTest, ListAddVertexIterationTest)
         i++;
         ++it;
     }
-
-    delete v;
-    delete n1;
-    delete n2;
-    delete n3;
 }
 
 TEST_F(AdjacencyListGraphTest, ListAddEdgeTest)
@@ -226,11 +203,6 @@ TEST_F(AdjacencyListGraphTest, ListAddEdgeTest)
     g.addEdge(v, n3);
 
     ASSERT_TRUE(v->isNeighbourOf(n3));
-
-    delete v;
-    delete n1;
-    delete n2;
-    delete n3;
 }
 
 TEST_F(AdjacencyListGraphTest, ListDuplicateEdgeTest)
@@ -252,9 +224,6 @@ TEST_F(AdjacencyListGraphTest, ListDuplicateEdgeTest)
     //the expected behaviour when adding duplicate edge to base graph class
     //is to get DuplicateEdge generic Exception
     ASSERT_THROW(g.addEdge(v, n1), DuplicateEdge);
-
-    delete v;
-    delete n1;
 }
 
 TEST_F(AdjacencyListGraphTest, VectorAddVertexIterationTest)
@@ -285,11 +254,6 @@ TEST_F(AdjacencyListGraphTest, VectorAddVertexIterationTest)
         i++;
         ++it;
     }
-
-    delete v;
-    delete n1;
-    delete n2;
-    delete n3;
 }
 
 TEST_F(AdjacencyListGraphTest, VectorAddEdgeTest)
@@ -318,11 +282,6 @@ TEST_F(AdjacencyListGraphTest, VectorAddEdgeTest)
     g.addEdge(v, n3);
 
     ASSERT_TRUE(v->isNeighbourOf(n3));
-
-    delete v;
-    delete n1;
-    delete n2;
-    delete n3;
 }
 
 TEST_F(AdjacencyListGraphTest, VectorDuplicateEdgeTest)
@@ -344,9 +303,6 @@ TEST_F(AdjacencyListGraphTest, VectorDuplicateEdgeTest)
     //the expected behaviour when adding duplicate edge to base graph class
     //is to get DuplicateEdge generic Exception
     ASSERT_THROW(g.addEdge(v, n1), DuplicateEdge);
-
-    delete v;
-    delete n1;
 }
 
 }

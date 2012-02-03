@@ -82,12 +82,6 @@ TEST_F(BetweennessTest , BetweennessTest)
         std::cout << it->second << std::endl;
         ++it;
     }
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
-    delete v4;
 }
 
 }
