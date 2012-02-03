@@ -8,8 +8,8 @@
 #include <iostream>
 #include "AdjacencyListGraph.h"
 #include "AdjacencyListVertex.h"
-#include "AdjacencyListEdge.h"
-#include "Traverser.h"
+#include "SimpleTextGraphReader.h"
+#include "ShellIndex.h"
 
 
 using namespace graphpp;
@@ -20,55 +20,60 @@ struct EdgeInfo
 };
 struct DummyEdgeInfo
 {
-  
+
 };
 
-typedef AdjacencyListVertex<EdgeInfo> Vertex;
-typedef AdjacencyListGraph<Vertex, EdgeInfo, std::set<Vertex> > Graph;
+typedef AdjacencyListVertex Vertex;
+typedef AdjacencyListGraph<Vertex> Graph;
 
 int main()
-{    
-    
-    Vertex v(1);
-    Vertex v2(2);
-    Vertex v3(3);
-    
-    
-    EdgeInfo i1;
-    EdgeInfo i2;
-    i1.weight = 2;
-    i2.weight = 3;
-    Graph g;
-    
-    g.addVertex(v);
-    g.addVertex(v2);
-    g.addVertex(v3);
-    
-    g.addEdge(v, v2, i1);
-    g.addEdge(v, v3, i2);
-    
-    Graph::VerticesConstIterator iter = g.verticesConstIterator();
-    
-    while(!iter.end())
-    {
-        std::cout << iter->getVertexId() << std::endl;
-        iter++;
-    }
+{
+    /*Graph g;
+    SimpleTextGraphReader<Graph, Vertex> graphReader;
 
-    Vertex::EdgesIterator it = v.edgesIterator();
-    
-    while(!it.end())
+    graphReader.read(g, "data.txt");
+
+    std::cout << "Cantidad de nodos " << g.verticesCount() << std::endl;
+    Graph::VerticesConstIterator iter = g.verticesConstIterator();
+
+    while (!iter.end())
     {
-        std::cout << "Id" << std::endl;
-        std::cout << it->destination().getVertexId() << std::endl;
-        it++;
+        std::cout << (*iter)->getVertexId() << std::endl;
+        iter++;
+    }*/
+
+    Graph g2;
+    Vertex* v0 = new Vertex(0);
+    Vertex* v1 = new Vertex(1);
+    Vertex* v2 = new Vertex(2);
+    Vertex* v3 = new Vertex(3);
+    Vertex* v4 = new Vertex(4);
+    Vertex* v5 = new Vertex(5);
+    g2.addVertex(v0);
+    g2.addVertex(v1);
+    g2.addVertex(v2);
+    g2.addVertex(v3);
+    g2.addVertex(v4);
+    g2.addVertex(v5);
+    g2.addEdge(v1, v2);
+    g2.addEdge(v2, v3);
+    g2.addEdge(v3, v4);
+    g2.addEdge(v4, v1);
+    g2.addEdge(v3, v5);
+    ShellIndex<Graph, Vertex> shellIndex(g2);
+
+    ShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex.iterator();
+    while (!it.end())
+    {
+        std::cout << "VertexId: " << it->first << " Core: " << it->second << std::endl;
+        ++it;
     }
-    
-    std::cout << "bfs" << std::endl;
-    
-    COutVisitor<Vertex> visitor;
-    Traverser<Graph, Vertex, COutVisitor<Vertex> >::TraverseBFS(v, visitor);
-    
+    delete v0;
+    delete v1;
+    delete v2;
+    delete v3;
+    delete v4;
+    delete v5;
     return 0;
 }
 

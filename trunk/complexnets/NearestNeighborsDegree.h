@@ -3,55 +3,55 @@
 
 namespace graphpp
 {
-    template <class Graph, class Vertex>
-    class NearestNeighborsDegree
+template <class Graph, class Vertex>
+class NearestNeighborsDegree
+{
+
+public:
+
+    typedef double MeanDegree;
+    typedef typename Vertex::VerticesIterator NeighborsIterator;
+    typedef typename Graph::VerticesIterator VerticesIterator;
+
+    static MeanDegree meanDegree(Graph& g, typename Vertex::Degree d)
     {
-       
-    public:
-       
-        typedef double MeanDegree;
-        typedef typename Vertex::VerticesIterator NeighborsIterator;
-        typedef typename Graph::VerticesIterator VerticesIterator;
-        
-        static MeanDegree meanDegree(Graph& g, typename Vertex::Degree d)
+        VerticesIterator it = g.verticesIterator();
+        unsigned int count = 0;
+        MeanDegree meanDegreeSums = 0.0;
+
+        while (!it.end())
         {
-            VerticesIterator it = g.verticesIterator();
-            unsigned int count = 0;
-            MeanDegree meanDegreeSums = 0.0;
-            
-            while(!it.end())
+            Vertex* v = *it;
+
+            if (v->degree() == d)
             {
-                Vertex* v = *it;
-                
-                if(v->degree() == d)
-                {
-                    count++;
-                    meanDegreeSums += meanDegreeForVertex(v);
-                }
-                
-                ++it;
+                count++;
+                meanDegreeSums += meanDegreeForVertex(v);
             }
-            
-            return meanDegreeSums / count;
+
+            ++it;
         }
-        
-        static MeanDegree meanDegreeForVertex(Vertex* v)
+
+        return meanDegreeSums / count;
+    }
+
+    static MeanDegree meanDegreeForVertex(Vertex* v)
+    {
+        NeighborsIterator it = v->neighborsIterator();
+        typename Vertex::Degree degreeSum = 0;
+
+        while (!it.end())
         {
-            NeighborsIterator it = v->neighborsIterator();
-            typename Vertex::Degree degreeSum = 0;
-            
-            while(!it.end())
-            {
-                Vertex* n = *it;
-                
-                degreeSum += n->degree();
-                
-                ++it;
-            }
-            
-            return MeanDegree(degreeSum) / MeanDegree(v->degree());
+            Vertex* n = *it;
+
+            degreeSum += n->degree();
+
+            ++it;
         }
-    };
+
+        return MeanDegree(degreeSum) / MeanDegree(v->degree());
+    }
+};
 }
 
 

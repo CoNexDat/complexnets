@@ -62,9 +62,9 @@ struct DisposalDeletePolicy
     }
 };
 
-template < class T, SameValueBehavior Behavior = AddAfterEqual, 
-           class Comp = std::less<T>, 
-           class DisposalPolicy = DisposalNullPolicy<T> >
+template < class T, SameValueBehavior Behavior = AddAfterEqual,
+         class Comp = std::less<T>,
+         class DisposalPolicy = DisposalNullPolicy<T> >
 class Ranker
 {
 protected:
@@ -146,7 +146,7 @@ class BaseUniqueRanker
 {
 
 protected:
-    
+
     typedef std::multiset<T, Comp> Ranking;
     typedef typename Ranking::iterator iterator;
 
@@ -204,10 +204,10 @@ public:
 };
 
 
-template < class T, 
-           class Comp = std::less<T>, 
-           class CompEq = std::less<T>, 
-           class DisposalPolicy = DisposalNullPolicy<T> >
+template < class T,
+         class Comp = std::less<T>,
+         class CompEq = std::less<T>,
+         class DisposalPolicy = DisposalNullPolicy<T> >
 class UniqueRanker : public BaseUniqueRanker<T, Comp, CompEq, DisposalPolicy>
 {
     typedef BaseUniqueRanker<T, Comp, CompEq, DisposalPolicy> Parent;
@@ -219,7 +219,7 @@ protected:
     using Parent::TOP;
     using Parent::unique;
 public:
-    UniqueRanker(const size_t top) : 
+    UniqueRanker(const size_t top) :
         Parent(top)
     {}
     /* Inserts the element. */
@@ -252,7 +252,7 @@ public:
     UniqueRankerLineal(const size_t top) :
         Parent(top)
     {}
-    
+
     /* Inserts the element. */
     inline bool insert(const T& element);
 };

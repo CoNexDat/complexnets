@@ -7,43 +7,43 @@
 namespace graphpp
 {
 
-    class PropertyMap
+class PropertyMap
+{
+public:
+    typedef std::string PropertyName;
+    typedef int VertexId;
+    typedef std::map<PropertyName, VariantsSet> Properties;
+
+    template <typename PropertyType>
+    void addProperty(const PropertyName& name, VertexId id, PropertyType value)
     {
-    public:
-        typedef std::string PropertyName;
-        typedef int VertexId;
-        typedef std::map<PropertyName, VariantsSet> Properties;
-        
-        template <typename PropertyType>
-        void addProperty(const PropertyName& name, VertexId id, PropertyType value)
+        if (properties.count(name) == 0)
         {
-            if(properties.count(name) == 0)
-            {
-                VariantsSet set;
-                set.insert(id, value);
-                properties.insert(name, set);
-            }
-            else
-            {
-                properties.find(name).insert(id, value);
-            }
+            VariantsSet set;
+            set.insert(id, value);
+            properties.insert(name, set);
         }
-        
-        template <typename PropertyType>
-        PropertyType getProperty(const PropertyName& name, VertexId id) const
+        else
         {
-            return getPropertySet(name).find(id);
+            properties.find(name).insert(id, value);
         }
-        
-        const VariantsSet& getPropertySet(const PropertyName& name) const
-        {
-            return properties.find(name);
-        }
-        
-    private:
-        
-        Properties properties;
-    };
+    }
+
+    template <typename PropertyType>
+    PropertyType getProperty(const PropertyName& name, VertexId id) const
+    {
+        return getPropertySet(name).find(id);
+    }
+
+    const VariantsSet& getPropertySet(const PropertyName& name) const
+    {
+        return properties.find(name);
+    }
+
+private:
+
+    Properties properties;
+};
 }
 
 

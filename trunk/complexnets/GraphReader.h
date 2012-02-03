@@ -5,15 +5,13 @@
 
 namespace graphpp
 {
-    template <class Graph, class Vertex>
-    class GraphReader
-    {
-        public:
-            
-            typedef std::string FileName;
-            
-            void read(Graph& g, const FileName& file) const = 0;
-    };
+template <class Graph, class Vertex, class K>
+class GraphReader
+{
+public:
+
+    virtual void read(Graph& g, const K& source) = 0;
+};
 }
 
 #endif

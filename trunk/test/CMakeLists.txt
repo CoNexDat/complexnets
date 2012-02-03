@@ -8,6 +8,8 @@ set(test_src TestMain.cpp
          TraverserForwardTest.cpp
          AdjacencyListGraphTest.cpp
          AdjacencyListVertexTest.cpp
+	 SimpleTextGraphReaderTest.cpp
+	 ShellIndexTest.cpp
 )
 
 INCLUDE_DIRECTORIES(../src)

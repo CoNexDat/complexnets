@@ -65,7 +65,7 @@ public:
         if (ptr == NULL)
             throw InvariantNotMet();
     }
-    operator T*() const
+    operator T* () const
     {
         return ptr;
     }
