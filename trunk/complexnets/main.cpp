@@ -68,12 +68,7 @@ int main()
         std::cout << "VertexId: " << it->first << " Core: " << it->second << std::endl;
         ++it;
     }
-    delete v0;
-    delete v1;
-    delete v2;
-    delete v3;
-    delete v4;
-    delete v5;
+
     return 0;
 }
 
