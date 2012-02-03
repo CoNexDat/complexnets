@@ -69,11 +69,6 @@ TEST_F(WeightedGraphTest, AddWeightedEdgeTest)
     ig.addEdge(x, v3, 3);
     ig.addEdge(v1, v2, 4);
     ig.addEdge(x, v4, 5);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 }

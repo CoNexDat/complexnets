@@ -84,11 +84,6 @@ TEST_F(DegreeDistributionTest, DegreeDistributionIndexed)
     //there it should be 1 vertex of degree 3
     ASSERT_EQ(it->first, 3);
     ASSERT_EQ(it->second, 1);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 TEST_F(DegreeDistributionTest, DegreeDistributionList)
@@ -131,11 +126,6 @@ TEST_F(DegreeDistributionTest, DegreeDistributionList)
     //there it should be 1 vertex of degree 3
     ASSERT_EQ(it->first, 3);
     ASSERT_EQ(it->second, 1);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 
 TEST_F(DegreeDistributionTest, DegreeDistributionVector)
@@ -178,11 +168,6 @@ TEST_F(DegreeDistributionTest, DegreeDistributionVector)
     //there it should be 1 vertex of degree 3
     ASSERT_EQ(it->first, 3);
     ASSERT_EQ(it->second, 1);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
 }
 

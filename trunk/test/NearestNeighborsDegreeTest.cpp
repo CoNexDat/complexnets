@@ -84,12 +84,6 @@ TEST_F(NearestNeighborsDegreeTest , VertexGeneralTest)
 
     MeanDegree meanDegree2 = Knn::meanDegree(ig, Vertex::Degree(2));
     ASSERT_TRUE(fabs(meanDegree2 - 3.0) <  epsilon);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
-    delete v4;
 }
 }
 

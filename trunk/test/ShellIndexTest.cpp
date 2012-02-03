@@ -81,12 +81,6 @@ TEST_F(ShellIndexTest , ShellIndexTest)
             ASSERT_EQ(it->second, 1);
         ++it;
     }
-    delete v0;
-    delete v1;
-    delete v2;
-    delete v3;
-    delete v4;
-    delete v5;
 }
 
 }
