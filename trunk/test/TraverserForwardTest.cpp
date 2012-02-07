@@ -4,10 +4,10 @@
 #include <vector>
 #include <list>
 
-#include "../complexnets/AdjacencyListVertex.h"
-#include "../complexnets/AdjacencyListGraph.h"
-#include "../complexnets/GraphExceptions.h"
-#include "../complexnets/TraverserForward.h"
+#include "../src/ComplexNets/AdjacencyListVertex.h"
+#include "../src/ComplexNets/AdjacencyListGraph.h"
+#include "../src/ComplexNets/GraphExceptions.h"
+#include "../src/ComplexNets/TraverserForward.h"
 
 namespace traverserForwardTest
 {

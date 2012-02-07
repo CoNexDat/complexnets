@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../complexnets/AdjacencyListVertex.h"
+#include "../src/ComplexNets/AdjacencyListVertex.h"
 
 namespace adjacencyListVertexTest
 {

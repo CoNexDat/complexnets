@@ -38,7 +38,6 @@ public:
     virtual void read(Graph& g, const FileName& source)
     {
         std::ifstream sourceFile;
-        //double  weigth;
 
         sourceFile.open(source.c_str(), std::ios_base::in);
 
@@ -46,7 +45,6 @@ public:
             throw FileNotFoundException();
 
         std::string line;
-        unsigned int idAux = 0 ;
 
         currentLineNumber = 1;
         while (getline(sourceFile, line))
@@ -58,30 +56,15 @@ public:
             if (!isEmptyLine())
             {
                 consume_whitespace();
-                Vertex* sourceNode = new Vertex(readUnsignedInt());
+                Vertex* sourceNode = loadVertex(g);
                 consume_whitespace();
-                Vertex* destinationNode = new Vertex(readUnsignedInt());
-                consume_whitespace();
-                //TODO Separete this code into a function
-                if (g.containsVertex(sourceNode))
-                {
-                    idAux = sourceNode->getVertexId();
-                    delete sourceNode;
-                    sourceNode = g.getVertexById(idAux);
-                }
-                else
-                    g.addVertex(sourceNode);
 
-                if (g.containsVertex(destinationNode))
+                if (*character != '\0')
                 {
-                    idAux = destinationNode->getVertexId();
-                    delete destinationNode;
-                    destinationNode = g.getVertexById(idAux);
+                    Vertex* destinationNode = loadVertex(g);
+                    consume_whitespace();
+                    g.addEdge(sourceNode, destinationNode);
                 }
-                else
-                    g.addVertex(destinationNode);
-
-                g.addEdge(sourceNode, destinationNode);
             }
 
             ++currentLineNumber;
@@ -96,6 +79,21 @@ public:
     }
 
 private:
+
+    Vertex* loadVertex(Graph& g)
+    {
+        Vertex* vertex = new Vertex(readUnsignedInt());
+        Vertex* vertexAux = vertex;
+        if ((vertex = g.getVertexById(vertex->getVertexId())) != NULL)
+            delete vertexAux;
+        else
+        {
+            vertex = vertexAux;
+            g.addVertex(vertex);
+        }
+
+        return vertex;
+    }
 
     unsigned int readUnsignedInt()
     {
@@ -137,20 +135,16 @@ private:
     {
         consume_whitespace();
         double ret = 0.0;
-        if (*character == ':')
+        std::string branchLenStr;
+        while (in_range(*character, '0', '9') || *character == '.')
         {
+            branchLenStr += *character;
             ++character;
-            std::string branchLenStr;
-            while (in_range(*character, '0', '9') || *character == '.')
-            {
-                branchLenStr += *character;
-                ++character;
-            }
-
-            if (!from_string(branchLenStr, ret))
-                throw MalformedDoubleException();
-
         }
+
+        if (!from_string(branchLenStr, ret))
+            throw MalformedDoubleException();
+
         return ret;
     }
 

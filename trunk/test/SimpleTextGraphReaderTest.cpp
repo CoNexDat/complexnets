@@ -3,9 +3,9 @@
 #include <vector>
 #include <list>
 
-#include "../complexnets/AdjacencyListVertex.h"
-#include "../complexnets/AdjacencyListGraph.h"
-#include "../complexnets/SimpleTextGraphReader.h"
+#include "../src/ComplexNets/AdjacencyListVertex.h"
+#include "../src/ComplexNets/AdjacencyListGraph.h"
+#include "../src/ComplexNets/SimpleTextGraphReader.h"
 
 namespace simpleTextGraphReaderTest
 {
@@ -40,12 +40,12 @@ public:
 };
 
 
-TEST_F(SimpleTextGraphReaderTest , FileDoesntExist)
+/*TEST_F(SimpleTextGraphReaderTest , FileDoesntExist)
 {
     Graph g;
     SimpleTextGraphReader<Graph, Vertex> graphReader;
 
-    ASSERT_THROW(graphReader.read(g, "TestTrees/tree.txt"), FileNotFoundException);
+    ASSERT_THROW(graphReader.read(g, "TestTrees/tree0.txt"), FileNotFoundException);
 }
 
 TEST_F(SimpleTextGraphReaderTest , AllNodesLoaded)
@@ -53,17 +53,15 @@ TEST_F(SimpleTextGraphReaderTest , AllNodesLoaded)
     Graph g;
     SimpleTextGraphReader<Graph, Vertex> graphReader;
 
-    //graphReader.read(g, "TestTrees/tree1.txt");
+    graphReader.read(g, "TestTrees/tree1.txt");
 
     vector<bool> found(3, false);
 
-    //iterate through the neighbors, verifying they are the added
     Graph::VerticesIterator it = g.verticesIterator();
     int i = 1;
     while (!it.end())
     {
         Vertex* n  = *it;
-
         found[n->getVertexId() - 1] = true;
         ++i;
         ++it;
@@ -77,9 +75,9 @@ TEST_F(SimpleTextGraphReaderTest , EdgeCreation)
     Graph g2;
     SimpleTextGraphReader<Graph, Vertex> graphReader;
 
-    //ASSERT_NO_THROW(graphReader.read(g2, "TestTrees/tree1.txt"));
+    ASSERT_NO_THROW(graphReader.read(g2, "TestTrees/tree1.txt"));
 
-    /*Graph::VerticesIterator it = g2.verticesIterator();
+    Graph::VerticesIterator it = g2.verticesIterator();
     Vertex* n1  = *it;
     std::cout << "n1 id: " << n1->getVertexId() << std::endl;
     ++it;
@@ -90,10 +88,10 @@ TEST_F(SimpleTextGraphReaderTest , EdgeCreation)
     std::cout << "n3 id: " << n3->getVertexId() << std::endl;
     ASSERT_TRUE(n1->isNeighbourOf(n3));
     ASSERT_FALSE(n1->isNeighbourOf(n2));
-    ASSERT_TRUE(n3->isNeighbourOf(n2));*/
+    ASSERT_TRUE(n3->isNeighbourOf(n2));
 }
 
-/*TEST_F(SimpleTextGraphReaderTest , NegativeUnsignedInteger)
+TEST_F(SimpleTextGraphReaderTest , NegativeUnsignedInteger)
 {
 }
 
