@@ -40,6 +40,7 @@ public:
 
     typedef CAutonomousIterator<VertexContainer>  VerticesConstIterator;
     typedef AutonomousIterator<VertexContainer>  VerticesIterator;
+    typedef typename Vertex::VertexId VertexId;
 
     ~AdjacencyListGraph()
     {
@@ -112,19 +113,29 @@ public:
         return vertices.size();
     }
 
-    //TODO test
-    Vertex* getVertexById(unsigned int id)
+    /**
+    * Method: getVertexById
+    * ---------------------
+    * Description: informs the number of vertices currently in the graph
+    * @param id the vertex id
+    * @returns the vertex with the specified id or NULL if no vertex has the specified id
+    */
+    Vertex* getVertexById(VertexId id)
     {
         VerticesConstIterator it = verticesConstIterator();
+        Vertex* ret = NULL;
+        bool quit = false;
         while (!it.end())
         {
-            Vertex* n  = *it;
-            if (n->getVertexId() == id)
-                return n;
+            if ((*it)->getVertexId() == id)
+            {
+                ret = *it;
+                quit = true;
+            }
             ++it;
         }
 
-        return NULL;
+        return ret;
     }
 
     //TODO test

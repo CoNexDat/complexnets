@@ -4,9 +4,9 @@
 #include <vector>
 #include <list>
 
-#include "../complexnets/AdjacencyListVertex.h"
-#include "../complexnets/AdjacencyListGraph.h"
-#include "../complexnets/GraphExceptions.h"
+#include "../src/ComplexNets/AdjacencyListVertex.h"
+#include "../src/ComplexNets/AdjacencyListGraph.h"
+#include "../src/ComplexNets/GraphExceptions.h"
 
 namespace adjacencyListGraphTest
 {
@@ -147,6 +147,34 @@ TEST_F(AdjacencyListGraphTest, IndexedDuplicateEdgeTest)
     ASSERT_THROW(g.addEdge(v, n1), DuplicateEdge);
 }
 
+TEST_F(AdjacencyListGraphTest, IndexedContainsVertexTest)
+{
+    IndexedGraph g;
+    Vertex* v = new Vertex(1);
+    Vertex* n1 = new Vertex(2);
+    Vertex* n2 = new Vertex(3);
+    Vertex* n3 = new Vertex(4);
+
+    g.addVertex(v);
+    g.addVertex(n1);
+    g.addVertex(n2);
+
+    v = g.getVertexById(1);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 1);
+
+    v = g.getVertexById(3);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 3);
+
+    v = g.getVertexById(4);
+    ASSERT_TRUE(NULL == v);
+    g.addVertex(n3);
+    v = g.getVertexById(4);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 4);
+}
+
 TEST_F(AdjacencyListGraphTest, ListAddVertexIterationTest)
 {
     ListGraph g;
@@ -226,6 +254,34 @@ TEST_F(AdjacencyListGraphTest, ListDuplicateEdgeTest)
     ASSERT_THROW(g.addEdge(v, n1), DuplicateEdge);
 }
 
+TEST_F(AdjacencyListGraphTest, ListContainsVertexTest)
+{
+    ListGraph g;
+    Vertex* v = new Vertex(1);
+    Vertex* n1 = new Vertex(2);
+    Vertex* n2 = new Vertex(3);
+    Vertex* n3 = new Vertex(4);
+
+    g.addVertex(v);
+    g.addVertex(n1);
+    g.addVertex(n2);
+
+    v = g.getVertexById(1);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 1);
+
+    v = g.getVertexById(3);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 3);
+
+    v = g.getVertexById(4);
+    ASSERT_TRUE(NULL == v);
+    g.addVertex(n3);
+    v = g.getVertexById(4);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 4);
+}
+
 TEST_F(AdjacencyListGraphTest, VectorAddVertexIterationTest)
 {
     VectorGraph g;
@@ -303,6 +359,34 @@ TEST_F(AdjacencyListGraphTest, VectorDuplicateEdgeTest)
     //the expected behaviour when adding duplicate edge to base graph class
     //is to get DuplicateEdge generic Exception
     ASSERT_THROW(g.addEdge(v, n1), DuplicateEdge);
+}
+
+TEST_F(AdjacencyListGraphTest, VectorContainsVertexTest)
+{
+    VectorGraph g;
+    Vertex* v = new Vertex(1);
+    Vertex* n1 = new Vertex(2);
+    Vertex* n2 = new Vertex(3);
+    Vertex* n3 = new Vertex(4);
+
+    g.addVertex(v);
+    g.addVertex(n1);
+    g.addVertex(n2);
+
+    v = g.getVertexById(1);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 1);
+
+    v = g.getVertexById(3);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 3);
+
+    v = g.getVertexById(4);
+    ASSERT_TRUE(NULL == v);
+    g.addVertex(n3);
+    v = g.getVertexById(4);
+    ASSERT_TRUE(NULL != v);
+    ASSERT_EQ(v->getVertexId(), 4);
 }
 
 }

@@ -25,7 +25,7 @@ class ShellIndex
 
 
     typedef std::multimap<Vertex*, unsigned int, DegreeComparator<Vertex> > VertexByDegree;
-    typedef AutonomousIterator<VertexByDegree> VertexByDegreeIterator;
+    //typedef AutonomousIterator<VertexByDegree> VertexByDegreeIterator;
 
     typedef typename Graph::VerticesIterator VerticesIterator;
     typedef typename Graph::VerticesConstIterator VerticesConstIterator;
@@ -58,13 +58,13 @@ private:
         {
             v = it->first;
             shellIndex[v->getVertexId()] = it->second;
-            NeighbourConstIterator neighbourIt = v->neighborsConstIterator();
-            while (!neighbourIt.end())
+            NeighbourConstIterator neighborsIt = v->neighborsConstIterator();
+            while (!neighborsIt.end())
             {
-                if (vertexByDegree.find(*neighbourIt)->second > it->second)
-                    vertexByDegree.find(*neighbourIt)->second -= 1;
+                if (vertexByDegree.find(*neighborsIt)->second > it->second)
+                    vertexByDegree.find(*neighborsIt)->second -= 1;
 
-                ++neighbourIt;
+                ++neighborsIt;
             }
             ++it;
         }
@@ -87,7 +87,7 @@ private:
     {
         VerticesConstIterator it = g.verticesConstIterator();
 
-        //initialize all elements using the vertex id
+        //initialize all elements using the vertex id and the vertex degree
         while (!it.end())
         {
             Vertex* v = *it;
