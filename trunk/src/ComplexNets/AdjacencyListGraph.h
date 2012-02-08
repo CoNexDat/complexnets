@@ -138,12 +138,6 @@ public:
         return ret;
     }
 
-    //TODO test
-    bool containsVertex(Vertex* v) const
-    {
-        return contains(vertices, v);
-    }
-
 private:
     VertexContainer vertices;
 };

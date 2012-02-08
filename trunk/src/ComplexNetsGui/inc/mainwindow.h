@@ -33,9 +33,11 @@ protected:
     void changeEvent(QEvent* e);
 
 private:
+    bool graphLoaded;
     Ui::MainWindow* ui;
     void onNetworkLoad();
     void onNetworkUnload();
+    unsigned int getVertexId();
 
 private slots:
     void on_actionDegree_distribution_triggered();

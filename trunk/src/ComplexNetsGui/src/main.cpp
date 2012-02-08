@@ -1,4 +1,5 @@
 #include <QtGui/QApplication>
+
 #include "ComplexNetsGui/inc/mainwindow.h"
 
 int main(int argc, char* argv[])
