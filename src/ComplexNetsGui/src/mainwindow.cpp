@@ -3,16 +3,17 @@
 #include <QDebug>
 #include <cstdlib>
 
-#include "ComplexNetsGui/inc/mainwindow.h"
-
 //File ui_mainwindow.h will be generated on compile time. Don't look for it, unless you have already compiled the project.
 #include "ComplexNetsGui/inc/ui_mainwindow.h"
+#include "ComplexNetsGui/inc/mainwindow.h"
+#include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
 
 using namespace ComplexNetsGui;
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    graphLoaded(false)
 {
     ui->setupUi(this);
     this->onNetworkUnload();
@@ -47,21 +48,29 @@ void MainWindow::on_actionOpen_triggered()
     fileDialog.setFileMode(QFileDialog::ExistingFile);
     fileDialog.setDirectory(QDir::homePath());
     QStringList selectedFiles;
-    // TODO if a network has already been loaded ask the user to close the current network before loading a new one.
-    // only one network can be open at a given moment.
-    ui->textBrowser->append("Loading new network...");
-    if (fileDialog.exec())
-    {
-        selectedFiles = fileDialog.selectedFiles();
 
-        this->onNetworkLoad();
-        QString text("Network loaded from file: ");
-        text.append(selectedFiles[0]);
-        text.append(".\n");
-        ui->textBrowser->append(text);
+    if (!this->graphLoaded)
+    {
+        //If no network is loaded user may procede to load a new network.
+        ui->textBrowser->append("Loading new network...");
+        if (fileDialog.exec())
+        {
+            selectedFiles = fileDialog.selectedFiles();
+            //TODO Load graph here.
+            this->onNetworkLoad();
+            QString text("Network loaded from file: ");
+            text.append(selectedFiles[0]);
+            text.append(".\n");
+            ui->textBrowser->append(text);
+        }
+        else
+            ui->textBrowser->append("Action canceled by user.\n");
     }
     else
-        ui->textBrowser->append("Action canceled!\n");
+    {
+        ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
+        QMessageBox msg(QMessageBox::Information, "Quit", "Only one network can be loaded at any given time. Please close the current network (File->Close all...) before loading another one", QMessageBox::Ok, this);
+    }
 }
 
 void MainWindow::on_actionQuit_triggered()
@@ -74,7 +83,7 @@ void MainWindow::on_actionQuit_triggered()
         exit(EXIT_SUCCESS);
     }
     else
-        ui->textBrowser->append("Action canceled.\n");
+        ui->textBrowser->append("Action canceled by user.\n");
 }
 
 void MainWindow::on_actionClose_current_network_triggered()
@@ -88,7 +97,7 @@ void MainWindow::on_actionClose_current_network_triggered()
         ui->textBrowser->append("Done.\n");
     }
     else
-        ui->textBrowser->append("Action canceled!\n");
+        ui->textBrowser->append("Action canceled by user.\n");
 }
 
 void MainWindow::on_actionDegree_distribution_triggered()
@@ -102,9 +111,11 @@ void MainWindow::on_actionDegree_distribution_triggered()
 
 void MainWindow::onNetworkLoad()
 {
+    this->graphLoaded = true;
     ui->actionClose_current_network->setEnabled(true);
 }
 void MainWindow::onNetworkUnload()
 {
+    this->graphLoaded = false;
     ui->actionClose_current_network->setEnabled(false);
 }
