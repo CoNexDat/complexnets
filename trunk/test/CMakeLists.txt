@@ -9,6 +9,8 @@ set(test_src TestMain.cpp
          AdjacencyListGraphTest.cpp
          AdjacencyListVertexTest.cpp
 	 ShellIndexTest.cpp
+	 WeightedNearestNeighborsDegreeTest.cpp
+	 WeightedClusteringCoefficientTest.cpp
 )
 
 INCLUDE_DIRECTORIES(../src)

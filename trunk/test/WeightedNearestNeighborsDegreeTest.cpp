@@ -1,0 +1,111 @@
+
+#include <gtest/gtest.h>
+#include <set>
+#include <vector>
+#include <list>
+
+#include "../src/ComplexNets/AdjacencyListVertex.h"
+#include "../src/ComplexNets/AdjacencyListGraph.h"
+#include "../src/ComplexNets/GraphExceptions.h"
+#include "../src/ComplexNets/WeightedGraphAspect.h"
+#include "../src/ComplexNets/WeightedVertexAspect.h"
+#include "../src/ComplexNets/WeightedNearestNeighborsDegree.h"
+
+namespace weightedNearestNeighborsDegreeTest
+{
+
+using namespace graphpp;
+using namespace std;
+using ::testing::Test;
+
+class WeightedNearestNeighborsDegreeTest : public Test
+{
+
+protected:
+
+    WeightedNearestNeighborsDegreeTest() { }
+
+    virtual ~WeightedNearestNeighborsDegreeTest() { }
+
+
+    virtual void SetUp()
+    {
+
+    }
+
+    virtual void TearDown()
+    {
+
+    }
+public:
+    typedef WeightedVertexAspect<AdjacencyListVertex> Vertex;
+    typedef AdjacencyListGraph<Vertex> Graph;
+    typedef WeightedGraphAspect<Vertex, Graph> WeightedGraph;
+
+
+};
+
+
+TEST_F(WeightedNearestNeighborsDegreeTest , GeneralGraph)
+{
+    WeightedGraph g;
+    Vertex* x = new Vertex(1);
+    Vertex* v1 = new Vertex(2);
+    Vertex* v2 = new Vertex(3);
+    Vertex* v3 = new Vertex(4);
+    Vertex* v4 = new Vertex(5);
+    Vertex* v5 = new Vertex(6);
+
+    Vertex* v5_1 = new Vertex(7);
+    Vertex* v5_2 = new Vertex(8);
+    Vertex* v5_3 = new Vertex(9);
+    Vertex* v5_4 = new Vertex(10);
+    g.addVertex(x);
+    g.addVertex(v1);
+    g.addVertex(v2);
+    g.addVertex(v3);
+    g.addVertex(v4);
+    g.addVertex(v5);
+
+    g.addEdge(x, v1, 1);
+    g.addEdge(x, v2, 1);
+    g.addEdge(x, v3, 1);
+    g.addEdge(x, v4, 1);
+    g.addEdge(x, v5, 5);
+
+    g.addEdge(v5, v5_1, 1.4);
+    g.addEdge(v5, v5_2, 5.8);
+    g.addEdge(v5, v5_3, 9.2);
+    g.addEdge(v5, v5_4, 0.6);
+
+    typedef WeightedNearestNeighborsDegree<WeightedGraph, Vertex> Knn;
+    typedef Knn::MeanDegree MeanDegree;
+
+    MeanDegree dx = Knn::meanDegreeForVertex(x);
+    MeanDegree epsilon = 0.001;
+    ASSERT_TRUE(fabs(dx - 3.222) <  epsilon);
+
+    MeanDegree dv1 = Knn::meanDegreeForVertex(v1);
+    ASSERT_TRUE(fabs(dv1 - 5.0) <  epsilon);
+
+    MeanDegree dv5 = Knn::meanDegreeForVertex(v5);
+    ASSERT_TRUE(fabs(dv5 - 1.909) <  epsilon);
+
+    MeanDegree average = Knn::meanDegree(g, Vertex::Degree(5));
+
+    ASSERT_TRUE(fabs(average - 2.565) <  epsilon);
+}
+
+TEST_F(WeightedNearestNeighborsDegreeTest , SingleNodeGraph)
+{
+    typedef WeightedNearestNeighborsDegree<WeightedGraph, Vertex> Knn;
+    typedef Knn::MeanDegree MeanDegree;
+    WeightedGraph g;
+    Vertex* x = new Vertex(1);
+    g.addVertex(x);
+    MeanDegree dx = Knn::meanDegreeForVertex(x);
+    MeanDegree epsilon = 0.001;
+    ASSERT_TRUE(fabs(dx - 0.0) <  epsilon);
+}
+}
+
