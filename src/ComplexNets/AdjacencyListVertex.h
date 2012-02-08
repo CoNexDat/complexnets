@@ -32,9 +32,11 @@ public:
     * the vertex's neighbors
     * @param v Vertex neighbour to be added
     */
-    void addEdge(AdjacencyListVertex* v)
+    template<class T>
+    void addEdge(T* v)
     {
-        insert_into(neighbors, v);
+        AdjacencyListVertex* other = static_cast<AdjacencyListVertex*>(v);
+        insert_into<AdjacencyListVertex*>(neighbors, other);
     }
 
     /**
