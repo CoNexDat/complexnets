@@ -77,53 +77,18 @@ TEST_F(WeightedClusterCoefficientTest, GeneralTest)
 
     ASSERT_TRUE(fabs(c - 0.25) <  epsilon);
 
-    //Coef c2 = Clustering::clusteringCoefficient(g, Vertex::Degree(4));
-    //ASSERT_TRUE(fabs(c2 - 0.16667) <  epsilon);
+    Coef c2 = Clustering::clusteringCoefficient(g, Vertex::Degree(4));
+    ASSERT_TRUE(fabs(c2 - 0.25) <  epsilon);
+
+    Coef c3 = Clustering::clusteringCoefficient(g, Vertex::Degree(3));
+    ASSERT_TRUE(fabs(c3 - 1) <  epsilon);
 }
 
-/*TEST_F(WeightedClusterCoefficientTest, FullGraphTest)
+TEST_F(WeightedClusterCoefficientTest, AcyclicWeightedGraphTest)
 {
     WeightedGraph ig;
-    //Create vertex
+
     Vertex* x = new Vertex(1);
-
-    //create neighbor vertices
-    Vertex* v1 = new Vertex(2);
-    Vertex* v2 = new Vertex(3);
-    Vertex* v3 = new Vertex(4);
-
-    ig.addVertex(x);
-    ig.addVertex(v1);
-    ig.addVertex(v2);
-    ig.addVertex(v3);
-
-    ig.addEdge(x, v1);
-    ig.addEdge(x, v2);
-    ig.addEdge(x, v3);
-    ig.addEdge(v1, v2);
-    ig.addEdge(v1, v3);
-    ig.addEdge(v3, v2);
-
-    typedef ClusteringCoefficient<WeightedGraph, Vertex> Clustering;
-    typedef Clustering::ClusteringCoefficient Coef;
-
-    Coef c = Clustering::vertexClusteringCoefficient(x);
-
-    Coef epsilon = 0.001;
-
-    ASSERT_TRUE(fabs(c - 1.0) <  epsilon);
-
-    Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(3));
-    ASSERT_TRUE(fabs(c2 - 1.0) <  epsilon);
-}
-
-TEST_F(WeightedClusterCoefficientTest, AcyclicGraphTest)
-{
-    WeightedGraph ig;
-    //Create vertex
-    Vertex* x = new Vertex(1);
-
-    //create neighbor vertices
     Vertex* v1 = new Vertex(2);
     Vertex* v2 = new Vertex(3);
     Vertex* v3 = new Vertex(4);
@@ -134,13 +99,13 @@ TEST_F(WeightedClusterCoefficientTest, AcyclicGraphTest)
     ig.addVertex(v2);
     ig.addVertex(v3);
     ig.addVertex(v4);
-    ig.addEdge(x, v1);
-    ig.addEdge(x, v2);
-    ig.addEdge(x, v3);
-    ig.addEdge(v4, x);;
+    ig.addEdge(x, v1, 1);
+    ig.addEdge(x, v2, 1);
+    ig.addEdge(x, v3, 1);
+    ig.addEdge(v4, x, 1);;
 
-    typedef ClusteringCoefficient<WeightedGraph, Vertex> Clustering;
-    typedef Clustering::ClusteringCoefficient Coef;
+    typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
+    typedef Clustering::Coefficient Coef;
 
     Coef c = Clustering::vertexClusteringCoefficient(x);
 
@@ -150,6 +115,28 @@ TEST_F(WeightedClusterCoefficientTest, AcyclicGraphTest)
 
     Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
-}*/
+}
+
+TEST_F(WeightedClusterCoefficientTest, SingleNodeGraph)
+{
+    WeightedGraph ig;
+
+    Vertex* x = new Vertex(1);
+
+    ig.addVertex(x);
+
+    typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
+    typedef Clustering::Coefficient Coef;
+
+    Coef c = Clustering::vertexClusteringCoefficient(x);
+
+    Coef epsilon = 0.001;
+
+    ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
+
+    Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
+    ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
+}
+
 }
 

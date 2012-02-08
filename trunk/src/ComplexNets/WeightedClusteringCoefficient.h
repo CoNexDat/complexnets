@@ -26,7 +26,7 @@ public:
 
             if (v->degree() == d)
             {
-                count++;
+                ++count;
                 clusteringCoefSums += vertexClusteringCoefficient(v);
             }
 
@@ -52,10 +52,7 @@ public:
                 Vertex* i = static_cast<Vertex*>(*innerIter);
                 //if i is neighbour of vertex, we close a triangle
                 if (i->isNeighbourOf(vertex))
-                {
-                    //links += 1.0;
-                    links += (vertex->edgeWeight(n) + n->edgeWeight(vertex)) / 2.0;
-                }
+                    links += (vertex->edgeWeight(n) + i->edgeWeight(vertex)) / 2.0;
 
                 ++innerIter;
             }

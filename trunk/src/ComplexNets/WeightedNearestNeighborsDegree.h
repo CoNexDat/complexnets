@@ -26,7 +26,7 @@ public:
 
             if (v->degree() == d)
             {
-                count++;
+                ++count;
                 meanDegreeSums += meanDegreeForVertex(v);
             }
 
