@@ -9,6 +9,7 @@
 #include "../../ComplexNets/WeightedGraphAspect.h"
 #include "../../ComplexNets/WeightedVertexAspect.h"
 #include "../../ComplexNets/PropertyMap.h"
+#include "ComplexNetsGui/inc/GrapherUtils.h"
 
 namespace Ui
 {
@@ -24,6 +25,8 @@ class MainWindow : public QMainWindow
 public:
     typedef graphpp::AdjacencyListVertex Vertex;
     typedef graphpp::AdjacencyListGraph<Vertex> Graph;
+
+
     typedef graphpp::WeightedVertexAspect<Vertex> WeightedVertex;
     typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph<WeightedVertex> > WeightedGraph;
     MainWindow(QWidget* parent = 0);
@@ -33,6 +36,7 @@ protected:
     void changeEvent(QEvent* e);
 
 private:
+    GrapherUtils grapher;
     bool weightedgraph;
     bool multigraph;
     bool digraph;
@@ -50,10 +54,11 @@ private:
     void deleteGraphFactory();
     void onNetworkLoad(const bool weightedgraph, const bool digraph, const bool multigraph);
     void onNetworkUnload();
-    //unsigned int getVertexId();
-    QString inputVertexId();
+    QString inputId(const std::string label);
 
 private slots:
+    void on_actionDegree_distribution_plotting_triggered();
+    void on_actionDegree_distribution_triggered();
     void on_actionShell_index_triggered();
     void on_actionBetweenness_triggered();
     void on_actionClose_current_network_triggered();

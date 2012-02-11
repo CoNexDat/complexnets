@@ -61,7 +61,7 @@ public:
         calculateDistribution(graph);
     }
 
-    DistributionIterator distributionIterator() const
+    DistributionIterator iterator() const
     {
         return DistributionIterator(distribution);
     }

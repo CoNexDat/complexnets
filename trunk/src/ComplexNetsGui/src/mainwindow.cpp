@@ -9,12 +9,14 @@
 //File ui_mainwindow.h will be generated on compile time. Don't look for it, unless you have already compiled the project.
 #include "ComplexNetsGui/inc/ui_mainwindow.h"
 #include "ComplexNetsGui/inc/mainwindow.h"
+#include "../../ComplexNets/GraphFactory.h"
 #include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
 #include "../../ComplexNets/GraphFactory.h"
 #include "../../ComplexNets/WeightedGraphFactory.h"
 #include "../../ComplexNets/IGraphReader.h"
 #include "../../ComplexNets/IBetweenness.h"
 #include "../../ComplexNets/IShellIndex.h"
+#include "../../ComplexNets/DegreeDistribution.h"
 
 using namespace ComplexNetsGui;
 using namespace graphpp;
@@ -136,6 +138,7 @@ void MainWindow::on_actionQuit_triggered()
     if (msg.exec() == QMessageBox::Ok)
     {
         ui->textBrowser->append("Bye bye.\n");
+        this->deleteGraphFactory();
         exit(EXIT_SUCCESS);
     }
     else
@@ -150,6 +153,7 @@ void MainWindow::on_actionClose_current_network_triggered()
     {
         graph = Graph();
         weightedGraph = WeightedGraph();
+        this->deleteGraphFactory();
         this->onNetworkUnload();
         ui->textBrowser->append("Done.\n");
     }
@@ -163,7 +167,6 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
     this->weightedgraph = weightedgraph;
     this->digraph = digraph;
     this->multigraph = multigraph;
-    ui->actionClose_current_network->setEnabled(true);
 }
 
 void MainWindow::onNetworkUnload()
@@ -172,7 +175,6 @@ void MainWindow::onNetworkUnload()
     this->weightedgraph = false;
     this->digraph = false;
     this->multigraph = false;
-    ui->actionClose_current_network->setEnabled(false);
 }
 
 /*void MainWindow::on_actionDegree_distribution_triggered()
@@ -226,11 +228,12 @@ void MainWindow::readGraph(const std::string path)
 }
 
 //TODO this function doesnt validate input. should be const
-QString MainWindow::inputVertexId()
+QString MainWindow::inputId(const std::string label)
 {
     QString ret;
     QInputDialog inputVertexIdDialog(this);
     inputVertexIdDialog.setInputMode(QInputDialog::TextInput);
+    inputVertexIdDialog.setLabelText(label.c_str());
     if (inputVertexIdDialog.exec())
         ret.append(inputVertexIdDialog.textValue());
     return ret;
@@ -238,77 +241,145 @@ QString MainWindow::inputVertexId()
 
 void MainWindow::on_actionBetweenness_triggered()
 {
-    QString vertexId = inputVertexId();
+    QString vertexId = inputId("Vertex id:");
     QString ret;
     double vertexBetweenness;
-    if (!propertyMap.containsPropertySet("betweenness"))
+    if (!vertexId.isEmpty())
     {
-        ui->textBrowser->append("Betweenness has not been previously computed. Computing now.");
-        if (this->weightedgraph)
+        if (!propertyMap.containsPropertySet("betweenness"))
         {
-            ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
-        }
-        else
-        {
-            IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(graph);
-            IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
-            while (!it.end())
+            ui->textBrowser->append("Betweenness has not been previously computed. Computing now.");
+            if (this->weightedgraph)
             {
-                propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first), it->second);
-                ++it;
+                ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
             }
-            delete betweenness;
+            else
+            {
+                IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(graph);
+                IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
+                while (!it.end())
+                {
+                    propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first), it->second);
+                    ++it;
+                }
+                delete betweenness;
+            }
         }
-    }
-    try
-    {
-        vertexBetweenness = propertyMap.getProperty<double>("betweenness", vertexId.toStdString());
-        ret.append("Betweenness for vertex ").append(vertexId);
-        ret.append(" is: ").append(to_string<double>(vertexBetweenness).c_str()).append(".\n");
-        ui->textBrowser->append(ret);
-    }
-    catch (const BadElementName& ex)
-    {
-        ret.append("Betweenness: Vertex with id ").append(vertexId).append(" was not found.");
-        ui->textBrowser->append(ret);
+        try
+        {
+            vertexBetweenness = propertyMap.getProperty<double>("betweenness", vertexId.toStdString());
+            ret.append("Betweenness for vertex ").append(vertexId);
+            ret.append(" is: ").append(to_string<double>(vertexBetweenness).c_str()).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        catch (const BadElementName& ex)
+        {
+            ret.append("Betweenness: Vertex with id ").append(vertexId).append(" was not found.");
+            ui->textBrowser->append(ret);
+        }
     }
 }
 
 void MainWindow::on_actionShell_index_triggered()
 {
-    QString vertexId = inputVertexId();
+    QString vertexId = inputId("Vertex id:");
     QString ret;
     unsigned int vertexShellIndex;
-    if (!propertyMap.containsPropertySet("shellIndex"))
+    if (!vertexId.isEmpty())
     {
-        ui->textBrowser->append("Shell index has not been previously computed. Computing now.");
-        if (this->weightedgraph)
+        if (!propertyMap.containsPropertySet("shellIndex"))
         {
-            ui->textBrowser->append("Shell index for weighted graphs is not supported.");
-        }
-        else
-        {
-            IShellIndex<Graph, Vertex>* shellIndex = factory->createShellIndex(graph);
-            IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
-            while (!it.end())
+            ui->textBrowser->append("Shell index has not been previously computed. Computing now.");
+            if (this->weightedgraph)
             {
-                propertyMap.addProperty<unsigned int>("shellIndex", to_string<unsigned int>(it->first), it->second);
-                ++it;
+                ui->textBrowser->append("Shell index for weighted graphs is not supported.");
             }
-            delete shellIndex;
+            else
+            {
+                IShellIndex<Graph, Vertex>* shellIndex = factory->createShellIndex(graph);
+                IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
+                while (!it.end())
+                {
+                    propertyMap.addProperty<unsigned int>("shellIndex", to_string<unsigned int>(it->first), it->second);
+                    ++it;
+                }
+                delete shellIndex;
+            }
         }
-    }
-    try
-    {
-        vertexShellIndex = propertyMap.getProperty<unsigned int>("shellIndex", vertexId.toStdString());
-        ret.append("Shell index for vertex ").append(vertexId);
-        ret.append(" is: ").append(to_string<unsigned int>(vertexShellIndex).c_str()).append(".\n");
-        ui->textBrowser->append(ret);
-    }
-    catch (const BadElementName& ex)
-    {
-        ret.append("Shell index: Vertex with id ").append(vertexId).append(" was not found.");
-        ui->textBrowser->append(ret);
+        try
+        {
+            vertexShellIndex = propertyMap.getProperty<unsigned int>("shellIndex", vertexId.toStdString());
+            ret.append("Shell index for vertex ").append(vertexId);
+            ret.append(" is: ").append(to_string<unsigned int>(vertexShellIndex).c_str()).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        catch (const BadElementName& ex)
+        {
+            ret.append("Shell index: Vertex with id ").append(vertexId).append(" was not found.");
+            ui->textBrowser->append(ret);
+        }
     }
 }
 
+void MainWindow::on_actionDegree_distribution_triggered()
+{
+    QString degree = inputId("Degree:");
+    QString ret;
+    unsigned int degreeAmount;
+    if (!degree.isEmpty())
+    {
+        if (!propertyMap.containsPropertySet("degreeDistribution"))
+        {
+            ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
+            if (this->weightedgraph)
+            {
+                //ui->textBrowser->append("Digree distribution for weighted graphs is not supported.");
+                DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
+                DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
+                while (!it.end())
+                {
+                    propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+                    ++it;
+                }
+                delete degreeDistribution;
+            }
+            else
+            {
+                DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
+                DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
+                while (!it.end())
+                {
+                    propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+                    ++it;
+                }
+                delete degreeDistribution;
+            }
+        }
+        try
+        {
+            degreeAmount = propertyMap.getProperty<unsigned int>("degreeDistribution", degree.toStdString());
+            ret.append("Digree distribution for degree ").append(degree);
+            ret.append(" is: ").append(to_string<unsigned int>(degreeAmount).c_str()).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        catch (const BadElementName& ex)
+        {
+            ret.append("There are no vertices with degree ").append(degree).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+    }
+}
+
+
+
+
+void MainWindow::on_actionDegree_distribution_plotting_triggered()
+{
+    int ret = 0 ;
+    ui->textBrowser->append("Plotting degree distribution...");
+    ret = grapher.plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "g", "c_nn(g)", "Degree distribution");
+    if (ret == 0)
+        ui->textBrowser->append("Done\n");
+    else
+        ui->textBrowser->append("Action canceled: an error while plotting ocurred.\n");
+}
