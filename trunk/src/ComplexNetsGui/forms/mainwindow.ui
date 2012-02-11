@@ -31,7 +31,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionClose_current_network"/>
@@ -40,30 +40,35 @@
    </widget>
    <widget class="QMenu" name="menuNode">
     <property name="title">
-     <string>Node</string>
+     <string>&amp;Analysis</string>
     </property>
-   </widget>
-   <widget class="QMenu" name="menuGraph">
-    <property name="title">
-     <string>Graph</string>
-    </property>
+    <addaction name="actionBetweenness"/>
+    <addaction name="actionDegree_distribution"/>
+    <addaction name="actionClustering_coefficient"/>
+    <addaction name="actionNearest_neighbors_degree"/>
+    <addaction name="actionShell_index"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
-     <string>Plot</string>
+     <string>&amp;Plot</string>
     </property>
-    <addaction name="actionDegree_distribution"/>
+    <addaction name="actionDegree_distribution_plotting"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuVisualization">
+    <property name="title">
+     <string>&amp;Visualization</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNode"/>
-   <addaction name="menuGraph"/>
    <addaction name="menuPlot"/>
+   <addaction name="menuVisualization"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -99,7 +104,7 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionDegree_distribution">
+  <action name="actionDegree_distribution_plotting">
    <property name="text">
     <string>Degree distribution</string>
    </property>
@@ -107,6 +112,31 @@
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionBetweenness">
+   <property name="text">
+    <string>Betweenness...</string>
+   </property>
+  </action>
+  <action name="actionClustering_coefficient">
+   <property name="text">
+    <string>Clustering coefficient...</string>
+   </property>
+  </action>
+  <action name="actionNearest_neighbors_degree">
+   <property name="text">
+    <string>Nearest neighbors degree...</string>
+   </property>
+  </action>
+  <action name="actionShell_index">
+   <property name="text">
+    <string>Shell index...</string>
+   </property>
+  </action>
+  <action name="actionDegree_distribution">
+   <property name="text">
+    <string>Degree distribution...</string>
    </property>
   </action>
  </widget>

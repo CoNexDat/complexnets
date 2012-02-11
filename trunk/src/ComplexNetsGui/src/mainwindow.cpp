@@ -1,21 +1,32 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDebug>
+#include <QInputDialog>
 #include <cstdlib>
+#include <sstream>
+#include <string>
 
 //File ui_mainwindow.h will be generated on compile time. Don't look for it, unless you have already compiled the project.
 #include "ComplexNetsGui/inc/ui_mainwindow.h"
 #include "ComplexNetsGui/inc/mainwindow.h"
 #include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
+#include "../../ComplexNets/GraphFactory.h"
+#include "../../ComplexNets/WeightedGraphFactory.h"
+#include "../../ComplexNets/IGraphReader.h"
+#include "../../ComplexNets/IBetweenness.h"
+#include "../../ComplexNets/IShellIndex.h"
 
 using namespace ComplexNetsGui;
+using namespace graphpp;
+using namespace std;
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    graphLoaded(false)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    weightedFactory = NULL;
+    factory = NULL;
     this->onNetworkUnload();
     ui->textBrowser->setOpenExternalLinks(true);
     ui->textBrowser->append("Welcome to ComplexNets++!!\nIf you are a developer feel free to visit our Google Code site:");
@@ -48,20 +59,66 @@ void MainWindow::on_actionOpen_triggered()
     fileDialog.setFileMode(QFileDialog::ExistingFile);
     fileDialog.setDirectory(QDir::homePath());
     QStringList selectedFiles;
+    GraphLoadingValidationDialog graphValidationDialog(this);
 
     if (!this->graphLoaded)
     {
+        graph = Graph();
+        weightedGraph = WeightedGraph();
         //If no network is loaded user may procede to load a new network.
         ui->textBrowser->append("Loading new network...");
-        if (fileDialog.exec())
+        if (graphValidationDialog.exec())
         {
-            selectedFiles = fileDialog.selectedFiles();
-            //TODO Load graph here.
-            this->onNetworkLoad();
-            QString text("Network loaded from file: ");
-            text.append(selectedFiles[0]);
-            text.append(".\n");
-            ui->textBrowser->append(text);
+            if (fileDialog.exec())
+            {
+                selectedFiles = fileDialog.selectedFiles();
+                this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+                buildGraphFactory(graphValidationDialog.isWeigthed());
+                try
+                {
+                    readGraph(selectedFiles[0].toStdString());
+                }
+                catch (const FileNotFoundException& ex)
+                {
+                    ui->textBrowser->append("Error while loading graph.");
+                    ui->textBrowser->append(ex.what());
+                    onNetworkUnload();
+                    return;
+                }
+                catch (const MalformedLineException& ex)
+                {
+                    ui->textBrowser->append("Error while loading graph.");
+                    ui->textBrowser->append(ex.what());
+                    onNetworkUnload();
+                    return;
+
+                }
+                catch (const UnsignedIntegerMalformedException& ex)
+                {
+                    ui->textBrowser->append("Error while loading graph.");
+                    ui->textBrowser->append(ex.what());
+                    onNetworkUnload();
+                    return;
+
+                }
+                catch (const MalformedDoubleException& ex)
+                {
+                    ui->textBrowser->append("Error while loading graph.");
+                    onNetworkUnload();
+                    ui->textBrowser->append(ex.what());
+                    return;
+
+                }
+                QString text("Network loaded from file: ");
+                text.append(selectedFiles[0]);
+                text.append("\nAmount of vertices in the graph: ");
+                unsigned int verticesCount = this->weightedgraph ? weightedGraph.verticesCount() : graph.verticesCount();
+                text.append(QString("%1").arg(verticesCount));
+                text.append(".\n");
+                ui->textBrowser->append(text);
+            }
+            else
+                ui->textBrowser->append("Action canceled by user.\n");
         }
         else
             ui->textBrowser->append("Action canceled by user.\n");
@@ -69,7 +126,6 @@ void MainWindow::on_actionOpen_triggered()
     else
     {
         ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
-        QMessageBox msg(QMessageBox::Information, "Quit", "Only one network can be loaded at any given time. Please close the current network (File->Close all...) before loading another one", QMessageBox::Ok, this);
     }
 }
 
@@ -92,7 +148,8 @@ void MainWindow::on_actionClose_current_network_triggered()
     QMessageBox msg(QMessageBox::Question, "Close current network", "Are you sure you want to close the current network?", QMessageBox::Ok | QMessageBox::Cancel, this);
     if (msg.exec() == QMessageBox::Ok)
     {
-        //TODO delete graph
+        graph = Graph();
+        weightedGraph = WeightedGraph();
         this->onNetworkUnload();
         ui->textBrowser->append("Done.\n");
     }
@@ -100,22 +157,158 @@ void MainWindow::on_actionClose_current_network_triggered()
         ui->textBrowser->append("Action canceled by user.\n");
 }
 
-void MainWindow::on_actionDegree_distribution_triggered()
+void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, const bool multigraph)
+{
+    this->graphLoaded = true;
+    this->weightedgraph = weightedgraph;
+    this->digraph = digraph;
+    this->multigraph = multigraph;
+    ui->actionClose_current_network->setEnabled(true);
+}
+
+void MainWindow::onNetworkUnload()
+{
+    this->graphLoaded = false;
+    this->weightedgraph = false;
+    this->digraph = false;
+    this->multigraph = false;
+    ui->actionClose_current_network->setEnabled(false);
+}
+
+/*void MainWindow::on_actionDegree_distribution_triggered()
 {
     int systemRet = 0;
     ui->textBrowser->append("Ploting degree distribution...");
     systemRet = system("gnuplot -persist ./command.tmp");
     if (systemRet == 0)
         ui->textBrowser->append("Done.\n");
+}*/
+
+
+
+
+void MainWindow::buildGraphFactory(const bool isWeighted)
+{
+    if (isWeighted)
+        weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+    else
+        factory = new GraphFactory<Graph, Vertex>();
 }
 
-void MainWindow::onNetworkLoad()
+void MainWindow::deleteGraphFactory()
 {
-    this->graphLoaded = true;
-    ui->actionClose_current_network->setEnabled(true);
+    if (weightedFactory != NULL)
+    {
+        delete weightedFactory;
+        weightedFactory = NULL;
+    }
+    else if (factory != NULL)
+    {
+        delete factory;
+        factory = NULL;
+    }
 }
-void MainWindow::onNetworkUnload()
+
+void MainWindow::readGraph(const std::string path)
 {
-    this->graphLoaded = false;
-    ui->actionClose_current_network->setEnabled(false);
+    if (this->weightedgraph)
+    {
+        IGraphReader<WeightedGraph, WeightedVertex>* reader = weightedFactory->createGraphReader();
+        reader->read(weightedGraph, path);
+        delete reader;
+    }
+    else
+    {
+        IGraphReader<Graph, Vertex>* reader = factory->createGraphReader();
+        reader->read(graph, path);
+        delete reader;
+    }
 }
+
+//TODO this function doesnt validate input. should be const
+QString MainWindow::inputVertexId()
+{
+    QString ret;
+    QInputDialog inputVertexIdDialog(this);
+    inputVertexIdDialog.setInputMode(QInputDialog::TextInput);
+    if (inputVertexIdDialog.exec())
+        ret.append(inputVertexIdDialog.textValue());
+    return ret;
+}
+
+void MainWindow::on_actionBetweenness_triggered()
+{
+    QString vertexId = inputVertexId();
+    QString ret;
+    double vertexBetweenness;
+    if (!propertyMap.containsPropertySet("betweenness"))
+    {
+        ui->textBrowser->append("Betweenness has not been previously computed. Computing now.");
+        if (this->weightedgraph)
+        {
+            ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
+        }
+        else
+        {
+            IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(graph);
+            IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
+            while (!it.end())
+            {
+                propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first), it->second);
+                ++it;
+            }
+            delete betweenness;
+        }
+    }
+    try
+    {
+        vertexBetweenness = propertyMap.getProperty<double>("betweenness", vertexId.toStdString());
+        ret.append("Betweenness for vertex ").append(vertexId);
+        ret.append(" is: ").append(to_string<double>(vertexBetweenness).c_str()).append(".\n");
+        ui->textBrowser->append(ret);
+    }
+    catch (const BadElementName& ex)
+    {
+        ret.append("Betweenness: Vertex with id ").append(vertexId).append(" was not found.");
+        ui->textBrowser->append(ret);
+    }
+}
+
+void MainWindow::on_actionShell_index_triggered()
+{
+    QString vertexId = inputVertexId();
+    QString ret;
+    unsigned int vertexShellIndex;
+    if (!propertyMap.containsPropertySet("shellIndex"))
+    {
+        ui->textBrowser->append("Shell index has not been previously computed. Computing now.");
+        if (this->weightedgraph)
+        {
+            ui->textBrowser->append("Shell index for weighted graphs is not supported.");
+        }
+        else
+        {
+            IShellIndex<Graph, Vertex>* shellIndex = factory->createShellIndex(graph);
+            IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
+            while (!it.end())
+            {
+                propertyMap.addProperty<unsigned int>("shellIndex", to_string<unsigned int>(it->first), it->second);
+                ++it;
+            }
+            delete shellIndex;
+        }
+    }
+    try
+    {
+        vertexShellIndex = propertyMap.getProperty<unsigned int>("shellIndex", vertexId.toStdString());
+        ret.append("Shell index for vertex ").append(vertexId);
+        ret.append(" is: ").append(to_string<unsigned int>(vertexShellIndex).c_str()).append(".\n");
+        ui->textBrowser->append(ret);
+    }
+    catch (const BadElementName& ex)
+    {
+        ret.append("Shell index: Vertex with id ").append(vertexId).append(" was not found.");
+        ui->textBrowser->append(ret);
+    }
+}
+

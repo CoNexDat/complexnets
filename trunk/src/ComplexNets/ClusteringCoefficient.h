@@ -1,17 +1,19 @@
 #ifndef CLUSTERING_COEFFICIENT_H
 #define CLUSTERING_COEFFICIENT_H
 
+#include "IClusteringCoefficient.h"
+
 namespace graphpp
 {
+
 template <class Graph, class Vertex>
-class ClusteringCoefficient
+class ClusteringCoefficient : public IClusteringCoefficient<Graph, Vertex>
 {
 public:
-
-    typedef double Coefficient;
+    typedef typename graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient Coefficient;
     typedef typename Graph::VerticesIterator VerticesIterator;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
-    typedef typename Vertex::Degree Degree;
+    typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
 
     static Coefficient clusteringCoefficient(Graph& g, Degree d)
     {

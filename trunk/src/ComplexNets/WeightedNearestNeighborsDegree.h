@@ -1,15 +1,17 @@
 #ifndef WEIGHTED_NEAREST_NEIGHBORS_DEGREE_H
 #define WEIGHTED_NEAREST_NEIGHBORS_DEGREE_H
 
+#include "INearestNeighborsDegree.h"
+
 namespace graphpp
 {
 template <class Graph, class Vertex>
-class WeightedNearestNeighborsDegree
+class WeightedNearestNeighborsDegree : public INearestNeighborsDegree<Graph, Vertex>
 {
 
 public:
 
-    typedef double MeanDegree;
+    typedef typename graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree MeanDegree;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename Graph::VerticesIterator VerticesIterator;
 

@@ -1,15 +1,17 @@
 #ifndef NEAREST_NEIGHBORS_DEGREE_H
 #define NEAREST_NEIGHBORS_DEGREE_H
 
+#include "INearestNeighborsDegree.h"
+
 namespace graphpp
 {
-template <class Graph, class Vertex>
-class NearestNeighborsDegree
-{
 
+template <class Graph, class Vertex>
+class NearestNeighborsDegree : public INearestNeighborsDegree<Graph, Vertex>
+{
 public:
 
-    typedef double MeanDegree;
+    typedef typename graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree MeanDegree;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename Graph::VerticesIterator VerticesIterator;
 
@@ -52,6 +54,7 @@ public:
         return MeanDegree(degreeSum) / MeanDegree(v->degree());
     }
 };
+
 }
 
 
