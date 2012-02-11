@@ -23,18 +23,12 @@ template <class Graph, class Vertex>
 class ShellIndex : public IShellIndex<Graph, Vertex>
 {
 
-
     typedef std::multimap<Vertex*, unsigned int, DegreeComparator<Vertex> > VertexByDegree;
 
-    typedef typename Graph::VerticesIterator VerticesIterator;
-    typedef typename Graph::VerticesConstIterator VerticesConstIterator;
-    typedef typename Vertex::VerticesConstIterator NeighbourConstIterator;
-    typedef typename Vertex::VerticesIterator NeighbourIterator;
-
 public:
+
     typedef typename graphpp::IShellIndex<Graph, Vertex>::ShellIndexContainer ShellIndexContainer;
     typedef typename graphpp::IShellIndex<Graph, Vertex>::ShellIndexIterator ShellIndexIterator;
-
 
     ShellIndex(Graph& g)
     {
@@ -95,6 +89,9 @@ private:
             ++it;
         }
     }
+
+    typedef typename Graph::VerticesConstIterator VerticesConstIterator;
+    typedef typename Vertex::VerticesConstIterator NeighbourConstIterator;
 
     VertexByDegree vertexByDegree;
     ShellIndexContainer shellIndex;
