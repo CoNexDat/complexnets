@@ -7,16 +7,17 @@
 #include <list>
 
 #include "mili/mili.h"
+#include "IBetweenness.h"
 
 namespace graphpp
 {
 template <class Graph, class Vertex>
-class Betweenness
+class Betweenness : public IBetweenness<Graph, Vertex>
 {
 public:
 
-    typedef std::map<typename Vertex::VertexId, double> BetweennessContainer;
-    typedef AutonomousIterator<BetweennessContainer> BetweennessIterator;
+    typedef typename IBetweenness<Graph, Vertex>::BetweennessContainer BetweennessContainer;
+    typedef typename IBetweenness<Graph, Vertex>::BetweennessIterator BetweennessIterator;
     typedef typename Graph::VerticesIterator VerticesIterator;
     typedef typename Vertex::VerticesIterator NeighbourIterator;
 
@@ -27,7 +28,7 @@ public:
         calculateBetweenness(g);
     }
 
-    BetweennessIterator iterator()
+    virtual BetweennessIterator iterator()
     {
         return BetweennessIterator(betweenness);
     }
@@ -69,7 +70,7 @@ private:
 
                     //w found for the first time?
                     double wValue = d[w->getVertexId()];
-                    double vValue = d[v->getVertexId()];
+                    //double vValue = d[v->getVertexId()];
                     if (wValue < 0)
                     {
                         queue.push(w);

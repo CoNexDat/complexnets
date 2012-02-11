@@ -2,9 +2,9 @@
 
 using namespace ComplexNetsGui;
 
-GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent)
+GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QDialog(parent)
 {
-    this->setParent(parent);
+    //this->setParent(parent);
     if (this->objectName().isEmpty())
         this->setObjectName(QString::fromUtf8("Dialog"));
     this->resize(341, 179);

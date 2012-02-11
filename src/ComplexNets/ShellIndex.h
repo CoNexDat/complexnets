@@ -1,7 +1,7 @@
 #ifndef SHELL_INDEX_H
 #define SHELL_INDEX_H
 
-
+#include "IShellIndex.h"
 namespace graphpp
 {
 
@@ -20,12 +20,11 @@ public:
 
 
 template <class Graph, class Vertex>
-class ShellIndex
+class ShellIndex : public IShellIndex<Graph, Vertex>
 {
 
 
     typedef std::multimap<Vertex*, unsigned int, DegreeComparator<Vertex> > VertexByDegree;
-    //typedef AutonomousIterator<VertexByDegree> VertexByDegreeIterator;
 
     typedef typename Graph::VerticesIterator VerticesIterator;
     typedef typename Graph::VerticesConstIterator VerticesConstIterator;
@@ -33,9 +32,9 @@ class ShellIndex
     typedef typename Vertex::VerticesIterator NeighbourIterator;
 
 public:
+    typedef typename graphpp::IShellIndex<Graph, Vertex>::ShellIndexContainer ShellIndexContainer;
+    typedef typename graphpp::IShellIndex<Graph, Vertex>::ShellIndexIterator ShellIndexIterator;
 
-    typedef std::map<typename Vertex::VertexId, unsigned int> ShellIndexContainer;
-    typedef AutonomousIterator<ShellIndexContainer> ShellIndexIterator;
 
     ShellIndex(Graph& g)
     {
@@ -44,7 +43,7 @@ public:
         calculateShellIndex();
     }
 
-    ShellIndexIterator iterator()
+    virtual ShellIndexIterator iterator()
     {
         return ShellIndexIterator(shellIndex);
     }
@@ -54,6 +53,7 @@ private:
     {
         typename VertexByDegree::iterator it = vertexByDegree.begin();
         Vertex* v;
+        //TODO switch to autonomous interator
         while (it != vertexByDegree.end())
         {
             v = it->first;

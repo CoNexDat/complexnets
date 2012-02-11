@@ -1,48 +1,29 @@
-#ifndef SIMPLE_TEXT_GRAPH_READER_H
-#define SIMPLE_TEXT_GRAPH_READER_H
+#ifndef WEIGHTEDGRAPHREADER_H
+#define WEIGHTEDGRAPHREADER_H
 
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "GraphReader.h"
-#include "mili/mili.h"
-
-class GraphLoadExceptionHierarchy {};
-
-typedef GenericException<GraphLoadExceptionHierarchy> GraphLoadException;
-
-
-DEFINE_SPECIFIC_EXCEPTION_TEXT(FileNotFoundException,
-                               GraphLoadExceptionHierarchy,
-                               "File not found.");
-
-DEFINE_SPECIFIC_EXCEPTION_TEXT(UnsignedIntegerMalformedException,
-                               GraphLoadExceptionHierarchy,
-                               "The characters parsed are not a valid unsigned integer.");
-
-DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedDoubleException,
-                               GraphLoadExceptionHierarchy,
-                               "The characters parsed are not a valid unsigned integer.");
-
+#include "IGraphReader.h"
 
 namespace graphpp
 {
-typedef std::string FileName;
-typedef unsigned int LineNumber;
 
 template <class Graph, class Vertex>
-class SimpleTextGraphReader : public GraphReader<Graph, Vertex, FileName>
+class WeightedGraphReader : public IGraphReader<Graph, Vertex>
 {
 public:
-
-    virtual void read(Graph& g, const FileName& source)
+    //this typedefs are also present in the superclass. Any way to remove it?
+    typedef unsigned int LineNumber;
+    virtual void read(Graph& g, std::string source)
     {
         std::ifstream sourceFile;
+        double weight;
 
         sourceFile.open(source.c_str(), std::ios_base::in);
 
         if (!sourceFile)
-            throw FileNotFoundException();
+            throw FileNotFoundException(source);
 
         std::string line;
 
@@ -63,7 +44,11 @@ public:
                 {
                     Vertex* destinationNode = loadVertex(g);
                     consume_whitespace();
-                    g.addEdge(sourceNode, destinationNode);
+                    weight = consume_weigth();
+                    consume_whitespace();
+                    if (*character != '\0')
+                        throw MalformedLineException(getLineNumberText());
+                    g.addEdge(sourceNode, destinationNode, weight);
                 }
             }
 
@@ -73,12 +58,14 @@ public:
         sourceFile.close();
     }
 
-    LineNumber getLineNumber() const
+private:
+    std::string getLineNumberText() const
     {
-        return currentLineNumber;
+        std:: stringstream s;
+        s << "Line: " << currentLineNumber;
+        return s.str();
     }
 
-private:
 
     Vertex* loadVertex(Graph& g)
     {
@@ -99,7 +86,7 @@ private:
     {
         unsigned int ret = 0;
         if (!in_range(*character, '0', '9'))
-            throw UnsignedIntegerMalformedException();
+            throw UnsignedIntegerMalformedException(getLineNumberText());
         else
         {
             std::string branchLenStr;
@@ -109,8 +96,8 @@ private:
                 ++character;
             }
 
-            if (!from_string(branchLenStr, ret))
-                throw UnsignedIntegerMalformedException();
+            if (!from_string<unsigned int>(branchLenStr, ret))
+                throw UnsignedIntegerMalformedException(getLineNumberText());
         }
         return ret;
     }
@@ -142,12 +129,11 @@ private:
             ++character;
         }
 
-        if (!from_string(branchLenStr, ret))
-            throw MalformedDoubleException();
+        if (!from_string<double>(branchLenStr, ret))
+            throw MalformedDoubleException(getLineNumberText());
 
         return ret;
     }
-
 
     LineNumber currentLineNumber;
     const char* character;
