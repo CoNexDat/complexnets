@@ -80,18 +80,19 @@ TEST_F(WeightedNearestNeighborsDegreeTest , GeneralGraph)
 
     typedef WeightedNearestNeighborsDegree<WeightedGraph, Vertex> Knn;
     typedef Knn::MeanDegree MeanDegree;
+    Knn knn;
 
-    MeanDegree dx = Knn::meanDegreeForVertex(x);
+    MeanDegree dx = knn.meanDegreeForVertex(x);
     MeanDegree epsilon = 0.001;
     ASSERT_TRUE(fabs(dx - 3.222) <  epsilon);
 
-    MeanDegree dv1 = Knn::meanDegreeForVertex(v1);
+    MeanDegree dv1 = knn.meanDegreeForVertex(v1);
     ASSERT_TRUE(fabs(dv1 - 5.0) <  epsilon);
 
-    MeanDegree dv5 = Knn::meanDegreeForVertex(v5);
+    MeanDegree dv5 = knn.meanDegreeForVertex(v5);
     ASSERT_TRUE(fabs(dv5 - 1.909) <  epsilon);
 
-    MeanDegree average = Knn::meanDegree(g, Vertex::Degree(5));
+    MeanDegree average = knn.meanDegree(g, Vertex::Degree(5));
 
     ASSERT_TRUE(fabs(average - 2.565) <  epsilon);
 }
@@ -100,10 +101,11 @@ TEST_F(WeightedNearestNeighborsDegreeTest , SingleNodeGraph)
 {
     typedef WeightedNearestNeighborsDegree<WeightedGraph, Vertex> Knn;
     typedef Knn::MeanDegree MeanDegree;
+    Knn knn;
     WeightedGraph g;
     Vertex* x = new Vertex(1);
     g.addVertex(x);
-    MeanDegree dx = Knn::meanDegreeForVertex(x);
+    MeanDegree dx = knn.meanDegreeForVertex(x);
     MeanDegree epsilon = 0.001;
     ASSERT_TRUE(fabs(dx - 0.0) <  epsilon);
 }

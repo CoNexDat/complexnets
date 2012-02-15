@@ -70,17 +70,19 @@ TEST_F(WeightedClusterCoefficientTest, GeneralTest)
 
     typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
     typedef Clustering::Coefficient Coef;
+    Clustering clustering;
 
-    Coef c = Clustering::vertexClusteringCoefficient(x);
+    Coef c = clustering.vertexClusteringCoefficient(x);
 
     Coef epsilon = 0.001;
 
+    std::cout << "ACa:   " << c << std::endl;
     ASSERT_TRUE(fabs(c - 0.25) <  epsilon);
 
-    Coef c2 = Clustering::clusteringCoefficient(g, Vertex::Degree(4));
+    Coef c2 = clustering.clusteringCoefficient(g, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.25) <  epsilon);
 
-    Coef c3 = Clustering::clusteringCoefficient(g, Vertex::Degree(3));
+    Coef c3 = clustering.clusteringCoefficient(g, Vertex::Degree(3));
     ASSERT_TRUE(fabs(c3 - 1) <  epsilon);
 }
 
@@ -106,14 +108,15 @@ TEST_F(WeightedClusterCoefficientTest, AcyclicWeightedGraphTest)
 
     typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
     typedef Clustering::Coefficient Coef;
+    Clustering clustering;
 
-    Coef c = Clustering::vertexClusteringCoefficient(x);
+    Coef c = clustering.vertexClusteringCoefficient(x);
 
     Coef epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
 
-    Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
+    Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
 }
 
@@ -127,14 +130,15 @@ TEST_F(WeightedClusterCoefficientTest, SingleNodeGraph)
 
     typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
     typedef Clustering::Coefficient Coef;
+    Clustering clustering;
 
-    Coef c = Clustering::vertexClusteringCoefficient(x);
+    Coef c = clustering.vertexClusteringCoefficient(x);
 
     Coef epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
 
-    Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
+    Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
 }
 

@@ -52,7 +52,12 @@ public:
     //TODO method should be const
     bool containsProperty(const PropertyName& name, const Id id)
     {
-        return containsPropertySet(name) && getPropertySet(id).contains(id);
+        return containsPropertySet(name) && getPropertySet(name).contains(id);
+    }
+
+    void clear()
+    {
+        properties.clear();
     }
 
 private:

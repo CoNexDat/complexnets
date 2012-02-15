@@ -67,7 +67,7 @@ TEST_F(DegreeDistributionTest, DegreeDistributionIndexed)
 
     DegreeDistribution<IndexedGraph, Vertex> distribution(ig);
 
-    DegreeDistribution<IndexedGraph, Vertex>::DistributionIterator it = distribution.distributionIterator();
+    DegreeDistribution<IndexedGraph, Vertex>::DistributionIterator it = distribution.iterator();
 
     //there it should be 1 vertex of degree 1
     ASSERT_EQ(it->first, 1);
@@ -109,7 +109,7 @@ TEST_F(DegreeDistributionTest, DegreeDistributionList)
 
     DegreeDistribution<ListGraph, Vertex> distribution(ig);
 
-    DegreeDistribution<ListGraph, Vertex>::DistributionIterator it = distribution.distributionIterator();
+    DegreeDistribution<ListGraph, Vertex>::DistributionIterator it = distribution.iterator();
 
     //there it should be 1 vertex of degree 1
     ASSERT_EQ(it->first, 1);
@@ -151,7 +151,7 @@ TEST_F(DegreeDistributionTest, DegreeDistributionVector)
 
     DegreeDistribution<VectorGraph, Vertex> distribution(ig);
 
-    DegreeDistribution<VectorGraph, Vertex>::DistributionIterator it = distribution.distributionIterator();
+    DegreeDistribution<VectorGraph, Vertex>::DistributionIterator it = distribution.iterator();
 
     //there it should be 1 vertex of degree 1
     ASSERT_EQ(it->first, 1);

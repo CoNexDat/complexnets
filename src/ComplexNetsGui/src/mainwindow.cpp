@@ -109,7 +109,6 @@ void MainWindow::on_actionOpen_triggered()
                     onNetworkUnload();
                     ui->textBrowser->append(ex.what());
                     return;
-
                 }
                 QString text("Network loaded from file: ");
                 text.append(selectedFiles[0]);
@@ -154,7 +153,7 @@ void MainWindow::on_actionClose_current_network_triggered()
         graph = Graph();
         weightedGraph = WeightedGraph();
         this->deleteGraphFactory();
-        //TODO delete propertyMap
+        propertyMap.clear();
         this->onNetworkUnload();
         ui->textBrowser->append("Done.\n");
     }
@@ -168,6 +167,14 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
     this->weightedgraph = weightedgraph;
     this->digraph = digraph;
     this->multigraph = multigraph;
+    ui->actionClose_current_network->setEnabled(true);
+    ui->actionBetweenness->setEnabled(true);
+    ui->actionClustering_coefficient->setEnabled(true);
+    ui->actionDegree_distribution->setEnabled(true);
+    ui->actionDegree_distribution_plotting->setEnabled(true);
+    ui->actionClose_current_network->setEnabled(true);
+    ui->actionNearest_neighbors_degree->setEnabled(true);
+    ui->actionShell_index->setEnabled(true);
 }
 
 void MainWindow::onNetworkUnload()
@@ -176,6 +183,14 @@ void MainWindow::onNetworkUnload()
     this->weightedgraph = false;
     this->digraph = false;
     this->multigraph = false;
+    ui->actionClose_current_network->setEnabled(false);
+    ui->actionBetweenness->setEnabled(false);
+    ui->actionClustering_coefficient->setEnabled(false);
+    ui->actionDegree_distribution->setEnabled(false);
+    ui->actionDegree_distribution_plotting->setEnabled(false);
+    ui->actionClose_current_network->setEnabled(false);
+    ui->actionNearest_neighbors_degree->setEnabled(false);
+    ui->actionShell_index->setEnabled(false);
 }
 
 
@@ -314,6 +329,32 @@ void MainWindow::on_actionShell_index_triggered()
     }
 }
 
+void MainWindow::computeDegreeDistribution()
+{
+    if (this->weightedgraph)
+    {
+        DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
+        DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
+        while (!it.end())
+        {
+            propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+            ++it;
+        }
+        delete degreeDistribution;
+    }
+    else
+    {
+        DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
+        DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
+        while (!it.end())
+        {
+            propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+            ++it;
+        }
+        delete degreeDistribution;
+    }
+}
+
 void MainWindow::on_actionDegree_distribution_triggered()
 {
     QString degree = inputId("Degree:");
@@ -324,28 +365,7 @@ void MainWindow::on_actionDegree_distribution_triggered()
         if (!propertyMap.containsPropertySet("degreeDistribution"))
         {
             ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
-            if (this->weightedgraph)
-            {
-                DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
-                DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
-                while (!it.end())
-                {
-                    propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
-                    ++it;
-                }
-                delete degreeDistribution;
-            }
-            else
-            {
-                DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
-                DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
-                while (!it.end())
-                {
-                    propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
-                    ++it;
-                }
-                delete degreeDistribution;
-            }
+            this->computeDegreeDistribution();
         }
         try
         {
@@ -366,7 +386,12 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
 {
     int ret = 0 ;
     ui->textBrowser->append("Plotting degree distribution...");
-    ret = grapher.plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "g", "c_nn(g)", "Degree distribution");
+    if (!propertyMap.containsPropertySet("degreeDistribution"))
+    {
+        ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
+        this->computeDegreeDistribution();
+    }
+    ret = grapher.plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "g", "|g|", "Degree distribution");
     if (ret == 0)
         ui->textBrowser->append("Done\n");
     else
@@ -418,35 +443,6 @@ void MainWindow::on_actionClustering_coefficient_triggered()
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void MainWindow::on_actionNearest_neighbors_degree_triggered()
 {

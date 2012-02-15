@@ -70,10 +70,11 @@ TEST_F(NearestNeighborsDegreeTest , VertexGeneralTest)
 
     typedef NearestNeighborsDegree<ListGraph, Vertex> Knn;
     typedef Knn::MeanDegree MeanDegree;
+    Knn knn;
 
-    MeanDegree dx = Knn::meanDegreeForVertex(x);
-    MeanDegree dv1 = Knn::meanDegreeForVertex(v1);
-    MeanDegree dv4 = Knn::meanDegreeForVertex(v4);
+    MeanDegree dx = knn.meanDegreeForVertex(x);
+    MeanDegree dv1 = knn.meanDegreeForVertex(v1);
+    MeanDegree dv4 = knn.meanDegreeForVertex(v4);
 
 
     MeanDegree epsilon = 0.001;
@@ -82,7 +83,7 @@ TEST_F(NearestNeighborsDegreeTest , VertexGeneralTest)
     ASSERT_TRUE(fabs(dv1 - 3) <  epsilon);
     ASSERT_TRUE(fabs(dv4 - 4) <  epsilon);
 
-    MeanDegree meanDegree2 = Knn::meanDegree(ig, Vertex::Degree(2));
+    MeanDegree meanDegree2 = knn.meanDegree(ig, Vertex::Degree(2));
     ASSERT_TRUE(fabs(meanDegree2 - 3.0) <  epsilon);
 }
 }
