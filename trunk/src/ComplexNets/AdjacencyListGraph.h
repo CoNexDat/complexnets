@@ -42,6 +42,12 @@ public:
     typedef AutonomousIterator<VertexContainer>  VerticesIterator;
     typedef typename Vertex::VertexId VertexId;
 
+    AdjacencyListGraph(const bool isDigraph = true, const bool isMultigraph = true)
+    {
+        this->_isDigraph = isDigraph;
+        this->_isMultigraph = isMultigraph;
+    }
+
     ~AdjacencyListGraph()
     {
         VerticesConstIterator it = verticesConstIterator();
@@ -113,6 +119,16 @@ public:
         return vertices.size();
     }
 
+    bool isDigraph() const
+    {
+        return isDigraph;
+    }
+
+    bool isMultigraph() const
+    {
+        return isMultigraph;
+    }
+
     /**
     * Method: getVertexById
     * ---------------------
@@ -125,7 +141,7 @@ public:
         VerticesConstIterator it = verticesConstIterator();
         Vertex* ret = NULL;
         bool quit = false;
-        while (!it.end())
+        while (!it.end() && !quit)
         {
             if ((*it)->getVertexId() == id)
             {
@@ -139,6 +155,8 @@ public:
     }
 
 private:
+    bool _isDigraph;
+    bool _isMultigraph;
     VertexContainer vertices;
 };
 

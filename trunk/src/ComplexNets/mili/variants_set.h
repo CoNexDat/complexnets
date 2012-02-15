@@ -141,6 +141,11 @@ public:
         return elements.size();
     }
 
+    bool contains(const ElementName& name) const
+    {
+        return elements.count(name) > 0;
+    }
+
     VariantsSet()
         : elements()
     {}

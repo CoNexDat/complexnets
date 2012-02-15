@@ -16,7 +16,7 @@ public:
     typedef typename Graph::VerticesIterator VerticesIterator;
 
     //TODO check if this method is implemented correctly
-    static MeanDegree meanDegree(Graph& g, typename Vertex::Degree d)
+    virtual MeanDegree meanDegree(Graph& g, typename Vertex::Degree d)
     {
         VerticesIterator it = g.verticesIterator();
         unsigned int count = 0;
@@ -38,11 +38,10 @@ public:
         return meanDegreeSums / count;
     }
 
-    static MeanDegree meanDegreeForVertex(Vertex* v)
+    virtual MeanDegree meanDegreeForVertex(Vertex* v)
     {
         NeighborsIterator it = v->neighborsIterator();
         typename Vertex::Weight degreeSum = 0.0;
-        typename Vertex::Weight weigth;
         while (!it.end())
         {
             Vertex* n = static_cast<Vertex*>(*it);

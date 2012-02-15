@@ -9,8 +9,8 @@ class IClusteringCoefficient
 public:
     typedef double Coefficient;
     typedef typename Vertex::Degree Degree;
-    static Coefficient clusteringCoefficient(Graph& g, Degree d);
-    static Coefficient vertexClusteringCoefficient(Vertex* vertex);
+    virtual Coefficient clusteringCoefficient(Graph& g, Degree d) = 0;
+    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex) = 0;
 };
 }
 #endif
