@@ -57,6 +57,8 @@ private:
     QString inputId(const std::string label);
 
 private slots:
+    void on_actionNearest_neighbors_degree_triggered();
+    void on_actionClustering_coefficient_triggered();
     void on_actionDegree_distribution_plotting_triggered();
     void on_actionDegree_distribution_triggered();
     void on_actionShell_index_triggered();

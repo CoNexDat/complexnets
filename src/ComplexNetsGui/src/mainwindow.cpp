@@ -65,14 +65,14 @@ void MainWindow::on_actionOpen_triggered()
 
     if (!this->graphLoaded)
     {
-        graph = Graph();
-        weightedGraph = WeightedGraph();
         //If no network is loaded user may procede to load a new network.
         ui->textBrowser->append("Loading new network...");
         if (graphValidationDialog.exec())
         {
             if (fileDialog.exec())
             {
+                graph = Graph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+                weightedGraph = WeightedGraph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
                 selectedFiles = fileDialog.selectedFiles();
                 this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
                 buildGraphFactory(graphValidationDialog.isWeigthed());
@@ -154,6 +154,7 @@ void MainWindow::on_actionClose_current_network_triggered()
         graph = Graph();
         weightedGraph = WeightedGraph();
         this->deleteGraphFactory();
+        //TODO delete propertyMap
         this->onNetworkUnload();
         ui->textBrowser->append("Done.\n");
     }
@@ -176,16 +177,6 @@ void MainWindow::onNetworkUnload()
     this->digraph = false;
     this->multigraph = false;
 }
-
-/*void MainWindow::on_actionDegree_distribution_triggered()
-{
-    int systemRet = 0;
-    ui->textBrowser->append("Ploting degree distribution...");
-    systemRet = system("gnuplot -persist ./command.tmp");
-    if (systemRet == 0)
-        ui->textBrowser->append("Done.\n");
-}*/
-
 
 
 
@@ -252,6 +243,7 @@ void MainWindow::on_actionBetweenness_triggered()
             if (this->weightedgraph)
             {
                 ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
+                return;
             }
             else
             {
@@ -293,6 +285,7 @@ void MainWindow::on_actionShell_index_triggered()
             if (this->weightedgraph)
             {
                 ui->textBrowser->append("Shell index for weighted graphs is not supported.");
+                return;
             }
             else
             {
@@ -333,7 +326,6 @@ void MainWindow::on_actionDegree_distribution_triggered()
             ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
             if (this->weightedgraph)
             {
-                //ui->textBrowser->append("Digree distribution for weighted graphs is not supported.");
                 DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
                 DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
                 while (!it.end())
@@ -370,9 +362,6 @@ void MainWindow::on_actionDegree_distribution_triggered()
     }
 }
 
-
-
-
 void MainWindow::on_actionDegree_distribution_plotting_triggered()
 {
     int ret = 0 ;
@@ -382,4 +371,125 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
         ui->textBrowser->append("Done\n");
     else
         ui->textBrowser->append("Action canceled: an error while plotting ocurred.\n");
+}
+
+void MainWindow::on_actionClustering_coefficient_triggered()
+{
+    QString vertexId = inputId("Vertex id:");
+    QString ret;
+    double coefficient;
+    if (!vertexId.isEmpty())
+    {
+        if (!propertyMap.containsProperty("clusteringCoeficientForVertex", vertexId.toStdString()))
+        {
+            ui->textBrowser->append("Clustering coefficient has not been previously computed. Computing now.");
+            if (this->weightedgraph)
+            {
+                WeightedVertex* vertex;
+                if ((vertex = weightedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                {
+                    IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient = weightedFactory->createClusteringCoefficient();
+                    propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()), clusteringCoefficient->vertexClusteringCoefficient(vertex));
+                    delete clusteringCoefficient;
+                }
+            }
+            else
+            {
+                Vertex* vertex;
+                if ((vertex = graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                {
+                    IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
+                    propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()), clusteringCoefficient->vertexClusteringCoefficient(vertex));
+                    delete clusteringCoefficient;
+                }
+            }
+        }
+        try
+        {
+            coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", vertexId.toStdString());
+            ret.append("Clustering coefficient for vertex ").append(vertexId);
+            ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        catch (const BadElementName& ex)
+        {
+            ret.append("There is no vertices with id ").append(vertexId).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void MainWindow::on_actionNearest_neighbors_degree_triggered()
+{
+    QString vertexId = inputId("Vertex id:");
+    QString ret;
+    double neighborsDegree;
+    if (!vertexId.isEmpty())
+    {
+        if (!propertyMap.containsProperty("nearestNeighborsDegreeForVertex", vertexId.toStdString()))
+        {
+            ui->textBrowser->append("Nearest neighbors degree has not been previously computed. Computing now.");
+            if (this->weightedgraph)
+            {
+                WeightedVertex* vertex;
+                if ((vertex = weightedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                {
+                    INearestNeighborsDegree<WeightedGraph, WeightedVertex>* nearestNeighborsDegree = weightedFactory->createNearestNeighborsDegree();
+                    propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex", to_string<unsigned int>(vertex->getVertexId()), nearestNeighborsDegree->meanDegreeForVertex(vertex));
+                    delete nearestNeighborsDegree;
+                }
+            }
+            else
+            {
+                Vertex* vertex;
+                if ((vertex = graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                {
+                    INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree = factory->createNearestNeighborsDegree();
+                    propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex", to_string<unsigned int>(vertex->getVertexId()), nearestNeighborsDegree->meanDegreeForVertex(vertex));
+                    delete nearestNeighborsDegree;
+                }
+            }
+        }
+        try
+        {
+            neighborsDegree = propertyMap.getProperty<double>("nearestNeighborsDegreeForVertex", vertexId.toStdString());
+            ret.append("Nearest neighbors degree for vertex ").append(vertexId);
+            ret.append(" is: ").append(to_string<double>(neighborsDegree).c_str()).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        catch (const BadElementName& ex)
+        {
+            ret.append("There is no vertices with id ").append(vertexId).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+    }
 }

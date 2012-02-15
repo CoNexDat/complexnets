@@ -15,7 +15,7 @@ public:
     typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
 
     //TODO check if this method is implemented correctly
-    static Coefficient clusteringCoefficient(Graph& g, Degree d)
+    virtual Coefficient clusteringCoefficient(Graph& g, Degree d)
     {
         VerticesIterator it = g.verticesIterator();
         unsigned int count = 0;
@@ -37,7 +37,7 @@ public:
         return clusteringCoefSums / count;
     }
 
-    static Coefficient vertexClusteringCoefficient(Vertex* vertex)
+    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex)
     {
         Coefficient links = 0.0;
         NeighborsIterator it = vertex->neighborsIterator();

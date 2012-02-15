@@ -9,8 +9,8 @@ class INearestNeighborsDegree
 public:
     typedef typename Vertex::Degree Degree;
     typedef double MeanDegree;
-    static MeanDegree meanDegree(Graph& g, Degree d);
-    static MeanDegree meanDegreeForVertex(Graph& g);
+    virtual MeanDegree meanDegree(Graph& g, Degree d) = 0;
+    virtual MeanDegree meanDegreeForVertex(Vertex* vertex) = 0;
 };
 }
 

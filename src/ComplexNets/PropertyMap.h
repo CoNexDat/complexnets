@@ -49,10 +49,11 @@ public:
         return properties.count(name) > 0;
     }
 
-    /*bool containsProperty(const PropertyName& name, const Id id) const
+    //TODO method should be const
+    bool containsProperty(const PropertyName& name, const Id id)
     {
-        return containsPropertySet(name) && getPropertySet(name).
-    }*/
+        return containsPropertySet(name) && getPropertySet(id).contains(id);
+    }
 
 private:
 

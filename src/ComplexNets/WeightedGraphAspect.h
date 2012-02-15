@@ -10,11 +10,7 @@ public:
 
     typedef double Weight;
 
-    WeightedGraphAspect() {}
-    ~WeightedGraphAspect()
-    {
-//TODO vertices should be freed.
-    }
+    WeightedGraphAspect(const bool isDigraph = true, const bool isMultigraph = true) : T(isDigraph,isMultigraph){};
 
     void addEdge(WeightedVertex* s, WeightedVertex* d, Weight weight)
     {
