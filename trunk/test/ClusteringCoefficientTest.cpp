@@ -70,14 +70,15 @@ TEST_F(ClusteringCoefficientTest , VertexGeneralTest)
 
     typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
     typedef Clustering::Coefficient Coef;
+    Clustering clustering;
 
-    Coef c = Clustering::vertexClusteringCoefficient(x);
+    Coef c = clustering.vertexClusteringCoefficient(x);
 
     Coef epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 0.16667) <  epsilon);
 
-    Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
+    Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.16667) <  epsilon);
 }
 
@@ -106,14 +107,15 @@ TEST_F(ClusteringCoefficientTest, FullGraphTest)
 
     typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
     typedef Clustering::Coefficient Coef;
+    Clustering clustering;
 
-    Coef c = Clustering::vertexClusteringCoefficient(x);
+    Coef c = clustering.vertexClusteringCoefficient(x);
 
     Coef epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 1.0) <  epsilon);
 
-    Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(3));
+    Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(3));
     ASSERT_TRUE(fabs(c2 - 1.0) <  epsilon);
 }
 
@@ -141,14 +143,15 @@ TEST_F(ClusteringCoefficientTest, AcyclicGraphTest)
 
     typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
     typedef Clustering::Coefficient Coef;
+    Clustering clustering;
 
-    Coef c = Clustering::vertexClusteringCoefficient(x);
+    Coef c = clustering.vertexClusteringCoefficient(x);
 
     Coef epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
 
-    Coef c2 = Clustering::clusteringCoefficient(ig, Vertex::Degree(4));
+    Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
 }
 }

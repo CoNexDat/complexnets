@@ -49,6 +49,7 @@ private:
     Graph graph;
     WeightedGraph weightedGraph;
 
+    void computeDegreeDistribution();
     void readGraph(const std::string path);
     void buildGraphFactory(const bool isWeighted);
     void deleteGraphFactory();

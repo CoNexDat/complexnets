@@ -25,6 +25,7 @@ VariantsSet: A minimal library that implements a set of variables of heterogenic
 #include <string>
 #include <map>
 
+
 NAMESPACE_BEGIN
 
 struct VariantsSetException : std::exception {};

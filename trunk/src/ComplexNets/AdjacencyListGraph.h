@@ -42,7 +42,7 @@ public:
     typedef AutonomousIterator<VertexContainer>  VerticesIterator;
     typedef typename Vertex::VertexId VertexId;
 
-    AdjacencyListGraph(const bool isDigraph = true, const bool isMultigraph = true)
+    AdjacencyListGraph(const bool isDigraph = false, const bool isMultigraph = false)
     {
         this->_isDigraph = isDigraph;
         this->_isMultigraph = isMultigraph;
@@ -79,11 +79,16 @@ public:
     */
     void addEdge(Vertex* s, Vertex* d)
     {
-        //Since by default this isn't multigraph, duplicate edges are not allowed
-        if (s->isNeighbourOf(d))
+        if (!this->isMultigraph() && s->isNeighbourOf(d))
             throw DuplicateEdge();
         s->addEdge(d);
-        d->addEdge(s);
+        if (!this->isDigraph())
+            d->addEdge(s);
+        //Since by default this isn't multigraph, duplicate edges are not allowed
+        /*if (s->isNeighbourOf(d))
+            throw DuplicateEdge();
+        s->addEdge(d);
+        d->addEdge(s);*/
     }
 
     /**
@@ -119,14 +124,14 @@ public:
         return vertices.size();
     }
 
-    bool isDigraph() const
+    bool isDigraph()
     {
-        return isDigraph;
+        return this->_isDigraph;
     }
 
-    bool isMultigraph() const
+    bool isMultigraph()
     {
-        return isMultigraph;
+        return this->_isMultigraph;
     }
 
     /**
