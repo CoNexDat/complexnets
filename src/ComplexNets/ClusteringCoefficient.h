@@ -34,13 +34,14 @@ public:
             ++it;
         }
 
-        return clusteringCoefSums / count;
+        return count == 0 ? 0 : clusteringCoefSums / count;
     }
 
     virtual Coefficient vertexClusteringCoefficient(Vertex* vertex)
     {
         Coefficient links = 0.0;
         NeighborsIterator it = vertex->neighborsIterator();
+        Coefficient ret;
 
         while (!it.end())
         {
@@ -63,7 +64,13 @@ public:
             ++it;
         }
 
-        return links / (vertex->degree() * (vertex->degree() - 1));
+        //This is to avoid division by cero
+        if (vertex->degree() == 0 || vertex->degree() == 1)
+            ret = 0;
+        else
+            ret = links / (vertex->degree() * (vertex->degree() - 1));
+
+        return ret;
 
     }
 };

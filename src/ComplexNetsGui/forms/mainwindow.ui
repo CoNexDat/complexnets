@@ -52,7 +52,11 @@
     <property name="title">
      <string>&amp;Plot</string>
     </property>
+    <addaction name="actionBetweenness_vs_Degree"/>
     <addaction name="actionDegree_distribution_plotting"/>
+    <addaction name="actionClustering_Coefficient_vs_Degree"/>
+    <addaction name="actionNearest_Neighbors_Degree_vs_Degree"/>
+    <addaction name="actionShell_Index_vs_Degree"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -131,6 +135,26 @@
   <action name="actionDegree_distribution">
    <property name="text">
     <string>Degree distribution...</string>
+   </property>
+  </action>
+  <action name="actionClustering_Coefficient_vs_Degree">
+   <property name="text">
+    <string>Clustering Coefficient vs Degree</string>
+   </property>
+  </action>
+  <action name="actionNearest_Neighbors_Degree_vs_Degree">
+   <property name="text">
+    <string>Nearest Neighbors Degree vs Degree</string>
+   </property>
+  </action>
+  <action name="actionShell_Index_vs_Degree">
+   <property name="text">
+    <string>Shell Index vs Degree</string>
+   </property>
+  </action>
+  <action name="actionBetweenness_vs_Degree">
+   <property name="text">
+    <string>Betweenness vs Degree</string>
    </property>
   </action>
  </widget>

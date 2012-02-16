@@ -50,6 +50,8 @@ private:
     WeightedGraph weightedGraph;
 
     void computeDegreeDistribution();
+    void computeShellIndex();
+    void computeBetweenness();
     void readGraph(const std::string path);
     void buildGraphFactory(const bool isWeighted);
     void deleteGraphFactory();
@@ -58,6 +60,10 @@ private:
     QString inputId(const std::string label);
 
 private slots:
+    void on_actionShell_Index_vs_Degree_triggered();
+    void on_actionBetweenness_vs_Degree_triggered();
+    void on_actionNearest_Neighbors_Degree_vs_Degree_triggered();
+    void on_actionClustering_Coefficient_vs_Degree_triggered();
     void on_actionNearest_neighbors_degree_triggered();
     void on_actionClustering_coefficient_triggered();
     void on_actionDegree_distribution_plotting_triggered();
