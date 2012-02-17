@@ -413,7 +413,6 @@ void MainWindow::on_actionDegree_distribution_triggered()
 
 void MainWindow::on_actionDegree_distribution_plotting_triggered()
 {
-    int ret = 0 ;
     ui->textBrowser->append("Plotting degree distribution...");
     if (!propertyMap.containsPropertySet("degreeDistributionProbability"))
     {
@@ -601,6 +600,11 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
 
 void MainWindow::on_actionShell_Index_vs_Degree_triggered()
 {
+    if(this->weightedgraph)
+    {
+        ui->textBrowser->append("Shell index for weighted graphs is not supported.");
+        return;
+    }
     this->computeShellIndex();
     this->computeDegreeDistribution();
     double shellAuxAcum;
@@ -639,7 +643,7 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         ++shellVsDegreeIt;
     }
 
-    ret = grapher.plotPropertySet(shellIndexVsDegree, "d", "CC(d)", "Shell Index vs Degree");
+    ret = grapher.plotPropertySet(shellIndexVsDegree, "d", "k-Core(d)", "Shell Index vs Degree");
     if (ret == 0)
         ui->textBrowser->append("Done\n");
     else
@@ -648,4 +652,52 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
 
 void MainWindow::on_actionBetweenness_vs_Degree_triggered()
 {
+    if(this->weightedgraph)
+    {
+        ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
+        return;
+    }
+    this->computeShellIndex();
+    this->computeDegreeDistribution();
+    double betweennessAuxAcum;
+    unsigned int degreeAmount;
+    int ret;
+    VariantsSet betweennessVsDegree;
+    VariantsSet& betweenness = propertyMap.getPropertySet("betweenness");
+    VariantsSet& degreeDistribution = propertyMap.getPropertySet("degreeDistribution");
+    VariantsSet::const_iterator it = degreeDistribution.begin();
+    VariantsSet::const_iterator betwennessIt = betweenness.begin();
+    VariantsSet::const_iterator betweennessVsDegreeIt;
+    while (it != degreeDistribution.end())
+    {
+        betweennessVsDegree.insert<double>(it->first, 0);
+        ++it;
+    }
+
+    while (betwennessIt != betweenness.end())
+    {
+        unsigned int vertedId = from_string<unsigned int>(betwennessIt->first);
+        Vertex* v = this->weightedgraph ? weightedGraph.getVertexById(vertedId) : graph.getVertexById(vertedId);
+        betweennessAuxAcum = betweennessVsDegree.get_element<double>(to_string<unsigned int>(v->degree()));
+        betweennessVsDegree.insert<double>(to_string<unsigned int>(v->degree()) , betweennessAuxAcum + from_string<unsigned int>(betwennessIt->second));
+
+        ++betwennessIt;
+    }
+
+    betweennessVsDegreeIt = betweennessVsDegree.begin();
+    while (betweennessVsDegreeIt != betweennessVsDegree.end())
+    {
+        std::string degree = betweennessVsDegreeIt->first;
+        betweennessAuxAcum = from_string<double>(betweennessVsDegreeIt->second);
+        degreeAmount = degreeDistribution.get_element<unsigned int>(degree);
+
+        betweennessVsDegree.insert<double>(degree , betweennessAuxAcum / degreeAmount);
+        ++betweennessVsDegreeIt;
+    }
+
+    ret = grapher.plotPropertySet(betweennessVsDegree, "d", "CC(d)", "Shell Index vs Degree");
+    if (ret == 0)
+        ui->textBrowser->append("Done\n");
+    else
+        ui->textBrowser->append("Action canceled: an error while plotting ocurred.\n");
 }
