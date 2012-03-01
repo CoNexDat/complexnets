@@ -24,6 +24,10 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedDoubleException,
                                GraphLoadExceptionHierarchy,
                                "The characters parsed do not represent a valid double.");
 
+DEFINE_SPECIFIC_EXCEPTION_TEXT(DuplicatedEdgeLoading,
+                               GraphLoadExceptionHierarchy,
+                               "Graph does not allow duplicated edges.");
+
 
 namespace graphpp
 {

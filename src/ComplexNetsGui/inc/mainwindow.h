@@ -10,6 +10,7 @@
 #include "../../ComplexNets/WeightedVertexAspect.h"
 #include "../../ComplexNets/PropertyMap.h"
 #include "ComplexNetsGui/inc/GrapherUtils.h"
+#include "ComplexNetsGui/inc/GnuplotConsole.h"
 
 namespace Ui
 {
@@ -36,6 +37,7 @@ protected:
     void changeEvent(QEvent* e);
 
 private:
+    GnuplotConsole* console;
     GrapherUtils grapher;
     bool weightedgraph;
     bool multigraph;

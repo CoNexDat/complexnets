@@ -41,7 +41,7 @@ public:
     bool visitVertex(Vertex* vertex)
     {
         degreeDistributionObserver.notifyDegree(vertex->degree());
-	return true;
+        return true;
     }
 
 private:

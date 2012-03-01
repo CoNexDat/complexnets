@@ -5,10 +5,12 @@ TARGET = complexnets
 TEMPLATE = app
 SOURCES += ComplexNetsGui/src/main.cpp \
     ComplexNetsGui/src/mainwindow.cpp \
-    ComplexNetsGui/src/GraphLoadingValidationDialog.cpp
+    ComplexNetsGui/src/GraphLoadingValidationDialog.cpp \
+    ComplexNetsGui/src/GnuplotConsole.cpp
 HEADERS += ComplexNetsGui/inc/mainwindow.h \
     ComplexNetsGui/inc/GraphLoadingValidationDialog.h \
-    ComplexNetsGui/inc/GrapherUtils.h
+    ComplexNetsGui/inc/GrapherUtils.h \
+    ComplexNetsGui/inc/GnuplotConsole.h
 FORMS += ComplexNetsGui/forms/mainwindow.ui
 MOC_DIR = .moc/release-shared
 OBJECTS_DIR = .obj/release-shared
@@ -18,7 +20,7 @@ QMAKE_CXXFLAGS_RELEASE += -Wextra \
     -ansi \
     -pedantic \
     -Wno-long-long \
--ggdb3 \
+    -ggdb3 \
     -I.
 QMAKE_CXXFLAGS_DEBUG += -Wextra \
     -ansi \

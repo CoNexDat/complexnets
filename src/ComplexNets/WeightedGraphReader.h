@@ -48,7 +48,14 @@ public:
                     consume_whitespace();
                     if (*character != '\0')
                         throw MalformedLineException(getLineNumberText());
-                    g.addEdge(sourceNode, destinationNode, weight);
+                    try
+                    {
+                        g.addEdge(sourceNode, destinationNode, weight);
+                    }
+                    catch (const DuplicateEdge& ex)
+                    {
+                        throw DuplicatedEdgeLoading(getLineNumberText());
+                    }
                 }
             }
 
