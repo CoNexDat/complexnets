@@ -34,7 +34,7 @@ public:
             ++it;
         }
 
-        return count==0?0:meanDegreeSums / count;
+        return count == 0 ? 0 : meanDegreeSums / count;
     }
 
     virtual MeanDegree meanDegreeForVertex(Vertex* v)
@@ -51,7 +51,7 @@ public:
             ++it;
         }
 
-        return v->degree()==0?0:MeanDegree(degreeSum) / MeanDegree(v->degree());
+        return v->degree() == 0 ? 0 : MeanDegree(degreeSum) / MeanDegree(v->degree());
     }
 };
 

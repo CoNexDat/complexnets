@@ -11,6 +11,7 @@
 #include "ComplexNetsGui/inc/mainwindow.h"
 #include "../../ComplexNets/GraphFactory.h"
 #include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
+#include "ComplexNetsGui/inc/GnuplotConsole.h"
 #include "../../ComplexNets/GraphFactory.h"
 #include "../../ComplexNets/WeightedGraphFactory.h"
 #include "../../ComplexNets/IGraphReader.h"
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget* parent) :
     weightedFactory = NULL;
     factory = NULL;
     this->onNetworkUnload();
+    this->console = new GnuplotConsole();
     ui->textBrowser->setOpenExternalLinks(true);
     ui->textBrowser->append("Welcome to ComplexNets++!!\nIf you are a developer feel free to visit our Google Code site:");
     ui->textBrowser->append("<a href='http://code.google.com/p/complexnets/'>ComplexNets++ - Google Code</a>");
@@ -38,6 +40,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
 MainWindow::~MainWindow()
 {
+    delete console;
     delete ui;
 }
 
@@ -110,7 +113,7 @@ void MainWindow::on_actionOpen_triggered()
                     ui->textBrowser->append(ex.what());
                     return;
                 }
-                catch (const DuplicateEdge& ex)
+                catch (const DuplicatedEdgeLoading& ex)
                 {
                     ui->textBrowser->append("Error while loading graph.");
                     onNetworkUnload();
@@ -550,11 +553,11 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
             delete clusteringCoefficient;
         }
     }
-    ret = grapher.plotPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), "d", "CC(d)", "Clustering Coefficient vs Degree");
-    if (ret == 0)
-        ui->textBrowser->append("Done\n");
-    else
-        ui->textBrowser->append("Action canceled: an error while plotting ocurred.\n");
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), "clusteringCoeficientForDegree");
+    this->console->show();
+    this->activateWindow();
+    if (!ret)
+        ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
 void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
@@ -591,16 +594,17 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
             delete nearestNeighborDegree;
         }
     }
-    ret = grapher.plotPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), "d", "Knn(d)", "Clustering Coefficient vs Degree");
-    if (ret == 0)
-        ui->textBrowser->append("Done\n");
-    else
-        ui->textBrowser->append("Action canceled: an error while plotting ocurred.\n");
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), "nearestNeighborDegreeForDegree");
+    this->console->show();
+    this->activateWindow();
+    if (!ret)
+        ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
+//TODO check if shellIndexVsDegree has previously calculated and avoid unnecesary computation. If not calculated save in property map
 void MainWindow::on_actionShell_Index_vs_Degree_triggered()
 {
-    if(this->weightedgraph)
+    if (this->weightedgraph)
     {
         ui->textBrowser->append("Shell index for weighted graphs is not supported.");
         return;
@@ -643,16 +647,17 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         ++shellVsDegreeIt;
     }
 
-    ret = grapher.plotPropertySet(shellIndexVsDegree, "d", "k-Core(d)", "Shell Index vs Degree");
-    if (ret == 0)
-        ui->textBrowser->append("Done\n");
-    else
-        ui->textBrowser->append("Action canceled: an error while plotting ocurred.\n");
+    ret = this->console->plotPropertySet(shellIndexVsDegree, "shellIndexVsDegree");
+    this->console->show();
+    this->activateWindow();
+    if (!ret)
+        ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
+//TODO check if betweennessVsDegree has previously calculated and avoid unnecesary computation. If not calculated save in property map
 void MainWindow::on_actionBetweenness_vs_Degree_triggered()
 {
-    if(this->weightedgraph)
+    if (this->weightedgraph)
     {
         ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
         return;
@@ -695,9 +700,9 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
         ++betweennessVsDegreeIt;
     }
 
-    ret = grapher.plotPropertySet(betweennessVsDegree, "d", "CC(d)", "Shell Index vs Degree");
-    if (ret == 0)
-        ui->textBrowser->append("Done\n");
-    else
-        ui->textBrowser->append("Action canceled: an error while plotting ocurred.\n");
+    ret = this->console->plotPropertySet(betweennessVsDegree, "betweennessVsDegree");
+    this->console->show();
+    this->activateWindow();
+    if (!ret)
+        ui->textBrowser->append("An unexpected error has occured.\n");
 }
