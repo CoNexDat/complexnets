@@ -81,7 +81,7 @@ inline const T& find(const std::map<Key, T, Comp, Alloc>& m, const Key2& key) th
 
 /* find, nothrow versions */
 template <class Container, class Element>
-inline Element* find(Container& c, const Element& element, const std::nothrow_t&)
+inline Element find(Container& c, const Element& element, const std::nothrow_t&)
 {
     const typename Container::iterator it = find(c.begin(), c.end(), element);
     if (it == c.end())
