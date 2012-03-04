@@ -4,12 +4,19 @@
 #define NO_RANKER
 
 #include <new>
+#include <iostream>
 #include "mili/mili.h"
 #include "GraphExceptions.h"
 
 namespace graphpp
 {
-template<class T>
+
+/**
+* Class: VertexComparator
+* ------------
+* Functor to provide custom vertex comparation in containers
+*/
+template <class T>
 class VertexComparator
 {
 public:
@@ -21,6 +28,58 @@ public:
         return ret;
     }
 };
+
+/**
+ * Class: VertexFinder
+ * ------------
+ * Base abstraction to find vertex in containers. Used for Vector and List
+ */
+template <class Vertex, class Container>
+class VertexFinder 
+{
+public:
+    Vertex* find(typename Vertex::VertexId id, Container& c)
+    {
+        CAutonomousIterator<Container> it = CAutonomousIterator<Container>(c);
+        Vertex* ret = NULL;
+        bool quit = false;
+        while (!it.end() && !quit)
+        {
+            if ((*it)->getVertexId() == id)
+            {
+                ret = *it;
+                quit = true;
+            }
+            ++it;
+        }
+        
+        return ret;
+    }
+};
+
+/**
+ * Class: VertexFinder
+ * ------------
+ * Template specialization of VertexFinder used to search vertices
+ * more efficiently in sets.
+ */
+template <class Vertex>
+class VertexFinder<Vertex, std::set<Vertex*, VertexComparator<Vertex> > >
+{
+public:
+    Vertex* find(typename Vertex::VertexId id, std::set<Vertex*, VertexComparator<Vertex> >& c)
+    {
+        Vertex* ret = NULL;
+        Vertex* prototype = new Vertex(id);
+        
+        typename std::set<Vertex*, VertexComparator<Vertex> >::iterator it = c.find(prototype);
+        if(it != c.end())
+            ret = *it;
+        
+        return ret;
+    }
+};
+
 
 /**
 * Class: Graph
@@ -92,6 +151,19 @@ public:
     }
 
     /**
+    * Method: getVertexById
+    * ---------------------
+    * Description: informs the number of vertices currently in the graph
+    * @param id the vertex id
+    * @returns the vertex with the specified id or NULL if no vertex has the specified id
+    */
+    Vertex* getVertexById(VertexId id)
+    {
+        VertexFinder<Vertex, VertexContainer> finder;
+        return finder.find(id, vertices);
+    }
+
+    /**
     * Method: VerticesConstIterator
     * -----------------------------
     * Description: Provides constant forward iterator to the vertices of the graph
@@ -134,32 +206,8 @@ public:
         return this->_isMultigraph;
     }
 
-    /**
-    * Method: getVertexById
-    * ---------------------
-    * Description: informs the number of vertices currently in the graph
-    * @param id the vertex id
-    * @returns the vertex with the specified id or NULL if no vertex has the specified id
-    */
-    Vertex* getVertexById(VertexId id)
-    {
-        VerticesConstIterator it = verticesConstIterator();
-        Vertex* ret = NULL;
-        bool quit = false;
-        while (!it.end() && !quit)
-        {
-            if ((*it)->getVertexId() == id)
-            {
-                ret = *it;
-                quit = true;
-            }
-            ++it;
-        }
-
-        return ret;
-    }
-
 private:
+    
     bool _isDigraph;
     bool _isMultigraph;
     VertexContainer vertices;
