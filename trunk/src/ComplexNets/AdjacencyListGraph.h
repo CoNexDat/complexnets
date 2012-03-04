@@ -38,7 +38,7 @@ template <class Vertex, class Container>
 class VertexFinder 
 {
 public:
-    Vertex* find(typename Vertex::VertexId id, Container& c)
+    static Vertex* find(typename Vertex::VertexId id, const Container& c)
     {
         CAutonomousIterator<Container> it = CAutonomousIterator<Container>(c);
         Vertex* ret = NULL;
@@ -67,7 +67,7 @@ template <class Vertex>
 class VertexFinder<Vertex, std::set<Vertex*, VertexComparator<Vertex> > >
 {
 public:
-    Vertex* find(typename Vertex::VertexId id, std::set<Vertex*, VertexComparator<Vertex> >& c)
+    static Vertex* find(typename Vertex::VertexId id, const std::set<Vertex*, VertexComparator<Vertex> >& c)
     {
         Vertex* ret = NULL;
         Vertex* prototype = new Vertex(id);
@@ -157,10 +157,9 @@ public:
     * @param id the vertex id
     * @returns the vertex with the specified id or NULL if no vertex has the specified id
     */
-    Vertex* getVertexById(VertexId id)
+    Vertex* getVertexById(VertexId id) const
     {
-        VertexFinder<Vertex, VertexContainer> finder;
-        return finder.find(id, vertices);
+        return VertexFinder<Vertex, VertexContainer>::find(id, vertices);
     }
 
     /**
