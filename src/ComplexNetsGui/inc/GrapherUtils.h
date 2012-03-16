@@ -60,10 +60,9 @@ public:
     {
         VariantsSet toPlot;
         std::list<double> xPoints;
-        std::vector<double> bins(set.size());
-        unsigned int j = 2;
+        std::vector<double> bins;
 
-        //sort x data points
+        //sort x data points from set
         VariantsSet::const_iterator it = set.begin();
         while (it != set.end())
         {
@@ -72,29 +71,57 @@ public:
         }
         xPoints.sort();
 
+
         //Compute bins and bins width
-        std::list<double>::const_iterator pointsIt = xPoints.begin();
+        /*std::list<double>::const_iterator pointsIt = xPoints.begin();
         std::list<double>::const_iterator previous;
         bins[0] = *pointsIt;
         ++pointsIt;
         bins[1] = *pointsIt;
         previous = pointsIt;
         ++pointsIt;
+
         while (pointsIt != xPoints.end())
         {
             bins[j] = (*previous) * factor;
             previous = pointsIt;
             ++j;
             ++pointsIt;
+        }*/
+
+        double min = xPoints.front();
+        double max = xPoints.back();
+        std::cerr << min << std::endl;
+        std::cerr << max << std::endl;
+        bins.push_back(min * 2.0 / (double)(1.0 + factor));
+        unsigned int i = 1;
+        std::cerr << "ACA2" << std::endl;
+        while (bins[i - 1] < max)
+        {
+            bins.push_back(bins[i - 1]*factor);
+            ++i;
         }
+
+        //test
+        /*unsigned int lala=0;
+        while(lala<bins.size())
+        {
+            std::cerr << bins[lala] << std::endl;
+            lala++;
+        }*/
+        //
+
 
         //Go through each degree in the network and find wich bin the degree belongs to.
         //Count how many elements are contained in a bin.
-        std::vector<unsigned int> pointsInBin(set.size());
+        std::vector<unsigned int> pointsInBin(bins.size());
+        for (unsigned int i = 0; i < bins.size(); i++)
+            pointsInBin[i++] = 0;
         it = set.begin();
         while (it != set.end())
         {
             unsigned int amount = from_string<unsigned int>(it->second);
+            std::cerr << amount << std::endl;
             for (unsigned int i = 0; i < amount; ++i)
             {
                 unsigned int binNum = findBin(bins, from_string<unsigned int>(it->first));
@@ -111,6 +138,9 @@ public:
             double binWidth = bins[i + 1] - bins[i];
             PBin[i] = pointsInBin[i] / (double)binWidth;
             binCenter[i] = binWidth / 2.0;
+            std::cerr << pointsInBin[i] << std::endl;
+            std::cerr << PBin[i] << std::endl;
+            std::cerr << binCenter[i] << std::endl;
         }
 
         //Normalization and plotting
@@ -121,6 +151,7 @@ public:
         for (unsigned int i = 0; i < bins.size(); ++i)
         {
             PBin[i] /= sum;
+            std::cerr << PBin[i] << std::endl;
             toPlot.insert<double>(to_string<double>(binCenter[i]), PBin[i]);
         }
 
@@ -137,6 +168,10 @@ private:
         destinationFile << "set title \"" << title << "\"" << std::endl;
         destinationFile << "set xlabel \"" << x << "\"" << std::endl;
         destinationFile << "set ylabel \"" << y << "\"" << std::endl;
+
+        destinationFile << "set logscale x " << std::endl;
+        destinationFile << "set logscale y " << std::endl;
+
         destinationFile << "plot \"" << data_path << "\"" << std::endl;
 
         destinationFile.close();
@@ -152,7 +187,8 @@ private:
             halfPoint = ceil(0.5 * (upperLimit + lowerLimit));
             if (value >= bins[halfPoint])
                 lowerLimit = halfPoint;
-            else upperLimit = halfPoint;
+            else
+                upperLimit = halfPoint;
         }
         return lowerLimit;
     }

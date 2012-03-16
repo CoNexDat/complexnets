@@ -64,9 +64,20 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menu_Export">
+    <property name="title">
+     <string>&amp;Export</string>
+    </property>
+    <addaction name="actionExportBetweenness_vs_Degree"/>
+    <addaction name="actionExportDegree_distribution"/>
+    <addaction name="actionExportClustering_Coefficient_vs_Degree"/>
+    <addaction name="actionExportNearest_Neighbors_Degree_vs_Degree"/>
+    <addaction name="actionExportShell_Index_vs_Degree"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNode"/>
    <addaction name="menuPlot"/>
+   <addaction name="menu_Export"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -155,6 +166,31 @@
   <action name="actionBetweenness_vs_Degree">
    <property name="text">
     <string>Betweenness vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportBetweenness_vs_Degree">
+   <property name="text">
+    <string>Betweenness vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportDegree_distribution">
+   <property name="text">
+    <string>Degree distribution</string>
+   </property>
+  </action>
+  <action name="actionExportClustering_Coefficient_vs_Degree">
+   <property name="text">
+    <string>Clustering Coefficient vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportShell_Index_vs_Degree">
+   <property name="text">
+    <string>Shell Index vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportNearest_Neighbors_Degree_vs_Degree">
+   <property name="text">
+    <string>Nearest Neighbors Degree vs Degree</string>
    </property>
   </action>
  </widget>

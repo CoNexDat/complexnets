@@ -10,7 +10,8 @@ SOURCES += ComplexNetsGui/src/main.cpp \
 HEADERS += ComplexNetsGui/inc/mainwindow.h \
     ComplexNetsGui/inc/GraphLoadingValidationDialog.h \
     ComplexNetsGui/inc/GrapherUtils.h \
-    ComplexNetsGui/inc/GnuplotConsole.h
+    ComplexNetsGui/inc/GnuplotConsole.h \
+    ComplexNetsGui/inc/LogBinningPolicy.h
 FORMS += ComplexNetsGui/forms/mainwindow.ui
 MOC_DIR = .moc/release-shared
 OBJECTS_DIR = .obj/release-shared

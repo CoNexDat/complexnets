@@ -35,7 +35,7 @@ public:
  * Base abstraction to find vertex in containers. Used for Vector and List
  */
 template <class Vertex, class Container>
-class VertexFinder 
+class VertexFinder
 {
 public:
     static Vertex* find(typename Vertex::VertexId id, const Container& c)
@@ -52,7 +52,7 @@ public:
             }
             ++it;
         }
-        
+
         return ret;
     }
 };
@@ -71,11 +71,11 @@ public:
     {
         Vertex* ret = NULL;
         Vertex* prototype = new Vertex(id);
-        
+
         typename std::set<Vertex*, VertexComparator<Vertex> >::iterator it = c.find(prototype);
-        if(it != c.end())
+        if (it != c.end())
             ret = *it;
-        
+
         return ret;
     }
 };
@@ -206,7 +206,7 @@ public:
     }
 
 private:
-    
+
     bool _isDigraph;
     bool _isMultigraph;
     VertexContainer vertices;

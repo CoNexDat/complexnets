@@ -265,6 +265,11 @@ QString MainWindow::inputId(const std::string label)
 
 void MainWindow::on_actionBetweenness_triggered()
 {
+    if (this->weightedgraph)
+    {
+        ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
+        return;
+    }
     QString vertexId = inputId("Vertex id:");
     QString ret;
     double vertexBetweenness;
@@ -288,6 +293,11 @@ void MainWindow::on_actionBetweenness_triggered()
 
 void MainWindow::on_actionShell_index_triggered()
 {
+    if (this->weightedgraph)
+    {
+        ui->textBrowser->append("Shell index for weighted graphs is not supported.");
+        return;
+    }
     QString vertexId = inputId("Vertex id:");
     QString ret;
     unsigned int vertexShellIndex;
@@ -366,8 +376,8 @@ void MainWindow::computeDegreeDistribution()
             DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
             while (!it.end())
             {
-                propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
-                propertyMap.addProperty<unsigned int>("degreeDistributionProbability", to_string<unsigned int>(it->first), it->second / weightedGraph.verticesCount());
+                propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+                propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)weightedGraph.verticesCount());
                 ++it;
             }
             delete degreeDistribution;
@@ -378,8 +388,8 @@ void MainWindow::computeDegreeDistribution()
             DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
             while (!it.end())
             {
-                propertyMap.addProperty<unsigned int>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
-                propertyMap.addProperty<unsigned int>("degreeDistributionProbability", to_string<unsigned int>(it->first), it->second / graph.verticesCount());
+                propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+                propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)graph.verticesCount());
                 ++it;
             }
             delete degreeDistribution;
@@ -416,13 +426,18 @@ void MainWindow::on_actionDegree_distribution_triggered()
 
 void MainWindow::on_actionDegree_distribution_plotting_triggered()
 {
+    bool ret;
     ui->textBrowser->append("Plotting degree distribution...");
-    if (!propertyMap.containsPropertySet("degreeDistributionProbability"))
+    if (!propertyMap.containsPropertySet("degreeDistribution"))
     {
         ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
         this->computeDegreeDistribution();
     }
-    grapher.plotLogBinDegree(propertyMap.getPropertySet("degreeDistribution"), 2);
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", true);
+    this->console->show();
+    this->activateWindow();
+    if (!ret)
+        ui->textBrowser->append("An unexpected error has occured.\n");
 
     ui->textBrowser->append("Done\n");
 }
@@ -612,7 +627,7 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
     this->computeShellIndex();
     this->computeDegreeDistribution();
     double shellAuxAcum;
-    unsigned int degreeAmount;
+    unsigned int degreeAmount, vertedId;
     int ret;
     VariantsSet shellIndexVsDegree;
     VariantsSet& shellIndex = propertyMap.getPropertySet("shellIndex");
@@ -628,7 +643,7 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
 
     while (shellIt != shellIndex.end())
     {
-        unsigned int vertedId = from_string<unsigned int>(shellIt->first);
+        vertedId = from_string<unsigned int>(shellIt->first);
         Vertex* v = this->weightedgraph ? weightedGraph.getVertexById(vertedId) : graph.getVertexById(vertedId);
         shellAuxAcum = shellIndexVsDegree.get_element<double>(to_string<unsigned int>(v->degree()));
         shellIndexVsDegree.insert<double>(to_string<unsigned int>(v->degree()) , shellAuxAcum + from_string<unsigned int>(shellIt->second));
@@ -643,7 +658,7 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         shellAuxAcum = from_string<double>(shellVsDegreeIt->second);
         degreeAmount = degreeDistribution.get_element<unsigned int>(degree);
 
-        shellIndexVsDegree.insert<double>(degree , shellAuxAcum / degreeAmount);
+        shellIndexVsDegree.insert<double>(degree , shellAuxAcum / (double)degreeAmount);
         ++shellVsDegreeIt;
     }
 
@@ -662,7 +677,7 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
         ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
         return;
     }
-    this->computeShellIndex();
+    this->computeBetweenness();
     this->computeDegreeDistribution();
     double betweennessAuxAcum;
     unsigned int degreeAmount;
@@ -675,7 +690,7 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
     VariantsSet::const_iterator betweennessVsDegreeIt;
     while (it != degreeDistribution.end())
     {
-        betweennessVsDegree.insert<double>(it->first, 0);
+        betweennessVsDegree.insert<double>(it->first, 0.0);
         ++it;
     }
 
@@ -696,7 +711,7 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
         betweennessAuxAcum = from_string<double>(betweennessVsDegreeIt->second);
         degreeAmount = degreeDistribution.get_element<unsigned int>(degree);
 
-        betweennessVsDegree.insert<double>(degree , betweennessAuxAcum / degreeAmount);
+        betweennessVsDegree.insert<double>(degree , betweennessAuxAcum / (double)degreeAmount);
         ++betweennessVsDegreeIt;
     }
 
@@ -706,3 +721,113 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
     if (!ret)
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
+
+void MainWindow::on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered()
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting Nearest Neighbors Degree vs Degree...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+        if (propertyMap.containsPropertySet("nearestNeighborDegreeForDegree"))
+        {
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), ret);
+            ui->textBrowser->append("Done.");
+        }
+        else
+            ui->textBrowser->append("Nearest Neighbors Degree vs Degree has not been previously computed. Please go to Plot->Nearest Neighbors Degree vs Degree first.");
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
+}
+
+void MainWindow::on_actionExportShell_Index_vs_Degree_triggered()
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting Shell Index vs Degree...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+        if (propertyMap.containsPropertySet("shellIndexVsDegree"))
+        {
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet("shellIndexVsDegree"), ret);
+            ui->textBrowser->append("Done.");
+        }
+        else
+            ui->textBrowser->append("Shell Index vs Degree has not been previously computed. Please go to Plot->Shell Index vs Degree first.");
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
+}
+
+void MainWindow::on_actionExportClustering_Coefficient_vs_Degree_triggered()
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting Clustering Coefficient vs Degree...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+        if (propertyMap.containsPropertySet("clusteringCoeficientForDegree"))
+        {
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), ret);
+            ui->textBrowser->append("Done.");
+        }
+        else
+            ui->textBrowser->append("Clustering Coefficient vs Degree has not been previously computed. Please go to Plot->Clustering Coefficient vs Degree first.");
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
+}
+
+void MainWindow::on_actionExportDegree_distribution_triggered()
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting Degree Distribution...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+        if (propertyMap.containsPropertySet("degreeDistributionProbability"))
+        {
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet("degreeDistributionProbability"), ret);
+            ui->textBrowser->append("Done.");
+        }
+        else
+            ui->textBrowser->append("Degree Distribution has not been previously computed. Please go to Plot->Degree Distribution first.");
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
+}
+
+void MainWindow::on_actionExportBetweenness_vs_Degree_triggered()
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting Netweenness vs Degree...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+        if (propertyMap.containsPropertySet("betweennessVsDegree"))
+        {
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet("betweennessVsDegree"), ret);
+            ui->textBrowser->append("Done.");
+        }
+        else
+            ui->textBrowser->append("Netweenness vs Degree has not been previously computed. Please go to Plot->Netweenness vs Degree first.");
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
+}
+
+std::string MainWindow::getSavePath() const
+{
+    QFileDialog dialog(0, "Save tree", QDir::homePath(), "");
+    std::string ret;
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    if (dialog.exec())
+    {
+        ret.append(dialog.selectedFiles().at(0).toStdString());
+    }
+    return ret;
+}
+
+
+
