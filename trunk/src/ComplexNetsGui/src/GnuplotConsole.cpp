@@ -1,6 +1,8 @@
 #include "ComplexNetsGui/inc/GnuplotConsole.h"
 #include "ComplexNetsGui/inc/GrapherUtils.h"
 
+#include "ComplexNetsGui/inc/LogBinningPolicy.h"
+
 using namespace ComplexNetsGui;
 
 GnuplotConsole::GnuplotConsole(QWidget* parent) : QDialog(parent)
@@ -36,7 +38,6 @@ GnuplotConsole::~GnuplotConsole()
     std::string exitCommand = "quit\n";
     if (pipe != NULL)
     {
-        std::cerr << "ACA" << std::endl;
         writeCommand(exitCommand);
         pclose(pipe);
     }
@@ -47,7 +48,7 @@ GnuplotConsole::~GnuplotConsole()
 }
 
 //TODO should be const
-bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& propertyName)
+bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& propertyName, const bool logBin)
 {
     GrapherUtils utils;
     if (pipe == NULL)
@@ -57,7 +58,16 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
     std::string command = std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
     std::string file = "/tmp/";
     file.append(propertyName);
-    utils.exportPropertySet(set, file);
+
+
+    //TODO this should be implemented as a policy. Using default template is only allowed in C++0x.
+    if (logBin)
+    {
+        LogBinningPolicy policy;
+        utils.exportPropertySet(policy.transform(set), file);
+    }
+    else
+        utils.exportPropertySet(set, file);
 
     writeCommand(command);
     return true;

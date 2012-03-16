@@ -38,7 +38,7 @@ protected:
 
 private:
     GnuplotConsole* console;
-    GrapherUtils grapher;
+    GrapherUtils grapherUtils;
     bool weightedgraph;
     bool multigraph;
     bool digraph;
@@ -59,9 +59,15 @@ private:
     void deleteGraphFactory();
     void onNetworkLoad(const bool weightedgraph, const bool digraph, const bool multigraph);
     void onNetworkUnload();
+    std::string getSavePath() const;
     QString inputId(const std::string label);
 
 private slots:
+    void on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered();
+    void on_actionExportShell_Index_vs_Degree_triggered();
+    void on_actionExportClustering_Coefficient_vs_Degree_triggered();
+    void on_actionExportDegree_distribution_triggered();
+    void on_actionExportBetweenness_vs_Degree_triggered();
     void on_actionShell_Index_vs_Degree_triggered();
     void on_actionBetweenness_vs_Degree_triggered();
     void on_actionNearest_Neighbors_Degree_vs_Degree_triggered();

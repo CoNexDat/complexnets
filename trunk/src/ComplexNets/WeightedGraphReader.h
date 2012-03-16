@@ -128,6 +128,8 @@ private:
     double consume_weigth()
     {
         consume_whitespace();
+        bool positive = false, hasExponent = false;
+        unsigned int exponent = 0;
         double ret = 0.0;
         std::string branchLenStr;
         while (in_range(*character, '0', '9') || *character == '.')
@@ -136,8 +138,30 @@ private:
             ++character;
         }
 
+        if (*character == 'E' || *character == 'e')
+        {
+            ++character;
+            if (*character == '+')
+                positive = true;
+            else if (in_range(*character, '0', '9'))
+            {
+                --character;
+                positive = true;
+            }
+            else if (*character == '-')
+                positive = false;
+            else
+                throw MalformedDoubleException(getLineNumberText());
+            ++character;
+            exponent = readUnsignedInt();
+            hasExponent = true;
+        }
+
         if (!from_string<double>(branchLenStr, ret))
             throw MalformedDoubleException(getLineNumberText());
+
+        if (hasExponent)
+            ret = positive ? ret * pow(10.0, exponent) : ret / ((double)(pow(10.0, exponent)));
 
         return ret;
     }
