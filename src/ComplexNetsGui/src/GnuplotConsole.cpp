@@ -41,6 +41,11 @@ GnuplotConsole::~GnuplotConsole()
         writeCommand(exitCommand);
         pclose(pipe);
     }
+    if (outputFile.is_open())
+    {
+        outputFile.clear();
+        outputFile.close();
+    }
     delete textBrowser;
     delete lineEdit;
     delete groupBox;
@@ -52,9 +57,10 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
 {
     GrapherUtils utils;
     if (pipe == NULL)
-        pipe = popen("gnuplot -persist", "w");
+        pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
     if (pipe == NULL)
         return false;
+
     std::string command = std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
     std::string file = "/tmp/";
     file.append(propertyName);
@@ -86,22 +92,34 @@ void GnuplotConsole::commandEntered()
 
 void GnuplotConsole::writeCommand(const std::string& command)
 {
-    //char response[128];
     std::string _command = command;
     _command.append("\n");
+
+    QString text("gnuplot> ");
+    text.append(_command.c_str());
+    this->textBrowser->append(text);
+
     fputs(_command.c_str(), pipe);
     _command = "replot";
     _command.append("\n");
     fputs(_command.c_str(), pipe);
     fflush(pipe);
-    /*QString console;
-    bool quit=false;
-    while(!feof(pipe) && !quit)
+
+    /*if(!outputFile.is_open())
     {
-        if(fgets(response, 128, pipe) != NULL)
-            console += response;
-        else
-            quit=true;
-    }*/
-    //this->textBrowser->append(console);
+        outputFile.open("/tmp/complexnets_gnuplot_output.txt", std::ios_base::in);
+        outputFile.clear();
+    }
+    if(!outputFile.is_open())
+        return ;
+
+    QString console;
+    std::string line;
+    while(std::getline(outputFile,line))
+    {
+        console.append(line.c_str());
+        //console.append("\n");
+    }
+    this->textBrowser->clear();
+    this->textBrowser->append(console);*/
 }
