@@ -1,6 +1,7 @@
 #ifndef GNUPLOTCONSOLE_H
 #define GNUPLOTCONSOLE_H
 
+#include <fstream>
 #include <QDialog>
 #include <cstdio>
 #include <iostream>
@@ -36,6 +37,7 @@ private slots:
     void commandEntered();
 
 private:
+    std::ifstream outputFile;
     FILE* pipe;
 
 };

@@ -1,14 +1,17 @@
 #ifndef GRAPHLOADINGVALIDATIONDIALOG_H
 #define GRAPHLOADINGVALIDATIONDIALOG_H
 
+
+#include <QtCore/QVariant>
+#include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QCheckBox>
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
 #include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
+#include <QtGui/QRadioButton>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
 namespace ComplexNetsGui
@@ -23,13 +26,17 @@ public:
     bool isDirected() const;
 private:
     void retranslateUi();
-    QWidget* gridLayoutWidget;
-    QGridLayout* gridLayout;
-    QCheckBox* checkBox_3;
-    QCheckBox* checkBox;
-    QCheckBox* checkBox_2;
     QDialogButtonBox* buttonBox;
-    QLabel* label;
+    QGroupBox* groupBox;
+    QWidget* verticalLayoutWidget_2;
+    QVBoxLayout* verticalLayout_2;
+    QRadioButton* radioButton_3;
+    QRadioButton* radioButton_4;
+    QGroupBox* groupBox_2;
+    QWidget* verticalLayoutWidget;
+    QVBoxLayout* verticalLayout;
+    QRadioButton* radioButton;
+    QRadioButton* radioButton_2;
 };
 }
 
