@@ -13,8 +13,8 @@ HEADERS += ComplexNetsGui/inc/mainwindow.h \
     ComplexNetsGui/inc/GnuplotConsole.h \
     ComplexNetsGui/inc/LogBinningPolicy.h
 FORMS += ComplexNetsGui/forms/mainwindow.ui
-MOC_DIR = .moc/release-shared
-OBJECTS_DIR = .obj/release-shared
+#MOC_DIR = .moc/release-shared
+#OBJECTS_DIR = .obj/release-shared
 UI_DIR = ComplexNetsGui/inc/
 CONFIG += release
 QMAKE_CXXFLAGS_RELEASE += -Wextra \
