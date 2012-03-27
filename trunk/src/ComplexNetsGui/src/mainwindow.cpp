@@ -426,14 +426,16 @@ void MainWindow::on_actionDegree_distribution_triggered()
 
 void MainWindow::on_actionDegree_distribution_plotting_triggered()
 {
-    bool ret;
+    bool ret, logBin = false;
     ui->textBrowser->append("Plotting degree distribution...");
     if (!propertyMap.containsPropertySet("degreeDistribution"))
     {
         ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
         this->computeDegreeDistribution();
     }
-    ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", true);
+    if (LogBinningDialog() == QMessageBox::Yes)
+        logBin = true;
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", logBin);
     this->console->show();
     this->activateWindow();
     if (!ret)
@@ -829,5 +831,12 @@ std::string MainWindow::getSavePath() const
     return ret;
 }
 
-
+int MainWindow::LogBinningDialog()
+{
+    QString title("Logarithmic Binning");
+    QString text("Would you like to log-bin the data before plotting?");
+    QMessageBox msgBox(QMessageBox::Question, title, text, QMessageBox::Yes | QMessageBox::No, this);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    return msgBox.exec();
+}
 
