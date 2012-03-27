@@ -57,16 +57,22 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
 {
     GrapherUtils utils;
     if (pipe == NULL)
+    {
         pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
+        writeCommand("set logscale x");
+        writeCommand("set logscale y");
+        writeCommand("set style data linespoints");
+    }
     if (pipe == NULL)
         return false;
 
     std::string command = std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
     std::string file = "/tmp/";
     file.append(propertyName);
-
-
-    //TODO this should be implemented as a policy. Using default template is only allowed in C++0x.
+    /*
+     * TODO this should be implemented as a policy. Using default template is only allowed in C++0x.
+     * Another option would be to pass a preprocesing object as a parameter.
+     */
     if (logBin)
     {
         LogBinningPolicy policy;

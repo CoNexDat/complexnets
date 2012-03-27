@@ -26,10 +26,9 @@ class MainWindow : public QMainWindow
 public:
     typedef graphpp::AdjacencyListVertex Vertex;
     typedef graphpp::AdjacencyListGraph<Vertex> Graph;
-
-
     typedef graphpp::WeightedVertexAspect<Vertex> WeightedVertex;
     typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph<WeightedVertex> > WeightedGraph;
+
     MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
@@ -54,6 +53,7 @@ private:
     void computeDegreeDistribution();
     void computeShellIndex();
     void computeBetweenness();
+    int LogBinningDialog();
     void readGraph(const std::string path);
     void buildGraphFactory(const bool isWeighted);
     void deleteGraphFactory();
