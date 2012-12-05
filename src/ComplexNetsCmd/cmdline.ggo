@@ -1,0 +1,8 @@
+package "complexnets"
+
+version "0.1"
+
+description "ComplexNets description"
+
+defgroup "loader"
+groupoption "load-network" i "Loads a network using an input file" group="loader"
