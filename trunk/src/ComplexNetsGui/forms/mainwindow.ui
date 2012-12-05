@@ -34,6 +34,10 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionNewErdosRenyi"/>
+    <addaction name="actionNewBarabasiAlbert"/>
+    <addaction name="actionNewExtendedHOT"/>
+    <addaction name="actionNewMolloyReed"/>
     <addaction name="actionClose_current_network"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -95,6 +99,26 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionNewErdosRenyi">
+   <property name="text">
+    <string>New Erdos-Renyi graph...</string>
+   </property>
+  </action>
+  <action name="actionNewBarabasiAlbert">
+   <property name="text">
+    <string>New Barabasi-Albert graph...</string>
+   </property>
+  </action>
+  <action name="actionNewExtendedHOT">
+   <property name="text">
+    <string>New Extended HOT graph...</string>
+   </property>
+  </action>
+  <action name="actionNewMolloyReed">
+   <property name="text">
+    <string>New Molloy-Reed graph...</string>
    </property>
   </action>
   <action name="actionClose_current_network">
