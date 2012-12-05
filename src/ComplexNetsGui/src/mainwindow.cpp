@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <sstream>
 #include <string>
+#include <ctime>
+#include <list>
 
 //File ui_mainwindow.h will be generated on compile time. Don't look for it, unless you have already compiled the project.
 #include "ComplexNetsGui/inc/ui_mainwindow.h"
@@ -245,11 +247,12 @@ void MainWindow::readGraph(const std::string path)
     }
     else
     {
-        IGraphReader<Graph, Vertex>* reader = factory->createGraphReader();
-        reader->read(graph, path);
-        delete reader;
+		IGraphReader<Graph, Vertex>* reader = factory->createGraphReader();
+		reader->read(graph, path);
+		delete reader;
     }
 }
+
 
 //TODO this function doesnt validate input. should be const
 QString MainWindow::inputId(const std::string label)
@@ -838,5 +841,160 @@ int MainWindow::LogBinningDialog()
     QMessageBox msgBox(QMessageBox::Question, title, text, QMessageBox::Yes | QMessageBox::No, this);
     msgBox.setDefaultButton(QMessageBox::Yes);
     return msgBox.exec();
+}
+
+
+
+
+void MainWindow::on_actionNewErdosRenyi_triggered()
+{
+	if (!this->graphLoaded)
+    {
+		srand(time(NULL));
+		QString inputN = inputId("n:");
+		QString inputP = inputId("p:");
+		QString ret;
+
+		unsigned int n;
+		float p;
+
+		if (!inputN.isEmpty() && !inputP.isEmpty())
+		{
+		    try
+		    {
+				GraphLoadingValidationDialog graphValidationDialog(this);
+				graph = Graph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+		        weightedGraph = WeightedGraph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+		        this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+		        buildGraphFactory(graphValidationDialog.isWeigthed());
+
+
+		        n = inputN.toInt();
+		        p = inputP.toFloat();
+
+				for(unsigned int i = 1; i <= n; i++)
+					graph.addVertex(new Vertex(i));
+				for(unsigned int i = 1; i < n; i++) 
+				{
+					Vertex* srcVertex = graph.getVertexById(i);
+					for(unsigned int j = i+1; j <= n; j++)
+					{
+						Vertex* destVertex = graph.getVertexById(j);
+						if((float)rand()/RAND_MAX <= p)
+							graph.addEdge(srcVertex, destVertex);
+					}
+				}		
+
+				QString text("Network created using Erdos-Renyi algorithm");
+		        text.append("\nAmount of vertices in the graph: ");
+		        unsigned int verticesCount = graph.verticesCount();
+		        text.append(QString("%1").arg(verticesCount));
+		        text.append(".\n");
+		        ui->textBrowser->append(text);         
+		    }
+		    catch (const BadElementName& ex)
+		    {
+		        ret.append("Error ").append(".\n");
+		        ui->textBrowser->append(ret);
+		    }
+		}
+	}
+}
+
+void MainWindow::on_actionNewBarabasiAlbert_triggered()
+{
+	if (!this->graphLoaded)
+    {
+		srand(time(NULL));
+		QString inputM_0 = inputId("m_0:");
+		QString inputM = inputId("m:");
+		QString inputN = inputId("n:");
+		QString ret;
+
+		
+		unsigned int m_0;
+		unsigned int m;
+		unsigned int n;
+
+		if (!inputM_0.isEmpty() && !inputM.isEmpty() && !inputN.isEmpty())
+		{
+		    try
+		    {
+				GraphLoadingValidationDialog graphValidationDialog(this);
+				graph = Graph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+		        weightedGraph = WeightedGraph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+		        this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+		        buildGraphFactory(graphValidationDialog.isWeigthed());
+
+
+		        m_0 = inputM_0.toInt();
+		        m = inputM.toInt();
+		        n = inputN.toInt();
+
+				// Create a K_M_0 graph				
+				for(unsigned int i = 1; i <= m_0; i++)
+					graph.addVertex(new Vertex(i));
+				for(unsigned int i = 1; i < m_0; i++) 
+				{
+					Vertex* srcVertex = graph.getVertexById(i);
+					for(unsigned int j = i+1; j <= m_0; j++)
+					{
+						Vertex* destVertex = graph.getVertexById(j);
+						graph.addEdge(srcVertex, destVertex);
+					}
+				}
+
+				// Fill the array with k aparitions of each vertex where k is the degree of the vertex
+				unsigned int* vertexIndexes = new unsigned int[n*n/2];
+				unsigned int size = 0;
+				for(unsigned int i = 1; i <= m_0; i++)
+					for(unsigned int k = 0; k < m_0; k++)
+						vertexIndexes[size++] = i;
+
+				for(unsigned int i = m_0+1; i <= n; i++)
+				{
+					unsigned int k = 0;
+					Vertex* newVertex = new Vertex(i);
+					while(k < m)
+					{
+						unsigned int index = vertexIndexes[rand() % size];
+						Vertex* selectedVertex = graph.getVertexById(index);
+						// It isn't the same vertex and it isn't connected
+						if(index != i && !selectedVertex->isNeighbourOf(newVertex))
+						{
+							vertexIndexes[size++] = index;
+							vertexIndexes[size++] = i;
+							graph.addVertex(newVertex);
+							graph.addEdge(selectedVertex, newVertex);		
+							k++;
+						}
+					}
+				}
+				delete[] vertexIndexes;
+
+				QString text("Network created using Barabasi-Albert algorithm");
+		        text.append("\nAmount of vertices in the graph: ");
+		        unsigned int verticesCount = graph.verticesCount();
+		        text.append(QString("%1").arg(verticesCount));
+		        text.append(".\n");
+		        ui->textBrowser->append(text);         
+		    }
+		    catch (const BadElementName& ex)
+		    {
+		        ret.append("Error ").append(".\n");
+		        ui->textBrowser->append(ret);
+		    }
+		}
+	}
+}
+
+void MainWindow::on_actionNewExtendedHOT_triggered()
+{
+	
+}
+
+void MainWindow::on_actionNewMolloyReed_triggered()
+{
+	
 }
 
