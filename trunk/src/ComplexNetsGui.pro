@@ -6,12 +6,14 @@ TEMPLATE = app
 SOURCES += ComplexNetsGui/src/main.cpp \
     ComplexNetsGui/src/mainwindow.cpp \
     ComplexNetsGui/src/GraphLoadingValidationDialog.cpp \
-    ComplexNetsGui/src/GnuplotConsole.cpp
+    ComplexNetsGui/src/GnuplotConsole.cpp \
+    ComplexNetsCmd/cmdline.c
 HEADERS += ComplexNetsGui/inc/mainwindow.h \
     ComplexNetsGui/inc/GraphLoadingValidationDialog.h \
     ComplexNetsGui/inc/GrapherUtils.h \
     ComplexNetsGui/inc/GnuplotConsole.h \
-    ComplexNetsGui/inc/LogBinningPolicy.h
+    ComplexNetsGui/inc/LogBinningPolicy.h \
+    ComplexNetsCmd/cmdline.h
 FORMS += ComplexNetsGui/forms/mainwindow.ui
 #MOC_DIR = .moc/release-shared
 #OBJECTS_DIR = .obj/release-shared
