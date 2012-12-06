@@ -39,13 +39,17 @@ struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
-  const char *load_network_help; /**< @brief Loads a network using an input file help description.  */
+  char * input_file_arg;	/**< @brief Load a network from an input file..  */
+  char * input_file_orig;	/**< @brief Load a network from an input file. original value given at command line.  */
+  const char *input_file_help; /**< @brief Load a network from an input file. help description.  */
+  const char *weighted_help; /**< @brief Specify if the input file is considered as a weighted graph. help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
-  unsigned int load_network_given ;	/**< @brief Whether load-network was given.  */
+  unsigned int input_file_given ;	/**< @brief Whether input-file was given.  */
+  unsigned int weighted_given ;	/**< @brief Whether weighted was given.  */
 
-  int loader_group_counter; /**< @brief Counter for group loader */
+  int load_network_group_counter; /**< @brief Counter for group load_network */
 } ;
 
 /** @brief The additional parameters to pass to parser functions */

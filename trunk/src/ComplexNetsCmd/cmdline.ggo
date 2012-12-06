@@ -4,5 +4,12 @@ version "0.1"
 
 description "ComplexNets description"
 
-defgroup "loader"
-groupoption "load-network" i "Loads a network using an input file" group="loader"
+# ----- Group to load networks.
+
+defgroup "load-network" groupdesc="Load a network"
+
+groupoption "input-file" i "Load a network from an input file." group="load-network"
+string typestr="<filename>"
+
+option "weighted" w "Specify if the input file is considered as a weighted graph."
+dependon="input-file"

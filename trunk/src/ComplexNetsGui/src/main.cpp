@@ -24,8 +24,10 @@ int main(int argc, char* argv[])
 			return EXIT_FAILURE;
 		}
 
-		if(args_info->load_network_given) {
-			printf("Load network");
+		if(args_info->input_file_given) {
+			char *fileName = args_info->input_file_arg;
+
+			
 		} else {
 			errorMessage("A network must be specified in order to work.");
 			return EXIT_FAILURE;
