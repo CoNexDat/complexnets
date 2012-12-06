@@ -21,7 +21,6 @@
 #include "../../ComplexNets/IBetweenness.h"
 #include "../../ComplexNets/IShellIndex.h"
 #include "../../ComplexNets/DegreeDistribution.h"
-#include "../../ComplexNets/ConexityVerifier.h"
 
 using namespace ComplexNetsGui;
 using namespace graphpp;
