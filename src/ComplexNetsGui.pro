@@ -14,6 +14,7 @@ HEADERS += ComplexNetsGui/inc/mainwindow.h \
     ComplexNetsGui/inc/GrapherUtils.h \
     ComplexNetsGui/inc/GnuplotConsole.h \
     ComplexNetsGui/inc/LogBinningPolicy.h \
+    ComplexNetsCmd/ProgramState.h \
     ComplexNetsCmd/cmdmessages.h \
     ComplexNetsCmd/cmdline.h
 FORMS += ComplexNetsGui/forms/mainwindow.ui
@@ -23,13 +24,11 @@ UI_DIR = ComplexNetsGui/inc/
 CONFIG += release
 QMAKE_CXXFLAGS_RELEASE += -Wextra \
     -ansi \
-    -pedantic \
     -Wno-long-long \
     -ggdb3 \
     -I.
 QMAKE_CXXFLAGS_DEBUG += -Wextra \
     -ansi \
-    -pedantic \
     -Wno-long-long \
     -ggdb3 \
     -I.

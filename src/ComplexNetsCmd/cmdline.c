@@ -32,14 +32,16 @@ const char *gengetopt_args_info_usage = "Usage: complexnets [OPTIONS]...";
 const char *gengetopt_args_info_description = "ComplexNets description";
 
 const char *gengetopt_args_info_help[] = {
-  "  -h, --help          Print help and exit",
-  "  -V, --version       Print version and exit",
-  "\n Group: loader",
-  "  -i, --load-network  Loads a network using an input file",
+  "  -h, --help                   Print help and exit",
+  "  -V, --version                Print version and exit",
+  "\n Group: load-network\n  Load a network",
+  "  -i, --input-file=<filename>  Load a network from an input file.",
+  "  -w, --weighted               Specify if the input file is considered as a \n                                 weighted graph.",
     0
 };
 
 typedef enum {ARG_NO
+  , ARG_STRING
 } cmdline_parser_arg_type;
 
 static
@@ -51,6 +53,8 @@ static int
 cmdline_parser_internal (int argc, char **argv, struct gengetopt_args_info *args_info,
                         struct cmdline_parser_params *params, const char *additional_error);
 
+static int
+cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *prog_name, const char *additional_error);
 
 static char *
 gengetopt_strdup (const char *s);
@@ -60,14 +64,17 @@ void clear_given (struct gengetopt_args_info *args_info)
 {
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
-  args_info->load_network_given = 0 ;
-  args_info->loader_group_counter = 0 ;
+  args_info->input_file_given = 0 ;
+  args_info->weighted_given = 0 ;
+  args_info->load_network_group_counter = 0 ;
 }
 
 static
 void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
+  args_info->input_file_arg = NULL;
+  args_info->input_file_orig = NULL;
   
 }
 
@@ -78,7 +85,8 @@ void init_args_info(struct gengetopt_args_info *args_info)
 
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
-  args_info->load_network_help = gengetopt_args_info_help[3] ;
+  args_info->input_file_help = gengetopt_args_info_help[3] ;
+  args_info->weighted_help = gengetopt_args_info_help[4] ;
   
 }
 
@@ -144,12 +152,23 @@ cmdline_parser_params_create(void)
   return params;
 }
 
+static void
+free_string_field (char **s)
+{
+  if (*s)
+    {
+      free (*s);
+      *s = 0;
+    }
+}
 
 
 static void
 cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
 
+  free_string_field (&(args_info->input_file_arg));
+  free_string_field (&(args_info->input_file_orig));
   
   
 
@@ -184,8 +203,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "help", 0, 0 );
   if (args_info->version_given)
     write_into_file(outfile, "version", 0, 0 );
-  if (args_info->load_network_given)
-    write_into_file(outfile, "load-network", 0, 0 );
+  if (args_info->input_file_given)
+    write_into_file(outfile, "input-file", args_info->input_file_orig, 0);
+  if (args_info->weighted_given)
+    write_into_file(outfile, "weighted", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -234,14 +255,16 @@ gengetopt_strdup (const char *s)
 }
 
 static void
-reset_group_loader(struct gengetopt_args_info *args_info)
+reset_group_load_network(struct gengetopt_args_info *args_info)
 {
-  if (! args_info->loader_group_counter)
+  if (! args_info->load_network_group_counter)
     return;
   
-  args_info->load_network_given = 0 ;
+  args_info->input_file_given = 0 ;
+  free_string_field (&(args_info->input_file_arg));
+  free_string_field (&(args_info->input_file_orig));
 
-  args_info->loader_group_counter = 0;
+  args_info->load_network_group_counter = 0;
 }
 
 int
@@ -292,9 +315,42 @@ cmdline_parser2 (int argc, char **argv, struct gengetopt_args_info *args_info, i
 int
 cmdline_parser_required (struct gengetopt_args_info *args_info, const char *prog_name)
 {
-  FIX_UNUSED (args_info);
-  FIX_UNUSED (prog_name);
-  return EXIT_SUCCESS;
+  int result = EXIT_SUCCESS;
+
+  if (cmdline_parser_required2(args_info, prog_name, 0) > 0)
+    result = EXIT_FAILURE;
+
+  if (result == EXIT_FAILURE)
+    {
+      cmdline_parser_free (args_info);
+      exit (EXIT_FAILURE);
+    }
+  
+  return result;
+}
+
+int
+cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *prog_name, const char *additional_error)
+{
+  int error = 0;
+  FIX_UNUSED (additional_error);
+
+  /* checks for required options */
+  if (! args_info->weighted_given)
+    {
+      fprintf (stderr, "%s: '--weighted' ('-w') option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  
+  
+  /* checks for dependences among options */
+  if (args_info->weighted_given && ! args_info->input_file_given)
+    {
+      fprintf (stderr, "%s: '--weighted' ('-w') option depends on option 'input-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+
+  return error;
 }
 
 
@@ -332,6 +388,7 @@ int update_arg(void *field, char **orig_field,
   char *stop_char = 0;
   const char *val = value;
   int found;
+  char **string_field;
   FIX_UNUSED (field);
 
   stop_char = 0;
@@ -362,6 +419,14 @@ int update_arg(void *field, char **orig_field,
     val = possible_values[found];
 
   switch(arg_type) {
+  case ARG_STRING:
+    if (val) {
+      string_field = (char **)field;
+      if (!no_free && *string_field)
+        free (*string_field); /* free previous string */
+      *string_field = gengetopt_strdup (val);
+    }
+    break;
   default:
     break;
   };
@@ -426,11 +491,12 @@ cmdline_parser_internal (
       static struct option long_options[] = {
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'V' },
-        { "load-network",	0, NULL, 'i' },
+        { "input-file",	1, NULL, 'i' },
+        { "weighted",	0, NULL, 'w' },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:w", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -446,17 +512,29 @@ cmdline_parser_internal (
           cmdline_parser_free (&local_args_info);
           exit (EXIT_SUCCESS);
 
-        case 'i':	/* Loads a network using an input file.  */
+        case 'i':	/* Load a network from an input file..  */
         
-          if (args_info->loader_group_counter && override)
-            reset_group_loader (args_info);
-          args_info->loader_group_counter += 1;
+          if (args_info->load_network_group_counter && override)
+            reset_group_load_network (args_info);
+          args_info->load_network_group_counter += 1;
+        
+          if (update_arg( (void *)&(args_info->input_file_arg), 
+               &(args_info->input_file_orig), &(args_info->input_file_given),
+              &(local_args_info.input_file_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "input-file", 'i',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'w':	/* Specify if the input file is considered as a weighted graph..  */
+        
         
           if (update_arg( 0 , 
-               0 , &(args_info->load_network_given),
-              &(local_args_info.load_network_given), optarg, 0, 0, ARG_NO,
+               0 , &(args_info->weighted_given),
+              &(local_args_info.weighted_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
-              "load-network", 'i',
+              "weighted", 'w',
               additional_error))
             goto failure;
         
@@ -473,14 +551,18 @@ cmdline_parser_internal (
         } /* switch */
     } /* while */
 
-  if (args_info->loader_group_counter > 1)
+  if (args_info->load_network_group_counter > 1)
     {
-      fprintf (stderr, "%s: %d options of group loader were given. At most one is required%s.\n", argv[0], args_info->loader_group_counter, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: %d options of group load-network were given. At most one is required%s.\n", argv[0], args_info->load_network_group_counter, (additional_error ? additional_error : ""));
       error = 1;
     }
   
 
 
+  if (check_required)
+    {
+      error += cmdline_parser_required2 (args_info, argv[0], additional_error);
+    }
 
   cmdline_parser_release (&local_args_info);
 
