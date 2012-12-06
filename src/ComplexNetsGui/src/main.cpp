@@ -46,7 +46,12 @@ int main(int argc, char* argv[])
 				ERROR_EXIT;
 			}
 
-		} else {
+		} else if (args_info->model_given) {
+			if (args_info->erdos_given) {
+				
+			}
+		}
+		else {
 			usageErrorMessage("A network must be specified in order to work.");
 			ERROR_EXIT;
 		}

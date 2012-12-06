@@ -6,9 +6,26 @@
 using namespace std;
 using namespace graphpp;
 
-// Date member function
+
+ProgramState::~ProgramState() {
+	delete this->graph;
+	delete this->weightedGraph;
+}
+
 void ProgramState::setWeighted(bool weighted) {
     this->weighted = weighted;
+}
+
+bool ProgramState::isWeighted() {
+	return this->weighted;
+}
+
+WeightedGraph *ProgramState::getWeightedGraph() {
+	return this->weightedGraph;
+}
+
+Graph *ProgramState::getGraph() {
+	return this->graph;
 }
 
 void ProgramState::readGraphFromFile(string path) {
@@ -33,14 +50,6 @@ void ProgramState::readGraphFromFile(string path) {
     }
 }
 
-bool ProgramState::isWeighted() {
-	return this->weighted;
-}
+void ProgramState::setErdosRenyiGraph(int n, float p) {
 
-WeightedGraph *ProgramState::getWeightedGraph() {
-	return this->weightedGraph;
-}
-
-Graph *ProgramState::getGraph() {
-	return this->graph;
 }
