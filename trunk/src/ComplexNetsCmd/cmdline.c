@@ -36,7 +36,9 @@ const char *gengetopt_args_info_help[] = {
   "  -V, --version                Print version and exit",
   "\n Group: load-network\n  Load a network",
   "  -i, --input-file=<filename>  Load a network from an input file.",
-  "  -w, --weighted               Specify if the input file is considered as a \n                                 weighted graph.",
+  "      --weighted               Specify if the input file is considered as a \n                                 weighted graph.",
+  "  -m, --model                  Create a network using a model.",
+  "      --erdos                  Use Erdos-Renyi model.",
     0
 };
 
@@ -66,6 +68,8 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->version_given = 0 ;
   args_info->input_file_given = 0 ;
   args_info->weighted_given = 0 ;
+  args_info->model_given = 0 ;
+  args_info->erdos_given = 0 ;
   args_info->load_network_group_counter = 0 ;
 }
 
@@ -87,6 +91,8 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->input_file_help = gengetopt_args_info_help[3] ;
   args_info->weighted_help = gengetopt_args_info_help[4] ;
+  args_info->model_help = gengetopt_args_info_help[5] ;
+  args_info->erdos_help = gengetopt_args_info_help[6] ;
   
 }
 
@@ -207,6 +213,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "input-file", args_info->input_file_orig, 0);
   if (args_info->weighted_given)
     write_into_file(outfile, "weighted", 0, 0 );
+  if (args_info->model_given)
+    write_into_file(outfile, "model", 0, 0 );
+  if (args_info->erdos_given)
+    write_into_file(outfile, "erdos", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -263,6 +273,7 @@ reset_group_load_network(struct gengetopt_args_info *args_info)
   args_info->input_file_given = 0 ;
   free_string_field (&(args_info->input_file_arg));
   free_string_field (&(args_info->input_file_orig));
+  args_info->model_given = 0 ;
 
   args_info->load_network_group_counter = 0;
 }
@@ -336,11 +347,22 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   FIX_UNUSED (additional_error);
 
   /* checks for required options */
+  if (! args_info->erdos_given)
+    {
+      fprintf (stderr, "%s: '--erdos' option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  
   
   /* checks for dependences among options */
   if (args_info->weighted_given && ! args_info->input_file_given)
     {
-      fprintf (stderr, "%s: '--weighted' ('-w') option depends on option 'input-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--weighted' option depends on option 'input-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->erdos_given && ! args_info->model_given)
+    {
+      fprintf (stderr, "%s: '--erdos' option depends on option 'model'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
 
@@ -486,11 +508,13 @@ cmdline_parser_internal (
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'V' },
         { "input-file",	1, NULL, 'i' },
-        { "weighted",	0, NULL, 'w' },
+        { "weighted",	0, NULL, 0 },
+        { "model",	0, NULL, 'm' },
+        { "erdos",	0, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi:w", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:m", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -521,20 +545,53 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'w':	/* Specify if the input file is considered as a weighted graph..  */
+        case 'm':	/* Create a network using a model..  */
         
+          if (args_info->load_network_group_counter && override)
+            reset_group_load_network (args_info);
+          args_info->load_network_group_counter += 1;
         
           if (update_arg( 0 , 
-               0 , &(args_info->weighted_given),
-              &(local_args_info.weighted_given), optarg, 0, 0, ARG_NO,
+               0 , &(args_info->model_given),
+              &(local_args_info.model_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
-              "weighted", 'w',
+              "model", 'm',
               additional_error))
             goto failure;
         
           break;
 
         case 0:	/* Long option with no short option */
+          /* Specify if the input file is considered as a weighted graph..  */
+          if (strcmp (long_options[option_index].name, "weighted") == 0)
+          {
+          
+          
+            if (update_arg( 0 , 
+                 0 , &(args_info->weighted_given),
+                &(local_args_info.weighted_given), optarg, 0, 0, ARG_NO,
+                check_ambiguity, override, 0, 0,
+                "weighted", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Use Erdos-Renyi model..  */
+          else if (strcmp (long_options[option_index].name, "erdos") == 0)
+          {
+          
+          
+            if (update_arg( 0 , 
+                 0 , &(args_info->erdos_given),
+                &(local_args_info.erdos_given), optarg, 0, 0, ARG_NO,
+                check_ambiguity, override, 0, 0,
+                "erdos", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          
+          break;
         case '?':	/* Invalid option.  */
           /* `getopt_long' already printed an error message.  */
           goto failure;

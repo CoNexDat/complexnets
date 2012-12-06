@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include "../../ComplexNets/typedefs.h"
 #include "../../ComplexNets/IGraphFactory.h"
 #include "../../ComplexNets/AdjacencyListVertex.h"
 #include "../../ComplexNets/AdjacencyListGraph.h"
@@ -24,10 +25,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    typedef graphpp::AdjacencyListVertex Vertex;
-    typedef graphpp::AdjacencyListGraph<Vertex> Graph;
-    typedef graphpp::WeightedVertexAspect<Vertex> WeightedVertex;
-    typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph<WeightedVertex> > WeightedGraph;
 
     MainWindow(QWidget* parent = 0);
     ~MainWindow();

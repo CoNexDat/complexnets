@@ -1,14 +1,10 @@
 #ifndef PROGRAM_STATE_H
 #define PROGRAM_STATE_H
 
+#include "../ComplexNets/typedefs.h"
 #include "../ComplexNets/AdjacencyListGraph.h"
 #include "../ComplexNets/WeightedVertexAspect.h"
 #include "../ComplexNets/WeightedGraphAspect.h"
-
-typedef graphpp::AdjacencyListVertex Vertex;
-typedef graphpp::AdjacencyListGraph<Vertex> Graph;
-typedef graphpp::WeightedVertexAspect<Vertex> WeightedVertex;
-typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph<WeightedVertex> > WeightedGraph;
 
 using namespace std;
 
@@ -20,12 +16,16 @@ private:
     Graph *graph;
 
 public:
+	~ProgramState();
+
 	void setWeighted(bool weighted);
-	void readGraphFromFile(string path);
 
 	bool isWeighted();
 	WeightedGraph *getWeightedGraph();
 	Graph *getGraph();
+
+	void readGraphFromFile(string path);
+	void setErdosRenyiGraph(int n, float p);
 };
 
 #endif

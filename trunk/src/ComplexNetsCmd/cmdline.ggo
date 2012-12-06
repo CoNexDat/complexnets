@@ -8,8 +8,17 @@ description "ComplexNets description"
 
 defgroup "load-network" groupdesc="Load a network"
 
-groupoption "input-file" i "Load a network from an input file." group="load-network"
-string typestr="<filename>"
+	# ----- Group option to read graph from file.
 
-option "weighted" w "Specify if the input file is considered as a weighted graph." optional
-dependon="input-file"
+	groupoption "input-file" i "Load a network from an input file." group="load-network"
+	string typestr="<filename>"
+
+		option "weighted" - "Specify if the input file is considered as a weighted graph." optional
+		dependon="input-file"
+
+	# ----- Group option to create a graph using a model.
+	
+	groupoption "model" m "Create a network using a model." group="load-network"
+
+	option "erdos" - "Use Erdos-Renyi model."
+	dependon="model"

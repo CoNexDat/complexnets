@@ -43,11 +43,15 @@ struct gengetopt_args_info
   char * input_file_orig;	/**< @brief Load a network from an input file. original value given at command line.  */
   const char *input_file_help; /**< @brief Load a network from an input file. help description.  */
   const char *weighted_help; /**< @brief Specify if the input file is considered as a weighted graph. help description.  */
+  const char *model_help; /**< @brief Create a network using a model. help description.  */
+  const char *erdos_help; /**< @brief Use Erdos-Renyi model. help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int input_file_given ;	/**< @brief Whether input-file was given.  */
   unsigned int weighted_given ;	/**< @brief Whether weighted was given.  */
+  unsigned int model_given ;	/**< @brief Whether model was given.  */
+  unsigned int erdos_given ;	/**< @brief Whether erdos was given.  */
 
   int load_network_group_counter; /**< @brief Counter for group load_network */
 } ;
