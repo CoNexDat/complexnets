@@ -10,10 +10,17 @@
 /**
  * Prints an error message in the standard error output.
  */
-void
-errorMessage(const char *message) {
+void errorMessage(const char *message) {
 	fprintf(stderr, "ERROR: ");
  	fprintf(stderr, message);
- 	fprintf(stderr, "\nType 'complexnets --help' to see the available \
-options.\n");
+ 	fprintf(stderr, "\n");
+}
+
+/**
+ * Prints an error message in the standard error output and a usage message.
+ */
+void usageErrorMessage(const char *message) {
+	fprintf(stderr, "ERROR: ");
+ 	fprintf(stderr, message);
+ 	fprintf(stderr, "\nType 'complexnets --help' to see the available options.\n");
 }

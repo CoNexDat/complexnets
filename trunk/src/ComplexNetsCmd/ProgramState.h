@@ -10,19 +10,20 @@ typedef graphpp::AdjacencyListGraph<Vertex> Graph;
 typedef graphpp::WeightedVertexAspect<Vertex> WeightedVertex;
 typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph<WeightedVertex> > WeightedGraph;
 
+using namespace std;
+
 class ProgramState {
 
 private:
-	bool isWeighted;
+	bool weighted;
     WeightedGraph *weightedGraph;
     Graph *graph;
 
 public:
-	void setIsWeighted(bool isWeighted);
-	void setWeightedGraph(WeightedGraph *weightedGraph);
-	void setGraph(Graph *weightedGraph);
+	void setWeighted(bool weighted);
+	void readGraphFromFile(string path);
 
-	bool getIsWeighted();
+	bool isWeighted();
 	WeightedGraph *getWeightedGraph();
 	Graph *getGraph();
 };
