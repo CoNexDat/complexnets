@@ -336,12 +336,6 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   FIX_UNUSED (additional_error);
 
   /* checks for required options */
-  if (! args_info->weighted_given)
-    {
-      fprintf (stderr, "%s: '--weighted' ('-w') option required%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
   
   /* checks for dependences among options */
   if (args_info->weighted_given && ! args_info->input_file_given)

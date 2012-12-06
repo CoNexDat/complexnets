@@ -11,5 +11,5 @@ defgroup "load-network" groupdesc="Load a network"
 groupoption "input-file" i "Load a network from an input file." group="load-network"
 string typestr="<filename>"
 
-option "weighted" w "Specify if the input file is considered as a weighted graph."
+option "weighted" w "Specify if the input file is considered as a weighted graph." optional
 dependon="input-file"
