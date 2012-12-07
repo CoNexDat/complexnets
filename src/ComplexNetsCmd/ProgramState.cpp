@@ -29,6 +29,7 @@ void ProgramState::readGraphFromFile(string path) {
     }
 }
 
-void ProgramState::setErdosRenyiGraph(int n, float p) {
-
+void ProgramState::setErdosRenyiGraph(unsigned int n, float p) {
+	setWeighted(false);
+	this->graph = GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p);
 }

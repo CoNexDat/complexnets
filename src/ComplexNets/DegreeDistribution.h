@@ -5,6 +5,7 @@
 
 #include "mili/mili.h"
 #include "TraverserForward.h"
+#include <stdio.h>
 
 namespace graphpp
 {
