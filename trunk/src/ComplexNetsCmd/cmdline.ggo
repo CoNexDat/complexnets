@@ -6,19 +6,68 @@ description "ComplexNets description"
 
 # ----- Group to load networks.
 
-defgroup "load-network" groupdesc="Load a network"
+defgroup "network-load" groupdesc="Load a network"
 
-	# ----- Group option to read graph from file.
-
-	groupoption "input-file" i "Load a network from an input file." group="load-network"
+	groupoption "input-file" i "Load a network from an input file" group="network-load"
 	string typestr="<filename>"
 
-		option "weighted" - "Specify if the input file is considered as a weighted graph." optional
+		option "weighted" - "Specify if the input file is considered as a weighted graph" optional
 		dependon="input-file"
 
-	# ----- Group option to create a graph using a model.
-	
-	groupoption "model" m "Create a network using a model." group="load-network"
+# ----- Group to create a graph using a model.
 
-	option "erdos" - "Use Erdos-Renyi model." optional
-	dependon="model"
+defgroup "model" groupdesc="Generate a network using a model"
+	
+	groupoption "erdos" - "Erdos-Renyi model" group="model"
+	groupoption "barabasi" - "Barabasi-Albert model" group="model"
+	groupoption "hot" - "Extended Hot model" group="model"
+	groupoption "molloy" - "Molloy-Reed model" group="model"
+
+		#Habría que ver si se puenden poner dependon multiples
+		option "n" n "Number of network nodes" int typestr="<number>" optional
+
+		option "p" p "Connection probability (only for Erdos-Renyi model)" double typestr="<probability>" 
+		dependon="erdos" optional
+
+		option "m0" c "Initial number of nodes (only for Barabasi-Albert model)" int typestr="<number>" default="10" optional dependon="erdos" optional
+		
+		option "m" m "Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model)" int typestr="<number>" default="2" optional dependon="barabasi" optional
+
+# ----- Group of network analysis methods.
+
+defgroup "analysis" groupdesc="Network analysis methods"
+	
+	groupoption "betweenness" - "Calculate betweenness of a given node" group="analysis"
+	int typestr="<vertex id>"
+
+	groupoption "ddist" - "Calculate the degree distribution of a given node" group="analysis"
+	int typestr="<vertex id>"
+
+	groupoption "clustering" - "Calculate the clustering coefficient of a given node" group="analysis"
+	int typestr="<vertex id>"
+
+	groupoption "knn" - "Calculate the nearest neighbors degree of a given node" group="analysis"
+	int typestr="<vertex id>"
+
+	groupoption "shell" - "Calculate the shell index of a given node" group="analysis"
+	int typestr="<vertex id>"
+
+# ----- Group of network analysis methods.
+
+defgroup "graphics" groupdesc="Network analysis graphics"
+
+	groupoption "output-file" o "Save the result into the file specified" group="graphics" 
+	string typestr="<filename>" required
+		
+		option "betweenness-plot" - "Betweenness vs. Degree" dependon="output-file" optional
+		
+		option "ddist-plot" - "Degree distribution" dependon="output-file" optional
+		
+		option "clustering-plot" - "Clustering coefficient vs. Degree" dependon="output-file" optional
+		
+		option "knn-plot" - "Nearest Neighbors Degree vs. Degree" dependon="output-file" optional
+		
+		option "shell-plot" - "Shell index vs. Degree" dependon="output-file" optional
+
+	
+	
