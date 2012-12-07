@@ -46,8 +46,8 @@ WeightedGraph GraphGenerator::generateWeightedGraphFromFile(string path, bool di
 }
 
 
-Graph GraphGenerator::generateErdosRenyiGraph(unsigned int n, unsigned int p) {
-	Graph graph = Graph(false, false);
+Graph GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p) {
+	Graph graph = Graph(true, false);
 
 	for (unsigned int i = 1; i <= n; i++) {
 		graph.addVertex(new Vertex(i));
@@ -58,10 +58,9 @@ Graph GraphGenerator::generateErdosRenyiGraph(unsigned int n, unsigned int p) {
 
 		for (unsigned int j = i + 1; j <= n; j++) {
 			Vertex* destVertex = graph.getVertexById(j);
-
-			if ((float) rand() / RAND_MAX <= p) {
+			
+			if ((float) rand() / RAND_MAX <= p)
 				graph.addEdge(srcVertex, destVertex);
-			}
 		}
 	}
 

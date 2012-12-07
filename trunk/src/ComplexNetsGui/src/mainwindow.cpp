@@ -849,15 +849,13 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 		QString inputP = inputId("p:");
 		QString ret;
 
-		unsigned int n = 20;
+		unsigned int n = 1000;
 		float p = 0.1;
 
 		try
 	    {
 			GraphLoadingValidationDialog graphValidationDialog(this);
-	        weightedGraph = WeightedGraph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
 	        this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
-	        buildGraphFactory(graphValidationDialog.isWeigthed());
 
 			if(!inputN.isEmpty())
 	        	n = inputN.toInt();
