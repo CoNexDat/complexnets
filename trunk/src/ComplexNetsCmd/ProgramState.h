@@ -20,7 +20,7 @@ public:
 	Graph getGraph();
 
 	void readGraphFromFile(string path);
-	void setErdosRenyiGraph(int n, float p);
+	void setErdosRenyiGraph(unsigned int n, float p);
 };
 
 #endif
