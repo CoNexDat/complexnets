@@ -12,7 +12,7 @@
  */
 void errorMessage(const char *message) {
 	fprintf(stderr, "ERROR: ");
- 	fprintf(stderr, message);
+ 	fprintf(stderr, "%s", message);
  	fprintf(stderr, "\n");
 }
 
@@ -21,6 +21,6 @@ void errorMessage(const char *message) {
  */
 void usageErrorMessage(const char *message) {
 	fprintf(stderr, "ERROR: ");
- 	fprintf(stderr, message);
+ 	fprintf(stderr, "%s", message);
  	fprintf(stderr, "\nType 'complexnets --help' to see the available options.\n");
 }
