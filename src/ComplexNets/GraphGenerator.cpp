@@ -47,7 +47,7 @@ WeightedGraph GraphGenerator::generateWeightedGraphFromFile(string path, bool di
 
 
 Graph GraphGenerator::generateErdosRenyiGraph(unsigned int n, unsigned int p) {
-	Graph graph = new Graph(false, false);
+	Graph graph = Graph(false, false);
 
 	for (unsigned int i = 1; i <= n; i++) {
 		graph.addVertex(new Vertex(i));
