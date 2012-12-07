@@ -39,21 +39,78 @@ struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
-  char * input_file_arg;	/**< @brief Load a network from an input file..  */
-  char * input_file_orig;	/**< @brief Load a network from an input file. original value given at command line.  */
-  const char *input_file_help; /**< @brief Load a network from an input file. help description.  */
-  const char *weighted_help; /**< @brief Specify if the input file is considered as a weighted graph. help description.  */
-  const char *model_help; /**< @brief Create a network using a model. help description.  */
-  const char *erdos_help; /**< @brief Use Erdos-Renyi model. help description.  */
+  char * input_file_arg;	/**< @brief Load a network from an input file.  */
+  char * input_file_orig;	/**< @brief Load a network from an input file original value given at command line.  */
+  const char *input_file_help; /**< @brief Load a network from an input file help description.  */
+  const char *weighted_help; /**< @brief Specify if the input file is considered as a weighted graph help description.  */
+  const char *erdos_help; /**< @brief Erdos-Renyi model help description.  */
+  const char *barabasi_help; /**< @brief Barabasi-Albert model help description.  */
+  const char *hot_help; /**< @brief Extended Hot model help description.  */
+  const char *molloy_help; /**< @brief Molloy-Reed model help description.  */
+  int n_arg;	/**< @brief Number of network nodes.  */
+  char * n_orig;	/**< @brief Number of network nodes original value given at command line.  */
+  const char *n_help; /**< @brief Number of network nodes help description.  */
+  double p_arg;	/**< @brief Connection probability (only for Erdos-Renyi model).  */
+  char * p_orig;	/**< @brief Connection probability (only for Erdos-Renyi model) original value given at command line.  */
+  const char *p_help; /**< @brief Connection probability (only for Erdos-Renyi model) help description.  */
+  int m0_arg;	/**< @brief Initial number of nodes (only for Barabasi-Albert model) (default='10').  */
+  char * m0_orig;	/**< @brief Initial number of nodes (only for Barabasi-Albert model) original value given at command line.  */
+  const char *m0_help; /**< @brief Initial number of nodes (only for Barabasi-Albert model) help description.  */
+  int m_arg;	/**< @brief Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model) (default='2').  */
+  char * m_orig;	/**< @brief Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model) original value given at command line.  */
+  const char *m_help; /**< @brief Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model) help description.  */
+  int betweenness_arg;	/**< @brief Calculate betweenness of a given node.  */
+  char * betweenness_orig;	/**< @brief Calculate betweenness of a given node original value given at command line.  */
+  const char *betweenness_help; /**< @brief Calculate betweenness of a given node help description.  */
+  int ddist_arg;	/**< @brief Calculate the degree distribution of a given node.  */
+  char * ddist_orig;	/**< @brief Calculate the degree distribution of a given node original value given at command line.  */
+  const char *ddist_help; /**< @brief Calculate the degree distribution of a given node help description.  */
+  int clustering_arg;	/**< @brief Calculate the clustering coefficient of a given node.  */
+  char * clustering_orig;	/**< @brief Calculate the clustering coefficient of a given node original value given at command line.  */
+  const char *clustering_help; /**< @brief Calculate the clustering coefficient of a given node help description.  */
+  int knn_arg;	/**< @brief Calculate the nearest neighbors degree of a given node.  */
+  char * knn_orig;	/**< @brief Calculate the nearest neighbors degree of a given node original value given at command line.  */
+  const char *knn_help; /**< @brief Calculate the nearest neighbors degree of a given node help description.  */
+  int shell_arg;	/**< @brief Calculate the shell index of a given node.  */
+  char * shell_orig;	/**< @brief Calculate the shell index of a given node original value given at command line.  */
+  const char *shell_help; /**< @brief Calculate the shell index of a given node help description.  */
+  char * output_file_arg;	/**< @brief Save the result into the file specified.  */
+  char * output_file_orig;	/**< @brief Save the result into the file specified original value given at command line.  */
+  const char *output_file_help; /**< @brief Save the result into the file specified help description.  */
+  const char *betweenness_plot_help; /**< @brief Betweenness vs. Degree help description.  */
+  const char *ddist_plot_help; /**< @brief Degree distribution help description.  */
+  const char *clustering_plot_help; /**< @brief Clustering coefficient vs. Degree help description.  */
+  const char *knn_plot_help; /**< @brief Nearest Neighbors Degree vs. Degree help description.  */
+  const char *shell_plot_help; /**< @brief Shell index vs. Degree help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int input_file_given ;	/**< @brief Whether input-file was given.  */
   unsigned int weighted_given ;	/**< @brief Whether weighted was given.  */
-  unsigned int model_given ;	/**< @brief Whether model was given.  */
   unsigned int erdos_given ;	/**< @brief Whether erdos was given.  */
+  unsigned int barabasi_given ;	/**< @brief Whether barabasi was given.  */
+  unsigned int hot_given ;	/**< @brief Whether hot was given.  */
+  unsigned int molloy_given ;	/**< @brief Whether molloy was given.  */
+  unsigned int n_given ;	/**< @brief Whether n was given.  */
+  unsigned int p_given ;	/**< @brief Whether p was given.  */
+  unsigned int m0_given ;	/**< @brief Whether m0 was given.  */
+  unsigned int m_given ;	/**< @brief Whether m was given.  */
+  unsigned int betweenness_given ;	/**< @brief Whether betweenness was given.  */
+  unsigned int ddist_given ;	/**< @brief Whether ddist was given.  */
+  unsigned int clustering_given ;	/**< @brief Whether clustering was given.  */
+  unsigned int knn_given ;	/**< @brief Whether knn was given.  */
+  unsigned int shell_given ;	/**< @brief Whether shell was given.  */
+  unsigned int output_file_given ;	/**< @brief Whether output-file was given.  */
+  unsigned int betweenness_plot_given ;	/**< @brief Whether betweenness-plot was given.  */
+  unsigned int ddist_plot_given ;	/**< @brief Whether ddist-plot was given.  */
+  unsigned int clustering_plot_given ;	/**< @brief Whether clustering-plot was given.  */
+  unsigned int knn_plot_given ;	/**< @brief Whether knn-plot was given.  */
+  unsigned int shell_plot_given ;	/**< @brief Whether shell-plot was given.  */
 
-  int load_network_group_counter; /**< @brief Counter for group load_network */
+  int analysis_group_counter; /**< @brief Counter for group analysis */
+  int graphics_group_counter; /**< @brief Counter for group graphics */
+  int model_group_counter; /**< @brief Counter for group model */
+  int network_load_group_counter; /**< @brief Counter for group network_load */
 } ;
 
 /** @brief The additional parameters to pass to parser functions */

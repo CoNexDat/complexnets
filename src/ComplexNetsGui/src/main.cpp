@@ -46,12 +46,11 @@ int main(int argc, char* argv[])
 				ERROR_EXIT;
 			}
 
-		} else if (args_info->model_given) {
-			if (args_info->erdos_given) {
-				
-			}
-		}
-		else {
+		} else if (args_info->erdos_given) {
+			printf("Erdos!\n");
+		} else if (args_info->barabasi_given) {
+			printf("Barabasi!\n");
+		} else {
 			usageErrorMessage("A network must be specified in order to work.");
 			ERROR_EXIT;
 		}
