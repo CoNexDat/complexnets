@@ -20,5 +20,5 @@ defgroup "load-network" groupdesc="Load a network"
 	
 	groupoption "model" m "Create a network using a model." group="load-network"
 
-	option "erdos" - "Use Erdos-Renyi model."
+	option "erdos" - "Use Erdos-Renyi model." optional
 	dependon="model"

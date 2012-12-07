@@ -9,17 +9,15 @@ class ProgramState {
 
 private:
 	bool weighted;
-    WeightedGraph *weightedGraph;
-    Graph *graph;
+    WeightedGraph weightedGraph;
+    Graph graph;
 
 public:
-	~ProgramState();
-
 	void setWeighted(bool weighted);
 
 	bool isWeighted();
-	WeightedGraph *getWeightedGraph();
-	Graph *getGraph();
+	WeightedGraph getWeightedGraph();
+	Graph getGraph();
 
 	void readGraphFromFile(string path);
 	void setErdosRenyiGraph(int n, float p);

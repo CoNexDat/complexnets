@@ -78,14 +78,22 @@ void MainWindow::on_actionOpen_triggered()
         {
             if (fileDialog.exec())
             {
-                graph = Graph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
-                weightedGraph = WeightedGraph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+                bool isDirected = graphValidationDialog.isDirected();
+                bool isMultigraph = graphValidationDialog.isMultigraph();
                 selectedFiles = fileDialog.selectedFiles();
                 this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
                 buildGraphFactory(graphValidationDialog.isWeigthed());
                 try
                 {
-                    readGraph(selectedFiles[0].toStdString());
+                    string path = selectedFiles[0].toStdString();
+
+                    if (this->weightedgraph) {
+                        graph = Graph(isDirected, isMultigraph);
+                        weightedGraph = GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, isDirected, isMultigraph);
+                    } else {
+                        graph = GraphGenerator::getInstance()->generateGraphFromFile(path, isDirected, isMultigraph);
+                        weightedGraph = WeightedGraph(isDirected, isMultigraph);
+                    }
                 }
                 catch (const FileNotFoundException& ex)
                 {
@@ -236,22 +244,6 @@ void MainWindow::deleteGraphFactory()
     {
         delete factory;
         factory = NULL;
-    }
-}
-
-void MainWindow::readGraph(const std::string path)
-{
-    if (this->weightedgraph)
-    {
-        IGraphReader<WeightedGraph, WeightedVertex>* reader = weightedFactory->createGraphReader();
-        reader->read(weightedGraph, path);
-        delete reader;
-    }
-    else
-    {
-		IGraphReader<Graph, Vertex>* reader = factory->createGraphReader();
-		reader->read(graph, path);
-		delete reader;
     }
 }
 
