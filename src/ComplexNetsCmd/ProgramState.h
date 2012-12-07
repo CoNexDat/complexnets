@@ -2,9 +2,6 @@
 #define PROGRAM_STATE_H
 
 #include "../ComplexNets/typedefs.h"
-#include "../ComplexNets/AdjacencyListGraph.h"
-#include "../ComplexNets/WeightedVertexAspect.h"
-#include "../ComplexNets/WeightedGraphAspect.h"
 
 using namespace std;
 

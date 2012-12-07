@@ -21,6 +21,7 @@
 #include "../../ComplexNets/IBetweenness.h"
 #include "../../ComplexNets/IShellIndex.h"
 #include "../../ComplexNets/DegreeDistribution.h"
+#include "../../ComplexNets/GraphGenerator.h"
 
 using namespace ComplexNetsGui;
 using namespace graphpp;
@@ -862,7 +863,6 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 		try
 	    {
 			GraphLoadingValidationDialog graphValidationDialog(this);
-			graph = Graph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
 	        weightedGraph = WeightedGraph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
 	        this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
 	        buildGraphFactory(graphValidationDialog.isWeigthed());
@@ -872,18 +872,7 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 			if(!inputP.isEmpty())
 	        	p = inputP.toFloat();
 
-			for(unsigned int i = 1; i <= n; i++)
-				graph.addVertex(new Vertex(i));
-			for(unsigned int i = 1; i < n; i++) 
-			{
-				Vertex* srcVertex = graph.getVertexById(i);
-				for(unsigned int j = i+1; j <= n; j++)
-				{
-					Vertex* destVertex = graph.getVertexById(j);
-					if((float)rand()/RAND_MAX <= p)
-						graph.addEdge(srcVertex, destVertex);
-				}
-			}		
+            graph = *GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p);
 
 			/*ConexityVisitor<Graph, Vertex> conexityVisitor;
 
