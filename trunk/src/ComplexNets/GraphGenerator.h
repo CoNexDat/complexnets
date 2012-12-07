@@ -16,7 +16,8 @@ public:
 
 	Graph generateGraphFromFile(string path, bool directed, bool multigraph);
 	WeightedGraph generateWeightedGraphFromFile(string path, bool directed, bool multigraph);
-	Graph generateErdosRenyiGraph(unsigned int n, float p);
+	Graph* generateErdosRenyiGraph(unsigned int n, float p);
+	Graph* generateBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 
 };
 

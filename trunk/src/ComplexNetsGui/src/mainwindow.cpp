@@ -854,16 +854,16 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 
 		try
 	    {
-			GraphLoadingValidationDialog graphValidationDialog(this);
-	        this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
+	        this->onNetworkLoad(false, false, false);
+			buildGraphFactory(false);
+
 
 			if(!inputN.isEmpty())
 	        	n = inputN.toInt();
 			if(!inputP.isEmpty())
 	        	p = inputP.toFloat();
 
-            buildGraphFactory(false);
-            graph = GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p);
+            graph = *(GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p));
 
 			/*ConexityVisitor<Graph, Vertex> conexityVisitor;
 
@@ -921,11 +921,8 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 
 	    try
 	    {
-			GraphLoadingValidationDialog graphValidationDialog(this);
-			graph = Graph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
-	        weightedGraph = WeightedGraph(graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
-	        this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
-	        buildGraphFactory(graphValidationDialog.isWeigthed());
+			this->onNetworkLoad(false, false, false);
+			buildGraphFactory(false);
 
 			if(!inputM_0.isEmpty())
 	        	m_0 = inputM_0.toInt();
@@ -935,45 +932,7 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 	        	n = inputN.toInt();
 			m_0 = max(m_0, m);
 
-			// Create a K_M_0 graph				
-			for(unsigned int i = 1; i <= m_0; i++)
-				graph.addVertex(new Vertex(i));
-			for(unsigned int i = 1; i < m_0; i++) 
-			{
-				Vertex* srcVertex = graph.getVertexById(i);
-				for(unsigned int j = i+1; j <= m_0; j++)
-				{
-					Vertex* destVertex = graph.getVertexById(j);
-					graph.addEdge(srcVertex, destVertex);
-				}
-			}
-
-			// Fill the array with k aparitions of each vertex where k is the degree of the vertex
-			vector<unsigned int> vertexIndexes;
-			for(unsigned int i = 1; i <= m_0; i++)
-				for(unsigned int k = 0; k < m_0; k++)
-					vertexIndexes.push_back(i);
-
-			for(unsigned int i = m_0+1; i <= n; i++)
-			{
-				unsigned int k = 0;
-				Vertex* newVertex = new Vertex(i);
-				while(k < m)
-				{
-					unsigned int index = vertexIndexes[rand() % vertexIndexes.size()];
-					Vertex* selectedVertex = graph.getVertexById(index);
-					// It isn't the same vertex and it isn't connected
-					if(index != i && !selectedVertex->isNeighbourOf(newVertex))
-					{
-						vertexIndexes.push_back(index);
-						vertexIndexes.push_back(i);
-						graph.addVertex(newVertex);
-						graph.addEdge(selectedVertex, newVertex);		
-						k++;
-					}
-				}
-			}
-			vertexIndexes.clear();
+			graph = *(GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n));
 
 			QString text("Network created using Barabasi-Albert algorithm");
 	        text.append("\nAmount of vertices in the graph: ");
