@@ -872,7 +872,7 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 			if(!inputP.isEmpty())
 	        	p = inputP.toFloat();
 
-            graph = *GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p);
+            graph = GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p);
 
 			/*ConexityVisitor<Graph, Vertex> conexityVisitor;
 
