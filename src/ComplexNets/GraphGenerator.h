@@ -14,7 +14,7 @@ private:
 public:
 	static GraphGenerator *getInstance();
 
-	Graph *generateErdosRenyiGraph(unsigned int n, unsigned int p);
+	Graph generateErdosRenyiGraph(unsigned int n, unsigned int p);
 
 };
 

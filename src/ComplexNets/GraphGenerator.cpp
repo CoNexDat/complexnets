@@ -12,21 +12,21 @@ GraphGenerator *GraphGenerator::getInstance() {
 	return instance;
 }
 
-Graph *GraphGenerator::generateErdosRenyiGraph(unsigned int n, unsigned int p) {
-	Graph *graph = new Graph(false, false);
+Graph GraphGenerator::generateErdosRenyiGraph(unsigned int n, unsigned int p) {
+	Graph graph = new Graph(false, false);
 
 	for (unsigned int i = 1; i <= n; i++) {
-		graph->addVertex(new Vertex(i));
+		graph.addVertex(new Vertex(i));
 	}
 
 	for (unsigned int i = 1; i < n; i++) {
-		Vertex* srcVertex = graph->getVertexById(i);
+		Vertex* srcVertex = graph.getVertexById(i);
 
 		for (unsigned int j = i + 1; j <= n; j++) {
-			Vertex* destVertex = graph->getVertexById(j);
+			Vertex* destVertex = graph.getVertexById(j);
 
 			if ((float) rand() / RAND_MAX <= p) {
-				graph->addEdge(srcVertex, destVertex);
+				graph.addEdge(srcVertex, destVertex);
 			}
 		}
 	}
