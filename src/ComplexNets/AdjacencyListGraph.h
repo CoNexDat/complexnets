@@ -99,6 +99,7 @@ public:
 
     typedef CAutonomousIterator<VertexContainer>  VerticesConstIterator;
     typedef AutonomousIterator<VertexContainer>  VerticesIterator;
+	typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename Vertex::VertexId VertexId;
 
     AdjacencyListGraph(const bool isDigraph = false, const bool isMultigraph = false)
@@ -129,6 +130,28 @@ public:
         insert_into(vertices, v);
     }
 
+
+    /**
+    * Method: removeVertex
+    * -----------------
+    * Description: Removes a vertex and all of its edge of the graph
+    * @param v Vertex to be added
+    */
+    void removeVertex(Vertex* v)
+    {
+		NeighborsIterator it = v->neighborsIterator();
+
+        while (!it.end())
+        {
+            Vertex* neighbour = *it;
+			removeEdge(neighbour, v);
+            it++;
+        }
+        //removes the vertex from the vertices container
+        remove_first_from(vertices, v);
+    }
+
+
     /**
     * Method: addEdge
     * ---------------
@@ -148,6 +171,25 @@ public:
             throw DuplicateEdge();
         s->addEdge(d);
         d->addEdge(s);*/
+    }
+
+
+
+
+    /**
+    * Method: removeEdge
+    * ---------------
+    * Description: Remove an edge
+    * @param s a vertex
+    * @param d a vertex
+    */
+    void removeEdge(Vertex* s, Vertex* d)
+    {
+        if (!s->isNeighbourOf(d))
+            return;
+        s->removeEdge(d);
+        if (!this->isDigraph())
+            d->removeEdge(s);
     }
 
     /**

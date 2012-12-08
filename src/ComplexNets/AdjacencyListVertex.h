@@ -39,6 +39,21 @@ public:
         insert_into<AdjacencyListVertex*>(neighbors, other);
     }
 
+
+    /**
+    * Method: removeEdge
+    * --------------------------
+    * Description: Remove an edge, particularly a vertex from the list of
+    * the vertex's neighbors
+    * @param v Vertex neighbour to be added
+    */
+    template<class T>
+    void removeEdge(T* v)
+    {
+        AdjacencyListVertex* other = static_cast<AdjacencyListVertex*>(v);
+        remove_first_from<AdjacencyListVertex*>(neighbors, other);
+    }
+
     /**
     * Method: neighborsConstIterator
     * ------------------------------
@@ -113,15 +128,14 @@ public:
 
     void setVisited(bool v)
     {
-        visited = v;
+       visited=v;
     }
-
 
 private:
 
     VertexContainer neighbors;
     VertexId vertexId;
-    bool visited;
+   	bool visited;
 };
 }
 
