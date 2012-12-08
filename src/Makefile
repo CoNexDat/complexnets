@@ -241,7 +241,9 @@ moc_mainwindow.cpp: ComplexNets/typedefs.h \
 		ComplexNets/IShellIndex.h \
 		ComplexNets/IGraphReader.h \
 		ComplexNets/DegreeDistribution.h \
+		ComplexNets/ConexityVerifier.h \
 		ComplexNets/TraverserForward.h \
+		ComplexNets/TraverserBFS.h \
 		ComplexNets/PropertyMap.h \
 		ComplexNetsGui/inc/GrapherUtils.h \
 		ComplexNetsGui/inc/GnuplotConsole.h \
@@ -344,7 +346,9 @@ main.o: ComplexNetsGui/src/main.cpp ComplexNetsGui/inc/mainwindow.h \
 		ComplexNets/IShellIndex.h \
 		ComplexNets/IGraphReader.h \
 		ComplexNets/DegreeDistribution.h \
+		ComplexNets/ConexityVerifier.h \
 		ComplexNets/TraverserForward.h \
+		ComplexNets/TraverserBFS.h \
 		ComplexNets/PropertyMap.h \
 		ComplexNetsGui/inc/GrapherUtils.h \
 		ComplexNetsGui/inc/GnuplotConsole.h \
@@ -396,7 +400,9 @@ mainwindow.o: ComplexNetsGui/src/mainwindow.cpp ComplexNetsGui/inc/ui_mainwindow
 		ComplexNets/IShellIndex.h \
 		ComplexNets/IGraphReader.h \
 		ComplexNets/DegreeDistribution.h \
+		ComplexNets/ConexityVerifier.h \
 		ComplexNets/TraverserForward.h \
+		ComplexNets/TraverserBFS.h \
 		ComplexNets/PropertyMap.h \
 		ComplexNetsGui/inc/GrapherUtils.h \
 		ComplexNetsGui/inc/GnuplotConsole.h \
@@ -494,7 +500,9 @@ GraphGenerator.o: ComplexNets/GraphGenerator.cpp ComplexNets/GraphGenerator.h \
 		ComplexNets/INearestNeighborsDegree.h \
 		ComplexNets/IShellIndex.h \
 		ComplexNets/DegreeDistribution.h \
+		ComplexNets/ConexityVerifier.h \
 		ComplexNets/TraverserForward.h \
+		ComplexNets/TraverserBFS.h \
 		ComplexNets/Betweenness.h \
 		ComplexNets/ClusteringCoefficient.h \
 		ComplexNets/NearestNeighborsDegree.h \

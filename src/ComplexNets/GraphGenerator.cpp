@@ -2,6 +2,8 @@
 #include "../ComplexNets/IGraphReader.h"
 #include "../ComplexNets/GraphFactory.h"
 #include "../ComplexNets/WeightedGraphFactory.h"
+#include "../ComplexNets/ConexityVerifier.h"
+#include "../ComplexNets/TraverserBFS.h"
 
 using namespace graphpp;
 
@@ -64,6 +66,10 @@ Graph* GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p)
 				graph->addEdge(srcVertex, destVertex);
 		}
 	}
+
+	// Keep only the bigest component (at least n/2 vertexes)
+	ConexityVerifier<Graph, Vertex> conexityVerifier;
+	conexityVerifier.getBigestComponent(graph);
 
 	return graph;
 }

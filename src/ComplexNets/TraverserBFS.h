@@ -4,6 +4,8 @@
 #include <queue>
 #include <iostream>
 
+#include "../ComplexNets/typedefs.h"
+
 namespace graphpp
 {
 
@@ -22,7 +24,7 @@ public:
         if (iter.end()) return;
 
         Vertex* source = *iter;
-        TraverseBFS(source, v);
+        traverse(source, v);
     }
 
     static void traverse(Vertex* source, Visitor& v)
@@ -30,15 +32,16 @@ public:
         bool keepTraversing = true;
 
         std::queue<Vertex*> queue;
-        queue.push(&source);
+        queue.push(source);
+        source->setVisited(true);
 
-        int i = 0;
         while (!queue.empty() && keepTraversing)
         {
             Vertex* vertex = queue.front();
             queue.pop();
-            vertex->setVisited(true);
 
+			cout << vertex->getVertexId();
+			cout << '\n';
             keepTraversing = v.visitVertex(vertex);
 
             if (keepTraversing)
@@ -48,11 +51,11 @@ public:
                 while (!it.end())
                 {
                     Vertex* neighbour = *it;
-
-                    if (!neighbour.getVisited())
-                    {
+                    if (!neighbour->getVisited())
+					{
                         queue.push(neighbour);
-                    }
+			            neighbour->setVisited(true);
+					}
                     it++;
                 }
             }
