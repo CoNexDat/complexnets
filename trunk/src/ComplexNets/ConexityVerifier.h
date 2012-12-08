@@ -8,22 +8,99 @@
 namespace graphpp
 {
 
+template <class Graph, class Vertex>
+class ConexityVisitor;
 
-//template <class Graph, class Vertex>
-//class ConexityVerifier;
+template <class Graph, class Vertex>
+class ConexityVerifier
+{
+public:
+
+	std::vector<unsigned int> vertexesLeft;
+    std::vector<unsigned int> vertexesInComponent;
+
+	ConexityVerifier()
+	{
+
+	}
+ 
+	void visited(unsigned int id)
+    {
+    	vertexesInComponent.push_back(id);
+		// Erase vertex from vertexesLeft
+		for(unsigned int i = 0; i < vertexesLeft.size(); i++)
+		{
+			if(vertexesLeft[i] == id)
+			{
+				vertexesLeft.erase(vertexesLeft.begin() + i);
+				return;
+			}
+		}
+    }
+
+
+    void getBigestComponent(Graph* graph)
+    {
+		AdjacencyListGraph<AdjacencyListVertex>::VerticesConstIterator it = graph->verticesConstIterator();
+        while (!it.end())
+        {
+            vertexesLeft.push_back((*it)->getVertexId());
+            ++it;
+        }
+
+        ConexityVisitor<Graph, Vertex> visitor(this);
+		do
+		{
+			vertexesInComponent.clear();
+			Vertex* source = graph->getVertexById(vertexesLeft.back());
+			vertexesLeft.pop_back();
+			cout << "New BFS\n";
+			TraverserBFS<Graph, Vertex, ConexityVisitor<Graph, Vertex> >::traverse(source, visitor);			
+		} while (!vertexesLeft.empty() && vertexesInComponent.size() < graph->verticesCount()/2);
+
+
+		if(vertexesInComponent.size() >= graph->verticesCount()/2)
+			cout << "Component found\n";
+
+		AdjacencyListGraph<AdjacencyListVertex>::VerticesConstIterator it2 = graph->verticesConstIterator();
+        while (!it2.end())
+        {
+			bool found = false;
+            for(unsigned int i = 0; i < vertexesInComponent.size(); i++)
+			{
+				if(vertexesInComponent[i] == (*it2)->getVertexId())
+				{
+					found = true;
+					break;
+				}
+			}
+			if(!found)
+			{
+				cout << "Remove ";
+				cout << (*it2)->getVertexId();
+				cout << "\n"; 
+				graph->removeVertex(*it2);
+			}			
+				
+            ++it2;
+        }
+
+    }
+
+
+};
 
 
 template <class Graph, class Vertex>
 class ConexityVisitor
 {
 public:
-	std::vector<unsigned int> vertexesLeft;
-    std::vector<unsigned int> vertexesInComponent;
-
-	/*
-    ConexityVisitor(ConexityVerifier<Graph, Vertex>& observer)
-        : conexityVerifierObserver(observer) {}
-	*/
+	
+    ConexityVisitor(ConexityVerifier<Graph, Vertex>* conexityVerifierObserver)
+	{
+		this->conexityVerifierObserver = conexityVerifierObserver;
+	}
+	
     /**
     * Method: visitVertex
     * -------------------
@@ -33,95 +110,15 @@ public:
     */
     bool visitVertex(Vertex* vertex)
     {
-		return true;    	
-		/*vertexesInComponent.push_back(id);
-		for(int i = 0; i < vertexesLeft.size(); i++)
-		{
-			if(vertexesLeft[i] == id)
-			{
-				vertexesLeft.erase(i);
-				return;
-			}
-		} */      
-
-		//conexityVerifierObserver.visited(vertex->getVertexId());
-        //return true;
+		conexityVerifierObserver->visited(vertex->getVertexId());
+		return true;
     }
-/*
+
 private:
 
-    ConexityVerifier<Graph, Vertex>& conexityVerifierObserver;
-*/
+    ConexityVerifier<Graph, Vertex>* conexityVerifierObserver;
 };
 
-
-/*
-
-template <class Graph, class Vertex>
-class ConexityVerifier
-{
-public:
- 
-	//typedef graphpp::AdjacencyListGraph<graphpp::AdjacencyListVertex>::VerticesIterator VerticesIterator;
-	
-
-    void visited(int id)
-    {
-    	vertexesInComponent.push_back(id);
-		for(int i = 0; i < vertexesLeft.size(); i++)
-		{
-			if(vertexesLeft[i] == id)
-			{
-				vertexesLeft.erase(i);
-				return;
-			}
-		}
-    }
-
-
-    void getBigestComponent(Graph& graph)
-    {
-		VerticesIterator it = graph.verticesIterator();
-        while (!it.end())
-        {
-            vertexesLeft.push_back(it->getVertexId());
-            ++it;
-        }
-		
-
-        ConexityVisitor<Graph, Vertex> visitor(*this);
-		do
-		{
-			vertexesInComponent.clear();
-			Vertex* source = graph.getVertexById(vertexesLeft.back());
-			graph.getVertexById(vertexesLeft.pop_back()
-			TraverserBFS<Graph, Vertex, ConexityVisitor<Graph, Vertex> >::traverse(source, visitor);			
-		} while(vertexesLeft.size() > 0 && vertexesInComponent.size() < graph.verticesCount()/2);
-
-
-		it = graph.verticesIterator();
-        while (!it.end())
-        {
-			bool found = false;
-            for(int i = 0; i < vertexesInComponent.size(); i++)
-			{
-				if(vertexesInComponent[i] == it->getVertexId())
-				{
-					found = true;
-					break;
-				}
-			}
-			if(!found)
-				graph.removeVertex(it);
-				
-            ++it;
-        }
-		
-    }
-
-
-};
-*/
 }
 
 

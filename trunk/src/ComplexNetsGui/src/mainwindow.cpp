@@ -865,30 +865,6 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 
             graph = *(GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p));
 
-			/*ConexityVisitor<Graph, Vertex> conexityVisitor;
-
-			graphpp::AdjacencyListGraph<graphpp::AdjacencyListVertex>::VerticesIterator it = graph.verticesIterator();
-		    while (!it.end())
-		    {
-		        conexityVisitor.vertexesLeft.push_back((*it)->getVertexId());
-		        ++it;
-		    }
-
-			while (conexityVisitor.vertexesLeft.size()>0)
-			{
-				unsigned int element = conexityVisitor.vertexesLeft.back();
-				conexityVisitor.vertexesLeft.pop_back();
-				ui->textBrowser->append(QString("%1").arg(element));
-			}
-
-			conexityVisitor.vertexesInComponent.clear();
-			Vertex* source = graph.getVertexById(conexityVisitor.vertexesLeft.back());
-			TraverserBFS<Graph, Vertex, ConexityVisitor<Graph, Vertex> >::traverse(source, conexityVisitor);*/
-
-			// Keep only the bigest component (at least n/2 vertexes)
-			//ConexityVerifier<Graph, Vertex>* conexityVerifier = new ConexityVerifier();
-			//conexityVerifier.getBigestComponent(graph);
-
 			QString text("Network created using Erdos-Renyi algorithm");
 	        text.append("\nAmount of vertices in the graph: ");
 	        unsigned int verticesCount = graph.verticesCount();
