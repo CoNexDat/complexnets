@@ -50,7 +50,7 @@ struct gengetopt_args_info
   int n_arg;	/**< @brief Number of network nodes.  */
   char * n_orig;	/**< @brief Number of network nodes original value given at command line.  */
   const char *n_help; /**< @brief Number of network nodes help description.  */
-  double p_arg;	/**< @brief Connection probability (only for Erdos-Renyi model).  */
+  float p_arg;	/**< @brief Connection probability (only for Erdos-Renyi model).  */
   char * p_orig;	/**< @brief Connection probability (only for Erdos-Renyi model) original value given at command line.  */
   const char *p_help; /**< @brief Connection probability (only for Erdos-Renyi model) help description.  */
   int m0_arg;	/**< @brief Initial number of nodes (only for Barabasi-Albert model) (default='10').  */

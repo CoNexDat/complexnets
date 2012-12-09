@@ -26,10 +26,9 @@ defgroup "model" groupdesc="Generate a network using a model"
 		#Habría que ver si se puenden poner dependon multiples
 		option "n" n "Number of network nodes" int typestr="<number>" optional
 
-		option "p" p "Connection probability (only for Erdos-Renyi model)" double typestr="<probability>" 
-		dependon="erdos" optional
+		option "p" p "Connection probability (only for Erdos-Renyi model)" float typestr="<probability>" optional
 
-		option "m0" c "Initial number of nodes (only for Barabasi-Albert model)" int typestr="<number>" default="10" optional dependon="erdos" optional
+		option "m0" c "Initial number of nodes (only for Barabasi-Albert model)" int typestr="<number>" default="10" optional dependon="barabasi" optional
 		
 		option "m" m "Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model)" int typestr="<number>" default="2" optional dependon="barabasi" optional
 
