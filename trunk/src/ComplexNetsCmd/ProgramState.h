@@ -21,6 +21,7 @@ public:
 
 	void readGraphFromFile(string path);
 	void setErdosRenyiGraph(unsigned int n, float p);
+	void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 };
 
 #endif

@@ -31,5 +31,10 @@ void ProgramState::readGraphFromFile(string path) {
 
 void ProgramState::setErdosRenyiGraph(unsigned int n, float p) {
 	setWeighted(false);
-	this->graph = GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p);
+	this->graph = *GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p);
+}
+
+void ProgramState::setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n) {
+	setWeighted(false);
+	this->graph = *GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n);
 }
