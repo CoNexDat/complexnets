@@ -1,0 +1,9 @@
+#The goal of this page is to explain the ways in which ComplexNets++ can be used, both from command line and graphical mode.
+
+= Graphical mode =
+
+To start the application in graphical mode, just call invoke the application whithout arguments from command line.
+
+{{{
+complexnets
+}}}
