@@ -5,5 +5,5 @@
 To start the application in graphical mode, just call invoke the application whithout arguments from command line.
 
 {{{
-complexnets
+$> complexnets
 }}}
