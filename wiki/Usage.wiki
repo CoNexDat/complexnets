@@ -43,3 +43,7 @@ Where `<model_parameters>` can take the following values depending on the used m
 {{{
 --hot
 }}}
+ * Molloy-Reed:
+{{{
+--molloy
+}}}
