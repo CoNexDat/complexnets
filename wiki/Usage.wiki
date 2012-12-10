@@ -1,4 +1,4 @@
-#The goal of this page is to explain the ways in which ComplexNets++ can be used, both from command line and graphical mode.
+#The goal of this page is to explain the ways in which ComplexNets++ can be used
 
 = Graphical mode =
 
