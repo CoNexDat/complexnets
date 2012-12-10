@@ -3,7 +3,23 @@
 = Graphical mode =
 
 To start the application in graphical mode, just call invoke the application whithout arguments from command line.
-
 {{{
 $> complexnets
+}}}
+
+
+= Command line mode =
+
+ComplexNets++ can also run using the command line.
+
+== Creating a graph from an input file ==
+
+The syntax to create a graph from an input file is the following:
+{{{
+$> complexnets -i <filename>
+}}}
+
+If the file represents a weighted graph, the command must include the `--weighted` argument:
+{{{
+$> complexnets -i <filename> --weighted
 }}}
