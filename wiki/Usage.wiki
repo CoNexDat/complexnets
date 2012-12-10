@@ -47,3 +47,15 @@ Where `<model_parameters>` can take one of the following values depending on the
 {{{
 --molloy
 }}}
+
+== Computing a property on a graph ==
+
+To compute a property given a file, the command must have the following syntax:
+{{{
+$> complexnets <graph> <property>
+}}}
+where `<graph>` are the arguments to create or load a graph using a model, and `<property>` can take the following values depending on the calculated property:
+ * Betweenness:
+{{{
+--betweenness <vertex_index>
+}}}
