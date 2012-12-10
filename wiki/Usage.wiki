@@ -12,9 +12,9 @@ $> complexnets
 
 ComplexNets++ can also run using the command line.
 
-== Creating a graph from an input file ==
+== Loading a graph from an input file ==
 
-The syntax to create a graph from an input file is the following:
+The syntax to load a graph from an input file is the following:
 {{{
 $> complexnets -i <filename>
 }}}
