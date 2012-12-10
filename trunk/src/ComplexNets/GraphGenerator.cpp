@@ -20,12 +20,12 @@ GraphGenerator *GraphGenerator::getInstance() {
 }
 
 
-Graph GraphGenerator::generateGraphFromFile(string path, bool directed, bool multigraph) {
-	Graph graph = Graph(directed, multigraph);
+Graph *GraphGenerator::generateGraphFromFile(string path, bool directed, bool multigraph) {
+	Graph *graph = new Graph(directed, multigraph);
 
    	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
     IGraphReader<Graph, Vertex> *reader = factory->createGraphReader();
-	reader->read(graph, path);
+	reader->read(*graph, path);
 
 	delete reader;
 	delete factory;
@@ -34,12 +34,12 @@ Graph GraphGenerator::generateGraphFromFile(string path, bool directed, bool mul
 }
 
 
-WeightedGraph GraphGenerator::generateWeightedGraphFromFile(string path, bool directed, bool multigraph) {
-	WeightedGraph graph = WeightedGraph(directed, multigraph);
+WeightedGraph *GraphGenerator::generateWeightedGraphFromFile(string path, bool directed, bool multigraph) {
+	WeightedGraph *graph = new WeightedGraph(directed, multigraph);
 
    	IGraphFactory<WeightedGraph, WeightedVertex> *factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
     IGraphReader<WeightedGraph, WeightedVertex> *reader = factory->createGraphReader();
-    reader->read(graph, path);
+    reader->read(*graph, path);
 
 	delete reader;
 	delete factory;
