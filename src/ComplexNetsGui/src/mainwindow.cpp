@@ -89,9 +89,9 @@ void MainWindow::on_actionOpen_triggered()
 
                     if (this->weightedgraph) {
                         graph = Graph(isDirected, isMultigraph);
-                        weightedGraph = GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, isDirected, isMultigraph);
+                        weightedGraph = *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, isDirected, isMultigraph));
                     } else {
-                        graph = GraphGenerator::getInstance()->generateGraphFromFile(path, isDirected, isMultigraph);
+                        graph = *(GraphGenerator::getInstance()->generateGraphFromFile(path, isDirected, isMultigraph));
                         weightedGraph = WeightedGraph(isDirected, isMultigraph);
                     }
                 }
