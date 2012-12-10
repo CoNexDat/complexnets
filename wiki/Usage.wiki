@@ -28,12 +28,18 @@ $> complexnets -i <filename> --weighted
 
 The graphs can also be created using a model. To achieve this, the command must have the following syntax:
 {{{
-$> complexnets <model-parameters>
+$> complexnets <model_parameters>
 }}}
-Where `<model-parameters>` can take the following values depending on the used model:
+Where `<model_parameters>` can take the following values depending on the used model:
  * Erdos-Renyi:
 {{{
---erdos -n <number-of-nodes> -p <probability>
+--erdos -n <number_of_nodes> -p <probability>
 }}}
- * Barabási-Albert: {{{--barabasi -n <number-of-nodes> -c <number-of-initial-nodes> -m <number-of-attachment-nodes>}}}
- * Extended Hot: {{{--hot}}}
+ * Barabási-Albert:
+{{{
+--barabasi -n <number_of_nodes> -c <number_of_initial_nodes> -m <number_of_attachment_nodes>
+}}}
+ * Extended Hot:
+{{{
+--hot
+}}}
