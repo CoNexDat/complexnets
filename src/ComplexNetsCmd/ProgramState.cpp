@@ -3,12 +3,15 @@
 #include "../ComplexNets/IBetweenness.h"
 #include "../ComplexNets/IGraphFactory.h"
 #include "../ComplexNets/GraphFactory.h"
+#include "../ComplexNets/PropertyMap.h"
+#include "../ComplexNets/DegreeDistribution.h"
+#include "../ComplexNetsGui/inc/GrapherUtils.h"
 #include "../ComplexNets/WeightedGraphFactory.h"
 #include "../ComplexNets/DegreeDistribution.h"
 
-
 using namespace std;
 using namespace graphpp;
+using namespace ComplexNetsGui;
 
 
 void ProgramState::setWeighted(bool weighted) {
@@ -60,6 +63,73 @@ double ProgramState::betweenness(unsigned int vertex_id) {
     }
     delete betweenness;
     return ret;
+}
+
+void ProgramState::exportBetweennessVsDegree(string outputPath) {
+    PropertyMap propertyMap;
+    IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+    IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
+    IBetweenness<Graph, Vertex>::BetweennessIterator betweennessIterator = betweenness->iterator();
+
+    // Calculate betweenness.
+
+    while (!betweennessIterator.end()) {
+        propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(betweennessIterator->first), betweennessIterator->second);
+        ++betweennessIterator;
+    }
+
+    delete betweenness;
+
+    // Calculate degree distribution.
+
+    DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
+    DegreeDistribution<Graph, Vertex>::DistributionIterator degreeIterator = degreeDistribution->iterator();
+
+    while (!degreeIterator.end()) {
+        propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(degreeIterator->first), degreeIterator->second);
+        propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(degreeIterator->first), degreeIterator->second / (double)graph.verticesCount());
+        ++degreeIterator;
+    }
+
+    delete degreeDistribution;
+
+    double betweennessAuxAcum;
+    unsigned int degreeAmount;
+    VariantsSet betweennessVsDegree;
+    VariantsSet& betweennessSet = propertyMap.getPropertySet("betweenness");
+    VariantsSet& degreeDistributionSet = propertyMap.getPropertySet("degreeDistribution");
+    VariantsSet::const_iterator it = degreeDistributionSet.begin();
+    VariantsSet::const_iterator betwennessIt = betweennessSet.begin();
+    VariantsSet::const_iterator betweennessVsDegreeIt;
+    while (it != degreeDistributionSet.end())
+    {
+        betweennessVsDegree.insert<double>(it->first, 0.0);
+        ++it;
+    }
+
+    while (betwennessIt != betweennessSet.end())
+    {
+        unsigned int vertedId = from_string<unsigned int>(betwennessIt->first);
+        Vertex* v = graph.getVertexById(vertedId);
+        betweennessAuxAcum = betweennessVsDegree.get_element<double>(to_string<unsigned int>(v->degree()));
+        betweennessVsDegree.insert<double>(to_string<unsigned int>(v->degree()) , betweennessAuxAcum + from_string<unsigned int>(betwennessIt->second));
+
+        ++betwennessIt;
+    }
+
+    betweennessVsDegreeIt = betweennessVsDegree.begin();
+    while (betweennessVsDegreeIt != betweennessVsDegree.end())
+    {
+        std::string degree = betweennessVsDegreeIt->first;
+        betweennessAuxAcum = from_string<double>(betweennessVsDegreeIt->second);
+        degreeAmount = degreeDistributionSet.get_element<unsigned int>(degree);
+
+        betweennessVsDegree.insert<double>(degree , betweennessAuxAcum / (double)degreeAmount);
+        ++betweennessVsDegreeIt;
+    }
+
+    GrapherUtils utils;
+    utils.exportPropertySet(betweennessVsDegree, outputPath);
 }
 
 double ProgramState::degreeDistribution(unsigned int vertex_id) {
