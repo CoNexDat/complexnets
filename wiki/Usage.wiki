@@ -23,3 +23,14 @@ If the file represents a weighted graph, the command must include the `--weighte
 {{{
 $> complexnets -i <filename> --weighted
 }}}
+
+== Creating a graph using a model ==
+
+The graphs can also be created using a model. To achieve this, the command must have the following syntax:
+{{{
+$> complexnets <model-parameters>
+}}}
+Where `<model-parameters>` can take the following values depending on the used model:
+ * Erdos-Renyi: {{{--erdos -n <number-of-nodes> -p <probability>}}}
+ * Barabási-Albert: {{{--barabasi -n <number-of-nodes> -c <number-of-initial-nodes> -m <number-of-attachment-nodes>}}}
+ * Extended Hot: {{{--hot}}}
