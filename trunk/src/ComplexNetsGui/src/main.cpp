@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
 		}
 		
 		if (args_info->betweenness_given) {
-			if(state->isWeighted()) {
+			if (state->isWeighted()) {
 				errorMessage("Betweenness for weighted graphs is not supported.");
 				ERROR_EXIT;
 			}else{
@@ -131,6 +131,18 @@ int main(int argc, char* argv[])
 				cout << "Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret) + ".\n";
 			}else {
 				cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+			}
+		}
+
+		if (args_info->output_file_given) {
+			if (args_info->betweenness_plot_given) {
+				if (state->isWeighted()) {
+					errorMessage("Betweenness for weighted graphs is not supported.");
+					ERROR_EXIT;
+				} else {
+					string path = args_info->output_file_arg;
+					state->exportBetweennessVsDegree(path);
+				}
 			}
 		}
 	}
