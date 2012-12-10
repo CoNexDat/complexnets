@@ -32,8 +32,8 @@ $> complexnets <model-parameters>
 }}}
 Where `<model-parameters>` can take the following values depending on the used model:
  * Erdos-Renyi:
-   {{{
-   --erdos -n <number-of-nodes> -p <probability>
-   }}}
+{{{
+--erdos -n <number-of-nodes> -p <probability>
+}}}
  * Barabási-Albert: {{{--barabasi -n <number-of-nodes> -c <number-of-initial-nodes> -m <number-of-attachment-nodes>}}}
  * Extended Hot: {{{--hot}}}
