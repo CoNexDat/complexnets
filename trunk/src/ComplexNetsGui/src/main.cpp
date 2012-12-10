@@ -102,6 +102,10 @@ int main(int argc, char* argv[])
 
 			state->setBarabasiAlbertGraph(m0, m, n);
 			cout << "Succesfully created a Barabasi-Albert graph with " + to_string(n) + " nodes.\n";
+		} else if (args_info->hot_given) {
+			cout << "Hot option selected.\n";
+		} else if (args_info->molloy_given) {
+			cout << "Molloy option selected.\n";
 		} else {
 			usageErrorMessage("A network must be specified in order to work.");
 			ERROR_EXIT;
