@@ -30,7 +30,7 @@ The graphs can also be created using a model. To achieve this, the command must 
 {{{
 $> complexnets <model_parameters>
 }}}
-Where `<model_parameters>` can take the following values depending on the used model:
+Where `<model_parameters>` can take one of the following values depending on the used model:
  * Erdos-Renyi:
 {{{
 --erdos -n <number_of_nodes> -p <probability>
