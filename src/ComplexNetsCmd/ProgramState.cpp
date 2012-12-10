@@ -3,6 +3,8 @@
 #include "../ComplexNets/IBetweenness.h"
 #include "../ComplexNets/IGraphFactory.h"
 #include "../ComplexNets/GraphFactory.h"
+#include "../ComplexNets/WeightedGraphFactory.h"
+#include "../ComplexNets/DegreeDistribution.h"
 
 
 using namespace std;
@@ -57,5 +59,35 @@ double ProgramState::betweenness(unsigned int vertex_id) {
         ++it;
     }
     delete betweenness;
+    return ret;
+}
+
+double ProgramState::degreeDistribution(unsigned int vertex_id) {
+	double ret = -1;
+	if (this->isWeighted()){
+		IGraphFactory<WeightedGraph, WeightedVertex> *factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = factory->createDegreeDistribution(this->weightedGraph);
+        DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
+        while (!it.end())
+        {
+           if(it->first == vertex_id) {
+        		ret = it->second;
+        	}
+            ++it;
+        }
+        delete degreeDistribution;
+	} else {
+		IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+        DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(this->graph);
+        DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
+        while (!it.end())
+        {
+        	if(it->first == vertex_id) {
+        		ret = it->second;
+        	}
+            ++it;
+        }
+        delete degreeDistribution;
+    }
     return ret;
 }

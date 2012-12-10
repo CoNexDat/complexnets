@@ -116,7 +116,6 @@ int main(int argc, char* argv[])
 				errorMessage("Betweenness for weighted graphs is not supported.");
 				ERROR_EXIT;
 			}else{
-				VALIDATE_POS(args_info->betweenness_arg);
 				int vertex_id = args_info->betweenness_arg;
 				double ret = state->betweenness((unsigned int)args_info->betweenness_arg);
 				if(ret != -1) {
@@ -124,6 +123,14 @@ int main(int argc, char* argv[])
 				}else {
 					errorMessage("Invalid vertex id");
 				}
+			}
+		} else if (args_info->ddist_given) {
+			int degree = args_info->ddist_arg;
+			double ret = state->degreeDistribution(degree);
+			if(ret != -1) {
+				cout << "Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret) + ".\n";
+			}else {
+				cout << "There are no vertices with degree " + to_string(degree) + ".\n";
 			}
 		}
 	}
