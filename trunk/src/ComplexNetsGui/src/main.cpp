@@ -110,5 +110,22 @@ int main(int argc, char* argv[])
 			usageErrorMessage("A network must be specified in order to work.");
 			ERROR_EXIT;
 		}
+		
+		if (args_info->betweenness_given) {
+			if(state->isWeighted()) {
+				errorMessage("Betweenness for weighted graphs is not supported.");
+				ERROR_EXIT;
+			}else{
+				VALIDATE_POS(args_info->betweenness_arg);
+				int vertex_id = args_info->betweenness_arg;
+				double ret = state->betweenness((unsigned int)args_info->betweenness_arg);
+				if(ret != -1) {
+					cout << "Betweenness for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+				}else {
+					errorMessage("Invalid vertex id");
+				}
+			}
+		}
 	}
+
 }

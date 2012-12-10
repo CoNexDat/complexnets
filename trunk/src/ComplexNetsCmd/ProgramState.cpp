@@ -1,5 +1,9 @@
 #include "ProgramState.h"
 #include "../ComplexNets/GraphGenerator.h"
+#include "../ComplexNets/IBetweenness.h"
+#include "../ComplexNets/IGraphFactory.h"
+#include "../ComplexNets/GraphFactory.h"
+
 
 using namespace std;
 using namespace graphpp;
@@ -23,9 +27,9 @@ Graph ProgramState::getGraph() {
 
 void ProgramState::readGraphFromFile(string path) {
 	if (isWeighted()) {
-		this->weightedGraph = GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, false, false);
+		this->weightedGraph = *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, false, false));
     } else {
-    	this->graph = GraphGenerator::getInstance()->generateGraphFromFile(path, false, false);
+    	this->graph = *(GraphGenerator::getInstance()->generateGraphFromFile(path, false, false));
     }
 }
 
@@ -37,4 +41,21 @@ void ProgramState::setErdosRenyiGraph(unsigned int n, float p) {
 void ProgramState::setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n) {
 	setWeighted(false);
 	this->graph = *GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n);
+}
+
+double ProgramState::betweenness(unsigned int vertex_id) {
+	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
+    IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
+    double ret = -1;
+    while (!it.end())
+    {
+     	if(it->first == vertex_id) {
+     		ret = it->second;
+     		break;
+     	}
+        ++it;
+    }
+    delete betweenness;
+    return ret;
 }
