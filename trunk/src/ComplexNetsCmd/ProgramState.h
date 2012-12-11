@@ -18,6 +18,7 @@ private:
     void computeDegreeDistribution(PropertyMap& propertyMap);
     void computeClusteringCoefficient(PropertyMap& propertyMap);
     void computeNearestNeighborsDegree(PropertyMap& propertyMap);
+    void computeShellIndex(PropertyMap &propertyMap);
 
 public:
 	void setWeighted(bool weighted);
