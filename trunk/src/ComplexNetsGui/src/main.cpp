@@ -186,6 +186,14 @@ int main(int argc, char* argv[])
 			} else {
 				errorMessage("Invalid vertex id");
 			}
+		} else if (args_info->shell_given) {
+			int vertex_id = args_info->shell_arg;
+			double ret = state->shellIndex(vertex_id);
+			if(ret != -1) {
+				cout << "Shell index for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+			} else {
+				errorMessage("Invalid vertex id");
+			}
 		}
 
 		if (args_info->output_file_given) {
