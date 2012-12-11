@@ -8,6 +8,7 @@
 #include "../ComplexNetsGui/inc/GrapherUtils.h"
 #include "../ComplexNets/WeightedGraphFactory.h"
 #include "../ComplexNets/DegreeDistribution.h"
+#include "../ComplexNets/IShellIndex.h"
 
 using namespace std;
 using namespace graphpp;
@@ -184,6 +185,7 @@ double ProgramState::degreeDistribution(unsigned int vertex_id) {
         {
            if(it->first == vertex_id) {
         		ret = it->second;
+                break;
         	}
             ++it;
         }
@@ -196,6 +198,7 @@ double ProgramState::degreeDistribution(unsigned int vertex_id) {
         {
         	if(it->first == vertex_id) {
         		ret = it->second;
+                break;
         	}
             ++it;
         }
@@ -256,5 +259,22 @@ double ProgramState::knn(unsigned int vertex_id) {
             delete nearestNeighborsDegree;
         }
     }
+    return ret;
+}
+
+double ProgramState::shellIndex(unsigned int vertex_id) {
+    double ret = -1;
+    IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+    IShellIndex<Graph, Vertex>* shellIndex = factory->createShellIndex(graph);
+    IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
+    while (!it.end())
+    {
+        if(it->first == vertex_id) {
+            ret = it->second;
+            break;
+        }
+        ++it;
+    }
+    delete shellIndex;
     return ret;
 }
