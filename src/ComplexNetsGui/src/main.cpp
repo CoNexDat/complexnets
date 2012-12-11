@@ -218,8 +218,13 @@ int main(int argc, char* argv[])
 				state->exportNearestNeighborsDegreeVsDegree(path);
 				functionMessage = "nearest neighbors degree";
 			} else if (args_info->shell_output_given) {
-				state->exportShellIndexVsDegree(path);
-				functionMessage = "shellIndex";
+				if (state->isWeighted()) {
+					errorMessage("Shell index for weighted graphs is not supported.");
+					ERROR_EXIT;
+				} else {
+					state->exportShellIndexVsDegree(path);
+					functionMessage = "shellIndex";
+				}
 			}
 
 			cout << "Succesfully exported " + functionMessage + " in output file " + path + ".\n";

@@ -11,6 +11,7 @@
 #include "../ComplexNets/IShellIndex.h"
 #include "../ComplexNets/IClusteringCoefficient.h"
 #include "../ComplexNets/INearestNeighborsDegree.h"
+#include "../ComplexNets/IShellIndex.h"
 
 using namespace std;
 using namespace graphpp;
@@ -338,6 +339,19 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap) {
     }
 }
 
+void ProgramState::computeShellIndex(PropertyMap &propertyMap) {
+    IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+    IShellIndex<Graph, Vertex> *shellIndex = factory->createShellIndex(graph);
+    IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
+
+    while (!it.end()) {
+        propertyMap.addProperty<unsigned int>("shellIndex", to_string<unsigned int>(it->first), it->second);
+        ++it;
+    }
+
+    delete shellIndex;
+}
+
 void ProgramState::exportBetweennessVsDegree(string outputPath) {
     PropertyMap propertyMap;
     computeBetweenness(propertyMap);
@@ -367,5 +381,44 @@ void ProgramState::exportNearestNeighborsDegreeVsDegree(string outputPath) {
 }
 
 void ProgramState::exportShellIndexVsDegree(string outputPath) {
+    PropertyMap propertyMap;
+    computeShellIndex(propertyMap);
+    computeDegreeDistribution(propertyMap);
 
+    double shellAuxAcum;
+    unsigned int degreeAmount, vertexId;
+
+    VariantsSet shellIndexVsDegree;
+    VariantsSet& shellIndex = propertyMap.getPropertySet("shellIndex");
+    VariantsSet& degreeDistribution = propertyMap.getPropertySet("degreeDistribution");
+    VariantsSet::const_iterator it = degreeDistribution.begin();
+    VariantsSet::const_iterator shellIt = shellIndex.begin();
+    VariantsSet::const_iterator shellVsDegreeIt;
+
+    while (it != degreeDistribution.end()) {
+        shellIndexVsDegree.insert<double>(it->first, 0);
+        ++it;
+    }
+
+    while (shellIt != shellIndex.end()) {
+        vertexId = from_string<unsigned int>(shellIt->first);
+        Vertex* v = graph.getVertexById(vertexId);
+        shellAuxAcum = shellIndexVsDegree.get_element<double>(to_string<unsigned int>(v->degree()));
+        shellIndexVsDegree.insert<double>(to_string<unsigned int>(v->degree()) , shellAuxAcum + from_string<unsigned int>(shellIt->second));
+
+        ++shellIt;
+    }
+
+    shellVsDegreeIt = shellIndexVsDegree.begin();
+    while (shellVsDegreeIt != shellIndexVsDegree.end()) {
+        std::string degree = shellVsDegreeIt->first;
+        shellAuxAcum = from_string<double>(shellVsDegreeIt->second);
+        degreeAmount = degreeDistribution.get_element<unsigned int>(degree);
+
+        shellIndexVsDegree.insert<double>(degree , shellAuxAcum / (double)degreeAmount);
+        ++shellVsDegreeIt;
+    }
+
+    GrapherUtils grapherUtils;
+    grapherUtils.exportPropertySet(shellIndexVsDegree, outputPath);
 }
