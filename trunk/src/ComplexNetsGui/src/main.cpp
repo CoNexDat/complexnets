@@ -198,6 +198,7 @@ int main(int argc, char* argv[])
 
 		if (args_info->output_file_given) {
 			string path = args_info->output_file_arg;
+			string functionMessage = "";
 
 			if (args_info->betweenness_output_given) {
 				if (state->isWeighted()) {
@@ -205,15 +206,23 @@ int main(int argc, char* argv[])
 					ERROR_EXIT;
 				} else {
 					state->exportBetweennessVsDegree(path);
-					cout << "Succesfully exported betweenness in output file " + path + ".\n";
+					functionMessage = "betweenness";
 				}
-			} else if(args_info->ddist_output_given) {
+			} else if (args_info->ddist_output_given) {
 				state->exportDegreeDistribution(path);
-				cout << "Succesfully exported degree distribution in output file " + path + ".\n";
-			} else if(args_info->clustering_output_given) {
+				functionMessage = "degreeDistribution";
+			} else if (args_info->clustering_output_given) {
 				state->exportClusteringVsDegree(path);
-				cout << "Succesfully exported clustering coefficient in output file " + path + ".\n";
+				functionMessage = "clustering coefficient";
+			} else if (args_info->knn_output_given) {
+				state->exportNearestNeighborsDegreeVsDegree(path);
+				functionMessage = "nearest neighbors degree";
+			} else if (args_info->shell_output_given) {
+				state->exportShellIndexVsDegree(path);
+				functionMessage = "shellIndex";
 			}
+
+			cout << "Succesfully exported " + functionMessage + " in output file " + path + ".\n";
 		}
 	}
 

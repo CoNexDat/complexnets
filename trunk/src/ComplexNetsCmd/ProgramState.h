@@ -17,6 +17,7 @@ private:
     void computeBetweenness(PropertyMap& propertyMap);
     void computeDegreeDistribution(PropertyMap& propertyMap);
     void computeClusteringCoefficient(PropertyMap& propertyMap);
+    void computeNearestNeighborsDegree(PropertyMap& propertyMap);
 
 public:
 	void setWeighted(bool weighted);
@@ -39,7 +40,8 @@ public:
 	void exportBetweennessVsDegree(string outputPath);
 	void exportDegreeDistribution(string outputPath);
 	void exportClusteringVsDegree(string outputPath);
-	
+	void exportNearestNeighborsDegreeVsDegree(string outputPath);
+	void exportShellIndexVsDegree(string outputPath);
 };
 
 #endif
