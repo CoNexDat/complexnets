@@ -91,3 +91,7 @@ where `<graph>` are the arguments to create or load a graph using a model and `<
 {{{
 --ddist-output
 }}}
+ * Clustering coefficient vs. Degree:
+{{{
+--clustering-output
+}}}
