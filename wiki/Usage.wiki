@@ -59,3 +59,7 @@ where `<graph>` are the arguments to create or load a graph using a model, and `
 {{{
 --betweenness <vertex_index>
 }}}
+ * Degree distribution:
+{{{
+--ddist <vertex_index>
+}}}
