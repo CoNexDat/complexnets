@@ -41,7 +41,7 @@ Where `<model_parameters>` can take one of the following values depending on the
 }}}
  * Extended Hot:
 {{{
---hot
+--hot -n <number_of_nodes> -m <new_vertex_edges> -x <neighbors_select> -q <added_edges> -r <edges_select>
 }}}
  * Molloy-Reed:
 {{{
@@ -62,4 +62,32 @@ where `<graph>` are the arguments to create or load a graph using a model, and `
  * Degree distribution:
 {{{
 --ddist <vertex_index>
+}}}
+ * Clustering coefficient:
+{{{
+--clustering <vertex_index>
+}}}
+ * Nearest neighbors degree:
+{{{
+--knn <vertex_index>
+}}}
+ * Shell index:
+{{{
+--shell <vertex_index>
+}}}
+
+== Generating a Gnuplot readable output ==
+
+To generate a file that can be read and plotted by Gnuplot, the command must have the following syntax:
+{{{
+$> complexnets <graph> -o <output_file> <function>
+}}}
+where `<graph>` are the arguments to create or load a graph using a model and `<function>` can take the following values depending on the calculated function:
+ * Betweenness vs. Degree:
+{{{
+--betweenness-output
+}}}
+ * Degree distribution:
+{{{
+--ddist-output
 }}}
