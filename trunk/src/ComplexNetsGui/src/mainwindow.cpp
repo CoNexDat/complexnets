@@ -923,12 +923,58 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 	        ui->textBrowser->append(ret);
 	    }
 	}
+
 }
 
 void MainWindow::on_actionNewExtendedHOT_triggered()
 {
-	
+	if (!this->graphLoaded)
+    {
+		srand(time(NULL));
+		QString inputN = inputId("n:");
+		QString inputM = inputId("m:");
+		QString inputXI = inputId("xi:");
+		QString inputQ = inputId("q:");
+		QString ret;
+
+
+		unsigned int m = 2;
+		unsigned int n = 20;
+		unsigned int q = 2;
+		float xi=0.02;
+		float r=0.01;
+
+	    try
+	    {
+			this->onNetworkLoad(false, false, false);
+			buildGraphFactory(false);
+
+			if(!inputN.isEmpty())
+	        	n = inputN.toInt();
+			if(!inputM.isEmpty())
+	        	m = inputM.toInt();
+			if(!inputXI.isEmpty())
+	        	xi = inputXI.toInt();
+			if(!inputQ.isEmpty())
+	        	q = inputQ.toInt();
+
+			graph = *(GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r));
+
+			QString text("Network created using HOT extended Algorithm");
+	        text.append("\nAmount of vertices in the graph: ");
+	        unsigned int verticesCount = graph.verticesCount();
+	        text.append(QString("%1").arg(verticesCount));
+	        text.append(".\n");
+	        ui->textBrowser->append(text);
+	    }
+	    catch (const BadElementName& ex)
+	    {
+	        ret.append("Error ").append(".\n");
+	        ui->textBrowser->append(ret);
+	    }
+	}
 }
+
 
 void MainWindow::on_actionNewMolloyReed_triggered()
 {

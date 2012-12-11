@@ -2,6 +2,7 @@
 #define CONEXITYVERIFIER_H
 
 #include <vector>
+#include <math.h>
 #include "mili/mili.h"
 #include "TraverserBFS.h"
 
@@ -18,6 +19,7 @@ public:
 
 	std::vector<unsigned int> vertexesLeft;
     std::vector<unsigned int> vertexesInComponent;
+	typedef typename Vertex::VerticesIterator NeighborsIterator;
 
 	ConexityVerifier()
 	{
@@ -84,10 +86,46 @@ public:
 				
             ++it2;
         }
-
     }
 
+	int hopsBetweenVertex(Vertex* vertex1, Vertex* vertex2)
+	{
+        int hops=0;
+		bool keepTraversing = true;
+        std::queue<Vertex*> queue;
+        queue.push(vertex1);
+        vertex1->setVisited(true);
 
+		 while (!queue.empty() && keepTraversing)
+		        {
+		            Vertex* vertex = queue.front();
+		            queue.pop();
+		            hops++;
+		            if (keepTraversing)
+		            {
+		            	NeighborsIterator it=vertex->neighborsIterator();
+
+		                while (!it.end())
+		                {
+		                    Vertex* neighbour = *it;
+		                    if (!neighbour->getVisited())
+							{
+		                        queue.push(neighbour);
+					            neighbour->setVisited(true);
+					            if (neighbour==vertex2)
+					            	keepTraversing=false;
+							}
+		                    it++;
+		                }
+		            }
+		        }
+		 return hops--;
+
+	}
+	float distanceBetweenVertex(Vertex* vertex1, Vertex* vertex2)
+	{
+		return sqrt(pow(vertex1->getPositionX()-vertex2->getPositionX(),2)+pow(vertex1->getPositionY()-vertex2->getPositionY(),2));
+	}
 };
 
 

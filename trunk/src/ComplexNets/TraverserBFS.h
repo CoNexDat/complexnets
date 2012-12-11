@@ -40,8 +40,8 @@ public:
             Vertex* vertex = queue.front();
             queue.pop();
 
-			cout << vertex->getVertexId();
-			cout << '\n';
+			//cout << vertex->getVertexId();
+			//cout << '\n';
             keepTraversing = v.visitVertex(vertex);
 
             if (keepTraversing)
