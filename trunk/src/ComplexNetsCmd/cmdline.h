@@ -86,11 +86,11 @@ struct gengetopt_args_info
   char * output_file_arg;	/**< @brief Save the result into the file specified.  */
   char * output_file_orig;	/**< @brief Save the result into the file specified original value given at command line.  */
   const char *output_file_help; /**< @brief Save the result into the file specified help description.  */
-  const char *betweenness_plot_help; /**< @brief Betweenness vs. Degree help description.  */
-  const char *ddist_plot_help; /**< @brief Degree distribution help description.  */
-  const char *clustering_plot_help; /**< @brief Clustering coefficient vs. Degree help description.  */
-  const char *knn_plot_help; /**< @brief Nearest Neighbors Degree vs. Degree help description.  */
-  const char *shell_plot_help; /**< @brief Shell index vs. Degree help description.  */
+  const char *betweenness_output_help; /**< @brief Betweenness vs. Degree help description.  */
+  const char *ddist_output_help; /**< @brief Degree distribution help description.  */
+  const char *clustering_output_help; /**< @brief Clustering coefficient vs. Degree help description.  */
+  const char *knn_output_help; /**< @brief Nearest Neighbors Degree vs. Degree help description.  */
+  const char *shell_output_help; /**< @brief Shell index vs. Degree help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -113,16 +113,16 @@ struct gengetopt_args_info
   unsigned int knn_given ;	/**< @brief Whether knn was given.  */
   unsigned int shell_given ;	/**< @brief Whether shell was given.  */
   unsigned int output_file_given ;	/**< @brief Whether output-file was given.  */
-  unsigned int betweenness_plot_given ;	/**< @brief Whether betweenness-plot was given.  */
-  unsigned int ddist_plot_given ;	/**< @brief Whether ddist-plot was given.  */
-  unsigned int clustering_plot_given ;	/**< @brief Whether clustering-plot was given.  */
-  unsigned int knn_plot_given ;	/**< @brief Whether knn-plot was given.  */
-  unsigned int shell_plot_given ;	/**< @brief Whether shell-plot was given.  */
+  unsigned int betweenness_output_given ;	/**< @brief Whether betweenness-output was given.  */
+  unsigned int ddist_output_given ;	/**< @brief Whether ddist-output was given.  */
+  unsigned int clustering_output_given ;	/**< @brief Whether clustering-output was given.  */
+  unsigned int knn_output_given ;	/**< @brief Whether knn-output was given.  */
+  unsigned int shell_output_given ;	/**< @brief Whether shell-output was given.  */
 
   int analysis_group_counter; /**< @brief Counter for group analysis */
-  int graphics_group_counter; /**< @brief Counter for group graphics */
   int model_group_counter; /**< @brief Counter for group model */
   int network_load_group_counter; /**< @brief Counter for group network_load */
+  int output_group_counter; /**< @brief Counter for group output */
 } ;
 
 /** @brief The additional parameters to pass to parser functions */
