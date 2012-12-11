@@ -75,20 +75,20 @@ defgroup "analysis" groupdesc="Network analysis methods"
 
 # ----- Group of network analysis methods.
 
-defgroup "graphics" groupdesc="Network analysis graphics"
+defgroup "output" groupdesc="Network analysis graphics"
 
-	groupoption "output-file" o "Save the result into the file specified" group="graphics" 
+	groupoption "output-file" o "Save the result into the file specified" group="output" 
 	string typestr="<filename>" required
 		
-		option "betweenness-plot" - "Betweenness vs. Degree" dependon="output-file" optional
+		option "betweenness-output" - "Betweenness vs. Degree" dependon="output-file" optional
 		
-		option "ddist-plot" - "Degree distribution" dependon="output-file" optional
+		option "ddist-output" - "Degree distribution" dependon="output-file" optional
 		
-		option "clustering-plot" - "Clustering coefficient vs. Degree" dependon="output-file" optional
+		option "clustering-output" - "Clustering coefficient vs. Degree" dependon="output-file" optional
 		
-		option "knn-plot" - "Nearest Neighbors Degree vs. Degree" dependon="output-file" optional
+		option "knn-output" - "Nearest Neighbors Degree vs. Degree" dependon="output-file" optional
 		
-		option "shell-plot" - "Shell index vs. Degree" dependon="output-file" optional
+		option "shell-output" - "Shell index vs. Degree" dependon="output-file" optional
 
 	
 	

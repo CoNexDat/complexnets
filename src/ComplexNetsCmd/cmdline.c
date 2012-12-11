@@ -55,13 +55,13 @@ const char *gengetopt_args_info_help[] = {
   "      --clustering=<vertex id>  Calculate the clustering coefficient of a given \n                                  node",
   "      --knn=<vertex id>         Calculate the nearest neighbors degree of a \n                                  given node",
   "      --shell=<vertex id>       Calculate the shell index of a given node",
-  "\n Group: graphics\n  Network analysis graphics",
+  "\n Group: output\n  Network analysis graphics",
   "  -o, --output-file=<filename>  Save the result into the file specified",
-  "      --betweenness-plot        Betweenness vs. Degree",
-  "      --ddist-plot              Degree distribution",
-  "      --clustering-plot         Clustering coefficient vs. Degree",
-  "      --knn-plot                Nearest Neighbors Degree vs. Degree",
-  "      --shell-plot              Shell index vs. Degree",
+  "      --betweenness-output      Betweenness vs. Degree",
+  "      --ddist-output            Degree distribution",
+  "      --clustering-output       Clustering coefficient vs. Degree",
+  "      --knn-output              Nearest Neighbors Degree vs. Degree",
+  "      --shell-output            Shell index vs. Degree",
     0
 };
 
@@ -110,15 +110,15 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->knn_given = 0 ;
   args_info->shell_given = 0 ;
   args_info->output_file_given = 0 ;
-  args_info->betweenness_plot_given = 0 ;
-  args_info->ddist_plot_given = 0 ;
-  args_info->clustering_plot_given = 0 ;
-  args_info->knn_plot_given = 0 ;
-  args_info->shell_plot_given = 0 ;
+  args_info->betweenness_output_given = 0 ;
+  args_info->ddist_output_given = 0 ;
+  args_info->clustering_output_given = 0 ;
+  args_info->knn_output_given = 0 ;
+  args_info->shell_output_given = 0 ;
   args_info->analysis_group_counter = 0 ;
-  args_info->graphics_group_counter = 0 ;
   args_info->model_group_counter = 0 ;
   args_info->network_load_group_counter = 0 ;
+  args_info->output_group_counter = 0 ;
 }
 
 static
@@ -171,11 +171,11 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->knn_help = gengetopt_args_info_help[21] ;
   args_info->shell_help = gengetopt_args_info_help[22] ;
   args_info->output_file_help = gengetopt_args_info_help[24] ;
-  args_info->betweenness_plot_help = gengetopt_args_info_help[25] ;
-  args_info->ddist_plot_help = gengetopt_args_info_help[26] ;
-  args_info->clustering_plot_help = gengetopt_args_info_help[27] ;
-  args_info->knn_plot_help = gengetopt_args_info_help[28] ;
-  args_info->shell_plot_help = gengetopt_args_info_help[29] ;
+  args_info->betweenness_output_help = gengetopt_args_info_help[25] ;
+  args_info->ddist_output_help = gengetopt_args_info_help[26] ;
+  args_info->clustering_output_help = gengetopt_args_info_help[27] ;
+  args_info->knn_output_help = gengetopt_args_info_help[28] ;
+  args_info->shell_output_help = gengetopt_args_info_help[29] ;
   
 }
 
@@ -344,16 +344,16 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "shell", args_info->shell_orig, 0);
   if (args_info->output_file_given)
     write_into_file(outfile, "output-file", args_info->output_file_orig, 0);
-  if (args_info->betweenness_plot_given)
-    write_into_file(outfile, "betweenness-plot", 0, 0 );
-  if (args_info->ddist_plot_given)
-    write_into_file(outfile, "ddist-plot", 0, 0 );
-  if (args_info->clustering_plot_given)
-    write_into_file(outfile, "clustering-plot", 0, 0 );
-  if (args_info->knn_plot_given)
-    write_into_file(outfile, "knn-plot", 0, 0 );
-  if (args_info->shell_plot_given)
-    write_into_file(outfile, "shell-plot", 0, 0 );
+  if (args_info->betweenness_output_given)
+    write_into_file(outfile, "betweenness-output", 0, 0 );
+  if (args_info->ddist_output_given)
+    write_into_file(outfile, "ddist-output", 0, 0 );
+  if (args_info->clustering_output_given)
+    write_into_file(outfile, "clustering-output", 0, 0 );
+  if (args_info->knn_output_given)
+    write_into_file(outfile, "knn-output", 0, 0 );
+  if (args_info->shell_output_given)
+    write_into_file(outfile, "shell-output", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -422,19 +422,6 @@ reset_group_analysis(struct gengetopt_args_info *args_info)
 }
 
 static void
-reset_group_graphics(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->graphics_group_counter)
-    return;
-  
-  args_info->output_file_given = 0 ;
-  free_string_field (&(args_info->output_file_arg));
-  free_string_field (&(args_info->output_file_orig));
-
-  args_info->graphics_group_counter = 0;
-}
-
-static void
 reset_group_model(struct gengetopt_args_info *args_info)
 {
   if (! args_info->model_group_counter)
@@ -459,6 +446,19 @@ reset_group_network_load(struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->input_file_orig));
 
   args_info->network_load_group_counter = 0;
+}
+
+static void
+reset_group_output(struct gengetopt_args_info *args_info)
+{
+  if (! args_info->output_group_counter)
+    return;
+  
+  args_info->output_file_given = 0 ;
+  free_string_field (&(args_info->output_file_arg));
+  free_string_field (&(args_info->output_file_orig));
+
+  args_info->output_group_counter = 0;
 }
 
 int
@@ -557,29 +557,29 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       fprintf (stderr, "%s: '--r' ('-r') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
-  if (args_info->betweenness_plot_given && ! args_info->output_file_given)
+  if (args_info->betweenness_output_given && ! args_info->output_file_given)
     {
-      fprintf (stderr, "%s: '--betweenness-plot' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--betweenness-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
-  if (args_info->ddist_plot_given && ! args_info->output_file_given)
+  if (args_info->ddist_output_given && ! args_info->output_file_given)
     {
-      fprintf (stderr, "%s: '--ddist-plot' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--ddist-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
-  if (args_info->clustering_plot_given && ! args_info->output_file_given)
+  if (args_info->clustering_output_given && ! args_info->output_file_given)
     {
-      fprintf (stderr, "%s: '--clustering-plot' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--clustering-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
-  if (args_info->knn_plot_given && ! args_info->output_file_given)
+  if (args_info->knn_output_given && ! args_info->output_file_given)
     {
-      fprintf (stderr, "%s: '--knn-plot' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--knn-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
-  if (args_info->shell_plot_given && ! args_info->output_file_given)
+  if (args_info->shell_output_given && ! args_info->output_file_given)
     {
-      fprintf (stderr, "%s: '--shell-plot' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--shell-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
 
@@ -761,11 +761,11 @@ cmdline_parser_internal (
         { "knn",	1, NULL, 0 },
         { "shell",	1, NULL, 0 },
         { "output-file",	1, NULL, 'o' },
-        { "betweenness-plot",	0, NULL, 0 },
-        { "ddist-plot",	0, NULL, 0 },
-        { "clustering-plot",	0, NULL, 0 },
-        { "knn-plot",	0, NULL, 0 },
-        { "shell-plot",	0, NULL, 0 },
+        { "betweenness-output",	0, NULL, 0 },
+        { "ddist-output",	0, NULL, 0 },
+        { "clustering-output",	0, NULL, 0 },
+        { "knn-output",	0, NULL, 0 },
+        { "shell-output",	0, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
@@ -886,9 +886,9 @@ cmdline_parser_internal (
           break;
         case 'o':	/* Save the result into the file specified.  */
         
-          if (args_info->graphics_group_counter && override)
-            reset_group_graphics (args_info);
-          args_info->graphics_group_counter += 1;
+          if (args_info->output_group_counter && override)
+            reset_group_output (args_info);
+          args_info->output_group_counter += 1;
         
           if (update_arg( (void *)&(args_info->output_file_arg), 
                &(args_info->output_file_orig), &(args_info->output_file_given),
@@ -1069,71 +1069,71 @@ cmdline_parser_internal (
           
           }
           /* Betweenness vs. Degree.  */
-          else if (strcmp (long_options[option_index].name, "betweenness-plot") == 0)
+          else if (strcmp (long_options[option_index].name, "betweenness-output") == 0)
           {
           
           
             if (update_arg( 0 , 
-                 0 , &(args_info->betweenness_plot_given),
-                &(local_args_info.betweenness_plot_given), optarg, 0, 0, ARG_NO,
+                 0 , &(args_info->betweenness_output_given),
+                &(local_args_info.betweenness_output_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
-                "betweenness-plot", '-',
+                "betweenness-output", '-',
                 additional_error))
               goto failure;
           
           }
           /* Degree distribution.  */
-          else if (strcmp (long_options[option_index].name, "ddist-plot") == 0)
+          else if (strcmp (long_options[option_index].name, "ddist-output") == 0)
           {
           
           
             if (update_arg( 0 , 
-                 0 , &(args_info->ddist_plot_given),
-                &(local_args_info.ddist_plot_given), optarg, 0, 0, ARG_NO,
+                 0 , &(args_info->ddist_output_given),
+                &(local_args_info.ddist_output_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
-                "ddist-plot", '-',
+                "ddist-output", '-',
                 additional_error))
               goto failure;
           
           }
           /* Clustering coefficient vs. Degree.  */
-          else if (strcmp (long_options[option_index].name, "clustering-plot") == 0)
+          else if (strcmp (long_options[option_index].name, "clustering-output") == 0)
           {
           
           
             if (update_arg( 0 , 
-                 0 , &(args_info->clustering_plot_given),
-                &(local_args_info.clustering_plot_given), optarg, 0, 0, ARG_NO,
+                 0 , &(args_info->clustering_output_given),
+                &(local_args_info.clustering_output_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
-                "clustering-plot", '-',
+                "clustering-output", '-',
                 additional_error))
               goto failure;
           
           }
           /* Nearest Neighbors Degree vs. Degree.  */
-          else if (strcmp (long_options[option_index].name, "knn-plot") == 0)
+          else if (strcmp (long_options[option_index].name, "knn-output") == 0)
           {
           
           
             if (update_arg( 0 , 
-                 0 , &(args_info->knn_plot_given),
-                &(local_args_info.knn_plot_given), optarg, 0, 0, ARG_NO,
+                 0 , &(args_info->knn_output_given),
+                &(local_args_info.knn_output_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
-                "knn-plot", '-',
+                "knn-output", '-',
                 additional_error))
               goto failure;
           
           }
           /* Shell index vs. Degree.  */
-          else if (strcmp (long_options[option_index].name, "shell-plot") == 0)
+          else if (strcmp (long_options[option_index].name, "shell-output") == 0)
           {
           
           
             if (update_arg( 0 , 
-                 0 , &(args_info->shell_plot_given),
-                &(local_args_info.shell_plot_given), optarg, 0, 0, ARG_NO,
+                 0 , &(args_info->shell_output_given),
+                &(local_args_info.shell_output_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
-                "shell-plot", '-',
+                "shell-output", '-',
                 additional_error))
               goto failure;
           
@@ -1156,12 +1156,6 @@ cmdline_parser_internal (
       error = 1;
     }
   
-  if (args_info->graphics_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group graphics were given. At most one is required%s.\n", argv[0], args_info->graphics_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
   if (args_info->model_group_counter > 1)
     {
       fprintf (stderr, "%s: %d options of group model were given. At most one is required%s.\n", argv[0], args_info->model_group_counter, (additional_error ? additional_error : ""));
@@ -1171,6 +1165,12 @@ cmdline_parser_internal (
   if (args_info->network_load_group_counter > 1)
     {
       fprintf (stderr, "%s: %d options of group network-load were given. At most one is required%s.\n", argv[0], args_info->network_load_group_counter, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  
+  if (args_info->output_group_counter > 1)
+    {
+      fprintf (stderr, "%s: %d options of group output were given. At most one is required%s.\n", argv[0], args_info->output_group_counter, (additional_error ? additional_error : ""));
       error = 1;
     }
   

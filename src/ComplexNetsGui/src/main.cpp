@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
 		if (args_info->output_file_given) {
 			string path = args_info->output_file_arg;
 
-			if (args_info->betweenness_plot_given) {
+			if (args_info->betweenness_output_given) {
 				if (state->isWeighted()) {
 					errorMessage("Betweenness for weighted graphs is not supported.");
 					ERROR_EXIT;
@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
 					state->exportBetweennessVsDegree(path);
 					cout << "Succesfully exported betweenness in output file " + path + ".\n";
 				}
-			} else if(args_info->ddist_plot_given) {
+			} else if(args_info->ddist_output_given) {
 				state->exportDegreeDistribution(path);
 				cout << "Succesfully exported degree distribution in output file " + path + ".\n";
 			}
