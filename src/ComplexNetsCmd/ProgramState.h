@@ -2,8 +2,10 @@
 #define PROGRAM_STATE_H
 
 #include "../ComplexNets/typedefs.h"
+#include "../ComplexNets/PropertyMap.h"
 
 using namespace std;
+using namespace graphpp;
 
 class ProgramState {
 
@@ -11,6 +13,8 @@ private:
 	bool weighted;
     WeightedGraph weightedGraph;
     Graph graph;
+
+    void computeDegreeDistribution(PropertyMap& propertyMap);
 
 public:
 	void setWeighted(bool weighted);
@@ -22,8 +26,10 @@ public:
 	void readGraphFromFile(string path);
 	void setErdosRenyiGraph(unsigned int n, float p);
 	void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
+	void setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
 	double betweenness(unsigned int vertex_id);
 	void exportBetweennessVsDegree(string outputPath);
+	void exportDegreeDistribution(string outputPath);
 	double degreeDistribution(unsigned int vertex_id);
 	double clustering(unsigned int vertex_id);
 	double knn(unsigned int vertex_id);
