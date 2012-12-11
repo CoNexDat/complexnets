@@ -99,3 +99,7 @@ where `<graph>` are the arguments to create or load a graph using a model and `<
 {{{
 --knn-output
 }}}
+ * Shell index vs. Degree:
+{{{
+--shell-output
+}}}
