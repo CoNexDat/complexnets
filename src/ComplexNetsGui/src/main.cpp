@@ -132,6 +132,14 @@ int main(int argc, char* argv[])
 			}else {
 				cout << "There are no vertices with degree " + to_string(degree) + ".\n";
 			}
+		} else if (args_info->clustering_given) {
+			int vertex_id = args_info->clustering_arg;
+			double ret = state->clustering(vertex_id);
+			if(ret != -1) {
+				cout << "Clustering coefficient for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+			} else {
+				errorMessage("Invalid vertex id");
+			}
 		}
 
 		if (args_info->output_file_given) {
