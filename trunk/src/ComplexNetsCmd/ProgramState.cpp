@@ -190,3 +190,29 @@ double ProgramState::clustering(unsigned int vertex_id) {
 
     return ret;
 }
+
+double ProgramState::knn(unsigned int vertex_id) {
+    double ret = -1;
+    if (this->isWeighted()) {
+        WeightedVertex* vertex;
+        if ((vertex = weightedGraph.getVertexById(vertex_id)) != NULL)
+        {
+            IGraphFactory<WeightedGraph, WeightedVertex> *factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+            INearestNeighborsDegree<WeightedGraph, WeightedVertex>* nearestNeighborsDegree = factory->createNearestNeighborsDegree();
+            ret = nearestNeighborsDegree->meanDegreeForVertex(vertex);
+            delete nearestNeighborsDegree;
+        }
+    }
+    else
+    {
+        Vertex* vertex;
+        if ((vertex = graph.getVertexById(vertex_id)) != NULL)
+        {
+            IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+            INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree = factory->createNearestNeighborsDegree();
+            ret = nearestNeighborsDegree->meanDegreeForVertex(vertex);
+            delete nearestNeighborsDegree;
+        }
+    }
+    return ret;
+}

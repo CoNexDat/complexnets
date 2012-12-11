@@ -26,6 +26,8 @@ public:
 	void exportBetweennessVsDegree(string outputPath);
 	double degreeDistribution(unsigned int vertex_id);
 	double clustering(unsigned int vertex_id);
+	double knn(unsigned int vertex_id);
+
 };
 
 #endif
