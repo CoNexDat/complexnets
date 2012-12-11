@@ -210,6 +210,9 @@ int main(int argc, char* argv[])
 			} else if(args_info->ddist_output_given) {
 				state->exportDegreeDistribution(path);
 				cout << "Succesfully exported degree distribution in output file " + path + ".\n";
+			} else if(args_info->clustering_output_given) {
+				state->exportClusteringVsDegree(path);
+				cout << "Succesfully exported clustering coefficient in output file " + path + ".\n";
 			}
 		}
 	}

@@ -14,7 +14,9 @@ private:
     WeightedGraph weightedGraph;
     Graph graph;
 
+    void computeBetweenness(PropertyMap& propertyMap);
     void computeDegreeDistribution(PropertyMap& propertyMap);
+    void computeClusteringCoefficient(PropertyMap& propertyMap);
 
 public:
 	void setWeighted(bool weighted);
@@ -27,13 +29,17 @@ public:
 	void setErdosRenyiGraph(unsigned int n, float p);
 	void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 	void setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
+
 	double betweenness(unsigned int vertex_id);
-	void exportBetweennessVsDegree(string outputPath);
-	void exportDegreeDistribution(string outputPath);
 	double degreeDistribution(unsigned int vertex_id);
 	double clustering(unsigned int vertex_id);
 	double knn(unsigned int vertex_id);
 	double shellIndex(unsigned int vertex_id);
+
+	void exportBetweennessVsDegree(string outputPath);
+	void exportDegreeDistribution(string outputPath);
+	void exportClusteringVsDegree(string outputPath);
+	
 };
 
 #endif
