@@ -18,6 +18,7 @@ public:
 	WeightedGraph *generateWeightedGraphFromFile(string path, bool directed, bool multigraph);
 	Graph* generateErdosRenyiGraph(unsigned int n, float p);
 	Graph* generateBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
+	Graph* generateHotExtendedGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
 
 };
 
