@@ -47,18 +47,27 @@ struct gengetopt_args_info
   const char *barabasi_help; /**< @brief Barabasi-Albert model help description.  */
   const char *hot_help; /**< @brief Extended Hot model help description.  */
   const char *molloy_help; /**< @brief Molloy-Reed model help description.  */
-  int n_arg;	/**< @brief Number of network nodes.  */
-  char * n_orig;	/**< @brief Number of network nodes original value given at command line.  */
-  const char *n_help; /**< @brief Number of network nodes help description.  */
-  float p_arg;	/**< @brief Connection probability (only for Erdos-Renyi model).  */
-  char * p_orig;	/**< @brief Connection probability (only for Erdos-Renyi model) original value given at command line.  */
-  const char *p_help; /**< @brief Connection probability (only for Erdos-Renyi model) help description.  */
-  int m0_arg;	/**< @brief Initial number of nodes (only for Barabasi-Albert model) (default='10').  */
-  char * m0_orig;	/**< @brief Initial number of nodes (only for Barabasi-Albert model) original value given at command line.  */
-  const char *m0_help; /**< @brief Initial number of nodes (only for Barabasi-Albert model) help description.  */
-  int m_arg;	/**< @brief Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model) (default='2').  */
-  char * m_orig;	/**< @brief Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model) original value given at command line.  */
-  const char *m_help; /**< @brief Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model) help description.  */
+  int n_arg;	/**< @brief Number of network nodes..  */
+  char * n_orig;	/**< @brief Number of network nodes. original value given at command line.  */
+  const char *n_help; /**< @brief Number of network nodes. help description.  */
+  float p_arg;	/**< @brief Connection probability (only for Erdos-Renyi model)..  */
+  char * p_orig;	/**< @brief Connection probability (only for Erdos-Renyi model). original value given at command line.  */
+  const char *p_help; /**< @brief Connection probability (only for Erdos-Renyi model). help description.  */
+  int m0_arg;	/**< @brief Initial number of nodes (only for Barabasi-Albert model). (default='10').  */
+  char * m0_orig;	/**< @brief Initial number of nodes (only for Barabasi-Albert model). original value given at command line.  */
+  const char *m0_help; /**< @brief Initial number of nodes (only for Barabasi-Albert model). help description.  */
+  int m_arg;	/**< @brief Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model)..  */
+  char * m_orig;	/**< @brief Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model). original value given at command line.  */
+  const char *m_help; /**< @brief Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model). help description.  */
+  float xi_arg;	/**< @brief Parameter used to select the neighbors for a new vertex (only for Extended Hot Model)..  */
+  char * xi_orig;	/**< @brief Parameter used to select the neighbors for a new vertex (only for Extended Hot Model). original value given at command line.  */
+  const char *xi_help; /**< @brief Parameter used to select the neighbors for a new vertex (only for Extended Hot Model). help description.  */
+  int q_arg;	/**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model)..  */
+  char * q_orig;	/**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model). original value given at command line.  */
+  const char *q_help; /**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model). help description.  */
+  float r_arg;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model)..  */
+  char * r_orig;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). original value given at command line.  */
+  const char *r_help; /**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). help description.  */
   int betweenness_arg;	/**< @brief Calculate betweenness of a given node.  */
   char * betweenness_orig;	/**< @brief Calculate betweenness of a given node original value given at command line.  */
   const char *betweenness_help; /**< @brief Calculate betweenness of a given node help description.  */
@@ -95,6 +104,9 @@ struct gengetopt_args_info
   unsigned int p_given ;	/**< @brief Whether p was given.  */
   unsigned int m0_given ;	/**< @brief Whether m0 was given.  */
   unsigned int m_given ;	/**< @brief Whether m was given.  */
+  unsigned int xi_given ;	/**< @brief Whether xi was given.  */
+  unsigned int q_given ;	/**< @brief Whether q was given.  */
+  unsigned int r_given ;	/**< @brief Whether r was given.  */
   unsigned int betweenness_given ;	/**< @brief Whether betweenness was given.  */
   unsigned int ddist_given ;	/**< @brief Whether ddist was given.  */
   unsigned int clustering_given ;	/**< @brief Whether clustering was given.  */

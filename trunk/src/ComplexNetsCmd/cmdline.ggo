@@ -24,13 +24,35 @@ defgroup "model" groupdesc="Generate a network using a model"
 	groupoption "molloy" - "Molloy-Reed model" group="model"
 
 		#Habría que ver si se puenden poner dependon multiples
-		option "n" n "Number of network nodes" int typestr="<number>" optional
+		option "n" n "Number of network nodes." int typestr="<number>" optional
 
-		option "p" p "Connection probability (only for Erdos-Renyi model)" float typestr="<probability>" optional
+		option "p" p "Connection probability (only for Erdos-Renyi model)." float typestr="<probability>" optional
 
-		option "m0" c "Initial number of nodes (only for Barabasi-Albert model)" int typestr="<number>" default="10" optional dependon="barabasi" optional
+		option "m0" c "Initial number of nodes (only for Barabasi-Albert model)." int typestr="<number>" default="10" optional dependon="barabasi" optional
 		
-		option "m" m "Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model)" int typestr="<number>" default="2" optional dependon="barabasi" optional
+		option "m" m "Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model)."
+		int
+		typestr="<number>"
+		optional
+
+		option "xi" x "Parameter used to select the neighbors for a new vertex (only for Extended Hot Model)."
+		float
+		typestr="<number>"
+		optional
+		dependon="hot"
+
+		option "q" q "Number of edges added in the graph after of connect a vertex (only for Extended Hot Model)."
+		int
+		typestr="<number>"
+		optional
+		dependon="hot"
+
+		option "r" r "Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model)."
+		float
+		typestr="<number>"
+		optional
+		dependon="hot"
+
 
 # ----- Group of network analysis methods.
 

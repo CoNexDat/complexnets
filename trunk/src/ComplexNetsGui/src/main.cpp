@@ -6,8 +6,8 @@
 #include "ComplexNetsCmd/ProgramState.h"
 
 #define ERROR_EXIT		delete state; return EXIT_FAILURE;
-#define VALIDATE_POS(n)	if ((n) <= 0) { usageErrorMessage("Number of nodes cannot be negative or zero."); ERROR_EXIT; }
-#define VALIDATE_P(p)	if ((p) <= 0 || (p) > 1) { usageErrorMessage("Number of nodes cannot be negative, zero or greater than one."); ERROR_EXIT; }
+#define VALIDATE_POS(n)	if ((n) <= 0) { usageErrorMessage("The specified parameter cannot be negative or zero."); ERROR_EXIT; }
+#define VALIDATE_P(p)	if ((p) <= 0 || (p) > 1) { usageErrorMessage("The specified parameter cannot be negative, zero or greater than one."); ERROR_EXIT; }
 
 int main(int argc, char* argv[])
 {
@@ -103,7 +103,45 @@ int main(int argc, char* argv[])
 			state->setBarabasiAlbertGraph(m0, m, n);
 			cout << "Succesfully created a Barabasi-Albert graph with " + to_string(n) + " nodes.\n";
 		} else if (args_info->hot_given) {
-			cout << "Hot option selected.\n";
+			if (!args_info->n_given) {
+				usageErrorMessage("Extended Hot graph generation requires a number of nodes.");
+				ERROR_EXIT;
+			}
+
+			if (!args_info->m_given) {
+				usageErrorMessage("Extended Hot graph generation requires the number of edges in each new vertex.");
+				ERROR_EXIT;
+			}
+
+			if (!args_info->xi_given) {
+				usageErrorMessage("Extended Hot graph generation requires the parameter used to select the neighbors for a new vertex.");
+				ERROR_EXIT;
+			}
+
+			if (!args_info->q_given) {
+				usageErrorMessage("Extended Hot graph generation requires the number of edges added in the graph after of connect a vertex.");
+				ERROR_EXIT;
+			}
+
+			if (!args_info->r_given) {
+				usageErrorMessage("Extended Hot graph generation requires the parameter user to selected the edges in the graph after connecting a vertex.");
+				ERROR_EXIT;
+			}
+
+ 			int n = args_info->n_arg;
+ 			int m = args_info->m_arg;
+ 			float xi = args_info->xi_arg;
+ 			int q = args_info->q_arg;
+ 			float r = args_info->r_arg;
+ 			VALIDATE_POS(n);
+ 			VALIDATE_POS(m);
+ 			VALIDATE_POS(q);
+ 			VALIDATE_POS(xi);
+ 			VALIDATE_POS(r);
+
+ 			state->setExtendedHotGraph(m, n, xi, q, r);
+ 			cout << "Succesfully created an Extended Hot graph with " + to_string(n) + " nodes.\n";
+
 		} else if (args_info->molloy_given) {
 			cout << "Molloy option selected.\n";
 		} else {
@@ -151,14 +189,19 @@ int main(int argc, char* argv[])
 		}
 
 		if (args_info->output_file_given) {
+			string path = args_info->output_file_arg;
+
 			if (args_info->betweenness_plot_given) {
 				if (state->isWeighted()) {
 					errorMessage("Betweenness for weighted graphs is not supported.");
 					ERROR_EXIT;
 				} else {
-					string path = args_info->output_file_arg;
 					state->exportBetweennessVsDegree(path);
+					cout << "Succesfully exported betweenness in output file " + path + ".\n";
 				}
+			} else if(args_info->ddist_plot_given) {
+				state->exportDegreeDistribution(path);
+				cout << "Succesfully exported degree distribution in output file " + path + ".\n";
 			}
 		}
 	}

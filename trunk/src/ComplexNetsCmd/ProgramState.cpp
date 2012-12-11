@@ -48,6 +48,11 @@ void ProgramState::setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsi
 	this->graph = *GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n);
 }
 
+void ProgramState::setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r) {
+    setWeighted(false);
+    this->graph = *GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r);
+}
+
 double ProgramState::betweenness(unsigned int vertex_id) {
 	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
 	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
@@ -127,10 +132,47 @@ void ProgramState::exportBetweennessVsDegree(string outputPath) {
         betweennessVsDegree.insert<double>(degree , betweennessAuxAcum / (double)degreeAmount);
         ++betweennessVsDegreeIt;
     }
-
     GrapherUtils utils;
-    utils.exportPropertySet(betweennessVsDegree, outputPath);
+    utils.exportPropertySet(propertyMap.getPropertySet("betweennessVsDegree"), outputPath);
 }
+
+
+void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap) {
+    if (isWeighted()) {
+        graphpp::IGraphFactory<WeightedGraph, WeightedVertex> *weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(this->weightedGraph);
+        DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
+
+        while (!it.end()) {
+            propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+            propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double) this->weightedGraph.verticesCount());
+            ++it;
+        }
+        
+        delete degreeDistribution;
+    } else {
+        IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+        DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(this->graph);
+        DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
+        
+        while (!it.end()) {
+            propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
+            propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double) this->graph.verticesCount());
+            ++it;
+        }
+
+        delete degreeDistribution;
+    }
+}
+
+
+void ProgramState::exportDegreeDistribution(string outputPath) {
+    PropertyMap propertyMap;
+    computeDegreeDistribution(propertyMap);
+    GrapherUtils grapherUtils;
+    grapherUtils.exportPropertySet(propertyMap.getPropertySet("degreeDistribution"), outputPath);
+}
+
 
 double ProgramState::degreeDistribution(unsigned int vertex_id) {
 	double ret = -1;

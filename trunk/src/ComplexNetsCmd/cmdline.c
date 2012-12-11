@@ -42,10 +42,13 @@ const char *gengetopt_args_info_help[] = {
   "      --barabasi                Barabasi-Albert model",
   "      --hot                     Extended Hot model",
   "      --molloy                  Molloy-Reed model",
-  "  -n, --n=<number>              Number of network nodes",
-  "  -p, --p=<probability>         Connection probability (only for Erdos-Renyi \n                                  model)",
-  "  -c, --m0=<number>             Initial number of nodes (only for \n                                  Barabasi-Albert model)  (default=`10')",
-  "  -m, --m=<number>              Number of edges to attach from new node to \n                                  existing nodes (only for Barabasi-Albert \n                                  model)  (default=`2')",
+  "  -n, --n=<number>              Number of network nodes.",
+  "  -p, --p=<probability>         Connection probability (only for Erdos-Renyi \n                                  model).",
+  "  -c, --m0=<number>             Initial number of nodes (only for \n                                  Barabasi-Albert model).  (default=`10')",
+  "  -m, --m=<number>              Number of edges to attach from new node to \n                                  existing nodes (Barabasi-Albert model). \n                                  Number of edges in each new vertex (Extended \n                                  Hot Model).",
+  "  -x, --xi=<number>             Parameter used to select the neighbors for a \n                                  new vertex (only for Extended Hot Model).",
+  "  -q, --q=<number>              Number of edges added in the graph after of \n                                  connect a vertex (only for Extended Hot \n                                  Model).",
+  "  -r, --r=<number>              Parameter user to selected the edges in the \n                                  graph after connecting a vertex (only for \n                                  Extended Hot Model).",
   "\n Group: analysis\n  Network analysis methods",
   "      --betweenness=<vertex id> Calculate betweenness of a given node",
   "      --ddist=<vertex id>       Calculate the degree distribution of a given \n                                  node",
@@ -98,6 +101,9 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->p_given = 0 ;
   args_info->m0_given = 0 ;
   args_info->m_given = 0 ;
+  args_info->xi_given = 0 ;
+  args_info->q_given = 0 ;
+  args_info->r_given = 0 ;
   args_info->betweenness_given = 0 ;
   args_info->ddist_given = 0 ;
   args_info->clustering_given = 0 ;
@@ -125,8 +131,10 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->p_orig = NULL;
   args_info->m0_arg = 10;
   args_info->m0_orig = NULL;
-  args_info->m_arg = 2;
   args_info->m_orig = NULL;
+  args_info->xi_orig = NULL;
+  args_info->q_orig = NULL;
+  args_info->r_orig = NULL;
   args_info->betweenness_orig = NULL;
   args_info->ddist_orig = NULL;
   args_info->clustering_orig = NULL;
@@ -154,17 +162,20 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->p_help = gengetopt_args_info_help[11] ;
   args_info->m0_help = gengetopt_args_info_help[12] ;
   args_info->m_help = gengetopt_args_info_help[13] ;
-  args_info->betweenness_help = gengetopt_args_info_help[15] ;
-  args_info->ddist_help = gengetopt_args_info_help[16] ;
-  args_info->clustering_help = gengetopt_args_info_help[17] ;
-  args_info->knn_help = gengetopt_args_info_help[18] ;
-  args_info->shell_help = gengetopt_args_info_help[19] ;
-  args_info->output_file_help = gengetopt_args_info_help[21] ;
-  args_info->betweenness_plot_help = gengetopt_args_info_help[22] ;
-  args_info->ddist_plot_help = gengetopt_args_info_help[23] ;
-  args_info->clustering_plot_help = gengetopt_args_info_help[24] ;
-  args_info->knn_plot_help = gengetopt_args_info_help[25] ;
-  args_info->shell_plot_help = gengetopt_args_info_help[26] ;
+  args_info->xi_help = gengetopt_args_info_help[14] ;
+  args_info->q_help = gengetopt_args_info_help[15] ;
+  args_info->r_help = gengetopt_args_info_help[16] ;
+  args_info->betweenness_help = gengetopt_args_info_help[18] ;
+  args_info->ddist_help = gengetopt_args_info_help[19] ;
+  args_info->clustering_help = gengetopt_args_info_help[20] ;
+  args_info->knn_help = gengetopt_args_info_help[21] ;
+  args_info->shell_help = gengetopt_args_info_help[22] ;
+  args_info->output_file_help = gengetopt_args_info_help[24] ;
+  args_info->betweenness_plot_help = gengetopt_args_info_help[25] ;
+  args_info->ddist_plot_help = gengetopt_args_info_help[26] ;
+  args_info->clustering_plot_help = gengetopt_args_info_help[27] ;
+  args_info->knn_plot_help = gengetopt_args_info_help[28] ;
+  args_info->shell_plot_help = gengetopt_args_info_help[29] ;
   
 }
 
@@ -251,6 +262,9 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->p_orig));
   free_string_field (&(args_info->m0_orig));
   free_string_field (&(args_info->m_orig));
+  free_string_field (&(args_info->xi_orig));
+  free_string_field (&(args_info->q_orig));
+  free_string_field (&(args_info->r_orig));
   free_string_field (&(args_info->betweenness_orig));
   free_string_field (&(args_info->ddist_orig));
   free_string_field (&(args_info->clustering_orig));
@@ -312,6 +326,12 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "m0", args_info->m0_orig, 0);
   if (args_info->m_given)
     write_into_file(outfile, "m", args_info->m_orig, 0);
+  if (args_info->xi_given)
+    write_into_file(outfile, "xi", args_info->xi_orig, 0);
+  if (args_info->q_given)
+    write_into_file(outfile, "q", args_info->q_orig, 0);
+  if (args_info->r_given)
+    write_into_file(outfile, "r", args_info->r_orig, 0);
   if (args_info->betweenness_given)
     write_into_file(outfile, "betweenness", args_info->betweenness_orig, 0);
   if (args_info->ddist_given)
@@ -522,9 +542,19 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       fprintf (stderr, "%s: '--m0' ('-c') option depends on option 'barabasi'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
-  if (args_info->m_given && ! args_info->barabasi_given)
+  if (args_info->xi_given && ! args_info->hot_given)
     {
-      fprintf (stderr, "%s: '--m' ('-m') option depends on option 'barabasi'%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--xi' ('-x') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->q_given && ! args_info->hot_given)
+    {
+      fprintf (stderr, "%s: '--q' ('-q') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->r_given && ! args_info->hot_given)
+    {
+      fprintf (stderr, "%s: '--r' ('-r') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
   if (args_info->betweenness_plot_given && ! args_info->output_file_given)
@@ -722,6 +752,9 @@ cmdline_parser_internal (
         { "p",	1, NULL, 'p' },
         { "m0",	1, NULL, 'c' },
         { "m",	1, NULL, 'm' },
+        { "xi",	1, NULL, 'x' },
+        { "q",	1, NULL, 'q' },
+        { "r",	1, NULL, 'r' },
         { "betweenness",	1, NULL, 0 },
         { "ddist",	1, NULL, 0 },
         { "clustering",	1, NULL, 0 },
@@ -736,7 +769,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi:n:p:c:m:o:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:n:p:c:m:x:q:r:o:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -767,7 +800,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'n':	/* Number of network nodes.  */
+        case 'n':	/* Number of network nodes..  */
         
         
           if (update_arg( (void *)&(args_info->n_arg), 
@@ -779,7 +812,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'p':	/* Connection probability (only for Erdos-Renyi model).  */
+        case 'p':	/* Connection probability (only for Erdos-Renyi model)..  */
         
         
           if (update_arg( (void *)&(args_info->p_arg), 
@@ -791,7 +824,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'c':	/* Initial number of nodes (only for Barabasi-Albert model).  */
+        case 'c':	/* Initial number of nodes (only for Barabasi-Albert model)..  */
         
         
           if (update_arg( (void *)&(args_info->m0_arg), 
@@ -803,14 +836,50 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'm':	/* Number of edges to attach from new node to existing nodes (only for Barabasi-Albert model).  */
+        case 'm':	/* Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model)..  */
         
         
           if (update_arg( (void *)&(args_info->m_arg), 
                &(args_info->m_orig), &(args_info->m_given),
-              &(local_args_info.m_given), optarg, 0, "2", ARG_INT,
+              &(local_args_info.m_given), optarg, 0, 0, ARG_INT,
               check_ambiguity, override, 0, 0,
               "m", 'm',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'x':	/* Parameter used to select the neighbors for a new vertex (only for Extended Hot Model)..  */
+        
+        
+          if (update_arg( (void *)&(args_info->xi_arg), 
+               &(args_info->xi_orig), &(args_info->xi_given),
+              &(local_args_info.xi_given), optarg, 0, 0, ARG_FLOAT,
+              check_ambiguity, override, 0, 0,
+              "xi", 'x',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'q':	/* Number of edges added in the graph after of connect a vertex (only for Extended Hot Model)..  */
+        
+        
+          if (update_arg( (void *)&(args_info->q_arg), 
+               &(args_info->q_orig), &(args_info->q_given),
+              &(local_args_info.q_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "q", 'q',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'r':	/* Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model)..  */
+        
+        
+          if (update_arg( (void *)&(args_info->r_arg), 
+               &(args_info->r_orig), &(args_info->r_given),
+              &(local_args_info.r_given), optarg, 0, 0, ARG_FLOAT,
+              check_ambiguity, override, 0, 0,
+              "r", 'r',
               additional_error))
             goto failure;
         
