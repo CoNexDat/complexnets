@@ -10,6 +10,7 @@
 #include "../ComplexNets/DegreeDistribution.h"
 #include "../ComplexNets/IShellIndex.h"
 #include "../ComplexNets/IClusteringCoefficient.h"
+#include "../ComplexNets/INearestNeighborsDegree.h"
 
 using namespace std;
 using namespace graphpp;
@@ -301,6 +302,42 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap) {
     }
 }
 
+void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap) {
+    if (!propertyMap.containsPropertySet("degreeDistribution")) {
+        computeDegreeDistribution(propertyMap);
+    }
+
+    VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+    VariantsSet::const_iterator it = degrees.begin();
+
+    double knn = 0;
+
+    if (isWeighted()) {
+        IGraphFactory<WeightedGraph, WeightedVertex> *weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        INearestNeighborsDegree<WeightedGraph, WeightedVertex> *nearestNeighborDegree = weightedFactory->createNearestNeighborsDegree();
+
+        while (it != degrees.end()) {
+            knn = nearestNeighborDegree->meanDegree(weightedGraph, from_string<unsigned int>(it->first));
+            propertyMap.addProperty<double>("nearestNeighborDegreeForDegree", it->first, knn);
+            ++it;
+        }
+
+        delete nearestNeighborDegree;
+
+    } else {
+        IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+        INearestNeighborsDegree<Graph, Vertex> *nearestNeighborDegree = factory->createNearestNeighborsDegree();
+
+        while (it != degrees.end()) {
+            knn = nearestNeighborDegree->meanDegree(graph, from_string<unsigned int>(it->first));
+            propertyMap.addProperty<double>("nearestNeighborDegreeForDegree", it->first, knn);
+            ++it;
+        }
+
+        delete nearestNeighborDegree;
+    }
+}
+
 void ProgramState::exportBetweennessVsDegree(string outputPath) {
     PropertyMap propertyMap;
     computeBetweenness(propertyMap);
@@ -320,4 +357,15 @@ void ProgramState::exportClusteringVsDegree(string outputPath) {
     computeClusteringCoefficient(propertyMap);
     GrapherUtils grapherUtils;
     grapherUtils.exportPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), outputPath);
+}
+
+void ProgramState::exportNearestNeighborsDegreeVsDegree(string outputPath) {
+    PropertyMap propertyMap;
+    computeNearestNeighborsDegree(propertyMap);
+    GrapherUtils grapherUtils;
+    grapherUtils.exportPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), outputPath);
+}
+
+void ProgramState::exportShellIndexVsDegree(string outputPath) {
+
 }
