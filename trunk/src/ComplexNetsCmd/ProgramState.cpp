@@ -161,3 +161,32 @@ double ProgramState::degreeDistribution(unsigned int vertex_id) {
     }
     return ret;
 }
+
+double ProgramState::clustering(unsigned int vertex_id) {
+	double ret = -1;
+
+    if (this->isWeighted())
+            {
+                WeightedVertex* vertex;
+                if ((vertex = weightedGraph.getVertexById(vertex_id)) != NULL)
+                {
+                    IGraphFactory<WeightedGraph, WeightedVertex> *factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+                    IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient = factory->createClusteringCoefficient();
+                    ret = clusteringCoefficient->vertexClusteringCoefficient(vertex);
+                    delete clusteringCoefficient;
+                }
+            }
+            else
+            {
+                Vertex* vertex;
+                if ((vertex = graph.getVertexById(vertex_id)) != NULL)
+                {
+                    IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+                    IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
+                    ret = clusteringCoefficient->vertexClusteringCoefficient(vertex);
+                    delete clusteringCoefficient;
+                }
+            }
+
+    return ret;
+}

@@ -25,6 +25,7 @@ public:
 	double betweenness(unsigned int vertex_id);
 	void exportBetweennessVsDegree(string outputPath);
 	double degreeDistribution(unsigned int vertex_id);
+	double clustering(unsigned int vertex_id);
 };
 
 #endif
