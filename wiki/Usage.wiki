@@ -95,3 +95,7 @@ where `<graph>` are the arguments to create or load a graph using a model and `<
 {{{
 --clustering-output
 }}}
+ * Nearest neighbors degree vs. Degree:
+{{{
+--knn-output
+}}}
