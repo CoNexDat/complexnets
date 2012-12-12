@@ -237,6 +237,40 @@ public:
         return vertices.size();
     }
 
+	int hops(Vertex* vertex1, Vertex* vertex2)
+	{
+		int hops = 0;
+		bool keepTraversing = true;
+		std::queue<Vertex*> queue;
+		queue.push(vertex1);
+		vertex1->setVisited(true);
+
+		while (!queue.empty() && keepTraversing)
+	    {
+	        Vertex* vertex = queue.front();
+	        queue.pop();
+	        hops++;
+
+        	NeighborsIterator it = vertex->neighborsIterator();
+
+            while (!it.end() && keepTraversing)
+            {
+                Vertex* neighbour = *it;
+                if (!neighbour->getVisited())
+				{
+                    queue.push(neighbour);
+			        neighbour->setVisited(true);
+			        if (neighbour->getVertexId() == vertex2->getVertexId())
+			        	keepTraversing = false;
+				}
+                it++;
+            }
+	    }
+		return hops - 1;
+	}
+
+
+
     bool isDigraph()
     {
         return this->_isDigraph;

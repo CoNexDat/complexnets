@@ -21,6 +21,7 @@ public:
 	Graph* generateHotExtendedGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
 	Graph* generateMolloyReedGraph(unsigned int k[]);
 
+
 };
 
 #endif

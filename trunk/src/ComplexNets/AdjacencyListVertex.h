@@ -17,8 +17,6 @@ public:
 
     typedef unsigned int VertexId;
     typedef unsigned int Degree;
-    typedef float Position;
-
 
     typedef std::set<AdjacencyListVertex*> VertexContainer;
     typedef CAutonomousIterator<VertexContainer> VerticesConstIterator;
@@ -133,27 +131,11 @@ public:
        visited=v;
     }
 
-    void setPosition(Position a, Position b)
-    {
-       position[0]=a;
-       position[1]=b;
-    }
-
-    Position getPositionX() const
-    {
-    	return position[0];
-    }
-    Position getPositionY() const
-	{
-		return position[1];
-	}
-
 private:
 
     VertexContainer neighbors;
     VertexId vertexId;
    	bool visited;
-   	Position position[2];
 };
 }
 
