@@ -139,10 +139,13 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 {
 	Graph* graph = new Graph(false, false);
 	vector<unsigned int> vertexIndexes;
+	list<float> distance;
+
+	vertexesPositions.clear();
+
 	Vertex* newVertex = new Vertex(1);
-	graph->addVertex(newVertex);
-	
-	addVertexPosition();	
+	graph->addVertex(newVertex);	
+	addVertexPosition();
 	unsigned int root = 1;
 
 	//VERTEX GENERATOR
@@ -150,11 +153,9 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 	{
 		newVertex = new Vertex(i);
 		graph->addVertex(newVertex);
-
 		addVertexPosition();
-		list<float> distance;
+
 		float id[i];
-		distance.clear();
 		unsigned int count = 1;
 		for(unsigned int j = 1; j <= i; j++)
 		{
@@ -164,8 +165,7 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 			if(j != i)
 			{
 				distance.push_front(w);
-				id[count] = w;
-				count++;
+				id[count++] = w;
 			}
 		}
 		distance.sort();
@@ -213,10 +213,8 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 			if(w != 0)
 			{
 				distance.push_front(w);
-				id[count] = w;
-				count++;
+				id[count++] = w;
 			}
-
 		}
 		distance.sort();
 		for (unsigned int k = 0; k < q; k++)
@@ -237,6 +235,7 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 			if (!distance.empty())
 				distance.pop_front();
 		}
+		distance.clear();
 		root = vertexIndexes[rand() % vertexIndexes.size()];
 	}
 	vertexIndexes.clear();
