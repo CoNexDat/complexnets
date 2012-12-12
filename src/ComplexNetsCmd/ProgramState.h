@@ -21,6 +21,8 @@ private:
     void computeShellIndex(PropertyMap &propertyMap);
 
 public:
+	ProgramState();
+
 	void setWeighted(bool weighted);
 
 	bool isWeighted();

@@ -18,6 +18,10 @@ using namespace graphpp;
 using namespace ComplexNetsGui;
 
 
+ProgramState::ProgramState() {
+    setWeighted(false);
+}
+
 void ProgramState::setWeighted(bool weighted) {
     this->weighted = weighted;
 }
@@ -36,9 +40,9 @@ Graph ProgramState::getGraph() {
 
 void ProgramState::readGraphFromFile(string path) {
 	if (isWeighted()) {
-		this->weightedGraph = *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, false, false));
+		this->weightedGraph = *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, false, true));
     } else {
-    	this->graph = *(GraphGenerator::getInstance()->generateGraphFromFile(path, false, false));
+    	this->graph = *(GraphGenerator::getInstance()->generateGraphFromFile(path, false, true));
     }
 }
 
