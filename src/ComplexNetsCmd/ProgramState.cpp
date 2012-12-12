@@ -356,6 +356,15 @@ void ProgramState::computeShellIndex(PropertyMap &propertyMap) {
     delete shellIndex;
 }
 
+void ProgramState::exportGraph(string outputPath) {
+    ofstream destinationFile;
+    destinationFile.open(outputPath.c_str(), ios_base::out);
+
+    // Here goes the code that saves the edges in the file.
+
+    destinationFile.close();
+}
+
 void ProgramState::exportBetweennessVsDegree(string outputPath) {
     PropertyMap propertyMap;
     computeBetweenness(propertyMap);
