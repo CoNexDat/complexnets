@@ -229,3 +229,85 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 	}
 	return graph;
 }
+
+Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
+{
+	Graph* graph = new Graph(false, false);
+	
+	unsigned int sum = 0, ind, ind2, i, j, id, chosenId, expectedDegree, existantVertexId;	
+	std::vector<unsigned int> vec;
+	std::vector<unsigned int> vertexesWithFreeDegrees;
+	Vertex* v;
+	Vertex* existantVertex;
+	
+	for (i=0;i<5;i++)
+	{
+		for (j=0;j<k[i];j++){
+			sum++;
+			// ASIGNO A LOS NODOS UN ID QUE INDICA EN LA UNIDAD DE MILES CUAL ES
+			// EL GRADO QUE TIENEN QUE LLEGAR A TENER
+			id = (i+1)*1000+j;
+			vec.push_back(id);
+		}
+	}
+
+	while (sum>0)
+	{
+		do
+		{		
+			ind = rand() % vec.size();
+			chosenId = vec[ind];
+			v = graph->getVertexById(chosenId);		
+		} while (v==NULL);
+
+		// Aca hay un error que si despues de ir agregando nodos no quedan nodos libres, 
+		// se crean componentes conexas y no es conexo el grado
+		if (vertexesWithFreeDegrees.size()==0){
+			Vertex* newVertex = new Vertex(chosenId);
+			graph->addVertex(newVertex);
+			vertexesWithFreeDegrees.push_back(chosenId);
+		}
+		else
+		{
+			do
+			{
+				ind2 = rand() % vertexesWithFreeDegrees.size();
+				existantVertexId = vertexesWithFreeDegrees[ind2];
+				existantVertex = graph->getVertexById(existantVertexId);
+				expectedDegree = existantVertex->getVertexId() / 1000;
+			} while (existantVertex->degree()==expectedDegree);
+	
+			Vertex* newVertex = new Vertex(chosenId);
+			graph->addVertex(newVertex);
+			graph->addEdge(existantVertex, newVertex);
+			
+			// El nuevo nodo que agrego al grafo lo agrego al listado de nodos 
+			// con grados libres unicamente si tiene grado mayor a uno			
+			if (((int)chosenId/1000)>1)
+			{
+				vertexesWithFreeDegrees.push_back(chosenId);
+			}
+
+			// En el caso que el nodo que conecte el nuevo nodo completo su grado con 
+			// esta nueva arista, lo remuevo del vector de nodos con grados libres
+			// para que ya no sea elegido en el futuro para conectar nuevos nodos
+			if (existantVertex->degree()==expectedDegree)
+			{
+				for(i = 0; i < vertexesWithFreeDegrees.size(); i++)
+				{
+					if(vertexesWithFreeDegrees[i] == existantVertexId)
+					{
+						vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + i);
+					}
+				}
+			}
+		}
+		vec.erase(vec.begin()+ind);
+		sum--;
+	}
+
+	vertexesWithFreeDegrees.clear();
+	vec.clear();
+	return graph;
+}
+
