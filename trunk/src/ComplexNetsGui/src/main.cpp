@@ -48,6 +48,9 @@ int main(int argc, char* argv[])
 			} catch (const FileNotFoundException& e) {
 				errorMessage("The specified input was not found in the filesystem.");
 				ERROR_EXIT;
+			} catch (const DuplicatedEdgeLoading& ex) {
+				errorMessage("The specified input file has duplicated edges.");
+				ERROR_EXIT;
 			} catch (...) {
 				errorMessage("There were problems reading the input file.");
 				ERROR_EXIT;
