@@ -10,7 +10,7 @@ class GraphGenerator {
 private:
 	GraphGenerator();
 	static GraphGenerator *instance;
-
+	
 public:
 	static GraphGenerator *getInstance();
 
