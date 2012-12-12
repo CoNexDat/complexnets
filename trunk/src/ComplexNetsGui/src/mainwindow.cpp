@@ -12,7 +12,6 @@
 //File ui_mainwindow.h will be generated on compile time. Don't look for it, unless you have already compiled the project.
 #include "ComplexNetsGui/inc/ui_mainwindow.h"
 #include "ComplexNetsGui/inc/mainwindow.h"
-#include "../../ComplexNets/GraphFactory.h"
 #include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
 #include "ComplexNetsGui/inc/GnuplotConsole.h"
 #include "../../ComplexNets/GraphFactory.h"
@@ -230,7 +229,7 @@ void MainWindow::buildGraphFactory(const bool isWeighted)
     if (isWeighted)
         weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
     else
-        factory = new GraphFactory<Graph, Vertex>();
+		factory = new GraphFactory<Graph, Vertex>();
 }
 
 void MainWindow::deleteGraphFactory()
@@ -239,7 +238,7 @@ void MainWindow::deleteGraphFactory()
     {
         delete weightedFactory;
         weightedFactory = NULL;
-    }
+    }		
     else if (factory != NULL)
     {
         delete factory;
@@ -379,7 +378,7 @@ void MainWindow::computeDegreeDistribution()
             }
             delete degreeDistribution;
         }
-        else
+		else
         {
             DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
             DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();

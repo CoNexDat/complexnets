@@ -7,6 +7,11 @@
 
 using namespace graphpp;
 
+typedef typename Vertex::VerticesIterator NeighborsIterator;
+int hopsBetweenVertex(Vertex* vertex1, Vertex* vertex2);
+float distanceBetweenVertex(Vertex* vertex1, Vertex* vertex2);
+
+
 GraphGenerator *GraphGenerator::instance = NULL;
 
 GraphGenerator::GraphGenerator() {};
@@ -17,6 +22,46 @@ GraphGenerator *GraphGenerator::getInstance() {
 	}
 
 	return instance;
+}
+
+
+int hopsBetweenVertex(Vertex* vertex1, Vertex* vertex2)
+{
+    int hops=0;
+	bool keepTraversing = true;
+    std::queue<Vertex*> queue;
+    queue.push(vertex1);
+    vertex1->setVisited(true);
+
+	 while (!queue.empty() && keepTraversing)
+	        {
+	            Vertex* vertex = queue.front();
+	            queue.pop();
+	            hops++;
+	            if (keepTraversing)
+	            {
+	            	NeighborsIterator it=vertex->neighborsIterator();
+
+	                while (!it.end())
+	                {
+	                    Vertex* neighbour = *it;
+	                    if (!neighbour->getVisited())
+						{
+	                        queue.push(neighbour);
+				            neighbour->setVisited(true);
+				            if (neighbour->getVertexId() == vertex2->getVertexId())
+				            	keepTraversing=false;
+						}
+	                    it++;
+	                }
+	            }
+	        }
+	 return hops--;
+}
+
+float distanceBetweenVertex(Vertex* vertex1, Vertex* vertex2)
+{
+	return sqrt(pow(vertex1->getPositionX()-vertex2->getPositionX(),2)+pow(vertex1->getPositionY()-vertex2->getPositionY(),2));
 }
 
 
@@ -69,7 +114,7 @@ Graph* GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p)
 
 	// Keep only the biggest component (at least n/2 vertexes)
 	ConexityVerifier<Graph, Vertex> conexityVerifier;
-	conexityVerifier.getBigestComponent(graph);
+	conexityVerifier.getBiggestComponent(graph);
 
 	return graph;
 }
@@ -118,6 +163,8 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
 	vertexIndexes.clear();
 	return graph;
 }
+
+
 /*
  * HOT Extended Model
  * m represents the number of edges in each new vertex
@@ -132,16 +179,18 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 	Graph* graph = new Graph(false, false);
 	vector<unsigned int> vertexIndexes;
 	ConexityVerifier<Graph, Vertex> conexityVerifier;
-	graph->addVertex(new Vertex(1));
-	Vertex* newVertex1 = graph->getVertexById(1);
-	newVertex1->setPosition((float) rand() / RAND_MAX,(float) rand() / RAND_MAX);
+	Vertex* newVertex = new Vertex(1);
+	graph->addVertex(newVertex);
+
+	newVertex->setPosition((float) rand() / RAND_MAX,(float) rand() / RAND_MAX);
 	unsigned int root =1;
 
-//VERTEX GENERATOR
+	//VERTEX GENERATOR
 	for(unsigned int i = 2; i <= n; i++)
 	{
-		graph->addVertex(new Vertex(i));
-		Vertex* newVertex = graph->getVertexById(i);
+		newVertex = new Vertex(i);
+		graph->addVertex(newVertex);
+
 		newVertex->setPosition((float) rand() / RAND_MAX,(float) rand() / RAND_MAX);
 		list<float> distance;
 		float id[i];
@@ -149,8 +198,8 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 		unsigned int count=1;
 		for(unsigned int j=1; j<=i;j++)
 		{
-			unsigned int HopsDistance=conexityVerifier.hopsBetweenVertex(graph->getVertexById(j),graph->getVertexById(root));
-			float euclidianDistance=conexityVerifier.distanceBetweenVertex(graph->getVertexById(j),graph->getVertexById(i));
+			unsigned int HopsDistance=hopsBetweenVertex(graph->getVertexById(j),graph->getVertexById(root));
+			float euclidianDistance=distanceBetweenVertex(graph->getVertexById(j),graph->getVertexById(i));
 			float w=euclidianDistance+xi*HopsDistance;
 			if(j!=i)
 			{
@@ -165,10 +214,10 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 		{
 			unsigned int t=0;
 			while(distance.front()!=id[t] && !distance.empty())
-				{
 				t++;
-				}
-			if (t==0)t++;
+				
+			if (t==0)
+				t++;
 			Vertex* selectedVertex = graph->getVertexById(t);
 			if(t != i && !selectedVertex->isNeighbourOf(newVertex))
 			{
@@ -178,24 +227,25 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 				graph->addEdge(selectedVertex, newVertex);
 				//cout<<id[t]<<" "<<distance.front()<<" "<<i<<" "<<t<<" "<<root<<"\n";
 			}
-			if (!distance.empty())distance.pop_front();
+			if (!distance.empty())
+				distance.pop_front();
 		}
-//EDGE GENERATOR
+		//EDGE GENERATOR
 		count=1;
 		distance.clear();
 		for(unsigned int j=1; j<=i;j++)
 		{
-			float	euclidianDistance=conexityVerifier.distanceBetweenVertex(graph->getVertexById(j),graph->getVertexById(root));
-			unsigned int 	HopsWithEdge=0;
-			unsigned int	HopsWithOutEdge=0;
+			float euclidianDistance=distanceBetweenVertex(graph->getVertexById(j),graph->getVertexById(root));
+			unsigned int HopsWithEdge=0;
+			unsigned int HopsWithOutEdge=0;
 			for (unsigned int l=1; l<=i;l++)
 			{
 				if (!graph->getVertexById(l)->isNeighbourOf(graph->getVertexById(root)))
 				{
-				HopsWithOutEdge=conexityVerifier.hopsBetweenVertex(graph->getVertexById(l),graph->getVertexById(root))+HopsWithOutEdge;
-				graph->addEdge(graph->getVertexById(l), graph->getVertexById(root));
-				HopsWithEdge=conexityVerifier.hopsBetweenVertex(graph->getVertexById(l),graph->getVertexById(root))+HopsWithEdge;
-				graph->removeEdge(graph->getVertexById(l), graph->getVertexById(root));
+					HopsWithOutEdge=hopsBetweenVertex(graph->getVertexById(l),graph->getVertexById(root))+HopsWithOutEdge;
+					graph->addEdge(graph->getVertexById(l), graph->getVertexById(root));
+					HopsWithEdge=hopsBetweenVertex(graph->getVertexById(l),graph->getVertexById(root))+HopsWithEdge;
+					graph->removeEdge(graph->getVertexById(l), graph->getVertexById(root));
 				}
 			}
 			float w=euclidianDistance+(r/i)*(HopsWithEdge-HopsWithOutEdge);
@@ -209,26 +259,29 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 		}
 		distance.sort();
 		for (unsigned int k = 0; k<q;k++)
+		{
+			unsigned int t=0;
+			while(distance.front()!=id[t] && !distance.empty())
 			{
-				unsigned int t=0;
-				while(distance.front()!=id[t] && !distance.empty())
-				{
-					t++;
-				}
-				if (t==0)t++;
-				if(t != i && !graph->getVertexById(t)->isNeighbourOf(graph->getVertexById(root)))
-				{
-					vertexIndexes.push_back(t);
-					vertexIndexes.push_back(root);
-					graph->addEdge(graph->getVertexById(t), graph->getVertexById(root));
-					//cout<<distance.front()<<" "<<t<<" "<<i<<" "<<k<<" "<<root<<"\n";
-				}
-				if (!distance.empty())distance.pop_front();
+				t++;
 			}
+			if (t==0)
+				t++;
+			if(t != i && !graph->getVertexById(t)->isNeighbourOf(graph->getVertexById(root)))
+			{
+				vertexIndexes.push_back(t);
+				vertexIndexes.push_back(root);
+				graph->addEdge(graph->getVertexById(t), graph->getVertexById(root));
+				//cout<<distance.front()<<" "<<t<<" "<<i<<" "<<k<<" "<<root<<"\n";
+			}
+			if (!distance.empty())
+				distance.pop_front();
+		}
 		root= vertexIndexes[rand() % vertexIndexes.size()];
 	}
 	return graph;
 }
+
 
 Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 {
@@ -310,4 +363,3 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 	vec.clear();
 	return graph;
 }
-
