@@ -21,7 +21,7 @@ public:
 	Graph* generateHotExtendedGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
 	Graph* generateMolloyReedGraph(unsigned int k[]);
 	int openDegrees(graphpp::AdjacencyListVertex* vertex);
-	void searchAndErase(std::vector<unsigned int> vec,unsigned int value);
+	void printVertexVector(Graph *graph,std::vector<unsigned int> vec);
 };
 
 #endif
