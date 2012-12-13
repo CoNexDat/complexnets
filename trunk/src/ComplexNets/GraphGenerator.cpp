@@ -283,7 +283,7 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 {
 	Graph* graph = new Graph(false, false);
 	
-	unsigned int sum = 0, ind, ind2, i, j, id, chosenId, expectedDegree, existantVertexId, vertexId, actualDegree, actualDegreeAmount, actualDegreeStartIndex;	
+	unsigned int sum = 0, ind, ind2, i, j, id, chosenId, existantVertexId, actualDegree, actualDegreeAmount, actualDegreeStartIndex;	
 
 	std::vector<unsigned int> vec, vertexesWithFreeDegrees;
 
@@ -356,7 +356,13 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 				// SI EL NODO VIEJO COMPLETO SU GRADO LO ELIMINO DEL VECTOR
 				if (openDegrees(existantVertex)==0)
 				{
-					searchAndErase(vertexesWithFreeDegrees,existantVertexId);
+					for(i = 0; i < vertexesWithFreeDegrees.size(); i++)
+					{
+						if(vertexesWithFreeDegrees[i] == existantVertexId)
+						{
+							vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + i);
+						}
+					}
 				}
 			}
 		}
@@ -411,22 +417,11 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 // DADO UN VECTOR DE IDS DE NODOS, LO RECORRE Y IMPRIME PARA CADA NODO EL ID, EL GRADO ACTUAL Y LOS GRADOS LIBRES.
 void GraphGenerator::printVertexVector(Graph *graph,std::vector<unsigned int> vec)
 {
+	Vertex* v;
 	for (unsigned int i=0;i<vec.size();i++)
 	{
 		v = graph->getVertexById(vec[i]);
 		cout << "El vertice " << vec[i] << " tiene " << v->degree() << " vecinos, le faltan " << openDegrees(v) << "\n";
-	}
-}
-
-// FUNCION PARA ELIMINAR UN ELEMENTO DE UN VECTOR POR VALOR Y NO POR INDICE
-void GraphGenerator::searchAndErase(std::vector<unsigned int> vec,unsigned int value)
-{
-	for(unsigned int i = 0; i < vec.size(); i++)
-	{
-		if(vec[i] == value)
-		{
-			vec.erase(vec.begin() + i);
-		}
 	}
 }
 
