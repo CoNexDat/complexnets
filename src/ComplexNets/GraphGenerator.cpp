@@ -258,16 +258,42 @@ void addVertexPosition()
 }
 
 
+/*
+ EXPLICACION ALGORITMO
+
+K VIENE COMO PARAMETRO CON UN HISTOGRAMA DE GRADOS, POR EJEMPLO EL VECTOR {9,7,5,4,3} SIGNIFICA QUE TIENE QUE HABER 9 NODOS CON GRADO 1, 7 NODOS CON GRADO 2, ETC
+
+INICIALMENTE SE GENERAN TODOS LOS IDS DE LOS NODOS A AGREGAR Y SE PONEN EN EL VECTOR VEC, SUM TIENE LA CANTIDAD ACTUAL DE ELEMENTOS EN VEC
+
+PARA QUE EL ALGORITMO FUNCIONE SEGUN SE HABLO CON IGNACIO, HAY QUE IR AGREGANDO LOS NODOS DE MAYOR GRADO Y LUEGO LOS DE MENOR GRADO. LAS VARIABLES actualDegree, actualDegreeAmount, actualDegreeStartIndex SE USAN PARA EN CADA ITERACION ELEGIR DE VEC UN NODO AL AZAR ENTRE LOS QUE HAY DE MAYOR GRADO POSIBLE.
+
+PARA SIMPLIFICAR INICIALMENTE EL ALGORITMO Y NO CONTAR CON OTRA ESTRUCTURA DE DATOS, EL ID DEL VECTOR ESTA CONSTRUIDO DE MANERA QUE LA CIFRA DE MILES DEL ID REPRESENTA EL GRADO QUE SE DESEA QUE TENGA AL FINALIZAR EL ALGORITMO. LA FUNCION openDegrees, DADO UN NODO DEVUELVE LA CANTIDAD DE GRADOS LIBRES QUE TIENE COMPARANDO LOS VECINOS Y EL GRADO DESEADO QUE ESTA IMPLICITO EN SU ID.
+
+PARA LA ETAPA 1 EL ALGORITMO ES:
+1) SI ES EL PRIMER NODO, SE AGREGA AL GRAFO
+2) SI NO ES EL PRIMER NODO, SE BUSCA AL AZAR UN NODO YA AGREGADO QUE TENGA GRADOS LIBRES, Y SE AGREGA EL NUEVO NODO AL GRADO CREANDO UNA ARISTA HACIA EL NODO BUSCADO. PARA PODER BUSCAR EFICIENTEMENTE UN NODO YA AGREGADO QUE TENGA GRADOS LIBRES, SE TIENE UN VECTOR vertexesWithFreeDegrees QUE SIEMPRE TIENE UN LISTADO DE LOS NODOS CON GRADOS LIBRES. EN ESTE VECTOR SE AGREGAN LOS NODOS QUE SE AGREGAN AL GRAFO CON GRADO >= 2 (YA QUE AL CONECTARSE A UN NODO LES QUEDA AL MENOS UN NODO LIBRE) Y CUANDO SE CREAN ARISTAS, SI EL NODO DESTINO ERA EL ULTIMO GRADO LIBRE QUE TENIA SE ELIMINA DEL VECTOR
+
+PARA LA ETAPA 2 SE USA EL VECTOR vertexesWithFreeDegrees QUE DESPUES DE LA ETAPA 1 QUEDA CON TODOS LOS NODOS QUE TIENEN GRADOS LIBRES. SE RECORRER UNO POR UNO Y SE LO TRATA DE UNIR CON OTROS NODOS DEL VECTOR HASTA OCUPAR LOS GRADOS QUE TENIA LIBRES. SOLO SE PUEDE CONECTAR CON OTRO NODO SI NO ESTABAN CONECTADOS PREVIAMENTE Y SI EL NODO DESTINO TAMBIEN TIENE GRADOS LIBRES
+
+
+
+*/
+
 Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 {
 	Graph* graph = new Graph(false, false);
 	
-	unsigned int sum = 0, ind, ind2, i, j, id, chosenId, expectedDegree, existantVertexId;	
-	std::vector<unsigned int> vec;
-	std::vector<unsigned int> vertexesWithFreeDegrees;
+	unsigned int sum = 0, ind, ind2, i, j, id, chosenId, expectedDegree, existantVertexId, vertexId, actualDegree, actualDegreeAmount, actualDegreeStartIndex;	
+
+	std::vector<unsigned int> vec, vertexesWithFreeDegrees;
+
 	Vertex* v;
 	Vertex* existantVertex;
+	Vertex* otherVertex;
+
+	bool first=true;
 	
+	// TODO: ACA EN VEZ DE 5 LITERAL HAY QUE OBTENER LA DIMENSION DEL ARRAY K
 	for (i=0;i<5;i++)
 	{
 		for (j=0;j<k[i];j++){
@@ -279,62 +305,133 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 		}
 	}
 
+	actualDegree=4;
+	actualDegreeAmount=k[actualDegree];
+	actualDegreeStartIndex=sum-actualDegreeAmount;
 	while (sum>0)
 	{
-		do
-		{		
-			ind = rand() % vec.size();
-			chosenId = vec[ind];
-			v = graph->getVertexById(chosenId);		
-		} while (v==NULL);
+		cout << "sum vale: " << sum << "\n";
+		cout << "Estoy extrayendo vertices de grado " << actualDegree << "\n";
+		cout << "Quedan extraer " << actualDegreeAmount << "\n";
+		// CON ESTA LINEA ELIJO UN INDICE DE VEC DE NODOS DEL GRADO QUE ESTOY ELIGIENDO
+		ind = actualDegreeStartIndex + (rand() % actualDegreeAmount);
+		chosenId = vec[ind];
 
-		// Aca hay un error que si despues de ir agregando nodos no quedan nodos libres, 
-		// se crean componentes conexas y no es conexo el grado
-		if (vertexesWithFreeDegrees.size()==0){
+		if (first)
+		{
+			// SI ES EL PRIMER NODO, UNICAMENTE LO AGREGO AL GRAFO Y A vertexesWithFreeDegrees YA QUE SIEMPRE TIENE GRADOS LIBRES
+			first = false;
 			Vertex* newVertex = new Vertex(chosenId);
 			graph->addVertex(newVertex);
 			vertexesWithFreeDegrees.push_back(chosenId);
+			cout << "Agrego vertice " << chosenId << "\n";
 		}
 		else
 		{
-			do
+			
+			if (vertexesWithFreeDegrees.size()==0)
 			{
+				// ESTE CASO SE DARIA SI AL IR AGREGANDO NODOS SE GENERA UN GRAFO COMPLETO SIN GRADOS LIBRES Y FALTAN AGREGAR MAS NODOS, HAY QUE CANCELAR EL ALGORITMO Y DEVUELVO EL GRAFO PARCIAL CREADO
+				cout << "Error al generar el grafo\n";
+				return graph;
+			}
+			else
+			{
+				// ELIJO AL AZAR UN NODO DE LOS EXISTENTES CON GRADOS LIBRES				
 				ind2 = rand() % vertexesWithFreeDegrees.size();
 				existantVertexId = vertexesWithFreeDegrees[ind2];
 				existantVertex = graph->getVertexById(existantVertexId);
-				expectedDegree = existantVertex->getVertexId() / 1000;
-			} while (existantVertex->degree()==expectedDegree);
 	
-			Vertex* newVertex = new Vertex(chosenId);
-			graph->addVertex(newVertex);
-			graph->addEdge(existantVertex, newVertex);
+				Vertex* newVertex = new Vertex(chosenId);
+				graph->addVertex(newVertex);
+				graph->addEdge(existantVertex, newVertex);
+				cout << "Agrego vertice " << chosenId << " unido a " << existantVertexId << "\n";
 			
-			// El nuevo nodo que agrego al grafo lo agrego al listado de nodos 
-			// con grados libres unicamente si tiene grado mayor a uno			
-			if (((int)chosenId/1000)>1)
-			{
-				vertexesWithFreeDegrees.push_back(chosenId);
-			}
-
-			// En el caso que el nodo que conecte el nuevo nodo completo su grado con 
-			// esta nueva arista, lo remuevo del vector de nodos con grados libres
-			// para que ya no sea elegido en el futuro para conectar nuevos nodos
-			if (existantVertex->degree()==expectedDegree)
-			{
-				for(i = 0; i < vertexesWithFreeDegrees.size(); i++)
+				// SI EL NUEVO NODO TIENE GRADOS LIBRES LO AGREGO AL VECTOR		
+				if (openDegrees(newVertex)>0)
 				{
-					if(vertexesWithFreeDegrees[i] == existantVertexId)
-					{
-						vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + i);
-					}
+					vertexesWithFreeDegrees.push_back(chosenId);
+				}
+
+				// SI EL NODO VIEJO COMPLETO SU GRADO LO ELIMINO DEL VECTOR
+				if (openDegrees(existantVertex)==0)
+				{
+					searchAndErase(vertexesWithFreeDegrees,existantVertexId);
 				}
 			}
 		}
+		// ELIMINO EL NODO DE LA LISTA DE NODOS A AGREGAR Y DECREMENTO CONTADORES
 		vec.erase(vec.begin()+ind);
 		sum--;
+		actualDegreeAmount--;
+		// SI TERMINE DE AGREGAR LOS NODOS DEL GRADO ACTUAL, PASO AL GRADO SIGUIENTE
+		if (actualDegreeAmount==0)
+		{
+			cout << "Termine de poner los nodos de grado " << actualDegree << "\n";
+			actualDegree--;
+			actualDegreeAmount=k[actualDegree];
+			actualDegreeStartIndex=actualDegreeStartIndex-actualDegreeAmount;
+		}
 	}
+	cout << "Termine de generar todo el grafo!\n";
+	// ACA TERMINA LA ETAPA 1 DEL ALGORITMO MOLLOY REED
+
+	// DEBUG: IMPRIMO EL VECTOR CON NODOS LIBRES PREVIO A LA ETAPA 2 PARA VER SI FUNCIONA
+	printVertexVector(graph,vertexesWithFreeDegrees);
+
+	// NODO A NODO INTENTO LIBERAR LOS GRADOS LIBRES CONECTANDO CON OTROS NODOS DEL VECTOR
+	for (i=0;i<vertexesWithFreeDegrees.size();i++)
+	{
+		v = graph->getVertexById(vertexesWithFreeDegrees[i]);
+		cout << "QUIERO ENCONTRARLE VECINOS A " << vertexesWithFreeDegrees[i] << "\n";
+		if (openDegrees(v)>0)
+		{
+			// RECORRO TODOS LOS OTROS NODOS QUE TENGAN GRADOS LIBRES HASTA QUE NO ME QUEDEN MAS GRADOS LIBRES A MI
+			for (j=i+1;j<vertexesWithFreeDegrees.size() && openDegrees(v)>0;j++)
+			{
+				otherVertex = graph->getVertexById(vertexesWithFreeDegrees[j]);
+				if (!v->isNeighbourOf(otherVertex) && openDegrees(otherVertex)>0)
+				{
+					cout << "Conecto el vertice " << vertexesWithFreeDegrees[i] << " con el vertice " << vertexesWithFreeDegrees[j] << "\n";
+					graph->addEdge(v, otherVertex);
+				}
+			}
+		}
+	}	
+	// DEBUG: VUELVO A IMPRIMIR VECTOR CON NODOS LIBRES A VER SI FUNCIONO LA ETAPA2
+	printVertexVector(graph,vertexesWithFreeDegrees);
+
+	// TODO: ACA HAY QUE HACER LA ETAPA 3. DESPUES DE LA ETAPA 2 PUEDEN QUEDAR ALGUNOS CASOS DE NODOS QUE TENGAN GRADOS LIBRES Y QUE YA ESTEN CONECTADOS ENTRE SI. PARA SOLUCIONAR ESTO HAY QUE HACER UNA ESPECIE DE REWIRING, BUSCAR UN NODO, O UNA ARISTA Y HACER UN PUENTE A TRAVES DE ESTE PARA PODER CONECTAR LOS GRADOS LIBRES DE LOS NODOS RESTANTES.
 
 	vertexesWithFreeDegrees.clear();
 	vec.clear();
 	return graph;
+}
+
+// DADO UN VECTOR DE IDS DE NODOS, LO RECORRE Y IMPRIME PARA CADA NODO EL ID, EL GRADO ACTUAL Y LOS GRADOS LIBRES.
+void GraphGenerator::printVertexVector(Graph *graph,std::vector<unsigned int> vec)
+{
+	for (unsigned int i=0;i<vec.size();i++)
+	{
+		v = graph->getVertexById(vec[i]);
+		cout << "El vertice " << vec[i] << " tiene " << v->degree() << " vecinos, le faltan " << openDegrees(v) << "\n";
+	}
+}
+
+// FUNCION PARA ELIMINAR UN ELEMENTO DE UN VECTOR POR VALOR Y NO POR INDICE
+void GraphGenerator::searchAndErase(std::vector<unsigned int> vec,unsigned int value)
+{
+	for(unsigned int i = 0; i < vec.size(); i++)
+	{
+		if(vec[i] == value)
+		{
+			vec.erase(vec.begin() + i);
+		}
+	}
+}
+
+// FUNCION QUE DADO UN VERTICE DEVUELVE LOS GRADOS LIBRES USANDO EL GRADO ESPERADO IMPLICITO EN EL ID
+int GraphGenerator::openDegrees(AdjacencyListVertex* vertex)
+{
+	return ((int)vertex->getVertexId()/1000) - vertex->degree();
 }
