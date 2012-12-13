@@ -989,11 +989,11 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 		QString ret;
 
 	
-		k[0] = 10;		
-		k[1] = 8;
-		k[2] = 7;
-		k[3] = 3;
-		k[4] = 1;
+		k[0] = 9;		
+		k[1] = 7;
+		k[2] = 5;
+		k[3] = 4;
+		k[4] = 3;
 
 	    try
 	    {
