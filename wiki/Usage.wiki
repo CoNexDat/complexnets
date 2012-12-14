@@ -2,9 +2,9 @@
 
 = Graphical mode =
 
-To start the application in graphical mode, just call invoke the application whithout arguments from command line.
+To start the application in graphical mode, just invoke `complexnets` whithout arguments from command line.
 {{{
-$> complexnets
+$ complexnets
 }}}
 
 
@@ -16,19 +16,19 @@ ComplexNets++ can also run using the command line.
 
 The syntax to load a graph from an input file is the following:
 {{{
-$> complexnets -i <filename>
+$ complexnets -i <filename>
 }}}
 
 If the file represents a weighted graph, the command must include the `--weighted` argument:
 {{{
-$> complexnets -i <filename> --weighted
+$ complexnets -i <filename> --weighted
 }}}
 
 == Creating a graph using a model ==
 
 The graphs can also be created using a model. To achieve this, the command must have the following syntax:
 {{{
-$> complexnets <model_parameters>
+$ complexnets <model_parameters>
 }}}
 Where `<model_parameters>` can take one of the following values depending on the used model:
  * Erdos-Renyi:
@@ -52,9 +52,9 @@ Where `<model_parameters>` can take one of the following values depending on the
 
 To compute a property given a file, the command must have the following syntax:
 {{{
-$> complexnets <graph> <property>
+$ complexnets <graph> <property>
 }}}
-where `<graph>` are the arguments to create or load a graph using a model, and `<property>` can take the following values depending on the calculated property:
+where `<graph>` are the arguments to load a graph or create it using a model, and `<property>` can take the following values depending on the calculated property:
  * Betweenness:
 {{{
 --betweenness <vertex_index>
@@ -76,13 +76,21 @@ where `<graph>` are the arguments to create or load a graph using a model, and `
 --shell <vertex_index>
 }}}
 
+== Saving a graph in a file ==
+
+To save a loaded or model-generated graph in a file, the command must have the following syntax:
+{{{
+$ complexnets <graph> -s <file>
+}}}
+where `<graph>` are the arguments to load a graph or create it using a model.
+
 == Generating a Gnuplot readable output ==
 
 To generate a file that can be read and plotted by Gnuplot, the command must have the following syntax:
 {{{
-$> complexnets <graph> -o <output_file> <function>
+$ complexnets <graph> -o <output_file> <function>
 }}}
-where `<graph>` are the arguments to create or load a graph using a model and `<function>` can take the following values depending on the calculated function:
+where `<graph>` are the arguments to load a graph or create it using a model and `<function>` can take the following values depending on the calculated function:
  * Betweenness vs. Degree:
 {{{
 --betweenness-output
