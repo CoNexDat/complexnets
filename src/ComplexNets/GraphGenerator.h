@@ -10,6 +10,10 @@ class GraphGenerator {
 private:
 	GraphGenerator();
 	static GraphGenerator *instance;
+	float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id);
+	void addVertexPosition();
+	int openDegrees(Vertex* vertex);
+	void printVertexVector(Graph *graph, vector<unsigned int> vec);
 	
 public:
 	static GraphGenerator *getInstance();
@@ -20,8 +24,6 @@ public:
 	Graph* generateBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 	Graph* generateHotExtendedGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
 	Graph* generateMolloyReedGraph(unsigned int k[]);
-	int openDegrees(graphpp::AdjacencyListVertex* vertex);
-	void printVertexVector(Graph *graph,std::vector<unsigned int> vec);
 };
 
 #endif

@@ -12,8 +12,7 @@ using namespace graphpp;
 typedef struct Position { float x; float y; } Position;
 
 vector<Position> vertexesPositions;
-float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id);
-void addVertexPosition();
+vector<unsigned int> vertexesFutureDegrees;
 
 GraphGenerator *GraphGenerator::instance = NULL;
 
@@ -243,14 +242,14 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 }
 
 
-float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id)
+float GraphGenerator::distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id)
 {
 	
 	return sqrt(pow(vertexesPositions[vertex1Id-1].x - vertexesPositions[vertex2Id-1].x, 2)
 				 + pow(vertexesPositions[vertex1Id-1].y - vertexesPositions[vertex2Id-1].y, 2));
 }
 
-void addVertexPosition()
+void GraphGenerator::addVertexPosition()
 {
 	vertexesPositions.push_back(Position());
 	vertexesPositions.back().x = (float) rand() / RAND_MAX;
@@ -281,45 +280,47 @@ PARA LA ETAPA 2 SE USA EL VECTOR vertexesWithFreeDegrees QUE DESPUES DE LA ETAPA
 
 Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 {
-	Graph* graph = new Graph(false, false);
-	
-	unsigned int sum = 0, ind, ind2, i, j, id, chosenId, existantVertexId, actualDegree, actualDegreeAmount, actualDegreeStartIndex;	
-
-	std::vector<unsigned int> vec, vertexesWithFreeDegrees;
-
+	Graph* graph = new Graph(false, false);	
+	unsigned int sum = 0, index, i, j, chosenId, existentVertexId, actualDegree, actualDegreeAmount = 0, actualDegreeStartIndex;
+	vector<unsigned int> vec, vertexesWithFreeDegrees;
 	Vertex* v;
-	Vertex* existantVertex;
+	Vertex* existentVertex;
 	Vertex* otherVertex;
-
 	bool first=true;
+	unsigned int kLength = 5;
+
+	vertexesFutureDegrees.clear();
 	
 	// TODO: ACA EN VEZ DE 5 LITERAL HAY QUE OBTENER LA DIMENSION DEL ARRAY K
-	for (i=0;i<5;i++)
+	for (i = 0; i < kLength; i++)
 	{
-		for (j=0;j<k[i];j++){
-			sum++;
-			// ASIGNO A LOS NODOS UN ID QUE INDICA EN LA UNIDAD DE MILES CUAL ES
-			// EL GRADO QUE TIENEN QUE LLEGAR A TENER
-			id = (i+1)*1000+j;
-			vec.push_back(id);
+		for (j = 1; j <= k[i]; j++){
+			vec.push_back(++sum);
+			vertexesFutureDegrees.push_back(i+1);
 		}
 	}
 
-	actualDegree=4;
-	actualDegreeAmount=k[actualDegree];
-	actualDegreeStartIndex=sum-actualDegreeAmount;
-	while (sum>0)
+	actualDegree = kLength;
+	actualDegreeStartIndex = sum;
+	while (sum > 0)
 	{
+		if (actualDegreeAmount == 0) {
+			actualDegreeAmount = k[--actualDegree];
+			actualDegreeStartIndex = actualDegreeStartIndex - actualDegreeAmount;
+		}
+
 		cout << "sum vale: " << sum << "\n";
 		cout << "Estoy extrayendo vertices de grado " << actualDegree << "\n";
 		cout << "Quedan extraer " << actualDegreeAmount << "\n";
+
 		// CON ESTA LINEA ELIJO UN INDICE DE VEC DE NODOS DEL GRADO QUE ESTOY ELIGIENDO
-		ind = actualDegreeStartIndex + (rand() % actualDegreeAmount);
-		chosenId = vec[ind];
+		index = actualDegreeStartIndex + (rand() % actualDegreeAmount);
+		chosenId = vec[index];
 
 		if (first)
 		{
-			// SI ES EL PRIMER NODO, UNICAMENTE LO AGREGO AL GRAFO Y A vertexesWithFreeDegrees YA QUE SIEMPRE TIENE GRADOS LIBRES
+			// SI ES EL PRIMER NODO, UNICAMENTE LO AGREGO AL GRAFO Y A vertexesWithFreeDegrees
+			// YA QUE SIEMPRE TIENE GRADOS LIBRES
 			first = false;
 			Vertex* newVertex = new Vertex(chosenId);
 			graph->addVertex(newVertex);
@@ -331,53 +332,41 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 			
 			if (vertexesWithFreeDegrees.size()==0)
 			{
-				// ESTE CASO SE DARIA SI AL IR AGREGANDO NODOS SE GENERA UN GRAFO COMPLETO SIN GRADOS LIBRES Y FALTAN AGREGAR MAS NODOS, HAY QUE CANCELAR EL ALGORITMO Y DEVUELVO EL GRAFO PARCIAL CREADO
+				// ESTE CASO SE DARIA SI AL IR AGREGANDO NODOS SE GENERA UN GRAFO COMPLETO SIN GRADOS LIBRES
+				// Y FALTAN AGREGAR MAS NODOS, HAY QUE CANCELAR EL ALGORITMO Y DEVUELVO EL GRAFO PARCIAL CREADO
 				cout << "Error al generar el grafo\n";
 				return graph;
 			}
 			else
 			{
 				// ELIJO AL AZAR UN NODO DE LOS EXISTENTES CON GRADOS LIBRES				
-				ind2 = rand() % vertexesWithFreeDegrees.size();
-				existantVertexId = vertexesWithFreeDegrees[ind2];
-				existantVertex = graph->getVertexById(existantVertexId);
+				existentVertexId = vertexesWithFreeDegrees[rand() % vertexesWithFreeDegrees.size()];
+				existentVertex = graph->getVertexById(existentVertexId);
 	
 				Vertex* newVertex = new Vertex(chosenId);
 				graph->addVertex(newVertex);
-				graph->addEdge(existantVertex, newVertex);
-				cout << "Agrego vertice " << chosenId << " unido a " << existantVertexId << "\n";
+				graph->addEdge(existentVertex, newVertex);
+				cout << "Agrego vertice " << chosenId << " unido a " << existentVertexId << "\n";
 			
 				// SI EL NUEVO NODO TIENE GRADOS LIBRES LO AGREGO AL VECTOR		
-				if (openDegrees(newVertex)>0)
-				{
+				if (openDegrees(newVertex) > 0)
 					vertexesWithFreeDegrees.push_back(chosenId);
-				}
 
 				// SI EL NODO VIEJO COMPLETO SU GRADO LO ELIMINO DEL VECTOR
-				if (openDegrees(existantVertex)==0)
-				{
+				if (openDegrees(existentVertex)==0)
 					for(i = 0; i < vertexesWithFreeDegrees.size(); i++)
-					{
-						if(vertexesWithFreeDegrees[i] == existantVertexId)
-						{
+						if(vertexesWithFreeDegrees[i] == existentVertexId)
 							vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + i);
-						}
-					}
-				}
 			}
 		}
 		// ELIMINO EL NODO DE LA LISTA DE NODOS A AGREGAR Y DECREMENTO CONTADORES
-		vec.erase(vec.begin()+ind);
+		vec.erase(vec.begin()+index);
 		sum--;
 		actualDegreeAmount--;
+
 		// SI TERMINE DE AGREGAR LOS NODOS DEL GRADO ACTUAL, PASO AL GRADO SIGUIENTE
 		if (actualDegreeAmount==0)
-		{
 			cout << "Termine de poner los nodos de grado " << actualDegree << "\n";
-			actualDegree--;
-			actualDegreeAmount=k[actualDegree];
-			actualDegreeStartIndex=actualDegreeStartIndex-actualDegreeAmount;
-		}
 	}
 	cout << "Termine de generar todo el grafo!\n";
 	// ACA TERMINA LA ETAPA 1 DEL ALGORITMO MOLLOY REED
@@ -386,14 +375,14 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 	printVertexVector(graph,vertexesWithFreeDegrees);
 
 	// NODO A NODO INTENTO LIBERAR LOS GRADOS LIBRES CONECTANDO CON OTROS NODOS DEL VECTOR
-	for (i=0;i<vertexesWithFreeDegrees.size();i++)
+	for (i = 0; i < vertexesWithFreeDegrees.size(); i++)
 	{
 		v = graph->getVertexById(vertexesWithFreeDegrees[i]);
 		cout << "QUIERO ENCONTRARLE VECINOS A " << vertexesWithFreeDegrees[i] << "\n";
-		if (openDegrees(v)>0)
+		if (openDegrees(v) > 0)
 		{
 			// RECORRO TODOS LOS OTROS NODOS QUE TENGAN GRADOS LIBRES HASTA QUE NO ME QUEDEN MAS GRADOS LIBRES A MI
-			for (j=i+1;j<vertexesWithFreeDegrees.size() && openDegrees(v)>0;j++)
+			for (j = i+1; j < vertexesWithFreeDegrees.size() && openDegrees(v) > 0; j++)
 			{
 				otherVertex = graph->getVertexById(vertexesWithFreeDegrees[j]);
 				if (!v->isNeighbourOf(otherVertex) && openDegrees(otherVertex)>0)
@@ -403,7 +392,7 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 				}
 			}
 		}
-	}	
+	}
 	// DEBUG: VUELVO A IMPRIMIR VECTOR CON NODOS LIBRES A VER SI FUNCIONO LA ETAPA2
 	printVertexVector(graph,vertexesWithFreeDegrees);
 
@@ -415,7 +404,7 @@ Graph* GraphGenerator::generateMolloyReedGraph(unsigned int k[])
 }
 
 // DADO UN VECTOR DE IDS DE NODOS, LO RECORRE Y IMPRIME PARA CADA NODO EL ID, EL GRADO ACTUAL Y LOS GRADOS LIBRES.
-void GraphGenerator::printVertexVector(Graph *graph,std::vector<unsigned int> vec)
+void GraphGenerator::printVertexVector(Graph *graph, vector<unsigned int> vec)
 {
 	Vertex* v;
 	for (unsigned int i=0;i<vec.size();i++)
@@ -426,7 +415,7 @@ void GraphGenerator::printVertexVector(Graph *graph,std::vector<unsigned int> ve
 }
 
 // FUNCION QUE DADO UN VERTICE DEVUELVE LOS GRADOS LIBRES USANDO EL GRADO ESPERADO IMPLICITO EN EL ID
-int GraphGenerator::openDegrees(AdjacencyListVertex* vertex)
+int GraphGenerator::openDegrees(Vertex* vertex)
 {
-	return ((int)vertex->getVertexId()/1000) - vertex->degree();
+	return vertexesFutureDegrees[vertex->getVertexId() - 1] - vertex->degree();
 }
