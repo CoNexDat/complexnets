@@ -8,6 +8,7 @@ SOURCES += ComplexNetsGui/src/main.cpp \
     ComplexNetsGui/src/GraphLoadingValidationDialog.cpp \
     ComplexNetsGui/src/GnuplotConsole.cpp \
     ComplexNets/GraphGenerator.cpp \
+    ComplexNets/GraphWriter.cpp \
     ComplexNetsCmd/ProgramState.cpp \
     ComplexNetsCmd/cmdmessages.cpp \
     ComplexNetsCmd/cmdline.c
@@ -17,6 +18,7 @@ HEADERS += ComplexNetsGui/inc/mainwindow.h \
     ComplexNetsGui/inc/GnuplotConsole.h \
     ComplexNetsGui/inc/LogBinningPolicy.h \
     ComplexNets/GraphGenerator.h \
+    ComplexNets/GraphWriter.h \
     ComplexNetsCmd/ProgramState.h \
     ComplexNetsCmd/cmdmessages.h \
     ComplexNetsCmd/cmdline.h

@@ -40,7 +40,7 @@ public:
 	double knn(unsigned int vertex_id);
 	double shellIndex(unsigned int vertex_id);
 
-	void exportGraph(string outputPath);
+	void exportCurrentGraph(string outputPath);
 	void exportBetweennessVsDegree(string outputPath);
 	void exportDegreeDistribution(string outputPath);
 	void exportClusteringVsDegree(string outputPath);

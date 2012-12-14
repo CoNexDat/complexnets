@@ -232,6 +232,11 @@ int main(int argc, char* argv[])
 
 			cout << "Succesfully exported " + functionMessage + " in output file " + path + ".\n";
 		}
+
+		if (args_info->save_given) {
+			string path = args_info->save_arg;
+			state->exportCurrentGraph(path);
+		}
 	}
 
 }
