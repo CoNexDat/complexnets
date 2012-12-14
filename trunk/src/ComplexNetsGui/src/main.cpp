@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
 					functionMessage = "betweenness";
 				}
 			} else if (args_info->ddist_output_given) {
-				state->exportDegreeDistribution(path);
+				state->exportDegreeDistribution(path, args_info->log_bin_given, args_info->log_bin_arg);
 				functionMessage = "degreeDistribution";
 			} else if (args_info->clustering_output_given) {
 				state->exportClusteringVsDegree(path);

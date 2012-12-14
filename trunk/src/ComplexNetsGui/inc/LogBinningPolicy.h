@@ -8,12 +8,12 @@ namespace ComplexNetsGui
 class LogBinningPolicy
 {
 public:
-    static const VariantsSet transform(const VariantsSet& set)
+    static const VariantsSet transform(const VariantsSet& set, unsigned int binsAmount = 25)
     {
-        return LogBin(set, 2);
+        return LogBin(set, binsAmount);
     }
 private:
-    static const VariantsSet LogBin(const VariantsSet& set, const double factor)
+    static const VariantsSet LogBin(const VariantsSet& set, unsigned int binsAmount)
     {
         VariantsSet toPlot;
         std::list<double> xPoints;
@@ -28,24 +28,25 @@ private:
         }
         xPoints.sort();
 
-
-        //Compute bins and bins width
         double min = xPoints.front();
         double max = xPoints.back();
-        bins.push_back(min * 2.0 / (double)(1.0 + factor));
-        unsigned int i = 1;
-        while (bins[i - 1] < max)
-        {
-            bins.push_back(bins[i - 1]*factor);
-            ++i;
+        double r = pow(max - min + 1, 1 / (double)binsAmount);
+
+        for(unsigned int i = 0; i <= binsAmount; i++) {
+            bins.push_back(pow(r,i) + min - 1);
         }
 
+        // for(int i = 0; i < bins.size(); i++) {
+        //     printf("bin: %g\n", bins.at(i));
+        // }
 
         //Go through each degree in the network and find wich bin the degree belongs to.
         //Count how many elements are contained in a bin.
         std::vector<unsigned int> pointsInBin(bins.size());
-        for (unsigned int i = 0; i < bins.size(); i++)
+        for (unsigned int i = 0; i < bins.size(); i++) {
             pointsInBin[i++] = 0;
+        }
+
         it = set.begin();
         while (it != set.end())
         {
@@ -58,26 +59,31 @@ private:
             ++it;
         }
 
-        //Probability density per bin
-        std::vector<double> PBin(set.size());
-        std::vector<double> binCenter(set.size());
-        for (unsigned int i = 0; i < bins.size(); ++i)
-        {
-            double binWidth = fabs(bins[i + 1] - bins[i]);
-            PBin[i] = pointsInBin[i] / (double)binWidth;
-            binCenter[i] = binWidth / 2.0;
+        for(int i = 0; i < pointsInBin.size() - 1; i++) {
+            printf("Bin[%g, %g]: %d\n", bins.at(i), bins.at(i + 1), pointsInBin.at(i));
         }
 
-        //Normalization and plotting
+        // Probability density per bin
+        // Normalization and plotting
+        std::vector<double> binCenter(set.size());
         double sum = 0.0;
         for (unsigned int i = 0; i < bins.size(); ++i)
-            sum += PBin[i];
+        {
+            sum += pointsInBin[i];
+        }
 
+        double binWidth, PBin, checkIntegral = 0;
         for (unsigned int i = 0; i < bins.size(); ++i)
         {
-            PBin[i] /= sum;
-            toPlot.insert<double>(to_string<double>(binCenter[i]), PBin[i]);
+            binWidth = fabs(bins[i + 1] - bins[i]);
+            PBin = (pointsInBin[i] / sum) / binWidth;
+            checkIntegral += PBin * binWidth;
+            binCenter[i] = binWidth / 2.0;
+            // printf("x: %g, y: %g\n", binCenter[i], PBin);
+            toPlot.insert<double>(to_string<double>(binCenter[i]), PBin);
         }
+
+        // printf("Integral: %g\n", checkIntegral);
 
         return toPlot;
     }

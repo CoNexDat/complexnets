@@ -59,6 +59,7 @@ const char *gengetopt_args_info_help[] = {
   "  -o, --output-file=<filename>  Save the result function into the specified \n                                  file",
   "      --betweenness-output      Betweenness vs. Degree",
   "      --ddist-output            Degree distribution",
+  "      --log-bin=<number of bins>\n                                Log-bin the output (only for Degree \n                                  distribution)",
   "      --clustering-output       Clustering coefficient vs. Degree",
   "      --knn-output              Nearest Neighbors Degree vs. Degree",
   "      --shell-output            Shell index vs. Degree",
@@ -114,6 +115,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->output_file_given = 0 ;
   args_info->betweenness_output_given = 0 ;
   args_info->ddist_output_given = 0 ;
+  args_info->log_bin_given = 0 ;
   args_info->clustering_output_given = 0 ;
   args_info->knn_output_given = 0 ;
   args_info->shell_output_given = 0 ;
@@ -146,6 +148,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->shell_orig = NULL;
   args_info->output_file_arg = NULL;
   args_info->output_file_orig = NULL;
+  args_info->log_bin_orig = NULL;
   args_info->save_arg = NULL;
   args_info->save_orig = NULL;
   
@@ -179,10 +182,11 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->output_file_help = gengetopt_args_info_help[24] ;
   args_info->betweenness_output_help = gengetopt_args_info_help[25] ;
   args_info->ddist_output_help = gengetopt_args_info_help[26] ;
-  args_info->clustering_output_help = gengetopt_args_info_help[27] ;
-  args_info->knn_output_help = gengetopt_args_info_help[28] ;
-  args_info->shell_output_help = gengetopt_args_info_help[29] ;
-  args_info->save_help = gengetopt_args_info_help[31] ;
+  args_info->log_bin_help = gengetopt_args_info_help[27] ;
+  args_info->clustering_output_help = gengetopt_args_info_help[28] ;
+  args_info->knn_output_help = gengetopt_args_info_help[29] ;
+  args_info->shell_output_help = gengetopt_args_info_help[30] ;
+  args_info->save_help = gengetopt_args_info_help[32] ;
   
 }
 
@@ -279,6 +283,7 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->shell_orig));
   free_string_field (&(args_info->output_file_arg));
   free_string_field (&(args_info->output_file_orig));
+  free_string_field (&(args_info->log_bin_orig));
   free_string_field (&(args_info->save_arg));
   free_string_field (&(args_info->save_orig));
   
@@ -357,6 +362,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "betweenness-output", 0, 0 );
   if (args_info->ddist_output_given)
     write_into_file(outfile, "ddist-output", 0, 0 );
+  if (args_info->log_bin_given)
+    write_into_file(outfile, "log-bin", args_info->log_bin_orig, 0);
   if (args_info->clustering_output_given)
     write_into_file(outfile, "clustering-output", 0, 0 );
   if (args_info->knn_output_given)
@@ -591,6 +598,11 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       fprintf (stderr, "%s: '--ddist-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
+  if (args_info->log_bin_given && ! args_info->ddist_output_given)
+    {
+      fprintf (stderr, "%s: '--log-bin' option depends on option 'ddist-output'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
   if (args_info->clustering_output_given && ! args_info->output_file_given)
     {
       fprintf (stderr, "%s: '--clustering-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
@@ -787,6 +799,7 @@ cmdline_parser_internal (
         { "output-file",	1, NULL, 'o' },
         { "betweenness-output",	0, NULL, 0 },
         { "ddist-output",	0, NULL, 0 },
+        { "log-bin",	1, NULL, 0 },
         { "clustering-output",	0, NULL, 0 },
         { "knn-output",	0, NULL, 0 },
         { "shell-output",	0, NULL, 0 },
@@ -1132,6 +1145,20 @@ cmdline_parser_internal (
                 &(local_args_info.ddist_output_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
                 "ddist-output", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Log-bin the output (only for Degree distribution).  */
+          else if (strcmp (long_options[option_index].name, "log-bin") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->log_bin_arg), 
+                 &(args_info->log_bin_orig), &(args_info->log_bin_given),
+                &(local_args_info.log_bin_given), optarg, 0, 0, ARG_INT,
+                check_ambiguity, override, 0, 0,
+                "log-bin", '-',
                 additional_error))
               goto failure;
           

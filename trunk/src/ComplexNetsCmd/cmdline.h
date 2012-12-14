@@ -31,7 +31,7 @@ extern "C" {
 
 #ifndef CMDLINE_PARSER_VERSION
 /** @brief the program version */
-#define CMDLINE_PARSER_VERSION "0.1"
+#define CMDLINE_PARSER_VERSION "1.2"
 #endif
 
 /** @brief Where the command line options are stored */
@@ -88,6 +88,9 @@ struct gengetopt_args_info
   const char *output_file_help; /**< @brief Save the result function into the specified file help description.  */
   const char *betweenness_output_help; /**< @brief Betweenness vs. Degree help description.  */
   const char *ddist_output_help; /**< @brief Degree distribution help description.  */
+  int log_bin_arg;	/**< @brief Log-bin the output (only for Degree distribution).  */
+  char * log_bin_orig;	/**< @brief Log-bin the output (only for Degree distribution) original value given at command line.  */
+  const char *log_bin_help; /**< @brief Log-bin the output (only for Degree distribution) help description.  */
   const char *clustering_output_help; /**< @brief Clustering coefficient vs. Degree help description.  */
   const char *knn_output_help; /**< @brief Nearest Neighbors Degree vs. Degree help description.  */
   const char *shell_output_help; /**< @brief Shell index vs. Degree help description.  */
@@ -118,6 +121,7 @@ struct gengetopt_args_info
   unsigned int output_file_given ;	/**< @brief Whether output-file was given.  */
   unsigned int betweenness_output_given ;	/**< @brief Whether betweenness-output was given.  */
   unsigned int ddist_output_given ;	/**< @brief Whether ddist-output was given.  */
+  unsigned int log_bin_given ;	/**< @brief Whether log-bin was given.  */
   unsigned int clustering_output_given ;	/**< @brief Whether clustering-output was given.  */
   unsigned int knn_output_given ;	/**< @brief Whether knn-output was given.  */
   unsigned int shell_output_given ;	/**< @brief Whether shell-output was given.  */

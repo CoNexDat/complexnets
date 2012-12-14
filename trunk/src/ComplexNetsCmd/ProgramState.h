@@ -42,7 +42,7 @@ public:
 
 	void exportCurrentGraph(string outputPath);
 	void exportBetweennessVsDegree(string outputPath);
-	void exportDegreeDistribution(string outputPath);
+	void exportDegreeDistribution(string outputPath, unsigned int log_bin_given = false, unsigned int binsAmount = -1);
 	void exportClusteringVsDegree(string outputPath);
 	void exportNearestNeighborsDegreeVsDegree(string outputPath);
 	void exportShellIndexVsDegree(string outputPath);
