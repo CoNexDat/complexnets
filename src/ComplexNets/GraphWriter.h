@@ -1,19 +1,19 @@
 #ifndef GRAPH_WRITER_H
 #define GRAPH_WRITER_H
 
-#include <string>
+#include "typedefs.h"
 
-namespace graphpp
-{
-template <class Graph, class Vertex>
-class GraphWriter
-{
+using namespace std;
+
+class GraphWriter {
+
 public:
+    void write(Graph *g, string outputPath);
 
-    typedef std::string FileName;
+private:
+	list<int> visitedVertexes;
+	bool vertexWasVisited(Vertex *vertex);
 
-    void write(const Graph& g, const FileName& file) const = 0;
 };
-}
 
 #endif

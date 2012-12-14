@@ -12,6 +12,7 @@
 #include "../ComplexNets/IClusteringCoefficient.h"
 #include "../ComplexNets/INearestNeighborsDegree.h"
 #include "../ComplexNets/IShellIndex.h"
+#include "../ComplexNets/GraphWriter.h"
 
 using namespace std;
 using namespace graphpp;
@@ -356,15 +357,6 @@ void ProgramState::computeShellIndex(PropertyMap &propertyMap) {
     delete shellIndex;
 }
 
-void ProgramState::exportGraph(string outputPath) {
-    ofstream destinationFile;
-    destinationFile.open(outputPath.c_str(), ios_base::out);
-
-    // Here goes the code that saves the edges in the file.
-
-    destinationFile.close();
-}
-
 void ProgramState::exportBetweennessVsDegree(string outputPath) {
     PropertyMap propertyMap;
     computeBetweenness(propertyMap);
@@ -434,4 +426,16 @@ void ProgramState::exportShellIndexVsDegree(string outputPath) {
 
     GrapherUtils grapherUtils;
     grapherUtils.exportPropertySet(shellIndexVsDegree, outputPath);
+}
+
+void ProgramState::exportCurrentGraph(string outputPath) {
+    GraphWriter *graphWriter = new GraphWriter();
+
+    if (isWeighted()) {
+
+    } else {
+        graphWriter->write(&(this->graph), outputPath);
+    }
+
+    delete graphWriter;
 }

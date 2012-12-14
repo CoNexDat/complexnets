@@ -83,14 +83,17 @@ struct gengetopt_args_info
   int shell_arg;	/**< @brief Calculate the shell index of a given node.  */
   char * shell_orig;	/**< @brief Calculate the shell index of a given node original value given at command line.  */
   const char *shell_help; /**< @brief Calculate the shell index of a given node help description.  */
-  char * output_file_arg;	/**< @brief Save the result into the file specified.  */
-  char * output_file_orig;	/**< @brief Save the result into the file specified original value given at command line.  */
-  const char *output_file_help; /**< @brief Save the result into the file specified help description.  */
+  char * output_file_arg;	/**< @brief Save the result function into the specified file.  */
+  char * output_file_orig;	/**< @brief Save the result function into the specified file original value given at command line.  */
+  const char *output_file_help; /**< @brief Save the result function into the specified file help description.  */
   const char *betweenness_output_help; /**< @brief Betweenness vs. Degree help description.  */
   const char *ddist_output_help; /**< @brief Degree distribution help description.  */
   const char *clustering_output_help; /**< @brief Clustering coefficient vs. Degree help description.  */
   const char *knn_output_help; /**< @brief Nearest Neighbors Degree vs. Degree help description.  */
   const char *shell_output_help; /**< @brief Shell index vs. Degree help description.  */
+  char * save_arg;	/**< @brief Save the current graph in the specified file..  */
+  char * save_orig;	/**< @brief Save the current graph in the specified file. original value given at command line.  */
+  const char *save_help; /**< @brief Save the current graph in the specified file. help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -118,11 +121,13 @@ struct gengetopt_args_info
   unsigned int clustering_output_given ;	/**< @brief Whether clustering-output was given.  */
   unsigned int knn_output_given ;	/**< @brief Whether knn-output was given.  */
   unsigned int shell_output_given ;	/**< @brief Whether shell-output was given.  */
+  unsigned int save_given ;	/**< @brief Whether save was given.  */
 
   int analysis_group_counter; /**< @brief Counter for group analysis */
   int model_group_counter; /**< @brief Counter for group model */
   int network_load_group_counter; /**< @brief Counter for group network_load */
   int output_group_counter; /**< @brief Counter for group output */
+  int save_group_counter; /**< @brief Counter for group save */
 } ;
 
 /** @brief The additional parameters to pass to parser functions */
