@@ -1,6 +1,6 @@
 package "complexnets"
 
-version "0.1"
+version "1.2"
 
 description "ComplexNets description"
 
@@ -83,6 +83,10 @@ defgroup "output" groupdesc="Network analysis graphics"
 		option "betweenness-output" - "Betweenness vs. Degree" dependon="output-file" optional
 		
 		option "ddist-output" - "Degree distribution" dependon="output-file" optional
+
+		option "log-bin" - "Log-bin the output (only for Degree distribution)" dependon="ddist-output"
+		int typestr="<number of bins>"
+		optional
 		
 		option "clustering-output" - "Clustering coefficient vs. Degree" dependon="output-file" optional
 		

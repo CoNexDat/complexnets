@@ -13,6 +13,7 @@
 #include "../ComplexNets/INearestNeighborsDegree.h"
 #include "../ComplexNets/IShellIndex.h"
 #include "../ComplexNets/GraphWriter.h"
+#include "../ComplexNetsGui/inc/LogBinningPolicy.h"
 
 using namespace std;
 using namespace graphpp;
@@ -364,11 +365,17 @@ void ProgramState::exportBetweennessVsDegree(string outputPath) {
     utils.exportPropertySet(propertyMap.getPropertySet("betweennessVsDegree"), outputPath);
 }
 
-void ProgramState::exportDegreeDistribution(string outputPath) {
+void ProgramState::exportDegreeDistribution(string outputPath, unsigned int log_bin_given, unsigned int binsAmount) {
     PropertyMap propertyMap;
     computeDegreeDistribution(propertyMap);
     GrapherUtils grapherUtils;
-    grapherUtils.exportPropertySet(propertyMap.getPropertySet("degreeDistribution"), outputPath);
+    VariantsSet& set = propertyMap.getPropertySet("degreeDistribution");
+    if(log_bin_given) {
+        LogBinningPolicy policy;
+        grapherUtils.exportPropertySet(policy.transform(set, binsAmount), outputPath);
+        return;
+    }
+    grapherUtils.exportPropertySet(set, outputPath);
 }
 
 void ProgramState::exportClusteringVsDegree(string outputPath) {
