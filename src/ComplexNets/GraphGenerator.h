@@ -2,6 +2,7 @@
 #define GRAPH_GENERATOR_H
 
 #include "../ComplexNets/typedefs.h"
+#include "../ComplexNets/MolloyReedGraphReader.h"
 
 using namespace std;
 
@@ -11,9 +12,7 @@ private:
 	GraphGenerator();
 	static GraphGenerator *instance;
 	float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id);
-	void addVertexPosition();
-	int openDegrees(Vertex* vertex);
-	void printVertexVector(Graph *graph, vector<unsigned int> vec);
+	void addVertexPosition();	
 	
 public:
 	static GraphGenerator *getInstance();
@@ -23,7 +22,7 @@ public:
 	Graph* generateErdosRenyiGraph(unsigned int n, float p);
 	Graph* generateBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 	Graph* generateHotExtendedGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
-	Graph* generateMolloyReedGraph(unsigned int k[]);
+	Graph* generateMolloyReedGraph(string path);
 };
 
 #endif

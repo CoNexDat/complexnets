@@ -977,41 +977,17 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 
 void MainWindow::on_actionNewMolloyReed_triggered()
 {
-	unsigned int k[5];
 	if (!this->graphLoaded)
     {
 		srand(time(NULL));
-		QString amountDegree1 = inputId("k1:");
-		QString amountDegree2 = inputId("k2:");
-		QString amountDegree3 = inputId("k3:");
-		QString amountDegree4 = inputId("k4:");
-		QString amountDegree5 = inputId("k5:");
 		QString ret;
-
-	
-		k[0] = 9;		
-		k[1] = 7;
-		k[2] = 5;
-		k[3] = 4;
-		k[4] = 3;
 
 	    try
 	    {
 			this->onNetworkLoad(false, false, false);
 			buildGraphFactory(false);
-
-			if(!amountDegree1.isEmpty())
-	        	k[0] = amountDegree1.toInt();
-			if(!amountDegree2.isEmpty())
-	        	k[1] = amountDegree2.toInt();
-			if(!amountDegree3.isEmpty())
-	        	k[2] = amountDegree3.toInt();
-			if(!amountDegree4.isEmpty())
-	        	k[3] = amountDegree4.toInt();
-			if(!amountDegree5.isEmpty())
-	        	k[4] = amountDegree5.toInt();
 			
-			graph = *(GraphGenerator::getInstance()->generateMolloyReedGraph(k));
+			graph = *(GraphGenerator::getInstance()->generateMolloyReedGraph("hola"));
 
 			QString text("Network created using Molloy-Reed algorithm");
 	        text.append("\nAmount of vertices in the graph: ");

@@ -409,6 +409,7 @@ mainwindow.o: ComplexNetsGui/src/mainwindow.cpp ComplexNetsGui/inc/ui_mainwindow
 		ComplexNets/NearestNeighborsDegree.h \
 		ComplexNets/ShellIndex.h \
 		ComplexNets/GraphReader.h \
+		ComplexNets/MolloyReedGraphReader.h \
 		ComplexNets/WeightedGraphFactory.h \
 		ComplexNets/WeightedClusteringCoefficient.h \
 		ComplexNets/WeightedNearestNeighborsDegree.h \
@@ -502,6 +503,7 @@ GraphGenerator.o: ComplexNets/GraphGenerator.cpp ComplexNets/GraphGenerator.h \
 		ComplexNets/NearestNeighborsDegree.h \
 		ComplexNets/ShellIndex.h \
 		ComplexNets/GraphReader.h \
+		ComplexNets/MolloyReedGraphReader.h \
 		ComplexNets/WeightedGraphFactory.h \
 		ComplexNets/WeightedClusteringCoefficient.h \
 		ComplexNets/WeightedNearestNeighborsDegree.h \
@@ -598,6 +600,7 @@ ProgramState.o: ComplexNetsCmd/ProgramState.cpp ComplexNetsCmd/ProgramState.h \
 		ComplexNets/NearestNeighborsDegree.h \
 		ComplexNets/ShellIndex.h \
 		ComplexNets/GraphReader.h \
+		ComplexNets/MolloyReedGraphReader.h \
 		ComplexNetsGui/inc/GrapherUtils.h \
 		ComplexNets/WeightedGraphFactory.h \
 		ComplexNets/WeightedClusteringCoefficient.h \
