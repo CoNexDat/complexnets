@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <vector>
 #include <math.h>
 #include "IGraphReader.h"
@@ -23,21 +24,62 @@ public:
     //this typedefs are also present in the superclass. Any way to remove it?
     typedef std::string FileName;
     typedef unsigned int LineNumber;
-    virtual void read(Graph& graph, std::string source)
+
+    virtual void read(Graph& graph, string source)
     {
-		unsigned int k[5] = {9, 7, 5, 4, 3};
+		map<unsigned int, unsigned int> k;
+		unsigned int degree, amount;
+		std::ifstream sourceFile;
+        sourceFile.open(source.c_str(), std::ios_base::in);
+
+        if (!sourceFile)
+            throw FileNotFoundException(source);
+
+        std::string line;
+
+        currentLineNumber = 1;
+        while (getline(sourceFile, line))
+        {
+            std::string tree_str = line;
+
+            character = tree_str.c_str();
+
+            if (!isEmptyLine())
+            {
+				degree = readUnsignedInt();
+                consume_whitespace();
+				amount = readUnsignedInt();
+				k[degree-1] = amount;
+				consume_whitespace();
+            }
+
+            ++currentLineNumber;
+        }
+
+        sourceFile.close();
+
+		molloyReedAlgorithm(graph, k);		
+    }
+
+    LineNumber getLineNumber() const
+    {
+        return currentLineNumber;
+    }
+
+private:
+
+	void molloyReedAlgorithm(Graph& graph, map<unsigned int, unsigned int> k) {
+
 		unsigned int sum = 0, index, i, j, chosenId, existentVertexId, actualDegree, actualDegreeAmount = 0, actualDegreeStartIndex;
 		vector<unsigned int> vec, vertexesWithFreeDegrees;
 		Vertex* v;
 		Vertex* existentVertex;
 		Vertex* otherVertex;
 		bool first=true;
-		unsigned int kLength = 5;
 
 		vertexesFutureDegrees.clear();
 	
-		// TODO: ACA EN VEZ DE 5 LITERAL HAY QUE OBTENER LA DIMENSION DEL ARRAY K
-		for (i = 0; i < kLength; i++)
+		for (i = 0; i < k.size(); i++)
 		{
 			for (j = 1; j <= k[i]; j++){
 				vec.push_back(++sum);
@@ -45,7 +87,7 @@ public:
 			}
 		}
 
-		actualDegree = kLength;
+		actualDegree = k.size();
 		actualDegreeStartIndex = sum;
 		while (sum > 0)
 		{
@@ -139,20 +181,14 @@ public:
 			}
 		}
 		// DEBUG: VUELVO A IMPRIMIR VECTOR CON NODOS LIBRES A VER SI FUNCIONO LA ETAPA2
-		printVertexVector(graph,vertexesWithFreeDegrees);
+		printVertexVector(graph, vertexesWithFreeDegrees);
 
 		// TODO: ACA HAY QUE HACER LA ETAPA 3. DESPUES DE LA ETAPA 2 PUEDEN QUEDAR ALGUNOS CASOS DE NODOS QUE TENGAN GRADOS LIBRES Y QUE YA ESTEN CONECTADOS ENTRE SI. PARA SOLUCIONAR ESTO HAY QUE HACER UNA ESPECIE DE REWIRING, BUSCAR UN NODO, O UNA ARISTA Y HACER UN PUENTE A TRAVES DE ESTE PARA PODER CONECTAR LOS GRADOS LIBRES DE LOS NODOS RESTANTES.
 
 		vertexesWithFreeDegrees.clear();
 		vec.clear();
-    }
+	}
 
-    LineNumber getLineNumber() const
-    {
-        return currentLineNumber;
-    }
-
-private:
 
 	// DADO UN VECTOR DE IDS DE NODOS, LO RECORRE Y IMPRIME PARA CADA NODO EL ID, EL GRADO ACTUAL Y LOS GRADOS LIBRES.
 	void printVertexVector(Graph& graph, vector<unsigned int> vec)
@@ -177,21 +213,6 @@ private:
         return s.str();
     }
 
-    Vertex* loadVertex(Graph& g)
-    {
-        Vertex* vertex = new Vertex(readUnsignedInt());
-        Vertex* vertexAux = vertex;
-        if ((vertex = g.getVertexById(vertex->getVertexId())) != NULL)
-            delete vertexAux;
-        else
-        {
-            vertex = vertexAux;
-            g.addVertex(vertex);
-        }
-
-        return vertex;
-    }
-
     unsigned int readUnsignedInt()
     {
         unsigned int ret = 0;
@@ -212,7 +233,6 @@ private:
         return ret;
     }
 
-    //TODO this method should be const
     bool isEmptyLine()
     {
         bool ret = false;

@@ -977,30 +977,63 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 
 void MainWindow::on_actionNewMolloyReed_triggered()
 {
+    QFileDialog fileDialog(this);
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setFileMode(QFileDialog::ExistingFile);
+    fileDialog.setDirectory(QDir::homePath());
+    QStringList selectedFiles;
+
 	if (!this->graphLoaded)
     {
 		srand(time(NULL));
 		QString ret;
+		if (fileDialog.exec()) 
+		{
+			try
+			{
+				this->onNetworkLoad(false, false, false);
+				buildGraphFactory(false);
 
-	    try
-	    {
-			this->onNetworkLoad(false, false, false);
-			buildGraphFactory(false);
-			
-			graph = *(GraphGenerator::getInstance()->generateMolloyReedGraph("hola"));
+				selectedFiles = fileDialog.selectedFiles();
+				string path = selectedFiles[0].toStdString();			
+				graph = *(GraphGenerator::getInstance()->generateMolloyReedGraph(path));
 
-			QString text("Network created using Molloy-Reed algorithm");
-	        text.append("\nAmount of vertices in the graph: ");
-	        unsigned int verticesCount = graph.verticesCount();
-	        text.append(QString("%1").arg(verticesCount));
-	        text.append(".\n");
-	        ui->textBrowser->append(text);         
-	    }
-	    catch (const BadElementName& ex)
-	    {
-	        ret.append("Error ").append(".\n");
-	        ui->textBrowser->append(ret);
-	    }
+				QString text("Network created using Molloy-Reed algorithm using the file: ");
+                text.append(selectedFiles[0]);
+				text.append("\nAmount of vertices in the graph: ");
+				unsigned int verticesCount = graph.verticesCount();
+				text.append(QString("%1").arg(verticesCount));
+				text.append(".\n");
+				ui->textBrowser->append(text);         
+			} catch (const FileNotFoundException& ex)
+            {
+                    ui->textBrowser->append("Error while loading graph.");
+                    ui->textBrowser->append(ex.what());
+                    onNetworkUnload();
+                    return;
+            }
+			catch (const MalformedLineException& ex)
+            {
+                ui->textBrowser->append("Error while loading graph.");
+                ui->textBrowser->append(ex.what());
+                onNetworkUnload();
+                return;
+
+            }
+            catch (const UnsignedIntegerMalformedException& ex)
+            {
+                ui->textBrowser->append("Error while loading graph.");
+                ui->textBrowser->append(ex.what());
+                onNetworkUnload();
+                return;
+
+            }
+			catch (const BadElementName& ex)
+			{
+				ret.append("Error ").append(".\n");
+				ui->textBrowser->append(ret);
+			}
+		}
 	}
 	
 }
