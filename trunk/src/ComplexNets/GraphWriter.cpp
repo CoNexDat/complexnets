@@ -7,21 +7,19 @@
 using namespace std;
 using namespace graphpp;
 
-bool GraphWriter::vertexWasVisited(Vertex *vertex) {
-	list<int>::iterator it = find(this->visitedVertexes.begin(), this->visitedVertexes.end(), vertex->getVertexId());
-
+bool GraphWriter::vertexWasVisited(unsigned int vertexId) {
+	list<unsigned int>::iterator it = find(this->visitedVertexes.begin(), this->visitedVertexes.end(), vertexId);
 	return it != this->visitedVertexes.end();
 }
 
-void GraphWriter::write(Graph *g, string outputPath) {
+void GraphWriter::writeGraph(Graph *graph, string outputPath) {
     ofstream destinationFile;
     destinationFile.open(outputPath.c_str(), ios_base::out);
 
     this->visitedVertexes.clear();
 
-    Graph::VerticesIterator verticesIterator = g->verticesIterator();
+    Graph::VerticesIterator verticesIterator = graph->verticesIterator();
     
-
     while (!verticesIterator.end()) {
     	Vertex *vertex = *verticesIterator;
     	
@@ -30,7 +28,7 @@ void GraphWriter::write(Graph *g, string outputPath) {
     	while (!neighborsIterator.end()) {
     		Vertex *neighbor = *neighborsIterator;
 
-    		if (!vertexWasVisited(neighbor)) {
+    		if (!vertexWasVisited(neighbor->getVertexId())) {
     			destinationFile << vertex->getVertexId() << " " << neighbor->getVertexId() << std::endl;
     		}
     		
@@ -39,6 +37,32 @@ void GraphWriter::write(Graph *g, string outputPath) {
 
     	this->visitedVertexes.push_back(vertex->getVertexId());
     	verticesIterator++;
+    }
+
+    destinationFile.close();
+}
+
+void GraphWriter::writeWeightedGraph(WeightedGraph *weightedGraph, string outputPath) {
+    ofstream destinationFile;
+    destinationFile.open(outputPath.c_str(), ios_base::out);
+
+    WeightedGraph::VerticesIterator verticesIterator = weightedGraph->verticesIterator();
+
+    while (!verticesIterator.end()) {
+        WeightedVertex *vertex = *verticesIterator;
+        
+        WeightedVertex::WeightsIterator weightsIterator = vertex->weightsIterator();
+
+        while (!weightsIterator.end()) {
+            if (!vertexWasVisited(weightsIterator->first)) {
+                destinationFile << vertex->getVertexId() << " " << weightsIterator->first << " " << weightsIterator->second << std::endl;
+            }
+            
+            weightsIterator++;
+        }
+
+        this->visitedVertexes.push_back(vertex->getVertexId());
+        verticesIterator++;
     }
 
     destinationFile.close();

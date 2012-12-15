@@ -8,11 +8,12 @@ using namespace std;
 class GraphWriter {
 
 public:
-    void write(Graph *g, string outputPath);
+    void writeGraph(Graph *graph, string outputPath);
+    void writeWeightedGraph(WeightedGraph *WeightedGraph, string outputPath);
 
 private:
-	list<int> visitedVertexes;
-	bool vertexWasVisited(Vertex *vertex);
+	list<unsigned int> visitedVertexes;
+	bool vertexWasVisited(unsigned int vertexId);
 
 };
 
