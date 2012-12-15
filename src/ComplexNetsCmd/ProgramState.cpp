@@ -439,9 +439,9 @@ void ProgramState::exportCurrentGraph(string outputPath) {
     GraphWriter *graphWriter = new GraphWriter();
 
     if (isWeighted()) {
-
+        graphWriter->writeWeightedGraph(&(this->weightedGraph), outputPath);
     } else {
-        graphWriter->write(&(this->graph), outputPath);
+        graphWriter->writeGraph(&(this->graph), outputPath);
     }
 
     delete graphWriter;

@@ -59,7 +59,7 @@ private:
             ++it;
         }
 
-        for(int i = 0; i < pointsInBin.size() - 1; i++) {
+        for(unsigned int i = 0; i < pointsInBin.size() - 1; i++) {
             printf("Bin[%g, %g]: %d\n", bins.at(i), bins.at(i + 1), pointsInBin.at(i));
         }
 
