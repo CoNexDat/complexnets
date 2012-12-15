@@ -236,6 +236,8 @@ int main(int argc, char* argv[])
 		if (args_info->save_given) {
 			string path = args_info->save_arg;
 			state->exportCurrentGraph(path);
+
+			cout << "Succesfully saved graph in file " + path + ".\n";
 		}
 	}
 
