@@ -99,6 +99,10 @@ where `<graph>` are the arguments to load a graph or create it using a model and
 {{{
 --ddist-output
 }}}
+ If the output is expected to be grouped using log-bins, the command must include the `log-bin` option:
+{{{
+--ddist-output --log-bin=<number_of_bins>
+}}}
  * Clustering coefficient vs. Degree:
 {{{
 --clustering-output
