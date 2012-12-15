@@ -131,6 +131,14 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
  * xi is the parameter used to select the neighbors for new vertex.
  * q  represents the number of edges added in the graph after of connect a vertex.
  * r is the parameter user to selected the edges in the graph after of connect a vertex.
+ *
+ * RESUMEN DEL ALGORITMO
+ * 1) se genera el primer vertice con una posición aleatoria y se lo marca como root
+ * 2) Se crean nuevos vertices V com posición aleatoria, y se conectan a aquellos vertices existentes U que minimizen la distancia euclidiana
+ * desde U hacia V y la distancia en hoops desde U hacia root. Este proceso se repite "m" veces por cada nuevo vertice añadido.
+ * 3)Se crean "q" nuevas aristas sobre el grafo con el vertice añadido. Se crean las aristas entre dos nodos cuya distancia euclidiana sea
+ * mínima, y que además minimice el numero promedio de hops desde cada nodo hacia el root. Se repite este proceso q veces.
+ * Se elige al azar un nuevo root con probabilidad proporcional al grado del nodo.
  * */
 
 Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, float xi,  unsigned int q, float r)
@@ -140,43 +148,39 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 	list<float> distance;
 
 	vertexesPositions.clear();
-
+	//Firts vertex
 	Vertex* newVertex = new Vertex(1);
-	graph->addVertex(newVertex);	
+	graph->addVertex(newVertex);
 	addVertexPosition();
 	unsigned int root = 1;
 
-	//VERTEX GENERATOR
+	//Creation of vertex
 	for(unsigned int i = 2; i <= n; i++)
 	{
 		newVertex = new Vertex(i);
 		graph->addVertex(newVertex);
 		addVertexPosition();
 
-		float id[i];
+		float id[i]; // When a new vertex wants to connect to the graph, first evaluation the weight 'w' with each existing vertex, the id of the vertex evaluated is stored in id[i]
 		unsigned int count = 1;
-		for(unsigned int j = 1; j <= i; j++)
+		for(unsigned int j = 1; j < i; j++) //this for evaluated "w" for each vertex in the graph
 		{
-			unsigned int HopsDistance = graph->hops(graph->getVertexById(j), graph->getVertexById(root));
-			float euclidianDistance = distanceBetweenVertex(j, i);
+			unsigned HopsDistance = graph->hops(graph->getVertexById(j), graph->getVertexById(root)); //distance between vertex evaluated and root vertex
+			float euclidianDistance = distanceBetweenVertex(j, i); //Distance between vertex evaluated and new vertex
 			float w = euclidianDistance + xi * HopsDistance;
-			if(j != i)
-			{
-				distance.push_front(w);
-				id[count++] = w;
-			}
+				distance.push_front(w); //stores 'w' in a list for then sort and obtain the 'm' lowest values.
+				id[count++] = w; //Permits identify the 'w' value for each vertex id.
 		}
-		distance.sort();
+		distance.sort(); //order the values of w of each for lowest to the highest.
 
-		for (unsigned int k = 0; k < m; k++)
+		for (unsigned int k = 0; k < m; k++) //Add new 'm' vertex
 		{
 			unsigned int t = 0;
-			while(distance.front() != id[t] && !distance.empty())
+			while(distance.front() != id[t] && !distance.empty()) //search the 'id' of the 'm' first lowest 'w'
 				t++;
-				
-			if (t == 0)
+			if (t == 0) //this is only in case that the first value in the 'id' array is the lowest value.
 				t++;
-			Vertex* selectedVertex = graph->getVertexById(t);
+			Vertex* selectedVertex = graph->getVertexById(t); //"t" have the vertex id with the lowest value of w (selected vertex)
 			if(t != i && !selectedVertex->isNeighbourOf(newVertex))
 			{
 				vertexIndexes.push_back(t);
@@ -186,13 +190,14 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 				//cout<<id[t]<<" "<<distance.front()<<" "<<i<<" "<<t<<" "<<root<<"\n";
 			}
 			if (!distance.empty())
-				distance.pop_front();
+				distance.pop_front(); //remove the lowest value of from list
 		}
 
 		//EDGE GENERATOR
 		count = 1;
 		distance.clear();
-		for(unsigned int j = 1; j <= i; j++)
+
+		for(unsigned int j = 1; j <= i; j++) //selected the edges that will be added, is necessary to evaluate all nodes.
 		{
 			float euclidianDistance = distanceBetweenVertex(j, root);
 			unsigned int HopsWithEdge = 0;
@@ -201,10 +206,10 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 			{
 				if (!graph->getVertexById(l)->isNeighbourOf(graph->getVertexById(root)))
 				{
-					HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge;
-					graph->addEdge(graph->getVertexById(l), graph->getVertexById(root));
-					HopsWithEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root)) + HopsWithEdge;
-					graph->removeEdge(graph->getVertexById(l), graph->getVertexById(root));
+					HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge; //Hops between evaluated vertex and root vertex without new edge
+					graph->addEdge(graph->getVertexById(l), graph->getVertexById(root)); //Add new edges only for evaluation, later will be removed
+					HopsWithEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root)) + HopsWithEdge; //Hops between evaluated vertex and root vertex with new edge
+					graph->removeEdge(graph->getVertexById(l), graph->getVertexById(root)); //remove the edge previously added
 				}
 			}
 			float w = euclidianDistance + (r/i) * (HopsWithEdge - HopsWithOutEdge);
@@ -215,7 +220,7 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 			}
 		}
 		distance.sort();
-		for (unsigned int k = 0; k < q; k++)
+		for (unsigned int k = 0; k < q; k++) //Adding "q" new edges. The processes is similar to added vertex.
 		{
 			unsigned int t = 0;
 			while(distance.front() != id[t] && !distance.empty())
@@ -231,12 +236,13 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 				//cout<<distance.front()<<" "<<t<<" "<<i<<" "<<k<<" "<<root<<"\n";
 			}
 			if (!distance.empty())
-				distance.pop_front();
+				distance.pop_front(); //Remove the lowest value of w from the list, because was used previously. This process repeat "q" times.
 		}
 		distance.clear();
 		root = vertexIndexes[rand() % vertexIndexes.size()];
 	}
-	vertexIndexes.clear();
+
+
 	return graph;
 }
 
