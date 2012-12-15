@@ -815,6 +815,31 @@ void MainWindow::on_actionExportBetweenness_vs_Degree_triggered()
         ui->textBrowser->append("Action canceled by user.");
 }
 
+void MainWindow::on_actionExport_current_network_triggered()
+{
+	std::string ret;
+    ui->textBrowser->append("Exporting current network...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+		if (this->graphLoaded) 
+        {
+			GraphWriter *graphWriter = new GraphWriter();
+			if (this->weightedgraph)
+				graphWriter->writeWeightedGraph(&(this->weightedGraph), ret);
+			else
+				graphWriter->writeGraph(&(this->graph), ret);				
+
+			delete graphWriter;
+		    ui->textBrowser->append("Done.");
+        }
+        else
+            ui->textBrowser->append("No network is loaded.");
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
+}
+
 std::string MainWindow::getSavePath() const
 {
     QFileDialog dialog(0, "Save tree", QDir::homePath(), "");

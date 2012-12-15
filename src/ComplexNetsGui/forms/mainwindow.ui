@@ -38,6 +38,9 @@
     <addaction name="actionNewBarabasiAlbert"/>
     <addaction name="actionNewExtendedHOT"/>
     <addaction name="actionNewMolloyReed"/>
+    <addaction name="separator"/>
+    <addaction name="actionExport_current_network"/>
+    <addaction name="separator"/>
     <addaction name="actionClose_current_network"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -119,6 +122,11 @@
   <action name="actionNewMolloyReed">
    <property name="text">
     <string>New Molloy-Reed graph...</string>
+   </property>
+  </action>
+  <action name="actionExport_current_network">
+   <property name="text">
+    <string>Export current network...</string>
    </property>
   </action>
   <action name="actionClose_current_network">

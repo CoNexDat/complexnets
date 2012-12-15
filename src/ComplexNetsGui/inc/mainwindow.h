@@ -12,6 +12,7 @@
 #include "../../ComplexNets/PropertyMap.h"
 #include "ComplexNetsGui/inc/GrapherUtils.h"
 #include "ComplexNetsGui/inc/GnuplotConsole.h"
+#include "../../ComplexNets/GraphWriter.h"
 
 namespace Ui
 {
@@ -82,6 +83,7 @@ private slots:
     void on_actionNewBarabasiAlbert_triggered();
     void on_actionNewExtendedHOT_triggered();
     void on_actionNewMolloyReed_triggered();
+    void on_actionExport_current_network_triggered();
 };
 
 }
