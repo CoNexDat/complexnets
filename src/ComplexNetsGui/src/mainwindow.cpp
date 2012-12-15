@@ -1005,20 +1005,13 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 				text.append(QString("%1").arg(verticesCount));
 				text.append(".\n");
 				ui->textBrowser->append(text);         
-			} catch (const FileNotFoundException& ex)
+			} 
+			catch (const FileNotFoundException& ex)
             {
                     ui->textBrowser->append("Error while loading graph.");
                     ui->textBrowser->append(ex.what());
                     onNetworkUnload();
                     return;
-            }
-			catch (const MalformedLineException& ex)
-            {
-                ui->textBrowser->append("Error while loading graph.");
-                ui->textBrowser->append(ex.what());
-                onNetworkUnload();
-                return;
-
             }
             catch (const UnsignedIntegerMalformedException& ex)
             {
@@ -1028,11 +1021,6 @@ void MainWindow::on_actionNewMolloyReed_triggered()
                 return;
 
             }
-			catch (const BadElementName& ex)
-			{
-				ret.append("Error ").append(".\n");
-				ui->textBrowser->append(ret);
-			}
 		}
 	}
 	

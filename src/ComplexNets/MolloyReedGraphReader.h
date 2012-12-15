@@ -21,38 +21,33 @@ public:
 
 	vector<unsigned int> vertexesFutureDegrees;
 
-    //this typedefs are also present in the superclass. Any way to remove it?
-    typedef std::string FileName;
+    typedef string FileName;
     typedef unsigned int LineNumber;
 
     virtual void read(Graph& graph, string source)
     {
 		map<unsigned int, unsigned int> k;
 		unsigned int degree, amount;
-		std::ifstream sourceFile;
-        sourceFile.open(source.c_str(), std::ios_base::in);
+		ifstream sourceFile;
+        sourceFile.open(source.c_str(), ios_base::in);
 
         if (!sourceFile)
             throw FileNotFoundException(source);
 
-        std::string line;
-
+		string line;
         currentLineNumber = 1;
         while (getline(sourceFile, line))
         {
-            std::string tree_str = line;
-
+            string tree_str = line;
             character = tree_str.c_str();
-
             if (!isEmptyLine())
             {
 				degree = readUnsignedInt();
                 consume_whitespace();
 				amount = readUnsignedInt();
-				k[degree-1] = amount;
+				k[degree] = amount;
 				consume_whitespace();
             }
-
             ++currentLineNumber;
         }
 
@@ -75,25 +70,30 @@ private:
 		Vertex* v;
 		Vertex* existentVertex;
 		Vertex* otherVertex;
+		map<unsigned int, unsigned int>::iterator it;
+		map<unsigned int, unsigned int>::reverse_iterator rit;
 		bool first=true;
 
 		vertexesFutureDegrees.clear();
-	
-		for (i = 0; i < k.size(); i++)
-		{
-			for (j = 1; j <= k[i]; j++){
+
+		for (it = k.begin(); it != k.end(); it++)
+		{			
+			for (i = 0; i < it->second; i++){
 				vec.push_back(++sum);
-				vertexesFutureDegrees.push_back(i+1);
+				vertexesFutureDegrees.push_back(it->first);
 			}
 		}
-
-		actualDegree = k.size();
+		
+		rit = k.rbegin();
 		actualDegreeStartIndex = sum;
 		while (sum > 0)
 		{
 			if (actualDegreeAmount == 0) {
-				actualDegreeAmount = k[--actualDegree];
+				actualDegree = rit->first;
+				actualDegreeAmount = rit->second;
 				actualDegreeStartIndex = actualDegreeStartIndex - actualDegreeAmount;
+				if(rit != k.rend())
+					rit++;
 			}
 
 			cout << "sum vale: " << sum << "\n";
