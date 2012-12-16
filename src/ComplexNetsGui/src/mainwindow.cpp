@@ -423,15 +423,21 @@ void MainWindow::on_actionDegree_distribution_triggered()
 void MainWindow::on_actionDegree_distribution_plotting_triggered()
 {
     bool ret, logBin = false;
+    unsigned int bins = 25;
     ui->textBrowser->append("Plotting degree distribution...");
     if (!propertyMap.containsPropertySet("degreeDistribution"))
     {
         ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
         this->computeDegreeDistribution();
     }
-    if (LogBinningDialog() == QMessageBox::Yes)
+    if (LogBinningDialog() == QMessageBox::Yes) {
         logBin = true;
-    ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", logBin);
+        QString inputN = inputId("bins:");
+        if(!inputN.isEmpty()) {
+            bins = inputN.toInt();
+        }
+    }
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", logBin, bins);
     this->console->show();
     this->activateWindow();
     if (!ret)
