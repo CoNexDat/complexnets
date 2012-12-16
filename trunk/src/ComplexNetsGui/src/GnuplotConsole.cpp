@@ -53,7 +53,7 @@ GnuplotConsole::~GnuplotConsole()
 }
 
 //TODO should be const
-bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& propertyName, const bool logBin)
+bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& propertyName, const bool logBin, unsigned int bins)
 {
     GrapherUtils utils;
     if (pipe == NULL)
@@ -76,7 +76,7 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
     if (logBin)
     {
         LogBinningPolicy policy;
-        utils.exportPropertySet(policy.transform(set), file);
+        utils.exportPropertySet(policy.transform(set, bins), file);
     }
     else
         utils.exportPropertySet(set, file);

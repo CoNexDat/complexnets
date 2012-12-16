@@ -24,7 +24,7 @@ class GnuplotConsole : public QDialog
 public:
     GnuplotConsole(QWidget* parent = 0);
     ~GnuplotConsole();
-    bool plotPropertySet(const VariantsSet& set, const std::string& propertyName, const bool logBin = false);
+    bool plotPropertySet(const VariantsSet& set, const std::string& propertyName, const bool logBin = false, unsigned int bins = 25);
     void writeCommand(const std::string& command);
     //void closeDialog();
 
