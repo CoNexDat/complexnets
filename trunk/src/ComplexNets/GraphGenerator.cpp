@@ -162,39 +162,30 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 		addVertexPosition();
 
 		float id[i]; // When a new vertex wants to connect to the graph, first evaluation the weight 'w' with each existing vertex, the id of the vertex evaluated is stored in id[i]
-		unsigned int count = 1;
+		//unsigned int count = 1;
 		for(unsigned int j = 1; j < i; j++) //this for evaluated "w" for each vertex in the graph
 		{
 			unsigned HopsDistance = graph->hops(graph->getVertexById(j), graph->getVertexById(root)); //distance between vertex evaluated and root vertex
 			float euclidianDistance = distanceBetweenVertex(j, i); //Distance between vertex evaluated and new vertex
 			float w = euclidianDistance + xi * HopsDistance;
 				distance.push_front(w); //stores 'w' in a list for then sort and obtain the 'm' lowest values.
-				id[count++] = w; //Permits identify the 'w' value for each vertex id.
+				id[j] = w; //Permits identify the 'w' value for each vertex id.
 		}
 		distance.sort(); //order the values of w of each for lowest to the highest.
 
 		for (unsigned int k = 0; k < m; k++) //Add new 'm' vertex
 		{
 			unsigned int t = 0;
-			while(distance.front() != id[t] && !distance.empty()) //search the 'id' of the 'm' first lowest 'w'
-				t++;
-			if (t == 0) //this is only in case that the first value in the 'id' array is the lowest value.
-				t++;
-			Vertex* selectedVertex = graph->getVertexById(t); //"t" have the vertex id with the lowest value of w (selected vertex)
-			if(t != i && !selectedVertex->isNeighbourOf(newVertex))
+			while(distance.front() != id[t] && !distance.empty()) t++; //search the 'id' of the 'm' first lowest 'w'
+			if (t == 0) t++;//this is only in case that the first value in the 'id' array is the lowest value.
+			if(!graph->getVertexById(t)->isNeighbourOf(newVertex))
 			{
 				vertexIndexes.push_back(t);
 				vertexIndexes.push_back(i);
-				graph->addVertex(newVertex);
-				graph->addEdge(selectedVertex, newVertex);
-				//cout<<id[t]<<" "<<distance.front()<<" "<<i<<" "<<t<<" "<<root<<"\n";
+				graph->addEdge(graph->getVertexById(t), newVertex);
 			}
-			if (!distance.empty())
-				distance.pop_front(); //remove the lowest value of from list
+			if (!distance.empty()) distance.pop_front();
 		}
-
-		//EDGE GENERATOR
-		count = 1;
 		distance.clear();
 
 		for(unsigned int j = 1; j <= i; j++) //selected the edges that will be added, is necessary to evaluate all nodes.
@@ -216,27 +207,22 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 			if(w != 0)
 			{
 				distance.push_front(w);
-				id[count++] = w;
+				id[j] = w;
 			}
 		}
 		distance.sort();
 		for (unsigned int k = 0; k < q; k++) //Adding "q" new edges. The processes is similar to added vertex.
 		{
 			unsigned int t = 0;
-			while(distance.front() != id[t] && !distance.empty())
-				t++;
-
-			if (t == 0)
-				t++;
-			if(t != i && !graph->getVertexById(t)->isNeighbourOf(graph->getVertexById(root)))
+			while(distance.front() != id[t] && !distance.empty()) t++;
+			if (t == 0) t++;
+			if(!graph->getVertexById(t)->isNeighbourOf(graph->getVertexById(root)))
 			{
 				vertexIndexes.push_back(t);
 				vertexIndexes.push_back(root);
 				graph->addEdge(graph->getVertexById(t), graph->getVertexById(root));
-				//cout<<distance.front()<<" "<<t<<" "<<i<<" "<<k<<" "<<root<<"\n";
 			}
-			if (!distance.empty())
-				distance.pop_front(); //Remove the lowest value of w from the list, because was used previously. This process repeat "q" times.
+			if (!distance.empty()) distance.pop_front(); //Remove the lowest value of w from the list, because was used previously. This process repeat "q" times.
 		}
 		distance.clear();
 		root = vertexIndexes[rand() % vertexIndexes.size()];
