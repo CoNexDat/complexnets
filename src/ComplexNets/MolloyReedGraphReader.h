@@ -243,7 +243,7 @@ private:
 										while (!it2.end() && !SelectedVertex1 ->isNeighbourOf(V1freeDegrees) && openDegrees(V1freeDegrees)>0) //Una vez que se selecciona un nodo, se busca entre sus vecinos otro que no se encuentre conectado con el nodo con grados libres
 										{
 											Vertex* SelectedVertex2 = *it2; //Segundo candidato a hacer rewiring
-											if(!SelectedVertex2 ->isNeighbourOf(V2freeDegrees) && !SelectedVertex1 ->isNeighbourOf(V1freeDegrees))
+											if(!SelectedVertex2 ->isNeighbourOf(V2freeDegrees))
 											{
 													graph.addEdge(V1freeDegrees, SelectedVertex1);
 													graph.addEdge(V2freeDegrees, SelectedVertex2);
