@@ -369,13 +369,15 @@ void ProgramState::exportDegreeDistribution(string outputPath, unsigned int log_
     PropertyMap propertyMap;
     computeDegreeDistribution(propertyMap);
     GrapherUtils grapherUtils;
-    VariantsSet& set = propertyMap.getPropertySet("degreeDistribution");
     if(log_bin_given) {
+        VariantsSet& set = propertyMap.getPropertySet("degreeDistribution");
         LogBinningPolicy policy;
         grapherUtils.exportPropertySet(policy.transform(set, binsAmount), outputPath);
         return;
+    }else{
+        VariantsSet& set = propertyMap.getPropertySet("degreeDistributionProbability");
+        grapherUtils.exportPropertySet(set, outputPath);
     }
-    grapherUtils.exportPropertySet(set, outputPath);
 }
 
 void ProgramState::exportClusteringVsDegree(string outputPath) {
