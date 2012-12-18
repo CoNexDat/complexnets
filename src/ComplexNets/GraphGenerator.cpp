@@ -6,6 +6,7 @@
 #include "../ComplexNets/TraverserBFS.h"
 #include <vector>
 #include <math.h>
+#include <map>
 
 using namespace graphpp;
 
@@ -145,7 +146,7 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 {
 	Graph* graph = new Graph(false, false);
 	vector<unsigned int> vertexIndexes;
-	list<float> distance;
+	map<float,unsigned int> distance;
 
 	vertexesPositions.clear();
 	//Firts vertex
@@ -160,78 +161,55 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 		newVertex = new Vertex(i);
 		graph->addVertex(newVertex);
 		addVertexPosition();
-
-		float id[i]; // When a new vertex wants to connect to the graph, first evaluation the weight 'w' with each existing vertex, the id of the vertex evaluated is stored in id[i]
-		//unsigned int count = 1;
 		for(unsigned int j = 1; j < i; j++) //this for evaluated "w" for each vertex in the graph
 		{
 			unsigned HopsDistance = graph->hops(graph->getVertexById(j), graph->getVertexById(root)); //distance between vertex evaluated and root vertex
 			float euclidianDistance = distanceBetweenVertex(j, i); //Distance between vertex evaluated and new vertex
 			float w = euclidianDistance + xi * HopsDistance;
-				distance.push_front(w); //stores 'w' in a list for then sort and obtain the 'm' lowest values.
-				id[j] = w; //Permits identify the 'w' value for each vertex id.
+				distance[w]=j; //stores 'w' as key of a map
 		}
-		distance.sort(); //order the values of w of each for lowest to the highest.
-
-		for (unsigned int k = 0; k < m; k++) //Add new 'm' vertex
-		{
-			unsigned int t = 0;
-			while(distance.front() != id[t] && !distance.empty()) t++; //search the 'id' of the 'm' first lowest 'w'
-			if (t == 0) t++;//this is only in case that the first value in the 'id' array is the lowest value.
-			if(!graph->getVertexById(t)->isNeighbourOf(newVertex))
-			{
-				vertexIndexes.push_back(t);
-				vertexIndexes.push_back(i);
-				graph->addEdge(graph->getVertexById(t), newVertex);
-			}
-			if (!distance.empty()) distance.pop_front();
-		}
+		addEdges(graph, newVertex,distance, m, &vertexIndexes);
 		distance.clear();
-
 		for(unsigned int j = 1; j <= i; j++) //selected the edges that will be added, is necessary to evaluate all nodes.
 		{
-			float euclidianDistance = distanceBetweenVertex(j, root);
+			float euclidianDistance = 0;
 			unsigned int HopsWithEdge = 0;
 			unsigned int HopsWithOutEdge = 0;
-			for (unsigned int l = 1; l <= i; l++)
+			if (!graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(root)) && j!=root) //Cuando el nodo seleccionado como candidato para agregar una arista ya esta conectado, o es el root, no se realizan calculos
 			{
-				if (!graph->getVertexById(l)->isNeighbourOf(graph->getVertexById(root)))
+				for (unsigned int l = 1; l <= i; l++) //Se calcula la sumatoria de las distancias desde cada uno de los nodos existentes(l) hacia el root, tanto con la nueva arista(j,root) como sin ella.
 				{
 					HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge; //Hops between evaluated vertex and root vertex without new edge
-					graph->addEdge(graph->getVertexById(l), graph->getVertexById(root)); //Add new edges only for evaluation, later will be removed
+					graph->addEdge(graph->getVertexById(j), graph->getVertexById(root)); //Add new edges only for evaluation, later will be removed
 					HopsWithEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root)) + HopsWithEdge; //Hops between evaluated vertex and root vertex with new edge
-					graph->removeEdge(graph->getVertexById(l), graph->getVertexById(root)); //remove the edge previously added
+					graph->removeEdge(graph->getVertexById(j), graph->getVertexById(root)); //remove the edge previously added
 				}
-			}
-			float w = euclidianDistance + (r/i) * (HopsWithEdge - HopsWithOutEdge);
-			if(w != 0)
-			{
-				distance.push_front(w);
-				id[j] = w;
+				euclidianDistance = distanceBetweenVertex(j, root);
+				float w = euclidianDistance + (r/i) * (HopsWithEdge - HopsWithOutEdge);
+				distance[w]=j;
 			}
 		}
-		distance.sort();
-		for (unsigned int k = 0; k < q; k++) //Adding "q" new edges. The processes is similar to added vertex.
-		{
-			unsigned int t = 0;
-			while(distance.front() != id[t] && !distance.empty()) t++;
-			if (t == 0) t++;
-			if(!graph->getVertexById(t)->isNeighbourOf(graph->getVertexById(root)))
-			{
-				vertexIndexes.push_back(t);
-				vertexIndexes.push_back(root);
-				graph->addEdge(graph->getVertexById(t), graph->getVertexById(root));
-			}
-			if (!distance.empty()) distance.pop_front(); //Remove the lowest value of w from the list, because was used previously. This process repeat "q" times.
-		}
+		addEdges(graph, graph->getVertexById(root),distance, q, &vertexIndexes);
 		distance.clear();
 		root = vertexIndexes[rand() % vertexIndexes.size()];
 	}
-
-
 	return graph;
 }
 
+void GraphGenerator::addEdges(Graph* graph, Vertex* vertex, map<float, unsigned int> distance, unsigned int quant, vector<unsigned int>* vertexIndexes)
+{
+	for (unsigned int k = 0; k < quant && !distance.empty(); k++) //Adding "q" new edges. The processes is similar to added vertex.
+	{
+		if(!graph->getVertexById(distance.begin()->second)->isNeighbourOf(vertex))
+		{
+			vertexIndexes->push_back(distance.begin()->second);
+			vertexIndexes->push_back(vertex->getVertexId());
+			graph->addEdge(graph->getVertexById(distance.begin()->second), vertex);
+			distance.erase(distance.begin()); 			//Remove the lowest value of w from the list, because was used previously. This process repeat "q" times.
+			if (distance.empty()) break;
+		}
+	}
+}
 
 float GraphGenerator::distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id)
 {
@@ -239,6 +217,7 @@ float GraphGenerator::distanceBetweenVertex(unsigned int vertex1Id, unsigned int
 	return sqrt(pow(vertexesPositions[vertex1Id-1].x - vertexesPositions[vertex2Id-1].x, 2)
 				 + pow(vertexesPositions[vertex1Id-1].y - vertexesPositions[vertex2Id-1].y, 2));
 }
+
 
 void GraphGenerator::addVertexPosition()
 {
