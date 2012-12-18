@@ -85,7 +85,6 @@ private:
             PBin = (pointsInBin[i] / sum) / binWidth;
             checkIntegral += PBin * binWidth;
             binPos = bins[i] + (binWidth / 2.0);
-            printf("x: %s, y: %g\n", to_string<double>(binPos).c_str(), PBin);
             toPlot.insert<double>(to_string<double>(binPos), PBin);
         }
 
