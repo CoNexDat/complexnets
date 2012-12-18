@@ -32,8 +32,15 @@ private:
         double max = xPoints.back();
         double r = pow(max - min + 1, 1 / (double)binsAmount);
 
+        int last = 0, current;
+        double cBin;
         for(unsigned int i = 0; i <= binsAmount; i++) {
-            bins.push_back(pow(r,i) + min - 1);
+            cBin = pow(r,i) + min - 1;
+            current = i < binsAmount ? floor(cBin) : ceil(cBin);
+            if(current != last) {
+                bins.push_back(current);
+                last = current;
+            }
         }
 
         // for(int i = 0; i < bins.size(); i++) {
@@ -65,25 +72,24 @@ private:
 
         // Probability density per bin
         // Normalization and plotting
-        std::vector<double> binCenter(set.size());
         double sum = 0.0;
         for (unsigned int i = 0; i < bins.size(); ++i)
         {
             sum += pointsInBin[i];
         }
 
-        double binWidth, PBin, checkIntegral = 0;
+        double binWidth, PBin, checkIntegral = 0, binPos;
         for (unsigned int i = 0; i < bins.size(); ++i)
         {
             binWidth = fabs(bins[i + 1] - bins[i]);
             PBin = (pointsInBin[i] / sum) / binWidth;
             checkIntegral += PBin * binWidth;
-            binCenter[i] = binWidth / 2.0;
-            // printf("x: %g, y: %g\n", binCenter[i], PBin);
-            toPlot.insert<double>(to_string<double>(binCenter[i]), PBin);
+            binPos = bins[i] + (binWidth / 2.0);
+            printf("x: %s, y: %g\n", to_string<double>(binPos).c_str(), PBin);
+            toPlot.insert<double>(to_string<double>(binPos), PBin);
         }
 
-        // printf("Integral: %g\n", checkIntegral);
+        printf("Integral: %g\n", checkIntegral);
 
         return toPlot;
     }

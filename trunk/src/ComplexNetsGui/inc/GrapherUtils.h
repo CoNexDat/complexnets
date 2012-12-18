@@ -21,7 +21,7 @@ public:
     static void exportPropertySet(const VariantsSet& set, const FilePath& data_path)
     {
         std::ofstream destinationFile;
-        std::map<unsigned int , double> sortedMap;
+        std::map<double , double> sortedMap;
         destinationFile.open(data_path.c_str(), std::ios_base::out);
         VariantsSet::const_iterator it = set.begin();
 
@@ -30,11 +30,11 @@ public:
          */
         while (it != set.end())
         {
-            sortedMap.insert(std::pair<unsigned int, double>(from_string<unsigned int>(it->first), from_string<double>(it->second)));
+            sortedMap.insert(std::pair<double, double>(from_string<double>(it->first), from_string<double>(it->second)));
             ++it;
         }
 
-        std::map<unsigned int, double>::const_iterator itSorted = sortedMap.begin();
+        std::map<double, double>::const_iterator itSorted = sortedMap.begin();
         while (itSorted != sortedMap.end())
         {
             destinationFile << itSorted->first << " " << itSorted->second << std::endl;
