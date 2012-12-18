@@ -192,31 +192,29 @@ private:
 				{
 					/*PRIMER CASO-PARA NODOS GRADOS DISPONIBLES MAYORES A 1, SE SELECCIONAN DOS NODOS CONECTADOS, SE ELIMINA LA ARISTA ENTRE ELLOS Y SE CREA UNA HACIA EL NODO
 					Con grados disponibles*/
-					if (openDegrees(graph.getVertexById(vertexesWithFreeDegrees[i]))>1)
+					Vertex* VfreeDegrees = graph.getVertexById(vertexesWithFreeDegrees[i]); //Nodo con grados libres
+					//A continuación se buscará candidatos para hacer rewiring
+					for (j=1; j<=graph.verticesCount() && openDegrees(VfreeDegrees)>1 ; j++)
 					{
 						cout << "Buscando nodos de rewiring para vertice "<<vertexesWithFreeDegrees[i]<<" con "<< openDegrees(graph.getVertexById(vertexesWithFreeDegrees[i]))<< " grados libres\n";
-						//A continuación se buscará candidatos para hacer rewiring
-						for (j=1; j<=graph.verticesCount(); j++)
+						Vertex* V1Rewiring = graph.getVertexById(j); //Nodo que será evaluado para hacer rewiring
+						if (vertexesWithFreeDegrees[i]!=j && !V1Rewiring ->isNeighbourOf(VfreeDegrees)) //Se comprueba si el nodo seleccionado no es vecino del nodo con grados libres
 						{
-							Vertex* VfreeDegrees = graph.getVertexById(vertexesWithFreeDegrees[i]); //Nodo con grados libres
-							Vertex* V1Rewiring = graph.getVertexById(j); //Nodo que será evaluado para hacer rewiring
-							if (vertexesWithFreeDegrees[i]!=j && !V1Rewiring ->isNeighbourOf(VfreeDegrees)) //Se comprueba si el nodo seleccionado no es vecino del nodo con grados libres
+							NeighborsIterator it = V1Rewiring->neighborsIterator(); //iterador para buscar vecinos de V1Rewiring que puedan conectarse con el nodo de grados libres
+							while (!it.end()) //Una vez que se selecciona un nodo, se busca entre sus vecinos
 							{
-								NeighborsIterator it = V1Rewiring->neighborsIterator(); //iterador para buscar vecinos de V1Rewiring que puedan conectarse con el nodo de grados libres
-								while (!it.end() && !V1Rewiring ->isNeighbourOf(VfreeDegrees) && openDegrees(VfreeDegrees)>0) //Una vez que se selecciona un nodo, se busca entre sus vecinos otro que no se encuentre conectado con el nodo con grados libres
+								Vertex* V2Rewiring = *it;
+								if(!V2Rewiring ->isNeighbourOf(VfreeDegrees))
 								{
-									Vertex* V2Rewiring = *it;
-									if(!V2Rewiring ->isNeighbourOf(VfreeDegrees))
-									{
-											graph.addEdge(V1Rewiring, VfreeDegrees);
-											graph.addEdge(V2Rewiring, VfreeDegrees);
-											graph.removeEdge(V1Rewiring, V2Rewiring);
-											cout<<"removiendo aristas entre nodos "<<j<<" y "<<V2Rewiring->getVertexId()<<"\n";
-											cout<<"Añadiendo arsitas desde los nodos "<<j<<" y "<<V2Rewiring->getVertexId()<<" hacia el nodo "<<vertexesWithFreeDegrees[i]<<"\n";
-											cout<<"\n";
-									}
-									it++;
+										graph.addEdge(V1Rewiring, VfreeDegrees);
+										graph.addEdge(V2Rewiring, VfreeDegrees);
+										graph.removeEdge(V1Rewiring, V2Rewiring);
+										cout<<"removiendo aristas entre nodos "<<j<<" y "<<V2Rewiring->getVertexId()<<"\n";
+										cout<<"Añadiendo aristas desde los nodos "<<j<<" y "<<V2Rewiring->getVertexId()<<" hacia el nodo "<<vertexesWithFreeDegrees[i]<<"\n";
+										cout<<"\n";
+										break;
 								}
+								it++;
 							}
 						}
 					}
@@ -227,37 +225,33 @@ private:
 					if (openDegrees(graph.getVertexById(vertexesWithFreeDegrees[i]))==1)
 					{
 						Vertex* V1freeDegrees = graph.getVertexById(vertexesWithFreeDegrees[i]); //Nodo con grados disponibles a evaluar
-
 						NeighborsIterator it = V1freeDegrees->neighborsIterator();
 						while (!it.end() && openDegrees(V1freeDegrees)==1)
 						{
 							Vertex* V2freeDegrees = *it; //vecino del nodo a evaluar que posea tambien grados disponibles
-							if (openDegrees(V2freeDegrees)==1)
+							for (j=1; j<=graph.verticesCount() && openDegrees(V2freeDegrees)==1; j++)
 							{
-								for (j=1; j<=graph.verticesCount(); j++)
+								Vertex* SelectedVertex1 = graph.getVertexById(j); //Nodo 1 para hacer rewiring
+								if (vertexesWithFreeDegrees[i]!=j && !SelectedVertex1 ->isNeighbourOf(V1freeDegrees)) //Se comprueba si el nodo seleccionado no es vecino del nodo con grados libres
 								{
-									Vertex* SelectedVertex1 = graph.getVertexById(j); //Nodo 1 para hacer rewiring
-									if (vertexesWithFreeDegrees[i]!=j && !SelectedVertex1 ->isNeighbourOf(V1freeDegrees)) //Se comprueba si el nodo seleccionado no es vecino del nodo con grados libres
+									NeighborsIterator it2 = SelectedVertex1->neighborsIterator(); //iterador para buscar vecinos de SelectedVertex1
+									while (!it2.end()) //Una vez que se selecciona un nodo, se busca entre sus vecinos otro que no se encuentre conectado con el nodo con grados libres
 									{
-										NeighborsIterator it2 = SelectedVertex1->neighborsIterator(); //iterador para buscar vecinos de SelectedVertex1
-										while (!it2.end() && !SelectedVertex1 ->isNeighbourOf(V1freeDegrees) && openDegrees(V1freeDegrees)>0) //Una vez que se selecciona un nodo, se busca entre sus vecinos otro que no se encuentre conectado con el nodo con grados libres
+										Vertex* SelectedVertex2 = *it2; //Segundo candidato a hacer rewiring
+										if(!SelectedVertex2 ->isNeighbourOf(V2freeDegrees))
 										{
-											Vertex* SelectedVertex2 = *it2; //Segundo candidato a hacer rewiring
-											if(!SelectedVertex2 ->isNeighbourOf(V2freeDegrees))
-											{
-													graph.addEdge(V1freeDegrees, SelectedVertex1);
-													graph.addEdge(V2freeDegrees, SelectedVertex2);
-													graph.removeEdge(SelectedVertex1, SelectedVertex2);
-													cout<<"Removiendo aristas entre nodos "<<SelectedVertex1->getVertexId()<<" y "<<SelectedVertex2->getVertexId()<<"\n";
-													cout<<"Añadiendo arsitas entre los nodos "<<SelectedVertex1->getVertexId()<<"-"<<V1freeDegrees->getVertexId()<<" y "<<SelectedVertex2->getVertexId()<<"-"<<V2freeDegrees->getVertexId()<<"\n";
-													cout<<"\n";
-											}
-											it2++;
+												graph.addEdge(V1freeDegrees, SelectedVertex1);
+												graph.addEdge(V2freeDegrees, SelectedVertex2);
+												graph.removeEdge(SelectedVertex1, SelectedVertex2);
+												cout<<"Removiendo aristas entre nodos "<<SelectedVertex1->getVertexId()<<" y "<<SelectedVertex2->getVertexId()<<"\n";
+												cout<<"Añadiendo aristas entre los nodos "<<SelectedVertex1->getVertexId()<<"-"<<V1freeDegrees->getVertexId()<<" y "<<SelectedVertex2->getVertexId()<<"-"<<V2freeDegrees->getVertexId()<<"\n";
+												cout<<"\n";
+												break;
 										}
+										it2++;
 									}
 								}
 							}
-
 							it++;
 						}
 					}

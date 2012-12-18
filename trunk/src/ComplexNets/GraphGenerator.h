@@ -13,6 +13,7 @@ private:
 	static GraphGenerator *instance;
 	float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id);
 	void addVertexPosition();	
+	void addEdges(Graph* graph, Vertex* vertex, map<float, unsigned int> distance, unsigned int quant, vector<unsigned int>* vertexIndexes);
 	
 public:
 	static GraphGenerator *getInstance();
