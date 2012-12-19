@@ -115,3 +115,17 @@ where `<graph>` are the arguments to load a graph or create it using a model and
 {{{
 --shell-output
 }}}
+
+== Using a bash script to generate plots ==
+
+A bash script can be used to generate the plot for each property of a graph. To achieve this, the following command must be invoked:
+{{{
+$ sh plotter.sh <input_file>
+}}}
+This command creates a directory in which the plots for betweenness, degree distribution, clustering coefficient, nearest neighbors degree and shell index are saved for the graph represented by `<input_file>`.
+
+If the command is invoked with one more parameter:
+{{{
+$ sh plotter.sh <input_file> <number_of_bins>
+}}}
+then the degree distribution is also plotted using the log-bin method, with the number of bins specified by `<number_of_bins>`.
