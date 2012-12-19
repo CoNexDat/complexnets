@@ -137,13 +137,11 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
  * q  represents the number of edges added in the graph after of connect a vertex.
  * r is the parameter user to selected the edges in the graph after of connect a vertex.
  *
- * RESUMEN DEL ALGORITMO
- * 1) se genera el primer vertice con una posición aleatoria y se lo marca como root
- * 2) Se crean nuevos vertices V com posición aleatoria, y se conectan a aquellos vertices existentes U que minimizen la distancia euclidiana
- * desde U hacia V y la distancia en hoops desde U hacia root. Este proceso se repite "m" veces por cada nuevo vertice añadido.
- * 3)Se crean "q" nuevas aristas sobre el grafo con el vertice añadido. Se crean las aristas entre dos nodos cuya distancia euclidiana sea
- * mínima, y que además minimice el numero promedio de hops desde cada nodo hacia el root. Se repite este proceso q veces.
- * Se elige al azar un nuevo root con probabilidad proporcional al grado del nodo.
+ * Algorithm summary
+ * 1) Create the first vertex with random position and set it as root
+ * 2) Create new vertexes V with random positions and then connect to the vertixes U which minimizes the euclidean distance from U to V and the hoops distance from U to root. This process is repeated m times for each new vertex added.
+ * 3) Create q new edges on the graph for the vertex added
+ * A new root is chosen with probability dependant on the node degree.
  * */
 
 Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, float xi,  unsigned int q, float r)
@@ -179,9 +177,9 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 			float euclidianDistance = 0;
 			unsigned int HopsWithEdge = 0;
 			unsigned int HopsWithOutEdge = 0;
-			if (!graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(root)) && j!=root) //Cuando el nodo seleccionado como candidato para agregar una arista ya esta conectado, o es el root, no se realizan calculos
+			if (!graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(root)) && j!=root) //If the node selected as candidate to add an edge is the root or is already connected, don't do anything
 			{
-				for (unsigned int l = 1; l <= i; l++) //Se calcula la sumatoria de las distancias desde cada uno de los nodos existentes(l) hacia el root, tanto con la nueva arista(j,root) como sin ella.
+				for (unsigned int l = 1; l <= i; l++) //Calculate the distance sumarize from each existant vertex to the root, with the edge and without it.
 				{
 					HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge; //Hops between evaluated vertex and root vertex without new edge
 					graph->addEdge(graph->getVertexById(j), graph->getVertexById(root)); //Add new edges only for evaluation, later will be removed
@@ -230,27 +228,6 @@ void GraphGenerator::addVertexPosition()
 	vertexesPositions.back().y = (float) rand() / RAND_MAX;
 }
 
-
-/*
- EXPLICACION ALGORITMO
-
-K VIENE COMO PARAMETRO CON UN HISTOGRAMA DE GRADOS, POR EJEMPLO EL VECTOR {9,7,5,4,3} SIGNIFICA QUE TIENE QUE HABER 9 NODOS CON GRADO 1, 7 NODOS CON GRADO 2, ETC
-
-INICIALMENTE SE GENERAN TODOS LOS IDS DE LOS NODOS A AGREGAR Y SE PONEN EN EL VECTOR VEC, SUM TIENE LA CANTIDAD ACTUAL DE ELEMENTOS EN VEC
-
-PARA QUE EL ALGORITMO FUNCIONE SEGUN SE HABLO CON IGNACIO, HAY QUE IR AGREGANDO LOS NODOS DE MAYOR GRADO Y LUEGO LOS DE MENOR GRADO. LAS VARIABLES actualDegree, actualDegreeAmount, actualDegreeStartIndex SE USAN PARA EN CADA ITERACION ELEGIR DE VEC UN NODO AL AZAR ENTRE LOS QUE HAY DE MAYOR GRADO POSIBLE.
-
-PARA SIMPLIFICAR INICIALMENTE EL ALGORITMO Y NO CONTAR CON OTRA ESTRUCTURA DE DATOS, EL ID DEL VECTOR ESTA CONSTRUIDO DE MANERA QUE LA CIFRA DE MILES DEL ID REPRESENTA EL GRADO QUE SE DESEA QUE TENGA AL FINALIZAR EL ALGORITMO. LA FUNCION openDegrees, DADO UN NODO DEVUELVE LA CANTIDAD DE GRADOS LIBRES QUE TIENE COMPARANDO LOS VECINOS Y EL GRADO DESEADO QUE ESTA IMPLICITO EN SU ID.
-
-PARA LA ETAPA 1 EL ALGORITMO ES:
-1) SI ES EL PRIMER NODO, SE AGREGA AL GRAFO
-2) SI NO ES EL PRIMER NODO, SE BUSCA AL AZAR UN NODO YA AGREGADO QUE TENGA GRADOS LIBRES, Y SE AGREGA EL NUEVO NODO AL GRADO CREANDO UNA ARISTA HACIA EL NODO BUSCADO. PARA PODER BUSCAR EFICIENTEMENTE UN NODO YA AGREGADO QUE TENGA GRADOS LIBRES, SE TIENE UN VECTOR vertexesWithFreeDegrees QUE SIEMPRE TIENE UN LISTADO DE LOS NODOS CON GRADOS LIBRES. EN ESTE VECTOR SE AGREGAN LOS NODOS QUE SE AGREGAN AL GRAFO CON GRADO >= 2 (YA QUE AL CONECTARSE A UN NODO LES QUEDA AL MENOS UN NODO LIBRE) Y CUANDO SE CREAN ARISTAS, SI EL NODO DESTINO ERA EL ULTIMO GRADO LIBRE QUE TENIA SE ELIMINA DEL VECTOR
-
-PARA LA ETAPA 2 SE USA EL VECTOR vertexesWithFreeDegrees QUE DESPUES DE LA ETAPA 1 QUEDA CON TODOS LOS NODOS QUE TIENEN GRADOS LIBRES. SE RECORRER UNO POR UNO Y SE LO TRATA DE UNIR CON OTROS NODOS DEL VECTOR HASTA OCUPAR LOS GRADOS QUE TENIA LIBRES. SOLO SE PUEDE CONECTAR CON OTRO NODO SI NO ESTABAN CONECTADOS PREVIAMENTE Y SI EL NODO DESTINO TAMBIEN TIENE GRADOS LIBRES
-
-
-
-*/
 
 Graph* GraphGenerator::generateMolloyReedGraph(string path)
 {
