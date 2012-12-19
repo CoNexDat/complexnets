@@ -65,8 +65,8 @@ public:
 		} while (!vertexesLeft.empty() && vertexesInComponent.size() < graph->verticesCount()/2);
 
 
-		if(vertexesInComponent.size() >= graph->verticesCount()/2)
-			cout << "Component found\n";
+		//if(vertexesInComponent.size() >= graph->verticesCount()/2)
+			//cout << "Component found\n";
 
 		AdjacencyListGraph<AdjacencyListVertex>::VerticesConstIterator it2 = graph->verticesConstIterator();
         while (!it2.end())
@@ -82,9 +82,9 @@ public:
 			}
 			if(!found)
 			{
-				cout << "Remove ";
-				cout << (*it2)->getVertexId();
-				cout << "\n"; 
+				//cout << "Remove ";
+				//cout << (*it2)->getVertexId();
+				//cout << "\n"; 
 				graph->removeVertex(*it2);
 			}			
 				
