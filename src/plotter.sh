@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Usage:
+# 	sh plotter.sh <input_file>
+#	sh plotter.sh <input_file> <number_of_bins>
+#
+# <input_file>: the file that stores a graph (it must have an extension).
+# <number_of_bins>: if sent, each function is plotted with log-bin with this amount of bins.
+
+# -----------------------------------------------------------------------------
+
+# This script is licensed under the Academic Free License 3.0.
+# Instituto Tecnológico de Buenos Aires (ITBA).
+# Last modification: December 19th, 2012.
+
+
 # $1: input filename.
 # $2: complexnets output argument.
 # $3: output filename.
