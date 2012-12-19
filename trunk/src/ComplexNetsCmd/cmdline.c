@@ -49,6 +49,7 @@ const char *gengetopt_args_info_help[] = {
   "  -x, --xi=<number>             Parameter used to select the neighbors for a \n                                  new vertex (only for Extended Hot Model).",
   "  -q, --q=<number>              Number of edges added in the graph after of \n                                  connect a vertex (only for Extended Hot \n                                  Model).",
   "  -r, --r=<number>              Parameter user to selected the edges in the \n                                  graph after connecting a vertex (only for \n                                  Extended Hot Model).",
+  "  -k, --ks=<filename>           Input file that specifies, for each K, how many \n                                  nodes have that K.",
   "\n Group: analysis\n  Network analysis methods",
   "      --betweenness=<vertex id> Calculate betweenness of a given node",
   "      --ddist=<vertex id>       Calculate the degree distribution of a given \n                                  node",
@@ -107,6 +108,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->xi_given = 0 ;
   args_info->q_given = 0 ;
   args_info->r_given = 0 ;
+  args_info->ks_given = 0 ;
   args_info->betweenness_given = 0 ;
   args_info->ddist_given = 0 ;
   args_info->clustering_given = 0 ;
@@ -141,6 +143,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->xi_orig = NULL;
   args_info->q_orig = NULL;
   args_info->r_orig = NULL;
+  args_info->ks_arg = NULL;
+  args_info->ks_orig = NULL;
   args_info->betweenness_orig = NULL;
   args_info->ddist_orig = NULL;
   args_info->clustering_orig = NULL;
@@ -174,19 +178,20 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->xi_help = gengetopt_args_info_help[14] ;
   args_info->q_help = gengetopt_args_info_help[15] ;
   args_info->r_help = gengetopt_args_info_help[16] ;
-  args_info->betweenness_help = gengetopt_args_info_help[18] ;
-  args_info->ddist_help = gengetopt_args_info_help[19] ;
-  args_info->clustering_help = gengetopt_args_info_help[20] ;
-  args_info->knn_help = gengetopt_args_info_help[21] ;
-  args_info->shell_help = gengetopt_args_info_help[22] ;
-  args_info->output_file_help = gengetopt_args_info_help[24] ;
-  args_info->betweenness_output_help = gengetopt_args_info_help[25] ;
-  args_info->ddist_output_help = gengetopt_args_info_help[26] ;
-  args_info->log_bin_help = gengetopt_args_info_help[27] ;
-  args_info->clustering_output_help = gengetopt_args_info_help[28] ;
-  args_info->knn_output_help = gengetopt_args_info_help[29] ;
-  args_info->shell_output_help = gengetopt_args_info_help[30] ;
-  args_info->save_help = gengetopt_args_info_help[32] ;
+  args_info->ks_help = gengetopt_args_info_help[17] ;
+  args_info->betweenness_help = gengetopt_args_info_help[19] ;
+  args_info->ddist_help = gengetopt_args_info_help[20] ;
+  args_info->clustering_help = gengetopt_args_info_help[21] ;
+  args_info->knn_help = gengetopt_args_info_help[22] ;
+  args_info->shell_help = gengetopt_args_info_help[23] ;
+  args_info->output_file_help = gengetopt_args_info_help[25] ;
+  args_info->betweenness_output_help = gengetopt_args_info_help[26] ;
+  args_info->ddist_output_help = gengetopt_args_info_help[27] ;
+  args_info->log_bin_help = gengetopt_args_info_help[28] ;
+  args_info->clustering_output_help = gengetopt_args_info_help[29] ;
+  args_info->knn_output_help = gengetopt_args_info_help[30] ;
+  args_info->shell_output_help = gengetopt_args_info_help[31] ;
+  args_info->save_help = gengetopt_args_info_help[33] ;
   
 }
 
@@ -276,6 +281,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->xi_orig));
   free_string_field (&(args_info->q_orig));
   free_string_field (&(args_info->r_orig));
+  free_string_field (&(args_info->ks_arg));
+  free_string_field (&(args_info->ks_orig));
   free_string_field (&(args_info->betweenness_orig));
   free_string_field (&(args_info->ddist_orig));
   free_string_field (&(args_info->clustering_orig));
@@ -346,6 +353,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "q", args_info->q_orig, 0);
   if (args_info->r_given)
     write_into_file(outfile, "r", args_info->r_orig, 0);
+  if (args_info->ks_given)
+    write_into_file(outfile, "ks", args_info->ks_orig, 0);
   if (args_info->betweenness_given)
     write_into_file(outfile, "betweenness", args_info->betweenness_orig, 0);
   if (args_info->ddist_given)
@@ -588,6 +597,11 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       fprintf (stderr, "%s: '--r' ('-r') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
+  if (args_info->ks_given && ! args_info->molloy_given)
+    {
+      fprintf (stderr, "%s: '--ks' ('-k') option depends on option 'molloy'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
   if (args_info->betweenness_output_given && ! args_info->output_file_given)
     {
       fprintf (stderr, "%s: '--betweenness-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
@@ -791,6 +805,7 @@ cmdline_parser_internal (
         { "xi",	1, NULL, 'x' },
         { "q",	1, NULL, 'q' },
         { "r",	1, NULL, 'r' },
+        { "ks",	1, NULL, 'k' },
         { "betweenness",	1, NULL, 0 },
         { "ddist",	1, NULL, 0 },
         { "clustering",	1, NULL, 0 },
@@ -807,7 +822,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi:n:p:c:m:x:q:r:o:s:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:n:p:c:m:x:q:r:k:o:s:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -918,6 +933,18 @@ cmdline_parser_internal (
               &(local_args_info.r_given), optarg, 0, 0, ARG_FLOAT,
               check_ambiguity, override, 0, 0,
               "r", 'r',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'k':	/* Input file that specifies, for each K, how many nodes have that K..  */
+        
+        
+          if (update_arg( (void *)&(args_info->ks_arg), 
+               &(args_info->ks_orig), &(args_info->ks_given),
+              &(local_args_info.ks_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "ks", 'k',
               additional_error))
             goto failure;
         

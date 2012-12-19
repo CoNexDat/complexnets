@@ -146,7 +146,12 @@ int main(int argc, char* argv[])
  			cout << "Succesfully created an Extended Hot graph with " + to_string(n) + " nodes.\n";
 
 		} else if (args_info->molloy_given) {
-			cout << "Molloy option selected.\n";
+			if (!args_info->ks_given) {
+				usageErrorMessage("A file with Ks and its nodes is needed to create a Molloy Reed graph.");
+				ERROR_EXIT;
+			}
+
+			string path = args_info->ks_arg;
 		} else {
 			usageErrorMessage("A network must be specified in order to work.");
 			ERROR_EXIT;

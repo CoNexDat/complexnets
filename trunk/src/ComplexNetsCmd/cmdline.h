@@ -68,6 +68,9 @@ struct gengetopt_args_info
   float r_arg;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model)..  */
   char * r_orig;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). original value given at command line.  */
   const char *r_help; /**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). help description.  */
+  char * ks_arg;	/**< @brief Input file that specifies, for each K, how many nodes have that K..  */
+  char * ks_orig;	/**< @brief Input file that specifies, for each K, how many nodes have that K. original value given at command line.  */
+  const char *ks_help; /**< @brief Input file that specifies, for each K, how many nodes have that K. help description.  */
   int betweenness_arg;	/**< @brief Calculate betweenness of a given node.  */
   char * betweenness_orig;	/**< @brief Calculate betweenness of a given node original value given at command line.  */
   const char *betweenness_help; /**< @brief Calculate betweenness of a given node help description.  */
@@ -113,6 +116,7 @@ struct gengetopt_args_info
   unsigned int xi_given ;	/**< @brief Whether xi was given.  */
   unsigned int q_given ;	/**< @brief Whether q was given.  */
   unsigned int r_given ;	/**< @brief Whether r was given.  */
+  unsigned int ks_given ;	/**< @brief Whether ks was given.  */
   unsigned int betweenness_given ;	/**< @brief Whether betweenness was given.  */
   unsigned int ddist_given ;	/**< @brief Whether ddist was given.  */
   unsigned int clustering_given ;	/**< @brief Whether clustering was given.  */
