@@ -74,9 +74,9 @@ struct gengetopt_args_info
   int betweenness_arg;	/**< @brief Calculate betweenness of a given node.  */
   char * betweenness_orig;	/**< @brief Calculate betweenness of a given node original value given at command line.  */
   const char *betweenness_help; /**< @brief Calculate betweenness of a given node help description.  */
-  int ddist_arg;	/**< @brief Calculate the degree distribution of a given node.  */
-  char * ddist_orig;	/**< @brief Calculate the degree distribution of a given node original value given at command line.  */
-  const char *ddist_help; /**< @brief Calculate the degree distribution of a given node help description.  */
+  int ddist_arg;	/**< @brief Calculate the number of nodes with a given degree.  */
+  char * ddist_orig;	/**< @brief Calculate the number of nodes with a given degree original value given at command line.  */
+  const char *ddist_help; /**< @brief Calculate the number of nodes with a given degree help description.  */
   int clustering_arg;	/**< @brief Calculate the clustering coefficient of a given node.  */
   char * clustering_orig;	/**< @brief Calculate the clustering coefficient of a given node original value given at command line.  */
   const char *clustering_help; /**< @brief Calculate the clustering coefficient of a given node help description.  */

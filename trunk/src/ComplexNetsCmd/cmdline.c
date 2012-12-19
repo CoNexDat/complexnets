@@ -52,7 +52,7 @@ const char *gengetopt_args_info_help[] = {
   "  -k, --ks=<filename>           Input file that specifies, for each K, how many \n                                  nodes have that K.",
   "\n Group: analysis\n  Network analysis methods",
   "      --betweenness=<vertex id> Calculate betweenness of a given node",
-  "      --ddist=<vertex id>       Calculate the degree distribution of a given \n                                  node",
+  "      --ddist=<degree>          Calculate the number of nodes with a given \n                                  degree",
   "      --clustering=<vertex id>  Calculate the clustering coefficient of a given \n                                  node",
   "      --knn=<vertex id>         Calculate the nearest neighbors degree of a \n                                  given node",
   "      --shell=<vertex id>       Calculate the shell index of a given node",
@@ -1080,7 +1080,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* Calculate the degree distribution of a given node.  */
+          /* Calculate the number of nodes with a given degree.  */
           else if (strcmp (long_options[option_index].name, "ddist") == 0)
           {
           

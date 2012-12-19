@@ -67,8 +67,8 @@ defgroup "analysis" groupdesc="Network analysis methods"
 	groupoption "betweenness" - "Calculate betweenness of a given node" group="analysis"
 	int typestr="<vertex id>"
 
-	groupoption "ddist" - "Calculate the degree distribution of a given node" group="analysis"
-	int typestr="<vertex id>"
+	groupoption "ddist" - "Calculate the number of nodes with a given degree" group="analysis"
+	int typestr="<degree>"
 
 	groupoption "clustering" - "Calculate the clustering coefficient of a given node" group="analysis"
 	int typestr="<vertex id>"
