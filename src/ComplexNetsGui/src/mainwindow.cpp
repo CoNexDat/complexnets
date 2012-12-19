@@ -1,3 +1,7 @@
+// This toolbox is licensed under the Academic Free License 3.0.
+// Instituto Tecnológico de Buenos Aires (ITBA).
+// Last modification: December 19th, 2012.
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDebug>
@@ -896,10 +900,16 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
             graph = *(GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p));
 
 			QString text("Network created using Erdos-Renyi algorithm");
+			text.append("\nReference: P. Erdos y A. Renyi. On random graphs I. Publ. Math. (Debrecen), 6:290-297, 1959");
+			text.append("\nn: ");
+			text.append(QString("%1").arg(n));
+			text.append("\np: ");
+			text.append(QString("%1").arg(p));
 	        text.append("\nAmount of vertices in the graph: ");
 	        unsigned int verticesCount = graph.verticesCount();
 	        text.append(QString("%1").arg(verticesCount));
 	        text.append(".\n");
+			text.append("Done.\n");
 	        ui->textBrowser->append(text);         
     	}
 	    catch (const BadElementName& ex)
@@ -907,7 +917,10 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 	        ret.append("Error ").append(".\n");
 	        ui->textBrowser->append(ret);
 	    }
-	}
+	} else
+    {
+        ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
+    }
 }
 
 void MainWindow::on_actionNewBarabasiAlbert_triggered()
@@ -941,10 +954,18 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 			graph = *(GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n));
 
 			QString text("Network created using Barabasi-Albert algorithm");
+			text.append("\nReference: L. Barabasi y R. Albert. Emergence of scaling in random networks. Science, 286:509-512,1999.");
+			text.append("\nm_0: ");
+			text.append(QString("%1").arg(m_0));
+			text.append("\nm: ");
+			text.append(QString("%1").arg(m));
+			text.append("\nn: ");
+			text.append(QString("%1").arg(n));
 	        text.append("\nAmount of vertices in the graph: ");
 	        unsigned int verticesCount = graph.verticesCount();
 	        text.append(QString("%1").arg(verticesCount));
 	        text.append(".\n");
+			text.append("Done.\n");
 	        ui->textBrowser->append(text);         
 	    }
 	    catch (const BadElementName& ex)
@@ -952,7 +973,10 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 	        ret.append("Error ").append(".\n");
 	        ui->textBrowser->append(ret);
 	    }
-	}
+	} else
+    {
+        ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
+    }
 
 }
 
@@ -971,8 +995,8 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 		unsigned int m = 2;
 		unsigned int n = 20;
 		unsigned int q = 2;
-		float xi=0.02;
-		float r=0.01;
+		float xi = 0.02;
+		float r = 0.01;
 
 	    try
 	    {
@@ -991,10 +1015,19 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 			graph = *(GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r));
 
 			QString text("Network created using HOT extended Algorithm");
-	        text.append("\nAmount of vertices in the graph: ");
+			text.append("\nReference: J. I. Alvarez-Hamelin y N. Schabanel. An Internet Graph Model Based on Trade-Off Optimization.Eur. Phys.J.B, special issue on 'Applications of networks', 38(2):231-237, march II2004.");
+	        text.append("\nn: ");
+	        text.append(QString("%1").arg(n));
+	        text.append("\nm: ");
+	        text.append(QString("%1").arg(m));
+	        text.append("\nxi: ");
+	        text.append(QString("%1").arg(xi));
+	        text.append("\nq: ");
+	        text.append(QString("%1").arg(q));
 	        unsigned int verticesCount = graph.verticesCount();
 	        text.append(QString("%1").arg(verticesCount));
 	        text.append(".\n");
+			text.append("Done.\n");
 	        ui->textBrowser->append(text);
 	    }
 	    catch (const BadElementName& ex)
@@ -1002,7 +1035,10 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 	        ret.append("Error ").append(".\n");
 	        ui->textBrowser->append(ret);
 	    }
-	}
+	} else
+    {
+        ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
+    }
 }
 
 
@@ -1031,10 +1067,13 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 
 				QString text("Network created using Molloy-Reed algorithm using the file: ");
                 text.append(selectedFiles[0]);
+				text.append("\nReference: M. Molloy and B. Reed, A critical point for random graphs with a given degree sequence,Random Struct. Algorithms, 6 (1995), 161-179.");
+				text.append("\nReference: M. Molloy and B. Reed, The size of the giant component of a random graph with a given degree distribution, Combinatorics, Probab. Comput., 7 (1998), 295-305.");
 				text.append("\nAmount of vertices in the graph: ");
 				unsigned int verticesCount = graph.verticesCount();
 				text.append(QString("%1").arg(verticesCount));
 				text.append(".\n");
+				text.append("Done.\n");
 				ui->textBrowser->append(text);         
 			} 
 			catch (const FileNotFoundException& ex)
@@ -1053,7 +1092,10 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 
             }
 		}
-	}
+	} else
+    {
+        ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
+    }
 	
 }
 
