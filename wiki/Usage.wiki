@@ -61,7 +61,7 @@ where `<graph>` are the arguments to load a graph or create it using a model, an
 }}}
  * Degree distribution:
 {{{
---ddist <vertex_index>
+--ddist <degree>
 }}}
  * Clustering coefficient:
 {{{
