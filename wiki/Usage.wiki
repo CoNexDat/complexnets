@@ -45,7 +45,7 @@ Where `<model_parameters>` can take one of the following values depending on the
 }}}
  * Molloy-Reed:
 {{{
---molloy
+--molloy -k <ks_file>
 }}}
 
 == Computing a property on a graph ==
