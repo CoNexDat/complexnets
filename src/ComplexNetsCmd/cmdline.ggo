@@ -53,6 +53,12 @@ defgroup "model" groupdesc="Generate a network using a model"
 		optional
 		dependon="hot"
 
+		option "ks" k "Input file that specifies, for each K, how many nodes have that K."
+		string
+		typestr="<filename>"
+		optional
+		dependon="molloy"
+
 
 # ----- Group of network analysis methods.
 

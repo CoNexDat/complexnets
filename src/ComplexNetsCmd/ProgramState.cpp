@@ -63,6 +63,11 @@ void ProgramState::setExtendedHotGraph(unsigned int m, unsigned int n, float xi,
     this->graph = *GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r);
 }
 
+void ProgramState::setMolloyReedGraph(string path) {
+    setWeighted(false);
+    this->graph = *GraphGenerator::getInstance()->generateMolloyReedGraph(path);
+}
+
 double ProgramState::betweenness(unsigned int vertex_id) {
 	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
 	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);

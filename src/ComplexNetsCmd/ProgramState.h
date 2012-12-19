@@ -33,6 +33,7 @@ public:
 	void setErdosRenyiGraph(unsigned int n, float p);
 	void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 	void setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
+	void setMolloyReedGraph(string path);
 
 	double betweenness(unsigned int vertex_id);
 	double degreeDistribution(unsigned int vertex_id);
