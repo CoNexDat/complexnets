@@ -11,7 +11,11 @@
 savePlot ()
 {
 	./complexnets -i $1 $2 -o $3
-	gnuplotCommand="set style data linespoint; set term png; set title '$4'; set xlabel '$5'; set ylabel '$6'; set output '$3.png'; plot '$3'"
+
+	# Uncomment to generate a PS file.
+	# gnuplotCommand="set style data linespoint; set term postscript color; set title '$4'; set xlabel '$5'; set ylabel '$6'; set output '$3.ps'; plot '$3'"
+
+	gnuplotCommand="set style data linespoint; set term pdfcairo; set title '$4'; set xlabel '$5'; set ylabel '$6'; set output '$3.pdf'; plot '$3'"
 
 	if $8 ; then
 		gnuplotCommand="set logscale y; $gnuplotCommand"
@@ -22,7 +26,6 @@ savePlot ()
 	fi
 
 	gnuplot -e "$gnuplotCommand"
-	rm $3
 }
 
 # I get the filename without both full path and extension.
@@ -43,7 +46,7 @@ if [ -d $directory ]; then
 fi
 mkdir $directory
 
-savePlot $1 "--betweenness-output" "$directory/${directory}_betweenness" "Betweeness" "Degree" "Betweeness" true false
+# savePlot $1 "--betweenness-output" "$directory/${directory}_betweenness" "Betweeness" "Degree" "Betweeness" true false
 savePlot $1 "--ddist-output" "$directory/${directory}_ddist" "Degree distribution" "Degree" "Frequency" true true
 savePlot $1 "--clustering-output" "$directory/${directory}_clustering" "Clustering coefficient" "Degree" "Clustering coefficient" true true
 savePlot $1 "--knn-output" "$directory/${directory}_knn" "Nearest neighbors degree" "Degree" "Nearest neighbors degree" true true

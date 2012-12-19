@@ -56,16 +56,13 @@ const char *gengetopt_args_info_help[] = {
   "      --clustering=<vertex id>  Calculate the clustering coefficient of a given \n                                  node",
   "      --knn=<vertex id>         Calculate the nearest neighbors degree of a \n                                  given node",
   "      --shell=<vertex id>       Calculate the shell index of a given node",
-  "\n Group: output\n  Network analysis graphics",
-  "  -o, --output-file=<filename>  Save the result function into the specified \n                                  file",
   "      --betweenness-output      Betweenness vs. Degree",
   "      --ddist-output            Degree distribution",
   "      --log-bin=<number of bins>\n                                Log-bin the output (only for Degree \n                                  distribution)",
   "      --clustering-output       Clustering coefficient vs. Degree",
   "      --knn-output              Nearest Neighbors Degree vs. Degree",
   "      --shell-output            Shell index vs. Degree",
-  "\n Group: save\n  Save graph",
-  "  -s, --save=<filename>         Save the current graph in the specified file.",
+  "  -o, --output-file=<filename>  Save the result in an output file",
     0
 };
 
@@ -114,19 +111,17 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->clustering_given = 0 ;
   args_info->knn_given = 0 ;
   args_info->shell_given = 0 ;
-  args_info->output_file_given = 0 ;
   args_info->betweenness_output_given = 0 ;
   args_info->ddist_output_given = 0 ;
   args_info->log_bin_given = 0 ;
   args_info->clustering_output_given = 0 ;
   args_info->knn_output_given = 0 ;
   args_info->shell_output_given = 0 ;
-  args_info->save_given = 0 ;
+  args_info->output_file_given = 0 ;
   args_info->analysis_group_counter = 0 ;
   args_info->model_group_counter = 0 ;
   args_info->network_load_group_counter = 0 ;
   args_info->output_group_counter = 0 ;
-  args_info->save_group_counter = 0 ;
 }
 
 static
@@ -150,11 +145,9 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->clustering_orig = NULL;
   args_info->knn_orig = NULL;
   args_info->shell_orig = NULL;
+  args_info->log_bin_orig = NULL;
   args_info->output_file_arg = NULL;
   args_info->output_file_orig = NULL;
-  args_info->log_bin_orig = NULL;
-  args_info->save_arg = NULL;
-  args_info->save_orig = NULL;
   
 }
 
@@ -184,14 +177,13 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->clustering_help = gengetopt_args_info_help[21] ;
   args_info->knn_help = gengetopt_args_info_help[22] ;
   args_info->shell_help = gengetopt_args_info_help[23] ;
-  args_info->output_file_help = gengetopt_args_info_help[25] ;
-  args_info->betweenness_output_help = gengetopt_args_info_help[26] ;
-  args_info->ddist_output_help = gengetopt_args_info_help[27] ;
-  args_info->log_bin_help = gengetopt_args_info_help[28] ;
-  args_info->clustering_output_help = gengetopt_args_info_help[29] ;
-  args_info->knn_output_help = gengetopt_args_info_help[30] ;
-  args_info->shell_output_help = gengetopt_args_info_help[31] ;
-  args_info->save_help = gengetopt_args_info_help[33] ;
+  args_info->betweenness_output_help = gengetopt_args_info_help[24] ;
+  args_info->ddist_output_help = gengetopt_args_info_help[25] ;
+  args_info->log_bin_help = gengetopt_args_info_help[26] ;
+  args_info->clustering_output_help = gengetopt_args_info_help[27] ;
+  args_info->knn_output_help = gengetopt_args_info_help[28] ;
+  args_info->shell_output_help = gengetopt_args_info_help[29] ;
+  args_info->output_file_help = gengetopt_args_info_help[30] ;
   
 }
 
@@ -288,11 +280,9 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->clustering_orig));
   free_string_field (&(args_info->knn_orig));
   free_string_field (&(args_info->shell_orig));
+  free_string_field (&(args_info->log_bin_orig));
   free_string_field (&(args_info->output_file_arg));
   free_string_field (&(args_info->output_file_orig));
-  free_string_field (&(args_info->log_bin_orig));
-  free_string_field (&(args_info->save_arg));
-  free_string_field (&(args_info->save_orig));
   
   
 
@@ -365,8 +355,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "knn", args_info->knn_orig, 0);
   if (args_info->shell_given)
     write_into_file(outfile, "shell", args_info->shell_orig, 0);
-  if (args_info->output_file_given)
-    write_into_file(outfile, "output-file", args_info->output_file_orig, 0);
   if (args_info->betweenness_output_given)
     write_into_file(outfile, "betweenness-output", 0, 0 );
   if (args_info->ddist_output_given)
@@ -379,8 +367,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "knn-output", 0, 0 );
   if (args_info->shell_output_given)
     write_into_file(outfile, "shell-output", 0, 0 );
-  if (args_info->save_given)
-    write_into_file(outfile, "save", args_info->save_orig, 0);
+  if (args_info->output_file_given)
+    write_into_file(outfile, "output-file", args_info->output_file_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -473,32 +461,6 @@ reset_group_network_load(struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->input_file_orig));
 
   args_info->network_load_group_counter = 0;
-}
-
-static void
-reset_group_output(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->output_group_counter)
-    return;
-  
-  args_info->output_file_given = 0 ;
-  free_string_field (&(args_info->output_file_arg));
-  free_string_field (&(args_info->output_file_orig));
-
-  args_info->output_group_counter = 0;
-}
-
-static void
-reset_group_save(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->save_group_counter)
-    return;
-  
-  args_info->save_given = 0 ;
-  free_string_field (&(args_info->save_arg));
-  free_string_field (&(args_info->save_orig));
-
-  args_info->save_group_counter = 0;
 }
 
 int
@@ -811,18 +773,17 @@ cmdline_parser_internal (
         { "clustering",	1, NULL, 0 },
         { "knn",	1, NULL, 0 },
         { "shell",	1, NULL, 0 },
-        { "output-file",	1, NULL, 'o' },
         { "betweenness-output",	0, NULL, 0 },
         { "ddist-output",	0, NULL, 0 },
         { "log-bin",	1, NULL, 0 },
         { "clustering-output",	0, NULL, 0 },
         { "knn-output",	0, NULL, 0 },
         { "shell-output",	0, NULL, 0 },
-        { "save",	1, NULL, 's' },
+        { "output-file",	1, NULL, 'o' },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi:n:p:c:m:x:q:r:k:o:s:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:n:p:c:m:x:q:r:k:o:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -949,32 +910,14 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'o':	/* Save the result function into the specified file.  */
+        case 'o':	/* Save the result in an output file.  */
         
-          if (args_info->output_group_counter && override)
-            reset_group_output (args_info);
-          args_info->output_group_counter += 1;
         
           if (update_arg( (void *)&(args_info->output_file_arg), 
                &(args_info->output_file_orig), &(args_info->output_file_given),
               &(local_args_info.output_file_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "output-file", 'o',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 's':	/* Save the current graph in the specified file..  */
-        
-          if (args_info->save_group_counter && override)
-            reset_group_save (args_info);
-          args_info->save_group_counter += 1;
-        
-          if (update_arg( (void *)&(args_info->save_arg), 
-               &(args_info->save_orig), &(args_info->save_given),
-              &(local_args_info.save_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "save", 's',
               additional_error))
             goto failure;
         
@@ -1265,12 +1208,6 @@ cmdline_parser_internal (
   if (args_info->output_group_counter > 1)
     {
       fprintf (stderr, "%s: %d options of group output were given. At most one is required%s.\n", argv[0], args_info->output_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
-  if (args_info->save_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group save were given. At most one is required%s.\n", argv[0], args_info->save_group_counter, (additional_error ? additional_error : ""));
       error = 1;
     }
   
