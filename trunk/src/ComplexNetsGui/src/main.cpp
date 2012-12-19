@@ -206,43 +206,43 @@ int main(int argc, char* argv[])
 
 		if (args_info->output_file_given) {
 			string path = args_info->output_file_arg;
-			string functionMessage = "";
 
-			if (args_info->betweenness_output_given) {
-				if (state->isWeighted()) {
-					errorMessage("Betweenness for weighted graphs is not supported.");
-					ERROR_EXIT;
-				} else {
-					state->exportBetweennessVsDegree(path);
-					functionMessage = "betweenness";
+			if (args_info->betweenness_output_given || args_info->ddist_output_given || args_info->clustering_output_given ||
+				args_info->knn_output_given || args_info->shell_output_given) {
+				string functionMessage = "";
+
+				if (args_info->betweenness_output_given) {
+					if (state->isWeighted()) {
+						errorMessage("Betweenness for weighted graphs is not supported.");
+						ERROR_EXIT;
+					} else {
+						state->exportBetweennessVsDegree(path);
+						functionMessage = "betweenness";
+					}
+				} else if (args_info->ddist_output_given) {
+					state->exportDegreeDistribution(path, args_info->log_bin_given, args_info->log_bin_arg);
+					functionMessage = "degreeDistribution";
+				} else if (args_info->clustering_output_given) {
+					state->exportClusteringVsDegree(path);
+					functionMessage = "clustering coefficient";
+				} else if (args_info->knn_output_given) {
+					state->exportNearestNeighborsDegreeVsDegree(path);
+					functionMessage = "nearest neighbors degree";
+				} else if (args_info->shell_output_given) {
+					if (state->isWeighted()) {
+						errorMessage("Shell index for weighted graphs is not supported.");
+						ERROR_EXIT;
+					} else {
+						state->exportShellIndexVsDegree(path);
+						functionMessage = "shellIndex";
+					}
 				}
-			} else if (args_info->ddist_output_given) {
-				state->exportDegreeDistribution(path, args_info->log_bin_given, args_info->log_bin_arg);
-				functionMessage = "degreeDistribution";
-			} else if (args_info->clustering_output_given) {
-				state->exportClusteringVsDegree(path);
-				functionMessage = "clustering coefficient";
-			} else if (args_info->knn_output_given) {
-				state->exportNearestNeighborsDegreeVsDegree(path);
-				functionMessage = "nearest neighbors degree";
-			} else if (args_info->shell_output_given) {
-				if (state->isWeighted()) {
-					errorMessage("Shell index for weighted graphs is not supported.");
-					ERROR_EXIT;
-				} else {
-					state->exportShellIndexVsDegree(path);
-					functionMessage = "shellIndex";
-				}
+
+				cout << "Succesfully exported " + functionMessage + " in output file " + path + ".\n";
+			} else {
+				state->exportCurrentGraph(path);
+				cout << "Succesfully saved graph in file " + path + ".\n";
 			}
-
-			cout << "Succesfully exported " + functionMessage + " in output file " + path + ".\n";
-		}
-
-		if (args_info->save_given) {
-			string path = args_info->save_arg;
-			state->exportCurrentGraph(path);
-
-			cout << "Succesfully saved graph in file " + path + ".\n";
 		}
 	}
 

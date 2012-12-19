@@ -83,9 +83,6 @@ defgroup "analysis" groupdesc="Network analysis methods"
 
 defgroup "output" groupdesc="Network analysis graphics"
 
-	groupoption "output-file" o "Save the result function into the specified file" group="output" 
-	string typestr="<filename>" required
-		
 		option "betweenness-output" - "Betweenness vs. Degree" dependon="output-file" optional
 		
 		option "ddist-output" - "Degree distribution" dependon="output-file" optional
@@ -100,13 +97,8 @@ defgroup "output" groupdesc="Network analysis graphics"
 		
 		option "shell-output" - "Shell index vs. Degree" dependon="output-file" optional
 
-	
-# ----- Option to save the current graph in a file.
 
-defgroup "save" groupdesc="Save graph"
-
-groupoption "save" s "Save the current graph in the specified file."
-group="save"
+option "output-file" o "Save the result in an output file"
 string
 typestr="<filename>"
 optional
