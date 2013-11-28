@@ -923,6 +923,65 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
     }
 }
 
+void MainWindow::on_actionNewHiperbolic_triggered()
+{
+	if (!this->graphLoaded)
+    {
+		srand(time(NULL));
+		QString inputN = inputId("n:");
+		QString inputA = inputId("a:");
+		QString inputD = inputId("deg:");
+		QString ret;
+
+		unsigned int n = 10000;
+		float a = 0.75;
+		float deg = 0.0014;
+
+		try
+	    {
+	        this->onNetworkLoad(false, false, false);
+			buildGraphFactory(false);
+
+
+			if(!inputN.isEmpty())
+	        	n = inputN.toInt();
+			if(!inputA.isEmpty())
+	        	a = inputA.toFloat();
+			if(!inputD.isEmpty())
+	        	deg = inputD.toFloat();
+			QString text("Creating a network using a Papadopoulos hyperbolic graph algorithm...");
+			text.append("\nexpected avg node deg: ");
+			text.append(QString("%1").arg(GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, deg)));
+
+            graph = *(GraphGenerator::getInstance()->generateHiperbolicGraph(n, a, deg));
+
+	    
+			
+			text.append("\nn: ");
+			text.append(QString("%1").arg(n));
+			text.append("\na: ");
+			text.append(QString("%1").arg(a));
+			text.append("\ndeg: ");
+			text.append(QString("%1").arg(deg));
+			
+	        text.append("\nAmount of vertices in the graph: ");
+	        unsigned int verticesCount = graph.verticesCount();
+	        text.append(QString("%1").arg(verticesCount));
+	        text.append(".\n");
+			text.append("Done.\n");
+	        ui->textBrowser->append(text);         
+    	}
+	    catch (const BadElementName& ex)
+	    {
+	        ret.append("Error ").append(".\n");
+	        ui->textBrowser->append(ret);
+	    }
+	} else
+    {
+        ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
+    }
+}
+
 void MainWindow::on_actionNewBarabasiAlbert_triggered()
 {
 	if (!this->graphLoaded)

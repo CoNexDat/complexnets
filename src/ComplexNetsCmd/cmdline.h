@@ -47,12 +47,19 @@ struct gengetopt_args_info
   const char *barabasi_help; /**< @brief Barabasi-Albert model help description.  */
   const char *hot_help; /**< @brief Extended Hot model help description.  */
   const char *molloy_help; /**< @brief Molloy-Reed model help description.  */
+  const char *hiperbolic_help; /**< @brief Papadoupolos hiperbolic model help description.  */
   int n_arg;	/**< @brief Number of network nodes..  */
   char * n_orig;	/**< @brief Number of network nodes. original value given at command line.  */
   const char *n_help; /**< @brief Number of network nodes. help description.  */
   float p_arg;	/**< @brief Connection probability (only for Erdos-Renyi model)..  */
   char * p_orig;	/**< @brief Connection probability (only for Erdos-Renyi model). original value given at command line.  */
   const char *p_help; /**< @brief Connection probability (only for Erdos-Renyi model). help description.  */
+  float a_arg;	/**< @brief Radius density (only for hiperbolic model)..  */
+  char * a_orig;	/**< @brief Radius density (only for hiperbolic model). original value given at command line.  */
+  const char *a_help; /**< @brief Radius density (only for hiperbolic model). help description.  */
+  float d_arg;	/**< @brief Average node degree (only for hiperbolic model)..  */
+  char * d_orig;	/**< @brief Average node degree (only for hiperbolic model). original value given at command line.  */
+  const char *d_help; /**< @brief Average node degree (only for hiperbolic model). help description.  */
   int m0_arg;	/**< @brief Initial number of nodes (only for Barabasi-Albert model). (default='10').  */
   char * m0_orig;	/**< @brief Initial number of nodes (only for Barabasi-Albert model). original value given at command line.  */
   const char *m0_help; /**< @brief Initial number of nodes (only for Barabasi-Albert model). help description.  */
@@ -97,6 +104,7 @@ struct gengetopt_args_info
   char * output_file_arg;	/**< @brief Save the result in an output file.  */
   char * output_file_orig;	/**< @brief Save the result in an output file original value given at command line.  */
   const char *output_file_help; /**< @brief Save the result in an output file help description.  */
+  const char *print_deg_help;	/** @brief Print the degree of each node in stdout. */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -106,7 +114,10 @@ struct gengetopt_args_info
   unsigned int barabasi_given ;	/**< @brief Whether barabasi was given.  */
   unsigned int hot_given ;	/**< @brief Whether hot was given.  */
   unsigned int molloy_given ;	/**< @brief Whether molloy was given.  */
+  unsigned int hiperbolic_given;	/**< @brief Whether hiperbolic model was given.  */
   unsigned int n_given ;	/**< @brief Whether n was given.  */
+  unsigned int a_given;		/**< @brief Whether a was given.  */
+  unsigned int d_given;		/**< @brief Whether c was given.  */
   unsigned int p_given ;	/**< @brief Whether p was given.  */
   unsigned int m0_given ;	/**< @brief Whether m0 was given.  */
   unsigned int m_given ;	/**< @brief Whether m was given.  */
@@ -126,6 +137,7 @@ struct gengetopt_args_info
   unsigned int knn_output_given ;	/**< @brief Whether knn-output was given.  */
   unsigned int shell_output_given ;	/**< @brief Whether shell-output was given.  */
   unsigned int output_file_given ;	/**< @brief Whether output-file was given.  */
+  unsigned int print_deg_given;	/** @brief Whether the user wanted graph degrees to be printed. */
 
   int analysis_group_counter; /**< @brief Counter for group analysis */
   int model_group_counter; /**< @brief Counter for group model */
@@ -139,7 +151,7 @@ struct cmdline_parser_params
   int override; /**< @brief whether to override possibly already present options (default 0) */
   int initialize; /**< @brief whether to initialize the option structure gengetopt_args_info (default 1) */
   int check_required; /**< @brief whether to check that all required options were provided (default 1) */
-  int check_ambiguity; /**< @brief whether to check for options already specified in the option structure gengetopt_args_info (default 0) */
+  int check_ambiguity; /**< @brief whether to check for opti2ons already specified in the option structure gengetopt_args_info (default 0) */
   int print_errors; /**< @brief whether getopt_long should print an error message for a bad option (default 1) */
 } ;
 

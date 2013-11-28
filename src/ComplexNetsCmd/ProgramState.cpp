@@ -72,6 +72,12 @@ void ProgramState::setMolloyReedGraph(string path) {
     this->graph = *GraphGenerator::getInstance()->generateMolloyReedGraph(path);
 }
 
+void ProgramState::setHiperbolicGraph(unsigned int n, float a, float c) {
+    setWeighted(false);
+    cout << "Generating hyperbolic graph. Expected avg degree: " << GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, c) << endl;
+    this->graph = *GraphGenerator::getInstance()->generateHiperbolicGraph(n, a, c);
+}
+
 double ProgramState::betweenness(unsigned int vertex_id) {
 	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
 	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
@@ -365,6 +371,18 @@ void ProgramState::computeShellIndex(PropertyMap &propertyMap) {
     }
 
     delete shellIndex;
+}
+
+void ProgramState::printDegrees() {
+    cout << "Degrees:" << endl;
+    for (unsigned int i = 1; i <= graph.verticesCount(); ++i) {
+	Vertex* cur = graph.getVertexById(i);
+	cout << cur->degree();
+	if (i != graph.verticesCount()) {
+	    cout << " ";
+	}
+    }
+    cout << endl;
 }
 
 void ProgramState::exportBetweennessVsDegree(string outputPath) {

@@ -42,8 +42,11 @@ const char *gengetopt_args_info_help[] = {
   "      --barabasi                Barabasi-Albert model",
   "      --hot                     Extended Hot model",
   "      --molloy                  Molloy-Reed model",
+  "      --hyperbolic              Papadopoulos Hyperbolic model",
   "  -n, --n=<number>              Number of network nodes.",
   "  -p, --p=<probability>         Connection probability (only for Erdos-Renyi \n                                  model).",
+  "  -a, --a=<density>             Radial density of nodes (only for \n                                   hyperbolic model).",
+  "  -deg, --deg=<degree>             Avg degree of nodes (only for \n                                   hyperbolic model).",
   "  -c, --m0=<number>             Initial number of nodes (only for \n                                  Barabasi-Albert model).  (default=`10')",
   "  -m, --m=<number>              Number of edges to attach from new node to \n                                  existing nodes (Barabasi-Albert model). \n                                  Number of edges in each new vertex (Extended \n                                  Hot Model).",
   "  -x, --xi=<number>             Parameter used to select the neighbors for a \n                                  new vertex (only for Extended Hot Model).",
@@ -63,6 +66,7 @@ const char *gengetopt_args_info_help[] = {
   "      --knn-output              Nearest Neighbors Degree vs. Degree",
   "      --shell-output            Shell index vs. Degree",
   "  -o, --output-file=<filename>  Save the result in an output file",
+  "      --print-deg               Print graph degrees to dump in another script or similar.",
     0
 };
 
@@ -98,7 +102,10 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->barabasi_given = 0 ;
   args_info->hot_given = 0 ;
   args_info->molloy_given = 0 ;
+  args_info->hiperbolic_given = 0 ;
   args_info->n_given = 0 ;
+  args_info->a_given = 0;
+  args_info->d_given = 0;
   args_info->p_given = 0 ;
   args_info->m0_given = 0 ;
   args_info->m_given = 0 ;
@@ -122,6 +129,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->model_group_counter = 0 ;
   args_info->network_load_group_counter = 0 ;
   args_info->output_group_counter = 0 ;
+  args_info->print_deg_given = 0;
 }
 
 static
@@ -132,6 +140,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->input_file_orig = NULL;
   args_info->n_orig = NULL;
   args_info->p_orig = NULL;
+  args_info->a_orig = NULL;
+  args_info->d_orig = NULL;
   args_info->m0_arg = 10;
   args_info->m0_orig = NULL;
   args_info->m_orig = NULL;
@@ -164,27 +174,30 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->barabasi_help = gengetopt_args_info_help[7] ;
   args_info->hot_help = gengetopt_args_info_help[8] ;
   args_info->molloy_help = gengetopt_args_info_help[9] ;
-  args_info->n_help = gengetopt_args_info_help[10] ;
-  args_info->p_help = gengetopt_args_info_help[11] ;
-  args_info->m0_help = gengetopt_args_info_help[12] ;
-  args_info->m_help = gengetopt_args_info_help[13] ;
-  args_info->xi_help = gengetopt_args_info_help[14] ;
-  args_info->q_help = gengetopt_args_info_help[15] ;
-  args_info->r_help = gengetopt_args_info_help[16] ;
-  args_info->ks_help = gengetopt_args_info_help[17] ;
-  args_info->betweenness_help = gengetopt_args_info_help[19] ;
-  args_info->ddist_help = gengetopt_args_info_help[20] ;
-  args_info->clustering_help = gengetopt_args_info_help[21] ;
-  args_info->knn_help = gengetopt_args_info_help[22] ;
-  args_info->shell_help = gengetopt_args_info_help[23] ;
-  args_info->betweenness_output_help = gengetopt_args_info_help[24] ;
-  args_info->ddist_output_help = gengetopt_args_info_help[25] ;
-  args_info->log_bin_help = gengetopt_args_info_help[26] ;
-  args_info->clustering_output_help = gengetopt_args_info_help[27] ;
-  args_info->knn_output_help = gengetopt_args_info_help[28] ;
-  args_info->shell_output_help = gengetopt_args_info_help[29] ;
-  args_info->output_file_help = gengetopt_args_info_help[30] ;
-  
+  args_info->hiperbolic_help = gengetopt_args_info_help[10] ;
+  args_info->n_help = gengetopt_args_info_help[11] ;
+  args_info->p_help = gengetopt_args_info_help[12] ;
+  args_info->a_help = gengetopt_args_info_help[13] ;
+  args_info->d_help = gengetopt_args_info_help[14] ;
+  args_info->m0_help = gengetopt_args_info_help[15] ;
+  args_info->m_help = gengetopt_args_info_help[16] ;
+  args_info->xi_help = gengetopt_args_info_help[17] ;
+  args_info->q_help = gengetopt_args_info_help[18] ;
+  args_info->r_help = gengetopt_args_info_help[19] ;
+  args_info->ks_help = gengetopt_args_info_help[20] ;
+  args_info->betweenness_help = gengetopt_args_info_help[21] ;
+  args_info->ddist_help = gengetopt_args_info_help[22] ;
+  args_info->clustering_help = gengetopt_args_info_help[23] ;
+  args_info->knn_help = gengetopt_args_info_help[24] ;
+  args_info->shell_help = gengetopt_args_info_help[25] ;
+  args_info->betweenness_output_help = gengetopt_args_info_help[26] ;
+  args_info->ddist_output_help = gengetopt_args_info_help[27] ;
+  args_info->log_bin_help = gengetopt_args_info_help[28] ;
+  args_info->clustering_output_help = gengetopt_args_info_help[29] ;
+  args_info->knn_output_help = gengetopt_args_info_help[30] ;
+  args_info->shell_output_help = gengetopt_args_info_help[31] ;
+  args_info->output_file_help = gengetopt_args_info_help[32] ;
+  args_info->print_deg_help = gengetopt_args_info_help[33];
 }
 
 void
@@ -329,10 +342,16 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "hot", 0, 0 );
   if (args_info->molloy_given)
     write_into_file(outfile, "molloy", 0, 0 );
+  if (args_info->hiperbolic_given)
+    write_into_file(outfile, "hyperbolic", 0, 0 );
   if (args_info->n_given)
     write_into_file(outfile, "n", args_info->n_orig, 0);
   if (args_info->p_given)
     write_into_file(outfile, "p", args_info->p_orig, 0);
+  if (args_info->a_given)
+    write_into_file(outfile, "a", args_info->a_orig, 0);
+  if (args_info->d_given)
+    write_into_file(outfile, "d", args_info->d_orig, 0);
   if (args_info->m0_given)
     write_into_file(outfile, "m0", args_info->m0_orig, 0);
   if (args_info->m_given)
@@ -446,6 +465,7 @@ reset_group_model(struct gengetopt_args_info *args_info)
   args_info->barabasi_given = 0 ;
   args_info->hot_given = 0 ;
   args_info->molloy_given = 0 ;
+  args_info->hiperbolic_given = 0;
 
   args_info->model_group_counter = 0;
 }
@@ -552,6 +572,16 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (args_info->q_given && ! args_info->hot_given)
     {
       fprintf (stderr, "%s: '--q' ('-q') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->a_given && ! args_info->hiperbolic_given)
+    {
+      fprintf (stderr, "%s: '--a' ('-a') option depends on option 'hyperbolic'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->d_given && ! args_info->hiperbolic_given)
+    {
+      fprintf (stderr, "%s: '--d' ('-d') option depends on option 'hyperbolic'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
   if (args_info->r_given && ! args_info->hot_given)
@@ -760,8 +790,11 @@ cmdline_parser_internal (
         { "barabasi",	0, NULL, 0 },
         { "hot",	0, NULL, 0 },
         { "molloy",	0, NULL, 0 },
+	{ "hyperbolic",	0, NULL, 0 },
         { "n",	1, NULL, 'n' },
         { "p",	1, NULL, 'p' },
+        { "a",	1, NULL, 'a' },
+	{ "deg",	1, NULL, 'd' },
         { "m0",	1, NULL, 'c' },
         { "m",	1, NULL, 'm' },
         { "xi",	1, NULL, 'x' },
@@ -780,6 +813,7 @@ cmdline_parser_internal (
         { "knn-output",	0, NULL, 0 },
         { "shell-output",	0, NULL, 0 },
         { "output-file",	1, NULL, 'o' },
+	{ "print-deg",	0, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
@@ -834,6 +868,30 @@ cmdline_parser_internal (
               &(local_args_info.p_given), optarg, 0, 0, ARG_FLOAT,
               check_ambiguity, override, 0, 0,
               "p", 'p',
+              additional_error))
+            goto failure;
+        
+          break;
+	  case 'a':	/* Radius density (only for Hiperbolic model)..  */
+        
+        
+          if (update_arg( (void *)&(args_info->a_arg), 
+               &(args_info->a_orig), &(args_info->a_given),
+              &(local_args_info.p_given), optarg, 0, 0, ARG_FLOAT,
+              check_ambiguity, override, 0, 0,
+              "a", 'a',
+              additional_error))
+            goto failure;
+        
+          break;
+	  case 'd':	/* Avg Node Density (only for Hiperbolic model)..  */
+        
+        
+          if (update_arg( (void *)&(args_info->d_arg), 
+               &(args_info->d_orig), &(args_info->d_given),
+              &(local_args_info.d_given), optarg, 0, 0, ARG_FLOAT,
+              check_ambiguity, override, 0, 0,
+              "deg", 'd',
               additional_error))
             goto failure;
         
@@ -1006,6 +1064,22 @@ cmdline_parser_internal (
               goto failure;
           
           }
+          else if (strcmp (long_options[option_index].name, "hyperbolic") == 0)
+          {
+          
+            if (args_info->model_group_counter && override)
+              reset_group_model (args_info);
+            args_info->model_group_counter += 1;
+          
+            if (update_arg( 0 , 
+                 0 , &(args_info->hiperbolic_given),
+                &(local_args_info.hiperbolic_given), optarg, 0, 0, ARG_NO,
+                check_ambiguity, override, 0, 0,
+                "hyperbolic", '-',
+                additional_error))
+              goto failure;
+          
+          }
           /* Calculate betweenness of a given node.  */
           else if (strcmp (long_options[option_index].name, "betweenness") == 0)
           {
@@ -1171,6 +1245,20 @@ cmdline_parser_internal (
                 &(local_args_info.shell_output_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
                 "shell-output", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Shell index vs. Degree.  */
+          else if (strcmp (long_options[option_index].name, "print-deg") == 0)
+          {
+          
+          
+            if (update_arg( 0 , 
+                 0 , &(args_info->print_deg_given),
+                &(local_args_info.print_deg_given), optarg, 0, 0, ARG_NO,
+                check_ambiguity, override, 0, 0,
+                "print-deg", '-',
                 additional_error))
               goto failure;
           
