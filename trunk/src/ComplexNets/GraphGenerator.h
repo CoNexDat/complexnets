@@ -13,12 +13,15 @@ using namespace std;
 class GraphGenerator {
 
 private:
+	typedef struct PolarPosition { double r; double theta; } PolarPosition;
 	GraphGenerator();
 	static GraphGenerator *instance;
 	float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id);
 	void addVertexPosition();	
 	void addEdges(Graph* graph, Vertex* vertex, map<float, unsigned int> distance, unsigned int quant, vector<unsigned int>* vertexIndexes);
-	
+	inline double hiperbolicDistance(PolarPosition p1, PolarPosition p2);
+	inline double getMaxRadius(int i, float a, float c);
+	inline PolarPosition getRandomHyperbolicCoordinates( float a, double maxr );
 public:
 	static GraphGenerator *getInstance();
 
@@ -28,6 +31,8 @@ public:
 	Graph* generateBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 	Graph* generateHotExtendedGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
 	Graph* generateMolloyReedGraph(string path);
+	Graph* generateHiperbolicGraph(unsigned int n, float a, float c);
+	double getExpectedAvgNodeDeg(unsigned int n, float a, float c);
 };
 
 #endif

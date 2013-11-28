@@ -9,12 +9,15 @@
 #include "../ComplexNets/ConexityVerifier.h"
 #include "../ComplexNets/TraverserBFS.h"
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include <map>
 
 using namespace graphpp;
 
 typedef struct Position { float x; float y; } Position;
+
+
+static const double PI = atan(1) * 4;
 
 vector<Position> vertexesPositions;
 
@@ -239,4 +242,76 @@ Graph* GraphGenerator::generateMolloyReedGraph(string path)
 	delete reader;
 
 	return graph;
+}
+
+/*
+ * Computes the distance in a hiperbolic space between two points
+ */
+
+inline double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition p2) {
+    return acosh(cosh(p1.r) * cosh(p2.r) - sinh(p1.r) * sinh(p2.r) * cos(fmod(abs(p1.theta - p2.theta), PI)));
+}
+
+/*
+ * Computes random polar hyperbolic coordinates
+ */
+inline GraphGenerator::PolarPosition GraphGenerator::getRandomHyperbolicCoordinates(float a, double maxr) {
+    PolarPosition pos;
+    // generate theta in [0, 2pi]
+    pos.theta = ((double)rand()/(double)RAND_MAX) * 2 * PI;
+    // select a radius in (0, r)
+    double u = ((double)rand()/(double)RAND_MAX);
+    pos.r = acosh(u*(cosh(maxr*a) - 1) + 1) / a;
+    return pos;
+}
+
+inline double GraphGenerator::getMaxRadius(int i, float a, float c) {
+    return log((double)i / c) / a;
+}
+
+double GraphGenerator::getExpectedAvgNodeDeg(unsigned int i, float fa, float fc) {
+    double a = (double) fa;
+    double amh = a - 0.5;
+    double c = (double) fc;
+    double R = getMaxRadius(i, fa, fc);
+    double c1 = 2 * pow(a, 3) / (PI * (pow(amh, 3)) * (pow(2 * a - 0.5, 3)));
+    double c2 = (2 * a - PI * (amh)) / (2 * PI * amh);
+    double c3 = a / (PI * pow(amh, 2));
+    double c4 = (a / (PI * amh)) * (1 + a / (2 * pow(amh, 2)));
+    return 2*a*c*(c1*exp(amh*R) - c2*a*pow(R,2) - R*c3 - c4);
+}
+
+/*
+ * Papadopoulos Hiperbolic Graph Model
+ * n is the total nodes number
+ * a is the radial density of the graph.
+ * c is the a parameter that determines the average degree of the graph.
+ * */
+Graph* GraphGenerator::generateHiperbolicGraph(unsigned int n, float a, float c)
+{
+	Graph* graph = new Graph(false, false);
+	vector<PolarPosition> vPolarPos;
+	PolarPosition sentinel;
+	vPolarPos.push_back(sentinel);
+	for (unsigned int i = 1; i <= n; i++) {
+		Vertex* src = new Vertex(i);
+		graph->addVertex(src);
+		// compute the current disk radius
+		double maxr = getMaxRadius(i, a, c);
+		bool hasNeighbours = false;
+		PolarPosition pos;
+		do {
+		    pos = getRandomHyperbolicCoordinates(a, maxr);
+		    for (unsigned int j = 1; j < i; j++) {
+			PolarPosition other = vPolarPos[j];
+			if (hiperbolicDistance(pos, other) < maxr) {
+			    hasNeighbours = true;
+			    graph->addEdge(src, graph->getVertexById(j));
+			}
+		    }
+		} while (!hasNeighbours && i != 1);
+		vPolarPos.push_back(pos);
+	}
+	return graph;
+	
 }

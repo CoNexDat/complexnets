@@ -84,6 +84,7 @@ private slots:
     void on_actionQuit_triggered();
     void on_actionOpen_triggered();
     void on_actionNewErdosRenyi_triggered();
+    void on_actionNewHiperbolic_triggered();
     void on_actionNewBarabasiAlbert_triggered();
     void on_actionNewExtendedHOT_triggered();
     void on_actionNewMolloyReed_triggered();

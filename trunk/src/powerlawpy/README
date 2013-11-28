@@ -1,0 +1,47 @@
+USAGE
+The script is meant to be used in conjuction with complexnets.
+You can generate or load any graph and test whether its degree distribution 
+follows a powerlaw.
+In order to use this, set the --print-deg option AND redirect the output to this script.
+This script will still output the program's common output so you won't miss anything.
+
+Example usages:
+
+Generate an erdos graph with 100 nodes and half the edges, save it to mygraph.txt, and test it's fitness vs a powerlaw.
+
+./complexnets --erdos --n=100 --p=0.5 --print-deg --output-file="mygraph.txt" | python powerlawpy/script.py
+
+Load a graph from a file ("mygraph.txt") and test its fitness vs a powerlaw:
+
+./complexnets --input-file="mygraph.txt" --print-deg | python powerlawpy/script.py
+
+
+INSTALLATION
+
+To install the program, first install python, PIP and python-dev. For instance:
+
+sudo apt-get install python-pip python-dev
+
+(or your system equivalent).
+
+Python 2.7 or later is required. This usually comes with common linux distributions.
+
+
+Now install powerlaw. Make sure pip is in your path.
+
+sudo pip install powerlaw
+
+Install required dependencies: mpmath, numpy, scipy
+
+sudo pip install mpmath
+sudo pip install numpy
+
+Here is where it gets tricky, since scipy requires BLAS.
+Hard way:
+http://www.scipy.org/install.html
+Easy way, if you don't want to compile several linear algebra fortran libraries 
+with your cpu config:
+sudo apt-get install gfortran libopenblas-dev liblapack-dev
+sudo pip install scipy
+
+You can invoke pip freeze to check which packages are installed.

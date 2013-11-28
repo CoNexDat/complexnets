@@ -38,6 +38,7 @@ public:
 	void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
 	void setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
 	void setMolloyReedGraph(string path);
+	void setHiperbolicGraph(unsigned int n, float a, float c);
 
 	double betweenness(unsigned int vertex_id);
 	double degreeDistribution(unsigned int vertex_id);
@@ -45,6 +46,8 @@ public:
 	double knn(unsigned int vertex_id);
 	double shellIndex(unsigned int vertex_id);
 
+	void printDegrees();
+	
 	void exportCurrentGraph(string outputPath);
 	void exportBetweennessVsDegree(string outputPath);
 	void exportDegreeDistribution(string outputPath, unsigned int log_bin_given = false, unsigned int binsAmount = -1);
