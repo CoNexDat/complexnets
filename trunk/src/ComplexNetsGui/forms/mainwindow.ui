@@ -38,6 +38,7 @@
     <addaction name="actionNewBarabasiAlbert"/>
     <addaction name="actionNewExtendedHOT"/>
     <addaction name="actionNewMolloyReed"/>
+    <addaction name="actionNewHiperbolic"/>
     <addaction name="separator"/>
     <addaction name="actionExport_current_network"/>
     <addaction name="separator"/>
@@ -122,6 +123,11 @@
   <action name="actionNewMolloyReed">
    <property name="text">
     <string>New Molloy-Reed graph...</string>
+   </property>
+  </action>
+  <action name="actionNewHiperbolic">
+   <property name="text">
+    <string>New Hyperbolic graph...</string>
    </property>
   </action>
   <action name="actionExport_current_network">
