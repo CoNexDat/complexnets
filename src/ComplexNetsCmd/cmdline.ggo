@@ -26,6 +26,7 @@ defgroup "model" groupdesc="Generate a network using a model"
 	groupoption "barabasi" - "Barabasi-Albert model" group="model"
 	groupoption "hot" - "Extended Hot model" group="model"
 	groupoption "molloy" - "Molloy-Reed model" group="model"
+	groupoption "hyperbolic" - "Papadopoulos Hyperbolic model" group="model"
 
 		#Habría que ver si se puenden poner dependon multiples
 		option "n" n "Number of network nodes." int typestr="<number>" optional
@@ -62,6 +63,20 @@ defgroup "model" groupdesc="Generate a network using a model"
 		typestr="<filename>"
 		optional
 		dependon="molloy"
+		
+		option "deg" d " Avg degree of nodes parameter (only for hyperbolic model)."
+		float
+		typestr="<number>"
+		default="0.0014"
+		optional
+		dependon="hyperbolic"
+		
+		option "a" a "Radial density of nodes (only for hyperbolic model)."
+		float
+		typestr="<number>"
+		default="0.75"
+		optional
+		dependon="hyperbolic"
 
 
 # ----- Group of network analysis methods.
@@ -105,4 +120,7 @@ defgroup "output" groupdesc="Network analysis graphics"
 option "output-file" o "Save the result in an output file"
 string
 typestr="<filename>"
+optional
+
+option "print-deg" - "Print node degree for power law regression"
 optional
