@@ -84,7 +84,7 @@ where `<graph>` are the arguments to load a graph or create it using a model, an
 
 To test a graph (either generated or loaded from a file) for a power law distribution, use the --print-deg option and redirect the output to the appropiate script. For instance:
 {{{
-$complexnets <graph> --print-deg | python powerlawpy/script.py
+$complexnets <graph> --print-deg=1 | python powerlawpy/script.py
 }}}
 
 The script is independent to the project and requires several extra dependencies, mainly: python, python-dev, numpy, scigy. Please refer to the appropiate README for installation details.
