@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 		}
 
 		if (args_info->input_file_given) {
-			if (args_info->erdos_given || args_info->barabasi_given || args_info->hot_given || args_info->molloy_given || args_info->hiperbolic_given) {
+			if (args_info->erdos_given || args_info->barabasi_given || args_info->hot_given || args_info->molloy_given || args_info->hyperbolic_given) {
 				usageErrorMessage("Cannot load a graph from an input file and generate a model at the same time.");
 				ERROR_EXIT;
 			}
@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
 			}
 
 			string path = args_info->ks_arg;
-		} else if (args_info->hiperbolic_given) {
+		} else if (args_info->hyperbolic_given) {
 			if (!args_info->n_given) {
 				usageErrorMessage("Hiperbolic graph generation requires a number of nodes.");
 				ERROR_EXIT;
@@ -161,13 +161,13 @@ int main(int argc, char* argv[])
 				usageErrorMessage("Hiperbolic graph generation requires a radial density.");
 				ERROR_EXIT;
 			}
-			if (!args_info->d_given) {
+			if (!args_info->deg_given) {
 				usageErrorMessage("Hiperbolic graph generation requires an average node degree.");
 				ERROR_EXIT;
 			}
 			int n = args_info->n_arg;
 			float a = args_info->a_arg;
-			float c  = args_info->d_arg;
+			float c  = args_info->deg_arg;
 			state->setHiperbolicGraph(n, a, c);
 			
 		} else {
@@ -223,7 +223,7 @@ int main(int argc, char* argv[])
 		}
 		
 		if (args_info->print_deg_given) {
-		    if (args_info->erdos_given || args_info->barabasi_given || args_info->hot_given || args_info->molloy_given || args_info->hiperbolic_given
+		    if (args_info->erdos_given || args_info->barabasi_given || args_info->hot_given || args_info->molloy_given || args_info->hyperbolic_given
 			|| args_info->input_file_given) {
 			    state->printDegrees();
 			} else {
