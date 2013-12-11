@@ -9,11 +9,11 @@ Example usages:
 
 Generate an erdos graph with 100 nodes and half the edges, save it to mygraph.txt, and test it's fitness vs a powerlaw.
 
-./complexnets --erdos --n=100 --p=0.5 --print-deg --output-file="mygraph.txt" | python powerlawpy/script.py
+./complexnets --erdos --n=100 --p=0.5 --print-deg=1 --output-file="mygraph.txt" | python powerlawpy/script.py
 
 Load a graph from a file ("mygraph.txt") and test its fitness vs a powerlaw:
 
-./complexnets --input-file="mygraph.txt" --print-deg | python powerlawpy/script.py
+./complexnets --input-file="mygraph.txt" --print-deg=1 | python powerlawpy/script.py
 
 
 INSTALLATION
