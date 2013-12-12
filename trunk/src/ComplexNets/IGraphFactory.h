@@ -6,7 +6,7 @@
 #include "INearestNeighborsDegree.h"
 #include "IShellIndex.h"
 #include "IGraphReader.h"
-#include "DegreeDistribution.h"
+#include "IDegreeDistribution.h"
 namespace graphpp
 {
 template<class Graph, class Vertex>
@@ -23,7 +23,7 @@ public:
 
     virtual IGraphReader<Graph, Vertex>* createGraphReader() = 0;
 
-    virtual DegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g) = 0;
+    virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g) = 0;
 };
 }
 

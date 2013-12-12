@@ -38,7 +38,11 @@ int main(int argc, char* argv[])
 
 			if (args_info->weighted_given) {
 				state->setWeighted(true);
-			}
+			} 
+			
+			if (args_info->digraph_given) {
+				state->setDigraph(true);
+			} 
 
 			string path = args_info->input_file_arg;
 
@@ -190,11 +194,26 @@ int main(int argc, char* argv[])
 			}
 		} else if (args_info->ddist_given) {
 			int degree = args_info->ddist_arg;
-			double ret = state->degreeDistribution(degree);
-			if(ret != -1) {
-				cout << "Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret) + ".\n";
-			}else {
-				cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+			if (!state->isDigraph()) {
+				double ret = state->degreeDistribution(degree);
+				if(ret != -1) {
+					cout << "Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret) + ".\n";
+				}else {
+					cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+				}
+			} else {
+				double ret1 = state->inDegreeDistribution(degree);
+				double ret2 = state->outDegreeDistribution(degree);
+				if(ret1 != -1) {
+					cout << "In-Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret1) + ".\n";
+				}else {
+					cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+				}
+				if(ret2 != -1) {
+					cout << "Out-Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret2) + ".\n";
+				}else {
+					cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+				}
 			}
 		} else if (args_info->clustering_given) {
 			int vertex_id = args_info->clustering_arg;

@@ -5,6 +5,7 @@
 #include "GraphGenerator.h"
 #include "../ComplexNets/IGraphReader.h"
 #include "../ComplexNets/GraphFactory.h"
+#include "../ComplexNets/DirectedGraphFactory.h"
 #include "../ComplexNets/WeightedGraphFactory.h"
 #include "../ComplexNets/ConexityVerifier.h"
 #include "../ComplexNets/TraverserBFS.h"
@@ -46,6 +47,18 @@ Graph *GraphGenerator::generateGraphFromFile(string path, bool directed, bool mu
 	return graph;
 }
 
+DirectedGraph *GraphGenerator::generateDirectedGraphFromFile(string path, bool multigraph) {
+	DirectedGraph *graph = new DirectedGraph(multigraph);
+
+   	IGraphFactory<DirectedGraph, DirectedVertex> *factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+    IGraphReader<DirectedGraph, DirectedVertex> *reader = factory->createGraphReader();
+    reader->read(*graph, path);
+
+	delete reader;
+	delete factory;
+
+	return graph;
+}
 
 WeightedGraph *GraphGenerator::generateWeightedGraphFromFile(string path, bool directed, bool multigraph) {
 	WeightedGraph *graph = new WeightedGraph(directed, multigraph);

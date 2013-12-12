@@ -8,10 +8,13 @@
 #include "../ComplexNets/AdjacencyListGraph.h"
 #include "../ComplexNets/WeightedVertexAspect.h"
 #include "../ComplexNets/WeightedGraphAspect.h"
+#include "../../ComplexNets/DirectedGraphAspect.h"
+#include "../../ComplexNets/DirectedVertexAspect.h"
 
 typedef graphpp::AdjacencyListVertex Vertex;
 typedef graphpp::AdjacencyListGraph<Vertex> Graph;
 typedef graphpp::WeightedVertexAspect<Vertex> WeightedVertex;
 typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph<WeightedVertex> > WeightedGraph;
-
+typedef graphpp::DirectedVertexAspect<Vertex> DirectedVertex;
+typedef graphpp::DirectedGraphAspect<DirectedVertex, graphpp::AdjacencyListGraph<DirectedVertex> > DirectedGraph;
 #endif

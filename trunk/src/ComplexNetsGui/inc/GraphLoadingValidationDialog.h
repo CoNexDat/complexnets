@@ -14,16 +14,28 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
+#include <stdio.h>
+#include <cstdlib>
+#include <iostream>
+#include <iostream>
+#include "ComplexNetsGui/inc/mainwindow.h"
+
 namespace ComplexNetsGui
 {
 class GraphLoadingValidationDialog : public QDialog
 {
+Q_OBJECT
 public:
     GraphLoadingValidationDialog(QWidget* parent = 0);
-    ~GraphLoadingValidationDialog();
+    virtual ~GraphLoadingValidationDialog();
     bool isMultigraph() const;
     bool isWeigthed() const;
     bool isDirected() const;
+	MainWindow* mainWindow;
+
+public slots:
+	void foo(bool checked);
+
 private:
     void retranslateUi();
     QDialogButtonBox* buttonBox;

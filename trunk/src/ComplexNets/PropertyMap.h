@@ -39,6 +39,7 @@ public:
     }
 
     //TODO method should be const
+    //FIXME this method causes segmentation fault when property name does not exists on map!!
     VariantsSet& getPropertySet(const PropertyName& name)
     {
         return properties.find(name)->second;

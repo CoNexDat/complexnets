@@ -18,6 +18,8 @@
 #include "../ComplexNets/IShellIndex.h"
 #include "../ComplexNets/GraphWriter.h"
 #include "../ComplexNetsGui/inc/LogBinningPolicy.h"
+#include "../../ComplexNets/DirectedGraphFactory.h"
+#include "../../ComplexNets/DirectedDegreeDistribution.h"
 
 using namespace std;
 using namespace graphpp;
@@ -36,8 +38,20 @@ bool ProgramState::isWeighted() {
 	return this->weighted;
 }
 
+void ProgramState::setDigraph(bool digraph) {
+    this->digraph = digraph;
+}
+
+bool ProgramState::isDigraph() {
+	return this->digraph;
+}
+
 WeightedGraph ProgramState::getWeightedGraph() {
 	return this->weightedGraph;
+}
+
+DirectedGraph ProgramState::getDirectedGraph() {
+	return this->directedGraph;
 }
 
 Graph ProgramState::getGraph() {
@@ -47,6 +61,8 @@ Graph ProgramState::getGraph() {
 void ProgramState::readGraphFromFile(string path) {
 	if (isWeighted()) {
 		this->weightedGraph = *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, false, true));
+    } else if (isDigraph()) {
+		this->directedGraph = *(GraphGenerator::getInstance()->generateDirectedGraphFromFile(path, false));
     } else {
     	this->graph = *(GraphGenerator::getInstance()->generateGraphFromFile(path, false, true));
     }
@@ -171,7 +187,7 @@ double ProgramState::degreeDistribution(unsigned int vertex_id) {
     double ret = -1;
     if (this->isWeighted()){
         IGraphFactory<WeightedGraph, WeightedVertex> *factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = factory->createDegreeDistribution(this->weightedGraph);
+        IDegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = factory->createDegreeDistribution(this->weightedGraph);
         DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
         while (!it.end())
         {
@@ -184,8 +200,46 @@ double ProgramState::degreeDistribution(unsigned int vertex_id) {
         delete degreeDistribution;
     } else {
         IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
-        DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(this->graph);
+        IDegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(this->graph);
         DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
+        while (!it.end())
+        {
+            if(it->first == vertex_id) {
+                ret = it->second;
+                break;
+            }
+            ++it;
+        }
+        delete degreeDistribution;
+    }
+    return ret;
+}
+
+double ProgramState::inDegreeDistribution(unsigned int vertex_id) {
+    double ret = -1;
+    if (this->isDigraph()){
+		IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*> (directedFactory->createDegreeDistribution(directedGraph));
+		DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it = degreeDistribution->inDegreeIterator();
+        while (!it.end())
+        {
+            if(it->first == vertex_id) {
+                ret = it->second;
+                break;
+            }
+            ++it;
+        }
+        delete degreeDistribution;
+    }
+    return ret;
+}
+
+double ProgramState::outDegreeDistribution(unsigned int vertex_id) {
+    double ret = -1;
+    if (this->isDigraph()){
+		IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*> (directedFactory->createDegreeDistribution(directedGraph));
+		DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it = degreeDistribution->outDegreeIterator();
         while (!it.end())
         {
             if(it->first == vertex_id) {
@@ -215,7 +269,7 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap) {
 
     // Calculate degree distribution.
 
-    DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
+    IDegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
     DegreeDistribution<Graph, Vertex>::DistributionIterator degreeIterator = degreeDistribution->iterator();
 
     while (!degreeIterator.end()) {
@@ -265,7 +319,7 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap) {
 void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap) {
     if (isWeighted()) {
         IGraphFactory<WeightedGraph, WeightedVertex> *weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(this->weightedGraph);
+        IDegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(this->weightedGraph);
         DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
 
         while (!it.end()) {
@@ -275,9 +329,29 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap) {
         }
         
         delete degreeDistribution;
+    } else if (isDigraph()) {
+		IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*> (directedFactory->createDegreeDistribution(directedGraph));
+		DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it = degreeDistribution->inDegreeIterator();
+		DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it2 = degreeDistribution->outDegreeIterator();
+		while (!it.end() || !it2.end())
+		{
+			if (!it.end()) {
+				propertyMap.addProperty<double>("inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
+				propertyMap.addProperty<double>("inDegreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)graph.verticesCount());
+				++it;
+			}
+			if (!it2.end()) {
+				propertyMap.addProperty<double>("outDegreeDistribution", to_string<unsigned int>(it2->first), it2->second);
+				propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)graph.verticesCount());
+				++it2;
+			}
+		}
+        
+        delete degreeDistribution;
     } else {
         IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
-        DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(this->graph);
+        IDegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(this->graph);
         DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
         
         while (!it.end()) {
@@ -397,13 +471,21 @@ void ProgramState::exportDegreeDistribution(string outputPath, unsigned int log_
     computeDegreeDistribution(propertyMap);
     GrapherUtils grapherUtils;
     if(log_bin_given) {
-        VariantsSet& set = propertyMap.getPropertySet("degreeDistribution");
-        LogBinningPolicy policy;
-        grapherUtils.exportPropertySet(policy.transform(set, binsAmount), outputPath);
+		if(!isDigraph()) {
+			VariantsSet& set = propertyMap.getPropertySet("degreeDistribution");
+			LogBinningPolicy policy;
+			grapherUtils.exportPropertySet(policy.transform(set, binsAmount), outputPath);
+		} else {
+			//TODO export directed Degree Distribution (in & out)
+		}
         return;
     }else{
-        VariantsSet& set = propertyMap.getPropertySet("degreeDistributionProbability");
-        grapherUtils.exportPropertySet(set, outputPath);
+		if(!isDigraph()) {
+			VariantsSet& set = propertyMap.getPropertySet("degreeDistributionProbability");
+			grapherUtils.exportPropertySet(set, outputPath);
+		} else {
+			//TODO export directed Degree Distribution (in & out)
+		}
     }
 }
 

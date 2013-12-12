@@ -25,6 +25,8 @@
 #include "../../ComplexNets/IShellIndex.h"
 #include "../../ComplexNets/DegreeDistribution.h"
 #include "../../ComplexNets/GraphGenerator.h"
+#include "../../ComplexNets/DirectedGraphFactory.h"
+#include "../../ComplexNets/DirectedDegreeDistribution.h"
 
 using namespace ComplexNetsGui;
 using namespace graphpp;
@@ -37,6 +39,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->setupUi(this);
     weightedFactory = NULL;
     factory = NULL;
+	directedFactory = NULL;
     this->onNetworkUnload();
     this->console = new GnuplotConsole();
     ui->textBrowser->setOpenExternalLinks(true);
@@ -85,7 +88,7 @@ void MainWindow::on_actionOpen_triggered()
                 bool isMultigraph = graphValidationDialog.isMultigraph();
                 selectedFiles = fileDialog.selectedFiles();
                 this->onNetworkLoad(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(), graphValidationDialog.isMultigraph());
-                buildGraphFactory(graphValidationDialog.isWeigthed());
+                buildGraphFactory(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected());
                 try
                 {
                     string path = selectedFiles[0].toStdString();
@@ -93,7 +96,10 @@ void MainWindow::on_actionOpen_triggered()
                     if (this->weightedgraph) {
                         graph = Graph(isDirected, isMultigraph);
                         weightedGraph = *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(path, isDirected, isMultigraph));
-                    } else {
+                    } else if (isDirected){
+						graph = Graph(isDirected, isMultigraph);
+						directedGraph = *(GraphGenerator::getInstance()->generateDirectedGraphFromFile(path, isMultigraph));
+					} else {
                         graph = *(GraphGenerator::getInstance()->generateGraphFromFile(path, isDirected, isMultigraph));
                         weightedGraph = WeightedGraph(isDirected, isMultigraph);
                     }
@@ -138,7 +144,7 @@ void MainWindow::on_actionOpen_triggered()
                 QString text("Network loaded from file: ");
                 text.append(selectedFiles[0]);
                 text.append("\nAmount of vertices in the graph: ");
-                unsigned int verticesCount = this->weightedgraph ? weightedGraph.verticesCount() : graph.verticesCount();
+                unsigned int verticesCount = this->weightedgraph ? weightedGraph.verticesCount() : this->digraph ? directedGraph.verticesCount() : graph.verticesCount();
                 text.append(QString("%1").arg(verticesCount));
                 text.append(".\n");
                 ui->textBrowser->append(text);
@@ -192,18 +198,29 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
     this->weightedgraph = weightedgraph;
     this->digraph = digraph;
     this->multigraph = multigraph;
-    ui->actionClose_current_network->setEnabled(true);
-    ui->actionBetweenness->setEnabled(true);
-    ui->actionClustering_coefficient->setEnabled(true);
+	
+	//TODO start taking functionality out of this block when they are implemented
+	if (!digraph) {
+		ui->actionClose_current_network->setEnabled(true);
+		ui->actionBetweenness->setEnabled(true);
+		ui->actionClustering_coefficient->setEnabled(true);
+		ui->actionNearest_neighbors_degree->setEnabled(true);
+		ui->actionShell_index->setEnabled(true);
+		ui->actionBetweenness_vs_Degree->setEnabled(true);
+		ui->actionClustering_Coefficient_vs_Degree->setEnabled(true);
+		ui->actionNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
+		ui->actionShell_Index_vs_Degree->setEnabled(true);
+		ui->actionExportBetweenness_vs_Degree->setEnabled(true);
+		ui->actionExportClustering_Coefficient_vs_Degree->setEnabled(true);
+		ui->actionExportShell_Index_vs_Degree->setEnabled(true);
+		ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
+	}
+	
     ui->actionDegree_distribution->setEnabled(true);
-    ui->actionDegree_distribution_plotting->setEnabled(true);
-    ui->actionClose_current_network->setEnabled(true);
-    ui->actionNearest_neighbors_degree->setEnabled(true);
-    ui->actionShell_index->setEnabled(true);
-    ui->actionBetweenness_vs_Degree->setEnabled(true);
-    ui->actionClustering_Coefficient_vs_Degree->setEnabled(true);
-    ui->actionNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
-    ui->actionShell_Index_vs_Degree->setEnabled(true);
+	ui->actionDegree_distribution_plotting->setEnabled(true);
+	ui->actionExportDegree_distribution->setEnabled(true);
+	ui->actionClose_current_network->setEnabled(true);
+    
 }
 
 void MainWindow::onNetworkUnload()
@@ -212,6 +229,11 @@ void MainWindow::onNetworkUnload()
     this->weightedgraph = false;
     this->digraph = false;
     this->multigraph = false;
+    disableActions();
+}
+
+void MainWindow::disableActions()
+{
     ui->actionClose_current_network->setEnabled(false);
     ui->actionBetweenness->setEnabled(false);
     ui->actionClustering_coefficient->setEnabled(false);
@@ -224,15 +246,24 @@ void MainWindow::onNetworkUnload()
     ui->actionClustering_Coefficient_vs_Degree->setEnabled(false);
     ui->actionNearest_Neighbors_Degree_vs_Degree->setEnabled(false);
     ui->actionShell_Index_vs_Degree->setEnabled(false);
+	ui->actionExportBetweenness_vs_Degree->setEnabled(false);
+    ui->actionExportDegree_distribution->setEnabled(false);
+    ui->actionExportClustering_Coefficient_vs_Degree->setEnabled(false);
+    ui->actionExportShell_Index_vs_Degree->setEnabled(false);
+    ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(false);
 }
 
 
 
-void MainWindow::buildGraphFactory(const bool isWeighted)
+
+
+void MainWindow::buildGraphFactory(const bool isWeighted, const bool isDirected)
 {
     if (isWeighted)
         weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-    else
+    else if (isDirected)
+		directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+	else
 		factory = new GraphFactory<Graph, Vertex>();
 }
 
@@ -242,7 +273,12 @@ void MainWindow::deleteGraphFactory()
     {
         delete weightedFactory;
         weightedFactory = NULL;
-    }		
+    }
+    else if (directedFactory != NULL)
+    {
+        delete directedFactory;
+        directedFactory = NULL;
+    }
     else if (factory != NULL)
     {
         delete factory;
@@ -372,7 +408,7 @@ void MainWindow::computeDegreeDistribution()
     {
         if (this->weightedgraph)
         {
-            DegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
+            IDegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
             DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
             while (!it.end())
             {
@@ -382,9 +418,29 @@ void MainWindow::computeDegreeDistribution()
             }
             delete degreeDistribution;
         }
+        else if (this->digraph)
+        {
+            DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*> (directedFactory->createDegreeDistribution(directedGraph));
+            DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it = degreeDistribution->inDegreeIterator();
+			DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it2 = degreeDistribution->outDegreeIterator();
+            while (!it.end() || !it2.end())
+            {
+				if (!it.end()) {
+					propertyMap.addProperty<double>("inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
+					propertyMap.addProperty<double>("inDegreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)graph.verticesCount());
+					++it;
+				}
+				if (!it2.end()) {
+					propertyMap.addProperty<double>("outDegreeDistribution", to_string<unsigned int>(it2->first), it2->second);
+					propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)graph.verticesCount());
+					++it2;
+				}
+            }
+            delete degreeDistribution;
+        }
 		else
         {
-            DegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
+            IDegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
             DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
             while (!it.end())
             {
@@ -399,20 +455,28 @@ void MainWindow::computeDegreeDistribution()
 
 void MainWindow::on_actionDegree_distribution_triggered()
 {
-    QString degree = inputId("Degree:");
+	QString degree;
+	QString outDegree;
+	QString inDegree;
+	if (!this->digraph)  {
+		degree = inputId("Degree:");
+	} else {
+		outDegree = inputId("OutDegree:");
+		inDegree = inputId("InDegree:");
+	}
     QString ret;
     unsigned int degreeAmount;
-    if (!degree.isEmpty())
+    if (!this->digraph && !degree.isEmpty())
     {
         if (!propertyMap.containsPropertySet("degreeDistribution"))
         {
-            ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
+            ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
             this->computeDegreeDistribution();
         }
         try
         {
             degreeAmount = propertyMap.getProperty<unsigned int>("degreeDistribution", degree.toStdString());
-            ret.append("Digree distribution for degree ").append(degree);
+            ret.append("Degree distribution for degree ").append(degree);
             ret.append(" is: ").append(to_string<unsigned int>(degreeAmount).c_str()).append(".\n");
             ui->textBrowser->append(ret);
         }
@@ -422,6 +486,43 @@ void MainWindow::on_actionDegree_distribution_triggered()
             ui->textBrowser->append(ret);
         }
     }
+    
+    if (this->digraph && !outDegree.isEmpty())
+    {
+        if (!propertyMap.containsPropertySet("outDegreeDistribution"))
+        {
+            ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
+            this->computeDegreeDistribution();
+        }
+        try
+        {
+            unsigned int outDegreeAmount = propertyMap.getProperty<unsigned int>("outDegreeDistribution", outDegree.toStdString());
+            ret.append("Out-Degree distribution for degree ").append(outDegree);
+            ret.append(" is: ").append(to_string<unsigned int>(outDegreeAmount).c_str()).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        
+        catch (const BadElementName& ex)
+        {
+            ret.append("There are no vertices with out-degree ").append(outDegree).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        
+        ret = "";
+        try
+        {
+            unsigned int inDegreeAmount = propertyMap.getProperty<unsigned int>("inDegreeDistribution", inDegree.toStdString());
+            ret.append("In-Degree distribution for degree ").append(inDegree);
+            ret.append(" is: ").append(to_string<unsigned int>(inDegreeAmount).c_str()).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+        catch (const BadElementName& ex)
+        {
+            ret.append("There are no vertices with in-degree ").append(inDegree).append(".\n");
+            ui->textBrowser->append(ret);
+        }
+    }
+    
 }
 
 void MainWindow::on_actionDegree_distribution_plotting_triggered()
@@ -429,9 +530,9 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
     bool ret, logBin = false;
     unsigned int bins = 25;
     ui->textBrowser->append("Plotting degree distribution...");
-    if (!propertyMap.containsPropertySet("degreeDistribution"))
+    if ((!this->digraph && !propertyMap.containsPropertySet("degreeDistribution")) || (this->digraph && !propertyMap.containsPropertySet("degreeDistribution")))
     {
-        ui->textBrowser->append("Digree distribution has not been previously computed. Computing now.");
+        ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
         this->computeDegreeDistribution();
     }
     if (LogBinningDialog() == QMessageBox::Yes) {
@@ -441,9 +542,16 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
             bins = inputN.toInt();
         }
     }
-    ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", logBin, bins);
-    this->console->show();
-    this->activateWindow();
+    if (!this->digraph) {
+		ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", logBin, bins);
+	} else {
+		ret = this->console->plotPropertySet(propertyMap.getPropertySet("inDegreeDistribution"), "inDegreeDistribution", logBin, bins);
+		this->console->show();
+		this->activateWindow();
+		ret = this->console->plotPropertySet(propertyMap.getPropertySet("outDegreeDistribution"), "outDegreeDistribution", logBin, bins);
+		this->console->show();
+		this->activateWindow();
+	}
     if (!ret)
         ui->textBrowser->append("An unexpected error has occured.\n");
 
@@ -794,13 +902,37 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
     ret = this->getSavePath();
     if (!ret.empty())
     {
-        if (propertyMap.containsPropertySet("degreeDistributionProbability"))
-        {
-            grapherUtils.exportPropertySet(propertyMap.getPropertySet("degreeDistributionProbability"), ret);
-            ui->textBrowser->append("Done.");
-        }
-        else
-            ui->textBrowser->append("Degree Distribution has not been previously computed. Please go to Plot->Degree Distribution first.");
+		if (!this->digraph) {
+			if (propertyMap.containsPropertySet("degreeDistributionProbability"))
+			{
+				grapherUtils.exportPropertySet(propertyMap.getPropertySet("degreeDistributionProbability"), ret);
+				ui->textBrowser->append("Done.");
+			}
+			else
+				ui->textBrowser->append("Degree Distribution has not been previously computed. Please go to Plot->Degree Distribution first.");
+		} else {
+			if (propertyMap.containsPropertySet("outDegreeDistributionProbability"))
+			{
+				grapherUtils.exportPropertySet(propertyMap.getPropertySet("outDegreeDistributionProbability"), ret.append("_out_degree"));
+				std::string text = "Out-Degree Distribution was exported to ";
+				text.append(ret.append("_out_degree"));
+				ui->textBrowser->append(QString::fromUtf8(text.data(), text.size()));
+				ui->textBrowser->append("Done.");
+			}
+			else
+				ui->textBrowser->append("Degree Distribution has not been previously computed. Please go to Plot->Degree Distribution first.");
+			
+			if (propertyMap.containsPropertySet("inDegreeDistributionProbability"))
+			{
+				grapherUtils.exportPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), ret.append("_in_degree"));
+				std::string text = "In-Degree Distribution was exported to ";
+				text.append(ret.append("_in_degree"));
+				ui->textBrowser->append(QString::fromUtf8(text.data(), text.size()));
+				ui->textBrowser->append("Done.");
+			}
+			else
+				ui->textBrowser->append("Degree Distribution has not been previously computed. Please go to Plot->Degree Distribution first.");
+		}
     }
     else
         ui->textBrowser->append("Action canceled by user.");
@@ -889,7 +1021,7 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 		try
 	    {
 	        this->onNetworkLoad(false, false, false);
-			buildGraphFactory(false);
+			buildGraphFactory(false, false);
 
 
 			if(!inputN.isEmpty())
@@ -940,7 +1072,7 @@ void MainWindow::on_actionNewHiperbolic_triggered()
 		try
 	    {
 	        this->onNetworkLoad(false, false, false);
-			buildGraphFactory(false);
+			buildGraphFactory(false, false);
 
 
 			if(!inputN.isEmpty())
@@ -1000,7 +1132,7 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 	    try
 	    {
 			this->onNetworkLoad(false, false, false);
-			buildGraphFactory(false);
+			buildGraphFactory(false, false);
 
 			if(!inputM_0.isEmpty())
 	        	m_0 = inputM_0.toInt();
@@ -1060,7 +1192,7 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 	    try
 	    {
 			this->onNetworkLoad(false, false, false);
-			buildGraphFactory(false);
+			buildGraphFactory(false, false);
 
 			if(!inputN.isEmpty())
 	        	n = inputN.toInt();
@@ -1118,7 +1250,7 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 			try
 			{
 				this->onNetworkLoad(false, false, false);
-				buildGraphFactory(false);
+				buildGraphFactory(false, false);
 
 				selectedFiles = fileDialog.selectedFiles();
 				string path = selectedFiles[0].toStdString();			

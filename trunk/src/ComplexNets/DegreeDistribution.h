@@ -6,6 +6,7 @@
 #include "mili/mili.h"
 #include "TraverserForward.h"
 #include <stdio.h>
+#include "IDegreeDistribution.h"
 
 namespace graphpp
 {
@@ -51,7 +52,7 @@ private:
 };
 
 template <class Graph, class Vertex>
-class DegreeDistribution
+class DegreeDistribution : public IDegreeDistribution<Graph, Vertex>
 {
 public:
 
@@ -63,7 +64,7 @@ public:
         calculateDistribution(graph);
     }
 
-    DistributionIterator iterator() const
+    virtual DistributionIterator iterator()
     {
         return DistributionIterator(distribution);
     }
