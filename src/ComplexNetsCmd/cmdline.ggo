@@ -17,6 +17,8 @@ defgroup "network-load" groupdesc="Load a network"
 
 		option "weighted" - "Specify if the input file is considered as a weighted graph" optional
 		dependon="input-file"
+		option "digraph" - "Specify if the input file is considered as a digraph" optional
+		dependon="input-file"
 
 # ----- Group to create a graph using a model.
 

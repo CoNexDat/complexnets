@@ -4,6 +4,8 @@ using namespace ComplexNetsGui;
 
 GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QDialog(parent)
 {
+	this->mainWindow = static_cast<MainWindow*>(parent);
+
     if (this->objectName().isEmpty())
         this->setObjectName(QString::fromUtf8("Dialog"));
     this->resize(257, 268);
@@ -27,6 +29,7 @@ GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QD
     verticalLayout_2->addWidget(radioButton_3);
 
     radioButton_4 = new QRadioButton(verticalLayoutWidget_2);
+	connect(radioButton_4, SIGNAL(clicked(bool)), this, SLOT(foo(bool)));
     radioButton_4->setObjectName(QString::fromUtf8("radioButton_4"));
 
     verticalLayout_2->addWidget(radioButton_4);
@@ -52,8 +55,8 @@ GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QD
 
     radioButton_3->setChecked(true);
     radioButton_4->setChecked(false);
-    radioButton_3->setEnabled(false);
-    radioButton_4->setEnabled(false);
+    radioButton_3->setEnabled(true);
+    radioButton_4->setEnabled(true);
 
     radioButton->setChecked(true);
 
@@ -91,6 +94,19 @@ bool GraphLoadingValidationDialog::isDirected() const
 {
     return !radioButton_3->isChecked();
     //return checkBox_2->isChecked();
+}
+
+//TODO within this signal handler we could disable all functionality that it isnt supported by directed graph yet
+// or throw signals to let other components know
+void GraphLoadingValidationDialog::foo(bool checked)
+{
+	if (checked) {
+		radioButton->setChecked(true);
+		radioButton_2->setEnabled(false);
+	} else {
+		radioButton_2->setEnabled(true);
+	}
+	this->mainWindow->disableActions();
 }
 
 GraphLoadingValidationDialog::~GraphLoadingValidationDialog()

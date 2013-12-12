@@ -7,6 +7,7 @@
 #include "NearestNeighborsDegree.h"
 #include "ShellIndex.h"
 #include "GraphReader.h"
+#include "DegreeDistribution.h"
 
 namespace graphpp
 {
@@ -35,7 +36,7 @@ public:
         return new ShellIndex<Graph, Vertex>(g);
     }
 
-    virtual DegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
+    virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {
         return new DegreeDistribution<Graph, Vertex>(g);
     }

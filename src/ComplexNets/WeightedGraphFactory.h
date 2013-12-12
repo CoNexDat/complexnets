@@ -7,6 +7,7 @@
 #include "WeightedNearestNeighborsDegree.h"
 //#include "WeightedShellIndex.h"
 #include "WeightedGraphReader.h"
+#include "DegreeDistribution.h"
 
 namespace graphpp
 {
@@ -35,9 +36,10 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
         //return new WeightedShellIndex<Graph,Vertex>();
         return NULL;
     }
-    virtual DegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
+    virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {
-        return new DegreeDistribution<Graph, Vertex>(g);
+//         return new DegreeDistribution<Graph, Vertex>(g);
+		return NULL;
     }
 };
 }

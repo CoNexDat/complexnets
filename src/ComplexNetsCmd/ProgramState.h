@@ -15,7 +15,9 @@ class ProgramState {
 
 private:
 	bool weighted;
+	bool digraph;
     WeightedGraph weightedGraph;
+	DirectedGraph directedGraph;
     Graph graph;
 
     void computeBetweenness(PropertyMap& propertyMap);
@@ -28,9 +30,12 @@ public:
 	ProgramState();
 
 	void setWeighted(bool weighted);
-
+	void setDigraph(bool digraph);
+	
 	bool isWeighted();
+	bool isDigraph();
 	WeightedGraph getWeightedGraph();
+	DirectedGraph getDirectedGraph();
 	Graph getGraph();
 
 	void readGraphFromFile(string path);
@@ -46,6 +51,9 @@ public:
 	double knn(unsigned int vertex_id);
 	double shellIndex(unsigned int vertex_id);
 
+	double inDegreeDistribution(unsigned int vertex_id);
+	double outDegreeDistribution(unsigned int vertex_id);
+	
 	void printDegrees();
 	
 	void exportCurrentGraph(string outputPath);

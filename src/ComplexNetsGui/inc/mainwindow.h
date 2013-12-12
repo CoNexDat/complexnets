@@ -13,6 +13,8 @@
 #include "../../ComplexNets/AdjacencyListGraph.h"
 #include "../../ComplexNets/WeightedGraphAspect.h"
 #include "../../ComplexNets/WeightedVertexAspect.h"
+#include "../../ComplexNets/DirectedGraphAspect.h"
+#include "../../ComplexNets/DirectedVertexAspect.h"
 #include "../../ComplexNets/PropertyMap.h"
 #include "ComplexNetsGui/inc/GrapherUtils.h"
 #include "ComplexNetsGui/inc/GnuplotConsole.h"
@@ -33,6 +35,7 @@ public:
 
     MainWindow(QWidget* parent = 0);
     ~MainWindow();
+	void disableActions();
 
 protected:
     void changeEvent(QEvent* e);
@@ -49,15 +52,17 @@ private:
 
     graphpp::IGraphFactory<WeightedGraph, WeightedVertex>* weightedFactory;
     graphpp::IGraphFactory<Graph, Vertex>* factory;
+	graphpp::IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory;
     Graph graph;
     WeightedGraph weightedGraph;
-
+	DirectedGraph directedGraph;
+	
     void computeDegreeDistribution();
     void computeShellIndex();
     void computeBetweenness();
     int LogBinningDialog();
     void readGraph(const std::string path);
-    void buildGraphFactory(const bool isWeighted);
+    void buildGraphFactory(const bool isWeighted, const bool isDirected);
     void deleteGraphFactory();
     void onNetworkLoad(const bool weightedgraph, const bool digraph, const bool multigraph);
     void onNetworkUnload();
