@@ -46,6 +46,41 @@ void GraphWriter::writeGraph(Graph *graph, string outputPath) {
     destinationFile.close();
 }
 
+//FIXME This should not have to be a separate method. writeGraph should be able to write 
+// DirectedGraphs. Currently not able to convert/cast DirectedGraph to Graph (DONT KNOW WHY :()
+void GraphWriter::writeDirectedGraph(DirectedGraph *graph, string outputPath) {
+    ofstream destinationFile;
+    destinationFile.open(outputPath.c_str(), ios_base::out);
+
+    this->visitedVertexes.clear();
+
+    DirectedGraph::VerticesIterator verticesIterator = graph->verticesIterator();
+    
+    while (!verticesIterator.end()) {
+    	Vertex *vertex = *verticesIterator;
+    	
+    	Vertex::VerticesIterator neighborsIterator = vertex->neighborsIterator();
+
+    	while (!neighborsIterator.end()) {
+    		Vertex *neighbor = *neighborsIterator;
+
+    		if (!vertexWasVisited(neighbor->getVertexId())) {
+    			destinationFile << vertex->getVertexId() << " " << neighbor->getVertexId() << std::endl;
+    		}
+    		
+    		neighborsIterator++;
+    	}
+
+    	this->visitedVertexes.push_back(vertex->getVertexId());
+    	verticesIterator++;
+    }
+
+    destinationFile.close();
+}
+
+
+
+
 void GraphWriter::writeWeightedGraph(WeightedGraph *weightedGraph, string outputPath) {
     ofstream destinationFile;
     destinationFile.open(outputPath.c_str(), ios_base::out);

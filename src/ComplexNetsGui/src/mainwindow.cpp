@@ -427,12 +427,12 @@ void MainWindow::computeDegreeDistribution()
             {
 				if (!it.end()) {
 					propertyMap.addProperty<double>("inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
-					propertyMap.addProperty<double>("inDegreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)graph.verticesCount());
+					propertyMap.addProperty<double>("inDegreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)directedGraph.verticesCount());
 					++it;
 				}
 				if (!it2.end()) {
 					propertyMap.addProperty<double>("outDegreeDistribution", to_string<unsigned int>(it2->first), it2->second);
-					propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)graph.verticesCount());
+					propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)directedGraph.verticesCount());
 					++it2;
 				}
             }
@@ -915,7 +915,8 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
 			{
 				grapherUtils.exportPropertySet(propertyMap.getPropertySet("outDegreeDistributionProbability"), ret.append("_out_degree"));
 				std::string text = "Out-Degree Distribution was exported to ";
-				text.append(ret.append("_out_degree"));
+				std::string filename = ret;
+				text.append(filename.append("_out_degree"));
 				ui->textBrowser->append(QString::fromUtf8(text.data(), text.size()));
 				ui->textBrowser->append("Done.");
 			}
@@ -926,7 +927,8 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
 			{
 				grapherUtils.exportPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), ret.append("_in_degree"));
 				std::string text = "In-Degree Distribution was exported to ";
-				text.append(ret.append("_in_degree"));
+				std::string filename = ret;
+				text.append(filename.append("_in_degree"));
 				ui->textBrowser->append(QString::fromUtf8(text.data(), text.size()));
 				ui->textBrowser->append("Done.");
 			}

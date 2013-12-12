@@ -476,7 +476,14 @@ void ProgramState::exportDegreeDistribution(string outputPath, unsigned int log_
 			LogBinningPolicy policy;
 			grapherUtils.exportPropertySet(policy.transform(set, binsAmount), outputPath);
 		} else {
-			//TODO export directed Degree Distribution (in & out)
+			VariantsSet& set = propertyMap.getPropertySet("inDistributionProbability");
+			LogBinningPolicy policy;
+			string outputPath1 = outputPath;
+			string outputPath2 = outputPath;
+			grapherUtils.exportPropertySet(policy.transform(set, binsAmount), outputPath1.append("_in_degree"));
+			
+			VariantsSet& set2 = propertyMap.getPropertySet("outDistributionProbability");
+			grapherUtils.exportPropertySet(policy.transform(set2, binsAmount), outputPath2.append("_out_degree"));
 		}
         return;
     }else{
@@ -484,8 +491,13 @@ void ProgramState::exportDegreeDistribution(string outputPath, unsigned int log_
 			VariantsSet& set = propertyMap.getPropertySet("degreeDistributionProbability");
 			grapherUtils.exportPropertySet(set, outputPath);
 		} else {
-			//TODO export directed Degree Distribution (in & out)
-		}
+			VariantsSet& set = propertyMap.getPropertySet("inDegreeDistributionProbability");
+			string outputPath1 = outputPath;
+			string outputPath2 = outputPath;
+			grapherUtils.exportPropertySet(set, outputPath1.append("_in_degree"));
+			
+			VariantsSet& set2 = propertyMap.getPropertySet("outDegreeDistributionProbability");
+			grapherUtils.exportPropertySet(set2, outputPath2.append("_out_degree"));		}
     }
 }
 
@@ -551,6 +563,8 @@ void ProgramState::exportCurrentGraph(string outputPath) {
 
     if (isWeighted()) {
         graphWriter->writeWeightedGraph(&(this->weightedGraph), outputPath);
+    } else if (isDigraph()) {
+        graphWriter->writeDirectedGraph(&(this->directedGraph), outputPath);
     } else {
         graphWriter->writeGraph(&(this->graph), outputPath);
     }
