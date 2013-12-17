@@ -732,7 +732,7 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
-//TODO check if shellIndexVsDegree has previously calculated and avoid unnecesary computation. If not calculated save in property map
+
 void MainWindow::on_actionShell_Index_vs_Degree_triggered()
 {
     if (this->weightedgraph)
@@ -777,6 +777,14 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         shellIndexVsDegree.insert<double>(degree , shellAuxAcum / (double)degreeAmount);
         ++shellVsDegreeIt;
     }
+    
+    shellVsDegreeIt = shellIndexVsDegree.begin();
+    while (shellVsDegreeIt != shellIndexVsDegree.end())
+    {
+      propertyMap.addProperty<double>("shellIndexVsDegree", shellVsDegreeIt->first, from_string<double>(shellVsDegreeIt->second));
+      ++shellVsDegreeIt;
+    }
+    
 
     ret = this->console->plotPropertySet(shellIndexVsDegree, "shellIndexVsDegree");
     this->console->show();
@@ -785,7 +793,6 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
-//TODO check if betweennessVsDegree has previously calculated and avoid unnecesary computation. If not calculated save in property map
 void MainWindow::on_actionBetweenness_vs_Degree_triggered()
 {
     if (this->weightedgraph)
@@ -830,6 +837,15 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
         betweennessVsDegree.insert<double>(degree , betweennessAuxAcum / (double)degreeAmount);
         ++betweennessVsDegreeIt;
     }
+    
+    
+    betweennessVsDegreeIt = betweennessVsDegree.begin();
+    while (betweennessVsDegreeIt != betweennessVsDegree.end())
+      {
+	propertyMap.addProperty<double>("betweennessVsDegree", betweennessVsDegreeIt->first, from_string<double>(betweennessVsDegreeIt->second) );
+	++betweennessVsDegreeIt;
+      }
+    
 
     ret = this->console->plotPropertySet(betweennessVsDegree, "betweennessVsDegree");
     this->console->show();
@@ -837,6 +853,7 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
     if (!ret)
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
+
 
 void MainWindow::on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered()
 {
@@ -943,7 +960,7 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
 void MainWindow::on_actionExportBetweenness_vs_Degree_triggered()
 {
     std::string ret;
-    ui->textBrowser->append("Exporting Netweenness vs Degree...");
+    ui->textBrowser->append("Exporting Betweenness vs Degree...");
     ret = this->getSavePath();
     if (!ret.empty())
     {
@@ -953,7 +970,7 @@ void MainWindow::on_actionExportBetweenness_vs_Degree_triggered()
             ui->textBrowser->append("Done.");
         }
         else
-            ui->textBrowser->append("Netweenness vs Degree has not been previously computed. Please go to Plot->Netweenness vs Degree first.");
+            ui->textBrowser->append("Betweenness vs Degree has not been previously computed. Please go to Plot->Betweenness vs Degree first.");
     }
     else
         ui->textBrowser->append("Action canceled by user.");
