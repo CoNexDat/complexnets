@@ -944,7 +944,7 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
 			{
 				grapherUtils.exportPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), ret.append("_in_degree"));
 				std::string text = "In-Degree Distribution was exported to ";
-				std::string filename = ret;
+				std::string filename = this->getSavePath();;
 				text.append(filename.append("_in_degree"));
 				ui->textBrowser->append(QString::fromUtf8(text.data(), text.size()));
 				ui->textBrowser->append("Done.");

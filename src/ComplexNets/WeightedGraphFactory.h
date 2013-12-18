@@ -38,8 +38,7 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
     }
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {
-//         return new DegreeDistribution<Graph, Vertex>(g);
-		return NULL;
+        return new DegreeDistribution<Graph, Vertex>(g);
     }
 };
 }
