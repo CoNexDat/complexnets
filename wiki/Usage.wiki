@@ -75,7 +75,7 @@ where `<graph>` are the arguments to load a graph or create it using a model, an
 --ddist <degree>
 }}}
 
-NOTE: when working with a digraph, this command will show the number of vertices having <degree> as in-degree and out-degree at the same time.
+NOTE: when working with a digraph, this command will show the number of vertices having `<degree>` as in-degree and out-degree at the same time.
 
  * Clustering coefficient:
 {{{
