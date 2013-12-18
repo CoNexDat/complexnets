@@ -917,6 +917,7 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
     std::string ret;
     ui->textBrowser->append("Exporting Degree Distribution...");
     ret = this->getSavePath();
+	std::string filename = ret;
     if (!ret.empty())
     {
 		if (!this->digraph) {
@@ -932,8 +933,7 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
 			{
 				grapherUtils.exportPropertySet(propertyMap.getPropertySet("outDegreeDistributionProbability"), ret.append("_out_degree"));
 				std::string text = "Out-Degree Distribution was exported to ";
-				std::string filename = ret;
-				text.append(filename.append("_out_degree"));
+				text.append(ret.append("_out_degree"));
 				ui->textBrowser->append(QString::fromUtf8(text.data(), text.size()));
 				ui->textBrowser->append("Done.");
 			}
@@ -942,9 +942,8 @@ void MainWindow::on_actionExportDegree_distribution_triggered()
 			
 			if (propertyMap.containsPropertySet("inDegreeDistributionProbability"))
 			{
-				grapherUtils.exportPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), ret.append("_in_degree"));
+				grapherUtils.exportPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), filename.append("_in_degree"));
 				std::string text = "In-Degree Distribution was exported to ";
-				std::string filename = this->getSavePath();;
 				text.append(filename.append("_in_degree"));
 				ui->textBrowser->append(QString::fromUtf8(text.data(), text.size()));
 				ui->textBrowser->append("Done.");
