@@ -4,7 +4,7 @@
 
 To start the application in graphical mode, just invoke `complexnets` whithout arguments from command line.
 {{{
-$ complexnets
+$ ./complexnets
 }}}
 
 
@@ -16,26 +16,26 @@ ComplexNets++ can also run using the command line.
 
 The syntax to load a graph from an input file is the following:
 {{{
-$ complexnets -i <filename>
+$ ./complexnets -i <filename>
 }}}
 
 If the file represents a weighted graph, the command must include the `--weighted` argument:
 {{{
-$ complexnets -i <filename> --weighted
+$ ./complexnets -i <filename> --weighted
 }}}
 
 If the file represents a digraph, the command must include the `--digraph` argument:
 {{{
-$ complexnets -i <filename> --digraph
+$ ./complexnets -i <filename> --digraph
 }}}
 
-NOTE: Currently both `--weighted` AND `--digraph` arguments CANNOT be used at the same time, as weighted digraphs aren't still supported by complexnets.
+NOTE: Currently, both `--weighted` AND `--digraph` arguments CANNOT be used at the same time, as weighted digraphs aren't still supported by complexnets.
 
 == Creating a graph using a model ==
 
 The graphs can also be created using a model. To achieve this, the command must have the following syntax:
 {{{
-$ complexnets <model_parameters>
+$ ./complexnets <model_parameters>
 }}}
 Where `<model_parameters>` can take one of the following values depending on the used model:
  * Erdos-Renyi:
@@ -63,7 +63,7 @@ Where `<model_parameters>` can take one of the following values depending on the
 
 To compute a property given a file, the command must have the following syntax:
 {{{
-$ complexnets <graph> <property>
+$ ./complexnets <graph> <property>
 }}}
 where `<graph>` are the arguments to load a graph or create it using a model, and `<property>` can take the following values depending on the calculated property:
  * Betweenness:
@@ -75,7 +75,8 @@ where `<graph>` are the arguments to load a graph or create it using a model, an
 --ddist <degree>
 }}}
 
-NOTE: when working with a digraph. This command will show the in-degree and out-degree properties for the wanted degree.
+NOTE: when working with a digraph, this command will show the number of vertices having <degree> as in-degree and out-degree at the same time.
+
  * Clustering coefficient:
 {{{
 --clustering <vertex_index>
@@ -102,7 +103,7 @@ The script is independent to the project and requires several extra dependencies
 
 To save a loaded or model-generated graph in a file, the command must have the following syntax:
 {{{
-$ complexnets <graph> -o <file>
+$ ./complexnets <graph> -o <file>
 }}}
 where `<graph>` are the arguments to load a graph or create it using a model.
 
@@ -110,7 +111,7 @@ where `<graph>` are the arguments to load a graph or create it using a model.
 
 To generate a file that can be read and plotted by Gnuplot, the command must have the following syntax:
 {{{
-$ complexnets <graph> -o <output_file> <function>
+$ ./complexnets <graph> -o <output_file> <function>
 }}}
 where `<graph>` are the arguments to load a graph or create it using a model and `<function>` can take the following values depending on the calculated function:
  * Betweenness vs. Degree:
@@ -125,6 +126,9 @@ where `<graph>` are the arguments to load a graph or create it using a model and
 {{{
 --ddist-output --log-bin=<number_of_bins>
 }}}
+
+NOTE: when working with digraphs, this command will output the in-degree probabilities into a file with _in_degree suffix and the out-degree probabilities into a file with _out_degree suffix.
+
  * Clustering coefficient vs. Degree:
 {{{
 --clustering-output
