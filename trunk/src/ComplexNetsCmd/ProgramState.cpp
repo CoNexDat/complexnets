@@ -338,12 +338,12 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap) {
 		{
 			if (!it.end()) {
 				propertyMap.addProperty<double>("inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
-				propertyMap.addProperty<double>("inDegreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)graph.verticesCount());
+				propertyMap.addProperty<double>("inDegreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)directedGraph.verticesCount());
 				++it;
 			}
 			if (!it2.end()) {
 				propertyMap.addProperty<double>("outDegreeDistribution", to_string<unsigned int>(it2->first), it2->second);
-				propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)graph.verticesCount());
+				propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)directedGraph.verticesCount());
 				++it2;
 			}
 		}
