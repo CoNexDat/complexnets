@@ -127,7 +127,7 @@ where `<graph>` are the arguments to load a graph or create it using a model and
 --ddist-output --log-bin=<number_of_bins>
 }}}
 
-NOTE: when working with digraphs, this command will output the in-degree probabilities into a file with _in_degree suffix and the out-degree probabilities into a file with _out_degree suffix.
+NOTE: when working with digraphs, this command will output the in-degree probabilities into a file with `_in_degree suffix` and the out-degree probabilities into a file with `_out_degree suffix`.
 
  * Clustering coefficient vs. Degree:
 {{{
