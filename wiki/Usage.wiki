@@ -24,6 +24,13 @@ If the file represents a weighted graph, the command must include the `--weighte
 $ complexnets -i <filename> --weighted
 }}}
 
+If the file represents a digraph, the command must include the `--digraph` argument:
+{{{
+$ complexnets -i <filename> --digraph
+}}}
+
+NOTE: Currently both `--weighted` AND `--digraph` arguments CANNOT be used at the same time, as weighted digraphs aren't still supported by complexnets.
+
 == Creating a graph using a model ==
 
 The graphs can also be created using a model. To achieve this, the command must have the following syntax:
@@ -67,6 +74,8 @@ where `<graph>` are the arguments to load a graph or create it using a model, an
 {{{
 --ddist <degree>
 }}}
+
+NOTE: when working with a digraph. This command will show the in-degree and out-degree properties for the wanted degree.
  * Clustering coefficient:
 {{{
 --clustering <vertex_index>
