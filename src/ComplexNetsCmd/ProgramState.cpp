@@ -317,6 +317,7 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap) {
 }
 
 void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap) {
+	//FIXME This should output degreeProbability in the same way that the GUI code does. Check code of digraph DegreeDistribution
     if (isWeighted()) {
         IGraphFactory<WeightedGraph, WeightedVertex> *weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
         IDegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(this->weightedGraph);
@@ -491,13 +492,10 @@ void ProgramState::exportDegreeDistribution(string outputPath, unsigned int log_
 			VariantsSet& set = propertyMap.getPropertySet("degreeDistributionProbability");
 			grapherUtils.exportPropertySet(set, outputPath);
 		} else {
-			VariantsSet& set = propertyMap.getPropertySet("inDegreeDistributionProbability");
 			string outputPath1 = outputPath;
 			string outputPath2 = outputPath;
-			grapherUtils.exportPropertySet(set, outputPath1.append("_in_degree"));
-			
-			VariantsSet& set2 = propertyMap.getPropertySet("outDegreeDistributionProbability");
-			grapherUtils.exportPropertySet(set2, outputPath2.append("_out_degree"));		}
+			grapherUtils.exportPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), outputPath1.append("_in_degree"));
+			grapherUtils.exportPropertySet(propertyMap.getPropertySet("outDegreeDistributionProbability"), outputPath2.append("_out_degree"));		}
     }
 }
 
