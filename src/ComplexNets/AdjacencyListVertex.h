@@ -22,7 +22,7 @@ public:
     typedef unsigned int VertexId;
     typedef unsigned int Degree;
 
-    typedef std::set<AdjacencyListVertex*> VertexContainer;
+    typedef std::vector<AdjacencyListVertex*> VertexContainer;
     typedef CAutonomousIterator<VertexContainer> VerticesConstIterator;
     typedef AutonomousIterator<VertexContainer> VerticesIterator;
 
@@ -40,7 +40,7 @@ public:
     void addEdge(T* v)
     {
         AdjacencyListVertex* other = static_cast<AdjacencyListVertex*>(v);
-        insert_into<AdjacencyListVertex*>(neighbors, other);
+        insert_into(neighbors, other);
     }
 
 
@@ -55,7 +55,7 @@ public:
     void removeEdge(T* v)
     {
         AdjacencyListVertex* other = static_cast<AdjacencyListVertex*>(v);
-        remove_first_from<AdjacencyListVertex*>(neighbors, other);
+        remove_first_from(neighbors, other);
     }
 
     /**

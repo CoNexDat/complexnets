@@ -1,0 +1,212 @@
+--2014-02-13 18:29:11--  https://googletest.googlecode.com/files/gtest-1.6.0.zip
+Resolving googletest.googlecode.com... 74.125.21.82, 2607:f8b0:4002:c06::52
+Connecting to googletest.googlecode.com|74.125.21.82|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1121697 (1.1M) [application/x-zip]
+Saving to: `gtest-1.6.0.zip.1'
+
+     0K .......... .......... .......... .......... ..........  4%  144K 7s
+    50K .......... .......... .......... .......... ..........  9%  273K 5s
+   100K .......... .......... .......... .......... .......... 13%  292K 4s
+   150K .......... .......... .......... .......... .......... 18%  293K 4s
+   200K .......... .......... .......... .......... .......... 22%  323K 3s
+   250K .......... .......... .......... .......... .......... 27%  351K 3s
+   300K .......... .......... .......... .......... .......... 31%  339K 3s
+   350K .......... .......... .......... .......... .......... 36%  327K 3s
+   400K .......... .......... .......... .......... .......... 41%  382K 2s
+   450K .......... .......... .......... .......... .......... 45%  365K 2s
+   500K .......... .......... .......... .......... .......... 50%  366K 2s
+   550K .......... .......... .......... .......... .......... 54%  342K 2s
+   600K .......... .......... .......... .......... .......... 59%  357K 1s
+   650K .......... .......... .......... .......... .......... 63%  356K 1s
+   700K .......... .......... .......... .......... .......... 68%  338K 1s
+   750K .......... .......... .......... .......... .......... 73%  364K 1s
+   800K .......... .......... .......... .......... .......... 77%  341K 1s
+   850K .......... .......... .......... .......... .......... 82%  361K 1s
+   900K .......... .......... .......... .......... .......... 86%  360K 0s
+   950K .......... .......... .......... .......... .......... 91%  343K 0s
+  1000K .......... .......... .......... .......... .......... 95%  319K 0s
+  1050K .......... .......... .......... .......... .....     100%  427K=3.4s
+
+2014-02-13 18:29:15 (320 KB/s) - `gtest-1.6.0.zip.1' saved [1121697/1121697]
+
+Archive:  gtest-1.6.0.zip
+  inflating: gtest-1.6.0/build-aux/config.h.in  
+  inflating: gtest-1.6.0/build-aux/config.guess  
+  inflating: gtest-1.6.0/build-aux/config.sub  
+  inflating: gtest-1.6.0/build-aux/depcomp  
+  inflating: gtest-1.6.0/build-aux/install-sh  
+  inflating: gtest-1.6.0/build-aux/ltmain.sh  
+  inflating: gtest-1.6.0/build-aux/missing  
+  inflating: gtest-1.6.0/cmake/internal_utils.cmake  
+  inflating: gtest-1.6.0/codegear/gtest.cbproj  
+  inflating: gtest-1.6.0/codegear/gtest.groupproj  
+  inflating: gtest-1.6.0/codegear/gtest_all.cc  
+  inflating: gtest-1.6.0/codegear/gtest_link.cc  
+  inflating: gtest-1.6.0/codegear/gtest_main.cbproj  
+  inflating: gtest-1.6.0/codegear/gtest_unittest.cbproj  
+  inflating: gtest-1.6.0/fused-src/gtest/gtest-all.cc  
+  inflating: gtest-1.6.0/fused-src/gtest/gtest.h  
+  inflating: gtest-1.6.0/fused-src/gtest/gtest_main.cc  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-death-test-internal.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-filepath.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-internal.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-linked_ptr.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-param-util-generated.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-param-util.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-port.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-string.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-tuple.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-type-util.h  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-param-util-generated.h.pump  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-tuple.h.pump  
+  inflating: gtest-1.6.0/include/gtest/internal/gtest-type-util.h.pump  
+  inflating: gtest-1.6.0/include/gtest/gtest-death-test.h  
+  inflating: gtest-1.6.0/include/gtest/gtest-message.h  
+  inflating: gtest-1.6.0/include/gtest/gtest-param-test.h  
+  inflating: gtest-1.6.0/include/gtest/gtest-printers.h  
+  inflating: gtest-1.6.0/include/gtest/gtest-spi.h  
+  inflating: gtest-1.6.0/include/gtest/gtest-test-part.h  
+  inflating: gtest-1.6.0/include/gtest/gtest-typed-test.h  
+  inflating: gtest-1.6.0/include/gtest/gtest.h  
+  inflating: gtest-1.6.0/include/gtest/gtest_pred_impl.h  
+  inflating: gtest-1.6.0/include/gtest/gtest_prod.h  
+  inflating: gtest-1.6.0/include/gtest/gtest-param-test.h.pump  
+  inflating: gtest-1.6.0/m4/libtool.m4  
+  inflating: gtest-1.6.0/m4/ltoptions.m4  
+  inflating: gtest-1.6.0/m4/ltsugar.m4  
+  inflating: gtest-1.6.0/m4/ltversion.m4  
+  inflating: gtest-1.6.0/m4/lt~obsolete.m4  
+  inflating: gtest-1.6.0/m4/acx_pthread.m4  
+  inflating: gtest-1.6.0/m4/gtest.m4  
+  inflating: gtest-1.6.0/make/Makefile  
+  inflating: gtest-1.6.0/msvc/gtest-md.sln  
+  inflating: gtest-1.6.0/msvc/gtest-md.vcproj  
+  inflating: gtest-1.6.0/msvc/gtest.sln  
+  inflating: gtest-1.6.0/msvc/gtest.vcproj  
+  inflating: gtest-1.6.0/msvc/gtest_main-md.vcproj  
+  inflating: gtest-1.6.0/msvc/gtest_main.vcproj  
+  inflating: gtest-1.6.0/msvc/gtest_prod_test-md.vcproj  
+  inflating: gtest-1.6.0/msvc/gtest_prod_test.vcproj  
+  inflating: gtest-1.6.0/msvc/gtest_unittest-md.vcproj  
+  inflating: gtest-1.6.0/msvc/gtest_unittest.vcproj  
+  inflating: gtest-1.6.0/samples/sample1.cc  
+  inflating: gtest-1.6.0/samples/sample1.h  
+  inflating: gtest-1.6.0/samples/sample2.cc  
+  inflating: gtest-1.6.0/samples/sample2.h  
+  inflating: gtest-1.6.0/samples/sample3-inl.h  
+  inflating: gtest-1.6.0/samples/sample4.cc  
+  inflating: gtest-1.6.0/samples/sample4.h  
+  inflating: gtest-1.6.0/samples/sample10_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample1_unittest.cc  
+  inflating: gtest-1.6.0/samples/prime_tables.h  
+  inflating: gtest-1.6.0/samples/sample2_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample3_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample4_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample5_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample6_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample7_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample8_unittest.cc  
+  inflating: gtest-1.6.0/samples/sample9_unittest.cc  
+  inflating: gtest-1.6.0/scripts/test/Makefile  
+  inflating: gtest-1.6.0/scripts/gtest-config.in  
+  inflating: gtest-1.6.0/scripts/fuse_gtest_files.py  
+  inflating: gtest-1.6.0/scripts/gen_gtest_pred_impl.py  
+  inflating: gtest-1.6.0/scripts/pump.py  
+  inflating: gtest-1.6.0/src/gtest-all.cc  
+  inflating: gtest-1.6.0/src/gtest_main.cc  
+  inflating: gtest-1.6.0/src/gtest-death-test.cc  
+  inflating: gtest-1.6.0/src/gtest-filepath.cc  
+  inflating: gtest-1.6.0/src/gtest-internal-inl.h  
+  inflating: gtest-1.6.0/src/gtest-port.cc  
+  inflating: gtest-1.6.0/src/gtest-printers.cc  
+  inflating: gtest-1.6.0/src/gtest-test-part.cc  
+  inflating: gtest-1.6.0/src/gtest-typed-test.cc  
+  inflating: gtest-1.6.0/src/gtest.cc  
+  inflating: gtest-1.6.0/test/gtest_all_test.cc  
+  inflating: gtest-1.6.0/test/gtest-death-test_ex_test.cc  
+  inflating: gtest-1.6.0/test/gtest-death-test_test.cc  
+  inflating: gtest-1.6.0/test/gtest-filepath_test.cc  
+  inflating: gtest-1.6.0/test/gtest-linked_ptr_test.cc  
+  inflating: gtest-1.6.0/test/gtest-listener_test.cc  
+  inflating: gtest-1.6.0/test/gtest-message_test.cc  
+  inflating: gtest-1.6.0/test/gtest-options_test.cc  
+  inflating: gtest-1.6.0/test/gtest-param-test2_test.cc  
+  inflating: gtest-1.6.0/test/gtest-param-test_test.cc  
+  inflating: gtest-1.6.0/test/gtest-param-test_test.h  
+  inflating: gtest-1.6.0/test/gtest-port_test.cc  
+  inflating: gtest-1.6.0/test/gtest-printers_test.cc  
+  inflating: gtest-1.6.0/test/gtest-test-part_test.cc  
+  inflating: gtest-1.6.0/test/gtest-tuple_test.cc  
+  inflating: gtest-1.6.0/test/gtest-typed-test2_test.cc  
+  inflating: gtest-1.6.0/test/gtest-typed-test_test.cc  
+  inflating: gtest-1.6.0/test/gtest-typed-test_test.h  
+  inflating: gtest-1.6.0/test/gtest-unittest-api_test.cc  
+  inflating: gtest-1.6.0/test/gtest_break_on_failure_unittest_.cc  
+  inflating: gtest-1.6.0/test/gtest_catch_exceptions_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_color_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_env_var_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_environment_test.cc  
+  inflating: gtest-1.6.0/test/gtest_filter_unittest_.cc  
+  inflating: gtest-1.6.0/test/gtest_help_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_list_tests_unittest_.cc  
+  inflating: gtest-1.6.0/test/gtest_main_unittest.cc  
+  inflating: gtest-1.6.0/test/gtest_no_test_unittest.cc  
+  inflating: gtest-1.6.0/test/gtest_output_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_pred_impl_unittest.cc  
+  inflating: gtest-1.6.0/test/gtest_prod_test.cc  
+  inflating: gtest-1.6.0/test/gtest_repeat_test.cc  
+  inflating: gtest-1.6.0/test/gtest_shuffle_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_sole_header_test.cc  
+  inflating: gtest-1.6.0/test/gtest_stress_test.cc  
+  inflating: gtest-1.6.0/test/gtest_throw_on_failure_ex_test.cc  
+  inflating: gtest-1.6.0/test/gtest_throw_on_failure_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_uninitialized_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_unittest.cc  
+  inflating: gtest-1.6.0/test/gtest_xml_outfile1_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_xml_outfile2_test_.cc  
+  inflating: gtest-1.6.0/test/gtest_xml_output_unittest_.cc  
+  inflating: gtest-1.6.0/test/production.cc  
+  inflating: gtest-1.6.0/test/production.h  
+  inflating: gtest-1.6.0/test/gtest_break_on_failure_unittest.py  
+  inflating: gtest-1.6.0/test/gtest_catch_exceptions_test.py  
+  inflating: gtest-1.6.0/test/gtest_color_test.py  
+  inflating: gtest-1.6.0/test/gtest_env_var_test.py  
+  inflating: gtest-1.6.0/test/gtest_filter_unittest.py  
+  inflating: gtest-1.6.0/test/gtest_help_test.py  
+  inflating: gtest-1.6.0/test/gtest_list_tests_unittest.py  
+  inflating: gtest-1.6.0/test/gtest_output_test.py  
+  inflating: gtest-1.6.0/test/gtest_output_test_golden_lin.txt  
+  inflating: gtest-1.6.0/test/gtest_shuffle_test.py  
+  inflating: gtest-1.6.0/test/gtest_test_utils.py  
+  inflating: gtest-1.6.0/test/gtest_throw_on_failure_test.py  
+  inflating: gtest-1.6.0/test/gtest_uninitialized_test.py  
+  inflating: gtest-1.6.0/test/gtest_xml_outfiles_test.py  
+  inflating: gtest-1.6.0/test/gtest_xml_output_unittest.py  
+  inflating: gtest-1.6.0/test/gtest_xml_test_utils.py  
+  inflating: gtest-1.6.0/xcode/Config/DebugProject.xcconfig  
+  inflating: gtest-1.6.0/xcode/Config/FrameworkTarget.xcconfig  
+  inflating: gtest-1.6.0/xcode/Config/General.xcconfig  
+  inflating: gtest-1.6.0/xcode/Config/ReleaseProject.xcconfig  
+  inflating: gtest-1.6.0/xcode/Config/StaticLibraryTarget.xcconfig  
+  inflating: gtest-1.6.0/xcode/Config/TestTarget.xcconfig  
+  inflating: gtest-1.6.0/xcode/Resources/Info.plist  
+  inflating: gtest-1.6.0/xcode/Samples/FrameworkSample/WidgetFramework.xcodeproj/project.pbxproj  
+  inflating: gtest-1.6.0/xcode/Samples/FrameworkSample/Info.plist  
+  inflating: gtest-1.6.0/xcode/Samples/FrameworkSample/runtests.sh  
+  inflating: gtest-1.6.0/xcode/Samples/FrameworkSample/widget.cc  
+  inflating: gtest-1.6.0/xcode/Samples/FrameworkSample/widget.h  
+  inflating: gtest-1.6.0/xcode/Samples/FrameworkSample/widget_test.cc  
+  inflating: gtest-1.6.0/xcode/Scripts/runtests.sh  
+  inflating: gtest-1.6.0/xcode/Scripts/versiongenerate.py  
+  inflating: gtest-1.6.0/xcode/gtest.xcodeproj/project.pbxproj  
+  inflating: gtest-1.6.0/README      
+  inflating: gtest-1.6.0/configure.ac  
+  inflating: gtest-1.6.0/aclocal.m4  
+  inflating: gtest-1.6.0/Makefile.am  
+  inflating: gtest-1.6.0/Makefile.in  
+  inflating: gtest-1.6.0/configure   
+  inflating: gtest-1.6.0/COPYING     
+  inflating: gtest-1.6.0/CHANGES     
+  inflating: gtest-1.6.0/CONTRIBUTORS  
+  inflating: gtest-1.6.0/CMakeLists.txt  

@@ -52,7 +52,7 @@ public:
                     }
                     catch (const DuplicateEdge& ex)
                     {
-                        throw DuplicatedEdgeLoading(getLineNumberText());
+                        // throw DuplicatedEdgeLoading(getLineNumberText());
                     }
                 }
             }

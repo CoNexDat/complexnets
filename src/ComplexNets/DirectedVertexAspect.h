@@ -22,24 +22,24 @@ public:
     void addEdge(DirectedVertexAspect<T>* other)
     {
         T::template addEdge<DirectedVertexAspect<T> >(other);
-        insert_into<AdjacencyListVertex*>(outNeighbors, other);
+        insert_into(outNeighbors, other);
 		other->addIncomingEdge(this);
     }
     
     void addIncomingEdge(DirectedVertexAspect<T>* other) {
-		insert_into<AdjacencyListVertex*>(inNeighbors, other);
+		insert_into(inNeighbors, other);
 	}
 
 	void removeEdge(DirectedVertexAspect<T>* v)
     {
         T::template removeEdge<DirectedVertexAspect<T> >(v);
 		AdjacencyListVertex* other = static_cast<AdjacencyListVertex*>(v);
-        remove_first_from<AdjacencyListVertex*>(outNeighbors, v);
+        remove_first_from(outNeighbors, v);
 		v->removeIncomingEdge(this);
     }
     
     void removeIncomingEdge(DirectedVertexAspect<T>* v) {
-		remove_first_from<AdjacencyListVertex*>(inNeighbors, v);
+		remove_first_from(inNeighbors, v);
 	}
     
     Degree inDegree() const

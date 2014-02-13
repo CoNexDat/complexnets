@@ -19,5 +19,5 @@ add_executable(tests ${test_src})
 
 add_definitions(-fprofile-arcs -ftest-coverage)
 
-target_link_libraries (tests gtest_main pthread -fprofile-arcs)
+target_link_libraries (tests gtest gtest_main pthread -fprofile-arcs)
 
