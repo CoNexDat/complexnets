@@ -65,7 +65,6 @@ defgroup "model" groupdesc="Generate a network using a model"
 		typestr="<filename>"
 		optional
 		dependon="molloy"
-		
 		option "deg" d " Avg degree of nodes parameter (only for hyperbolic model)."
 		float
 		typestr="<number>"

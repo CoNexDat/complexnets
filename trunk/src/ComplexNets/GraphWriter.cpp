@@ -78,9 +78,6 @@ void GraphWriter::writeDirectedGraph(DirectedGraph *graph, string outputPath) {
     destinationFile.close();
 }
 
-
-
-
 void GraphWriter::writeWeightedGraph(WeightedGraph *weightedGraph, string outputPath) {
     ofstream destinationFile;
     destinationFile.open(outputPath.c_str(), ios_base::out);

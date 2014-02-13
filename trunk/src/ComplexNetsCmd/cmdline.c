@@ -214,7 +214,6 @@ cmdline_parser_print_version (void)
   printf ("%s %s\n",
      (strlen(CMDLINE_PARSER_PACKAGE_NAME) ? CMDLINE_PARSER_PACKAGE_NAME : CMDLINE_PARSER_PACKAGE),
      CMDLINE_PARSER_VERSION);
-
   if (strlen(gengetopt_args_info_versiontext) > 0)
     printf("\n%s\n", gengetopt_args_info_versiontext);
 }

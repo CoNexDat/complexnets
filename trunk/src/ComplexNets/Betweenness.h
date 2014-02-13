@@ -41,7 +41,6 @@ private:
         while (!iter.end())
         {
             Vertex* s = *iter;
-       
             std::stack<Vertex*> stack;
             std::queue<Vertex*> queue;
             std::map<typename Vertex::VertexId, std::list<typename Vertex::VertexId> > p;
@@ -60,7 +59,6 @@ private:
                 Vertex* v = queue.front();
                 queue.pop();
                 stack.push(v);
-                
 
                 //iterate through v's neighbors
                 NeighbourIterator neighbourIter = v->neighborsIterator();
@@ -68,7 +66,6 @@ private:
                 while (!neighbourIter.end())
                 {
                     Vertex* w = *neighbourIter;
-		    
                     //w found for the first time?
                     double wValue = d[w->getVertexId()];
                     //double vValue = d[v->getVertexId()];

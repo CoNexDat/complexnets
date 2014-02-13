@@ -17,9 +17,7 @@ using namespace graphpp;
 
 typedef struct Position { float x; float y; } Position;
 
-
 static const double PI = atan(1) * 4;
-
 vector<Position> vertexesPositions;
 
 GraphGenerator *GraphGenerator::instance = NULL;

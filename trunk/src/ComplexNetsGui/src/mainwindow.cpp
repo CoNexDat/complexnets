@@ -256,7 +256,6 @@ void MainWindow::disableActions()
 
 
 
-
 void MainWindow::buildGraphFactory(const bool isWeighted, const bool isDirected)
 {
     if (isWeighted)
@@ -486,7 +485,6 @@ void MainWindow::on_actionDegree_distribution_triggered()
             ui->textBrowser->append(ret);
         }
     }
-    
     if (this->digraph && !outDegree.isEmpty())
     {
         if (!propertyMap.containsPropertySet("outDegreeDistribution"))
@@ -589,15 +587,21 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                 }
             }
         }
-        try
+        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
         {
-            coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", vertexId.toStdString());
-            ret.append("Clustering coefficient for vertex ").append(vertexId);
-            ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
-            ui->textBrowser->append(ret);
-        }
-        catch (const BadElementName& ex)
-        {
+          try
+          {
+              coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", vertexId.toStdString());
+              ret.append("Clustering coefficient for vertex ").append(vertexId);
+              ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
+              ui->textBrowser->append(ret);
+          }
+          catch (const BadElementName& ex)
+          {
+              ret.append("There is no vertices with id ").append(vertexId).append(".\n");
+              ui->textBrowser->append(ret);
+          } 
+        } else {
             ret.append("There is no vertices with id ").append(vertexId).append(".\n");
             ui->textBrowser->append(ret);
         }
@@ -635,15 +639,21 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 }
             }
         }
-        try
+        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
         {
+          try
+          {
             neighborsDegree = propertyMap.getProperty<double>("nearestNeighborsDegreeForVertex", vertexId.toStdString());
             ret.append("Nearest neighbors degree for vertex ").append(vertexId);
             ret.append(" is: ").append(to_string<double>(neighborsDegree).c_str()).append(".\n");
             ui->textBrowser->append(ret);
-        }
-        catch (const BadElementName& ex)
-        {
+          }
+          catch (const BadElementName& ex)
+          {
+            ret.append("There is no vertices with id ").append(vertexId).append(".\n");
+            ui->textBrowser->append(ret);
+          }
+        } else {
             ret.append("There is no vertices with id ").append(vertexId).append(".\n");
             ui->textBrowser->append(ret);
         }
@@ -732,7 +742,7 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
-
+//TODO check if shellIndexVsDegree has previously calculated and avoid unnecesary computation. If not calculated save in property map
 void MainWindow::on_actionShell_Index_vs_Degree_triggered()
 {
     if (this->weightedgraph)
@@ -777,7 +787,6 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         shellIndexVsDegree.insert<double>(degree , shellAuxAcum / (double)degreeAmount);
         ++shellVsDegreeIt;
     }
-    
     shellVsDegreeIt = shellIndexVsDegree.begin();
     while (shellVsDegreeIt != shellIndexVsDegree.end())
     {
@@ -793,6 +802,7 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
+//TODO check if betweennessVsDegree has previously calculated and avoid unnecesary computation. If not calculated save in property map
 void MainWindow::on_actionBetweenness_vs_Degree_triggered()
 {
     if (this->weightedgraph)
@@ -838,7 +848,6 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
         ++betweennessVsDegreeIt;
     }
     
-    
     betweennessVsDegreeIt = betweennessVsDegree.begin();
     while (betweennessVsDegreeIt != betweennessVsDegree.end())
       {
@@ -853,7 +862,6 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
     if (!ret)
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
-
 
 void MainWindow::on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered()
 {

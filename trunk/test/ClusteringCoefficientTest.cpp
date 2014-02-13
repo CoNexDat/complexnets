@@ -8,6 +8,7 @@
 #include "../src/ComplexNets/AdjacencyListGraph.h"
 #include "../src/ComplexNets/GraphExceptions.h"
 #include "../src/ComplexNets/ClusteringCoefficient.h"
+#include "../src/ComplexNets/GraphReader.h"
 
 namespace clusterCoefficientTest
 {
@@ -153,6 +154,40 @@ TEST_F(ClusteringCoefficientTest, AcyclicGraphTest)
 
     Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
+}
+
+TEST_F(ClusteringCoefficientTest, RealWorldTest)
+{
+    VectorGraph * g = new VectorGraph(false, false);
+    GraphReader<VectorGraph, Vertex> graphReader;
+
+    graphReader.read(*g, "TestTrees/AS_CAIDA_2008.txt");
+
+    typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
+    typedef Clustering::Coefficient Coef;
+    Clustering clustering;
+    Coef epsilon = 0.001;
+
+    Vertex * x = g->getVertexById(3);
+    Coef c = clustering.vertexClusteringCoefficient(x);
+    ASSERT_TRUE(fabs(c - 0.6666667) <  epsilon);
+
+    x = g->getVertexById(174);
+    c = clustering.vertexClusteringCoefficient(x);
+    ASSERT_TRUE(fabs(c - 0.01141431) <  epsilon);
+
+    x = g->getVertexById(4);
+    c = clustering.vertexClusteringCoefficient(x);
+
+    /* This is 1.0 in Network Workbench, but because of how ComplexNets works
+     * it throws error when supporting multiedges, so we either accept
+     * this value, or we dont throw exception when reading multiedges*/
+    ASSERT_TRUE(fabs(c - 1.0) <  epsilon);
+
+    x = g->getVertexById(23148);
+    c = clustering.vertexClusteringCoefficient(x);
+    
+    ASSERT_TRUE(fabs(c - 0.3583333) <  epsilon);
 }
 }
 

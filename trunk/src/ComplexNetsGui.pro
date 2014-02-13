@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2012-02-03T10:47:43
 # -------------------------------------------------
-TARGET = complexnets
+TARGET = complexnets_bin
 TEMPLATE = app
 SOURCES += ComplexNetsGui/src/main.cpp \
     ComplexNetsGui/src/mainwindow.cpp \
