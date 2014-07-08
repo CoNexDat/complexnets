@@ -89,6 +89,18 @@ NOTE: when working with a digraph, this command will show the number of vertices
 {{{
 --shell <vertex_index>
 }}}
+ * Maximal clique:
+ {{{
+ --maxCliqueExact <max_time>
+ --maxCliqueAprox
+ }}}
+ 
+ NOTE: The method maxCliqueExact takes to long. That's why it has a time-out. If looking for a quick answer use the approximation method.<br /> 
+ NOTE2: If you want to obtain a result the most accurate possible but with a time limit use:
+ 
+ {{{
+ ./complexnets_bin <graph> --maxCliqueExact <max_time> || ./complexnets_bin <graph> --maxCliqueAprox
+ }}}
 
 == Fitting data against a power law ==
 
@@ -141,7 +153,11 @@ NOTE: when working with digraphs, this command will output the in-degree probabi
 {{{
 --shell-output
 }}}
-
+ * Maximal clique distribution (for each node ¿witch is the biggest clique it is part of?):
+{{{
+--maxCliqueExact-output <max_time>
+--maxCliqueAprox-output
+}}}
 == Using a bash script to generate plots ==
 
 A bash script can be used to generate the plot for each property of a graph. To achieve this, the following command must be invoked:
