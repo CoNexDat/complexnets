@@ -50,6 +50,8 @@
     <property name="title">
      <string>&amp;Analysis</string>
     </property>
+    <addaction name="actionMaxClique"/>
+    <addaction name="actionMaxCliqueExact"/>
     <addaction name="actionBetweenness"/>
     <addaction name="actionDegree_distribution"/>
     <addaction name="actionClustering_coefficient"/>
@@ -62,6 +64,8 @@
     </property>
     <addaction name="actionBetweenness_vs_Degree"/>
     <addaction name="actionDegree_distribution_plotting"/>
+    <addaction name="action_maxClique_plotting"/>
+    <addaction name="action_maxCliqueExact_plotting"/>
     <addaction name="actionClustering_Coefficient_vs_Degree"/>
     <addaction name="actionNearest_Neighbors_Degree_vs_Degree"/>
     <addaction name="actionShell_Index_vs_Degree"/>
@@ -78,6 +82,8 @@
     </property>
     <addaction name="actionExportBetweenness_vs_Degree"/>
     <addaction name="actionExportDegree_distribution"/>
+    <addaction name="actionExportMaxClique_distribution"/>
+    <addaction name="actionExportMaxCliqueExact_distribution"/>
     <addaction name="actionExportClustering_Coefficient_vs_Degree"/>
     <addaction name="actionExportNearest_Neighbors_Degree_vs_Degree"/>
     <addaction name="actionExportShell_Index_vs_Degree"/>
@@ -151,6 +157,16 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
+  <action name="action_maxClique_plotting">
+   <property name="text">
+    <string>maxClique distribution</string>
+   </property>
+  </action>
+    <action name="action_maxCliqueExact_plotting">
+   <property name="text">
+    <string>maxCliqueExact distribution</string>
+   </property>
+  </action>
   <action name="actionDegree_distribution_plotting">
    <property name="text">
     <string>Degree distribution</string>
@@ -159,6 +175,16 @@
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionMaxClique">
+   <property name="text">
+    <string>Max Clique Aprox...</string>
+   </property>
+  </action>
+  <action name="actionMaxCliqueExact">
+   <property name="text">
+    <string>Max Clique Exact...</string>
    </property>
   </action>
   <action name="actionBetweenness">
@@ -209,6 +235,16 @@
   <action name="actionExportBetweenness_vs_Degree">
    <property name="text">
     <string>Betweenness vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportMaxClique_distribution">
+   <property name="text">
+    <string>maxClique distribution</string>
+   </property>
+  </action>
+  <action name="actionExportMaxCliqueExact_distribution">
+   <property name="text">
+    <string>maxCliqueExact distribution</string>
    </property>
   </action>
   <action name="actionExportDegree_distribution">

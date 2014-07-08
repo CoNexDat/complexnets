@@ -23,6 +23,14 @@ public:
     {
         return new Betweenness<Graph, Vertex>(g);
     }
+    virtual MaxClique<Graph, Vertex>* createMaxClique(Graph& g)
+    {
+        return new MaxClique<Graph, Vertex>(g);
+    }
+    virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph& g, int max_time)
+    {
+        return new MaxCliqueExact<Graph, Vertex>(g, max_time);
+    }
     virtual IClusteringCoefficient<Graph, Vertex>* createClusteringCoefficient()
     {
         return new ClusteringCoefficient<Graph, Vertex>();

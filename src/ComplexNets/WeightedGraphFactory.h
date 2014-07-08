@@ -40,6 +40,16 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
     {
         return new DegreeDistribution<Graph, Vertex>(g);
     }
+    
+    virtual MaxClique<Graph, Vertex>* createMaxClique(Graph&)
+    {
+        return NULL;
+    }
+        
+    virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph&, int)
+    {
+        return NULL;
+    }
 };
 }
 

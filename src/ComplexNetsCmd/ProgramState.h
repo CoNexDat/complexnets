@@ -26,6 +26,7 @@ private:
     void computeNearestNeighborsDegree(PropertyMap& propertyMap);
     void computeShellIndex(PropertyMap &propertyMap);
 
+	bool computeMaxCliqueDistr(PropertyMap &propertyMap,bool exact, unsigned int max_time);
 public:
 	ProgramState();
 
@@ -50,12 +51,16 @@ public:
 	double clustering(unsigned int vertex_id);
 	double knn(unsigned int vertex_id);
 	double shellIndex(unsigned int vertex_id);
+	double maxCliqueExact(unsigned int max_time);
+	double maxCliqueAprox();
 
 	double inDegreeDistribution(unsigned int vertex_id);
 	double outDegreeDistribution(unsigned int vertex_id);
 	
 	void printDegrees();
 	
+	bool exportMaxCliqueExact(string outputPath, unsigned int max_time);
+	void exportMaxCliqueAprox(string outputPath);
 	void exportCurrentGraph(string outputPath);
 	void exportBetweennessVsDegree(string outputPath);
 	void exportDegreeDistribution(string outputPath, unsigned int log_bin_given = false, unsigned int binsAmount = -1);

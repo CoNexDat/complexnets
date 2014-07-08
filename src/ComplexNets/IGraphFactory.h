@@ -7,6 +7,7 @@
 #include "IShellIndex.h"
 #include "IGraphReader.h"
 #include "IDegreeDistribution.h"
+#include "MaxClique.h"
 namespace graphpp
 {
 template<class Graph, class Vertex>
@@ -24,6 +25,10 @@ public:
     virtual IGraphReader<Graph, Vertex>* createGraphReader() = 0;
 
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g) = 0;
+    
+	virtual MaxClique<Graph, Vertex>* createMaxClique(Graph& g) = 0;
+	
+	virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph& g, int max_time) = 0;
 };
 }
 

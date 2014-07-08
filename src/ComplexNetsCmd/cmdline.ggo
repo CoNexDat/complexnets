@@ -99,6 +99,11 @@ defgroup "analysis" groupdesc="Network analysis methods"
 	groupoption "shell" - "Calculate the shell index of a given node" group="analysis"
 	int typestr="<vertex id>"
 
+	groupoption "maxCliqueExact" - "Calculate max clique if time (in seconds) is enough" group="analysis"
+	int typestr="<max time>"
+
+	groupoption "maxCliqueAprox" - "Calculate max clique aproximation" group="analysis"
+
 # ----- Group of network analysis methods.
 
 defgroup "output" groupdesc="Network analysis graphics"
@@ -117,6 +122,9 @@ defgroup "output" groupdesc="Network analysis graphics"
 		
 		option "shell-output" - "Shell index vs. Degree" dependon="output-file" optional
 
+		option "maxCliqueExact-output" - "" dependon="output-file" optional int typestr="<max time>"
+		
+		option "maxCliqueAprox-output" - "" dependon="output-file" optional
 
 option "output-file" o "Save the result in an output file"
 string

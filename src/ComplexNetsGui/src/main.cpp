@@ -231,7 +231,23 @@ int main(int argc, char* argv[])
 			} else {
 				errorMessage("Invalid vertex id");
 			}
-		} else if (args_info->shell_given) {
+		} else if (args_info->maxCliqueExact_given) {
+			int max_time = args_info->maxCliqueExact_arg;
+			double ret = state->maxCliqueExact(max_time);
+			if(ret != -1) {
+				cout << "Max clique size is: " + to_string(ret) + ".\n";
+			} else {
+				errorMessage("Time out.");
+				ERROR_EXIT;
+			}
+		} else if (args_info->maxCliqueAprox_given) {
+			double ret = state->maxCliqueAprox();
+			if(ret != -1) {
+				cout << "Max clique size is: " + to_string(ret) + ".\n";
+			} else {
+				errorMessage("Unknown error.");
+			}
+		}else if (args_info->shell_given) {
 			int vertex_id = args_info->shell_arg;
 			double ret = state->shellIndex(vertex_id);
 			if(ret != -1) {
@@ -254,8 +270,10 @@ int main(int argc, char* argv[])
 		if (args_info->output_file_given) {
 			string path = args_info->output_file_arg;
 
-			if (args_info->betweenness_output_given || args_info->ddist_output_given || args_info->clustering_output_given ||
-				args_info->knn_output_given || args_info->shell_output_given) {
+			if (args_info->betweenness_output_given || args_info->ddist_output_given || 
+					args_info->clustering_output_given || args_info->maxCliqueExact_output_given || 
+					args_info->maxCliqueAprox_output_given || args_info->knn_output_given || 
+					args_info->shell_output_given) {
 				string functionMessage = "";
 
 				if (args_info->betweenness_output_given) {
@@ -283,6 +301,16 @@ int main(int argc, char* argv[])
 						state->exportShellIndexVsDegree(path);
 						functionMessage = "shellIndex";
 					}
+				} if (args_info->maxCliqueExact_output_given) {
+					int max_time = args_info->maxCliqueExact_output_arg;
+					if(!state->exportMaxCliqueExact(path, max_time)) {
+						errorMessage("Time out.");
+						ERROR_EXIT;
+					}
+					functionMessage = "max clique distribution";
+				} else if (args_info->maxCliqueAprox_output_given) {
+					state->exportMaxCliqueAprox(path);
+					functionMessage = "max clique distribution aproximation";
 				}
 
 				cout << "Succesfully exported " + functionMessage + " in output file " + path + ".\n";
