@@ -111,6 +111,32 @@ double ProgramState::betweenness(unsigned int vertex_id) {
     return ret;
 }
 
+double ProgramState::maxCliqueAprox(){
+	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+	IMaxClique<Graph, Vertex>* maxClique = (IMaxClique<Graph,Vertex>*)factory->createMaxClique(this->graph);
+	
+	int ret = -1;
+	if(maxClique->finished()){
+		ret = maxClique->getMaxCliqueList().size();
+	}
+	
+	delete maxClique;
+	return ret;
+}
+
+double ProgramState::maxCliqueExact(unsigned int max_time){
+	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+	IMaxClique<Graph, Vertex>* maxClique = (IMaxClique<Graph,Vertex>*)factory->createExactMaxClique(this->graph,max_time);
+	
+	int ret = -1;
+	if(maxClique->finished()){
+		ret = maxClique->getMaxCliqueList().size();		
+	}
+	
+	delete maxClique;
+	return ret;
+}
+
 double ProgramState::clustering(unsigned int vertex_id) {
     double ret = -1;
 
@@ -448,6 +474,39 @@ void ProgramState::computeShellIndex(PropertyMap &propertyMap) {
     delete shellIndex;
 }
 
+bool ProgramState::computeMaxCliqueDistr(PropertyMap &propertyMap,bool exact, unsigned int max_time){
+	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+	IMaxClique<Graph, Vertex>* maxClique = exact? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(this->graph,max_time): (IMaxClique<Graph, Vertex>*)factory->createMaxClique(this->graph);
+	
+	if(maxClique->finished()){
+		DistributionIterator it = maxClique->distIterator();
+		while (!it.end())
+		{
+		    propertyMap.addProperty<double>(exact?"maxCliqueExactDistribution":"maxCliqueAproxDistribution", to_string<int>(it->first), it->second);
+		    it++;
+	   	}
+	}
+	return maxClique->finished();
+}
+
+bool ProgramState::exportMaxCliqueExact(string outputPath, unsigned int max_time){
+	PropertyMap propertyMap;
+    if(computeMaxCliqueDistr(propertyMap,true,max_time)){
+		GrapherUtils utils;
+		utils.exportPropertySet(propertyMap.getPropertySet("maxCliqueExactDistribution"), outputPath);
+		return true;
+	}
+	return false;
+}
+
+void ProgramState::exportMaxCliqueAprox(string outputPath){
+	PropertyMap propertyMap;
+    computeMaxCliqueDistr(propertyMap,false,0);
+    GrapherUtils utils;
+    utils.exportPropertySet(propertyMap.getPropertySet("maxCliqueAproxDistribution"), outputPath);
+}
+
+
 void ProgramState::printDegrees() {
     cout << "Degrees:" << endl;
     for (unsigned int i = 1; i <= graph.verticesCount(); ++i) {
@@ -459,6 +518,7 @@ void ProgramState::printDegrees() {
     }
     cout << endl;
 }
+
 
 void ProgramState::exportBetweennessVsDegree(string outputPath) {
     PropertyMap propertyMap;

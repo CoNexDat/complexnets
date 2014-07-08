@@ -25,6 +25,7 @@
 #include "../../ComplexNets/IShellIndex.h"
 #include "../../ComplexNets/DegreeDistribution.h"
 #include "../../ComplexNets/GraphGenerator.h"
+#include "../../ComplexNets/MaxClique.h"
 #include "../../ComplexNets/DirectedGraphFactory.h"
 #include "../../ComplexNets/DirectedDegreeDistribution.h"
 
@@ -214,13 +215,18 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 		ui->actionExportClustering_Coefficient_vs_Degree->setEnabled(true);
 		ui->actionExportShell_Index_vs_Degree->setEnabled(true);
 		ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
+		ui->actionMaxClique->setEnabled(true);
+		ui->actionMaxCliqueExact->setEnabled(true);
+		ui->action_maxClique_plotting->setEnabled(true);
+		ui->action_maxCliqueExact_plotting->setEnabled(true);
+		ui->actionExportMaxClique_distribution->setEnabled(true);
+		ui->actionExportMaxCliqueExact_distribution->setEnabled(true);
 	}
 	
     ui->actionDegree_distribution->setEnabled(true);
 	ui->actionDegree_distribution_plotting->setEnabled(true);
 	ui->actionExportDegree_distribution->setEnabled(true);
 	ui->actionClose_current_network->setEnabled(true);
-    
 }
 
 void MainWindow::onNetworkUnload()
@@ -236,9 +242,13 @@ void MainWindow::disableActions()
 {
     ui->actionClose_current_network->setEnabled(false);
     ui->actionBetweenness->setEnabled(false);
+    ui->actionMaxClique->setEnabled(false);
+    ui->actionMaxCliqueExact->setEnabled(false);
     ui->actionClustering_coefficient->setEnabled(false);
     ui->actionDegree_distribution->setEnabled(false);
     ui->actionDegree_distribution_plotting->setEnabled(false);
+    ui->action_maxClique_plotting->setEnabled(false);
+    ui->action_maxCliqueExact_plotting->setEnabled(false);
     ui->actionClose_current_network->setEnabled(false);
     ui->actionNearest_neighbors_degree->setEnabled(false);
     ui->actionShell_index->setEnabled(false);
@@ -251,6 +261,8 @@ void MainWindow::disableActions()
     ui->actionExportClustering_Coefficient_vs_Degree->setEnabled(false);
     ui->actionExportShell_Index_vs_Degree->setEnabled(false);
     ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(false);
+    ui->actionExportMaxClique_distribution->setEnabled(false);
+    ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
 }
 
 
@@ -297,6 +309,123 @@ QString MainWindow::inputId(const std::string label)
         ret.append(inputVertexIdDialog.textValue());
     return ret;
 }
+
+
+
+typedef typename std::list<int> id_list;
+
+void MainWindow::on_actionExportMaxCliqueExact_distribution_triggered()
+{
+	on_actionExportMaxClique_distribution_generic_triggered(true);
+}
+
+void MainWindow::on_actionExportMaxClique_distribution_triggered()
+{
+	on_actionExportMaxClique_distribution_generic_triggered(false);
+}
+
+void MainWindow::on_actionExportMaxClique_distribution_generic_triggered(bool exact)
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting MaxClique Distribution...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+        if (propertyMap.containsPropertySet(exact?"maxCliqueExactDistribution":"maxCliqueAproxDistribution"))
+        {
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet(exact?"maxCliqueExactDistribution":"maxCliqueAproxDistribution"), ret);
+            ui->textBrowser->append("Done.");
+        }
+        else
+            ui->textBrowser->append("Max Clique has not been previously computed. Please go to Plot->MaxClique Distribution first.");
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
+}
+
+void MainWindow::on_action_maxCliqueExact_plotting_triggered()
+{
+	on_action_maxClique_plotting_generic_triggered(true);
+}
+
+void MainWindow::on_action_maxClique_plotting_triggered()
+{
+	on_action_maxClique_plotting_generic_triggered(false);
+}
+
+void MainWindow::on_action_maxClique_plotting_generic_triggered(bool exact)
+{
+    bool ret, logBin = false;
+    unsigned int bins = 25;
+    ui->textBrowser->append("Plotting maxClique distribution...");
+		
+	this->computeMaxClique(exact);
+    
+    if (LogBinningDialog() == QMessageBox::Yes) {
+        logBin = true;
+        QString inputN = inputId("bins:");
+        if(!inputN.isEmpty()) {
+            bins = inputN.toInt();
+        }
+    }
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet(exact?"maxCliqueExactDistribution":"maxCliqueAproxDistribution"), "maxCliqueDistribution", logBin, bins);
+    this->console->show();
+    this->activateWindow();
+    if (!ret)
+        ui->textBrowser->append("An unexpected error has occured.\n");
+
+    ui->textBrowser->append("Done\n");
+}
+
+void MainWindow::on_actionMaxCliqueExact_triggered()
+{
+	on_actionMaxClique_generic_triggered(true);
+}
+
+void MainWindow::on_actionMaxClique_triggered()
+{
+	on_actionMaxClique_generic_triggered(false);
+}
+
+void MainWindow::on_actionMaxClique_generic_triggered(bool exact)
+{
+    if (this->weightedgraph)
+    {
+        ui->textBrowser->append("Max clique for weighted graphs is not supported.");
+        return;
+    }
+    
+    QString ret;
+    
+		this->computeMaxClique(exact);
+ 		if (exact && !propertyMap.containsPropertySet("maxCliqueExact")){
+			ret.append("Calculation timed out.\n");
+            ui->textBrowser->append(ret);
+			return;
+		}
+		try
+		{
+			
+            int maxCliqueSize = propertyMap.getProperty<int>(exact?"maxCliqueExact":"maxCliqueAprox", "size");
+            id_list list = propertyMap.getProperty<id_list >(exact?"maxCliqueExact":"maxCliqueAprox", "list");
+    		ui->textBrowser->append(exact?"Exact Max clique":"Aprox Max clique");
+            ret.append(" size is: ").append(to_string<int>(maxCliqueSize).c_str()).append(".\n");
+            ret.append("clique is: ");
+            for(std::list<int>::iterator iterator = list.begin();iterator != list.end();iterator++){
+            	ret.append(to_string<int>(*iterator).c_str()).append(" ");
+            }
+            ret.append(".\n");
+            ui->textBrowser->append(ret);
+		}
+		catch (const BadElementName& ex)
+		{
+		    ret.append("'Max clique: property was not found.");
+		    ui->textBrowser->append(ret);
+		}
+	//}
+}
+
+
 
 void MainWindow::on_actionBetweenness_triggered()
 {
@@ -377,6 +506,48 @@ void MainWindow::computeShellIndex()
         }
     }
 }
+
+void MainWindow::computeMaxClique(bool exact)
+{
+    
+    if (!propertyMap.containsPropertySet(exact?"maxCliqueExact":"maxCliqueAprox"))
+    {
+    	ui->textBrowser->append(exact?"Exact Max clique":"Aprox Max clique");
+        ui->textBrowser->append(" has not been previously computed. Computing now.");
+        if (this->weightedgraph)
+        {
+            ui->textBrowser->append("Max clique for weighted graphs is not supported.");
+            return;
+        }
+        else
+        {
+			int timeout = 0;
+			if(exact){
+				QString timeString= inputId("Time out (seconds):");
+				if(!timeString.isEmpty()){
+					timeout = timeString.toInt();
+				}
+			}
+		        IMaxClique<Graph, Vertex>* maxClique = exact? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(graph,timeout): (IMaxClique<Graph, Vertex>*)factory->createMaxClique(graph);
+		        
+				if(maxClique->finished()){
+				    id_list ids = maxClique->getMaxCliqueList();
+				    propertyMap.addProperty<int>(exact?"maxCliqueExact":"maxCliqueAprox", "size",ids.size());
+				    propertyMap.addProperty<id_list>(exact?"maxCliqueExact":"maxCliqueAprox", "list", ids);
+				    
+				    DistributionIterator it = maxClique->distIterator();
+				    while (!it.end())
+				    {
+				        propertyMap.addProperty<double>(exact?"maxCliqueExactDistribution":"maxCliqueAproxDistribution", to_string<int>(it->first), it->second);
+				        it++;
+				   	}
+		        }
+				
+		        delete maxClique;
+        }
+    }
+}
+
 void MainWindow::computeBetweenness()
 {
     if (!propertyMap.containsPropertySet("betweenness"))
@@ -1285,7 +1456,7 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 				QString text("Network created using Molloy-Reed algorithm using the file: ");
                 text.append(selectedFiles[0]);
 				text.append("\nReference: M. Molloy and B. Reed, A critical point for random graphs with a given degree sequence,Random Struct. Algorithms, 6 (1995), 161-179.");
-				text.append("\nReference: M. Molloy and B. Reed, The size of the giant component of a random graph with a given degree distribution, Combinatorics, Probab. Comput., 7 (1998), 295-305.");
+				text.append("\nReference: M. Molloy and B. Reed, The size of the giant component of a random graph with a given degree distribution, Combinatorics, Probab. Comput., 7factory (1998), 295-305.");
 				text.append("\nAmount of vertices in the graph: ");
 				unsigned int verticesCount = graph.verticesCount();
 				text.append(QString("%1").arg(verticesCount));

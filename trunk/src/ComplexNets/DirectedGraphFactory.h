@@ -42,6 +42,16 @@ class DirectedGraphFactory: public IGraphFactory<Graph, Vertex>
     {
         return new DirectedDegreeDistribution<Graph, Vertex>(g);
     }
+    
+    virtual MaxClique<Graph, Vertex>* createMaxClique(Graph&)
+    {
+        return NULL;
+    }
+        
+    virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph&, int)
+    {
+        return NULL;
+    }
 };
 }
 
