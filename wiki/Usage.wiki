@@ -2,9 +2,9 @@
 
 = Graphical mode =
 
-To start the application in graphical mode, just invoke `complexnets` whithout arguments from command line.
+To start the application in graphical mode, just invoke `complexnetspp` whithout arguments from command line.
 {{{
-$ ./complexnets
+$ ./complexnetspp
 }}}
 
 
@@ -16,17 +16,17 @@ ComplexNets++ can also run using the command line.
 
 The syntax to load a graph from an input file is the following:
 {{{
-$ ./complexnets -i <filename>
+$ ./complexnetspp -i <filename>
 }}}
 
 If the file represents a weighted graph, the command must include the `--weighted` argument:
 {{{
-$ ./complexnets -i <filename> --weighted
+$ ./complexnetspp -i <filename> --weighted
 }}}
 
 If the file represents a digraph, the command must include the `--digraph` argument:
 {{{
-$ ./complexnets -i <filename> --digraph
+$ ./complexnetspp -i <filename> --digraph
 }}}
 
 NOTE: Currently, both `--weighted` AND `--digraph` arguments CANNOT be used at the same time, as weighted digraphs aren't still supported by complexnets.
@@ -35,7 +35,7 @@ NOTE: Currently, both `--weighted` AND `--digraph` arguments CANNOT be used at t
 
 The graphs can also be created using a model. To achieve this, the command must have the following syntax:
 {{{
-$ ./complexnets <model_parameters>
+$ ./complexnetspp <model_parameters>
 }}}
 Where `<model_parameters>` can take one of the following values depending on the used model:
  * Erdos-Renyi:
@@ -63,7 +63,7 @@ Where `<model_parameters>` can take one of the following values depending on the
 
 To compute a property given a file, the command must have the following syntax:
 {{{
-$ ./complexnets <graph> <property>
+$ ./complexnetspp <graph> <property>
 }}}
 where `<graph>` are the arguments to load a graph or create it using a model, and `<property>` can take the following values depending on the calculated property:
  * Betweenness:
@@ -95,18 +95,18 @@ NOTE: when working with a digraph, this command will show the number of vertices
  --maxCliqueAprox
  }}}
  
- NOTE: The method maxCliqueExact takes to long. That's why it has a time-out. If looking for a quick answer use the approximation method.<br /> 
+ NOTE: The method maxCliqueExact takes to long. That's why it has a time-out (in seconds). If looking for a quick answer use the approximation method.<br /> 
  NOTE2: If you want to obtain a result the most accurate possible but with a time limit use:
  
  {{{
- ./complexnets_bin <graph> --maxCliqueExact <max_time> || ./complexnets_bin <graph> --maxCliqueAprox
+ $ ./complexnetspp <graph> --maxCliqueExact <max_time> || ./complexnetspp <graph> --maxCliqueAprox
  }}}
 
 == Fitting data against a power law ==
 
 To test a graph (either generated or loaded from a file) for a power law distribution, use the --print-deg option and redirect the output to the appropiate script. For instance:
 {{{
-$complexnets <graph> --print-deg=1 | python powerlawpy/script.py
+$ ./complexnetspp <graph> --print-deg=1 | python powerlawpy/script.py
 }}}
 
 The script is independent to the project and requires several extra dependencies, mainly: python, python-dev, numpy, scigy. Please refer to the appropiate README for installation details.
@@ -115,7 +115,7 @@ The script is independent to the project and requires several extra dependencies
 
 To save a loaded or model-generated graph in a file, the command must have the following syntax:
 {{{
-$ ./complexnets <graph> -o <file>
+$ ./complexnetspp <graph> -o <file>
 }}}
 where `<graph>` are the arguments to load a graph or create it using a model.
 
@@ -123,7 +123,7 @@ where `<graph>` are the arguments to load a graph or create it using a model.
 
 To generate a file that can be read and plotted by Gnuplot, the command must have the following syntax:
 {{{
-$ ./complexnets <graph> -o <output_file> <function>
+$ ./complexnetspp <graph> -o <output_file> <function>
 }}}
 where `<graph>` are the arguments to load a graph or create it using a model and `<function>` can take the following values depending on the calculated function:
  * Betweenness vs. Degree:
