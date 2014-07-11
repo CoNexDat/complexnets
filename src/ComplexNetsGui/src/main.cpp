@@ -233,17 +233,28 @@ int main(int argc, char* argv[])
 			}
 		} else if (args_info->maxCliqueExact_given) {
 			int max_time = args_info->maxCliqueExact_arg;
-			double ret = state->maxCliqueExact(max_time);
-			if(ret != -1) {
-				cout << "Max clique size is: " + to_string(ret) + ".\n";
+			std::list<int> ret = state->maxCliqueExact(max_time);
+			
+			if(!ret.empty()) {
+				cout << "Max clique size is: " + to_string(ret.size()) + ".\n";
+				cout << "Max clique is: ";
+				for(std::list<int>::iterator iterator = ret.begin();iterator != ret.end();iterator++){
+		        	cout << to_string<int>(*iterator).c_str() << " ";
+		        }
+		        cout << ".\n";
 			} else {
 				errorMessage("Time out.");
 				ERROR_EXIT;
 			}
 		} else if (args_info->maxCliqueAprox_given) {
-			double ret = state->maxCliqueAprox();
-			if(ret != -1) {
-				cout << "Max clique size is: " + to_string(ret) + ".\n";
+			std::list<int> ret = state->maxCliqueAprox();
+			if(!ret.empty()) {
+				cout << "Max clique size is: " + to_string(ret.size()) + ".\n";
+				cout << "Max clique is:";
+				for(std::list<int>::iterator iterator = ret.begin();iterator != ret.end();iterator++){
+		        	cout << " " << to_string<int>(*iterator).c_str() ;
+		        }
+		        cout << ".\n";
 			} else {
 				errorMessage("Unknown error.");
 			}

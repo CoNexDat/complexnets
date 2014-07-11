@@ -111,28 +111,27 @@ double ProgramState::betweenness(unsigned int vertex_id) {
     return ret;
 }
 
-double ProgramState::maxCliqueAprox(){
+std::list<int> ProgramState::maxCliqueAprox(){
 	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
 	IMaxClique<Graph, Vertex>* maxClique = (IMaxClique<Graph,Vertex>*)factory->createMaxClique(this->graph);
 	
-	int ret = -1;
+	std::list<int> ret;
 	if(maxClique->finished()){
-		ret = maxClique->getMaxCliqueList().size();
+		ret = maxClique->getMaxCliqueList();
 	}
 	
 	delete maxClique;
 	return ret;
 }
 
-double ProgramState::maxCliqueExact(unsigned int max_time){
+std::list<int> ProgramState::maxCliqueExact(unsigned int max_time){
 	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
 	IMaxClique<Graph, Vertex>* maxClique = (IMaxClique<Graph,Vertex>*)factory->createExactMaxClique(this->graph,max_time);
 	
-	int ret = -1;
+	std::list<int> ret;
 	if(maxClique->finished()){
-		ret = maxClique->getMaxCliqueList().size();		
+		ret = maxClique->getMaxCliqueList();
 	}
-	
 	delete maxClique;
 	return ret;
 }

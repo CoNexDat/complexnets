@@ -320,6 +320,11 @@ public:
     {
         for (NeighborsIterator it1 = v->neighborsIterator();!it1.end(); it1++)
         {
+        
+        	if ((time(NULL) - start) > maxTime){
+				return;
+			}
+			
             Vertex* x = *it1;
             if (x->getVisited())
 			{

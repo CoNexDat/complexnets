@@ -51,8 +51,8 @@ public:
 	double clustering(unsigned int vertex_id);
 	double knn(unsigned int vertex_id);
 	double shellIndex(unsigned int vertex_id);
-	double maxCliqueExact(unsigned int max_time);
-	double maxCliqueAprox();
+	std::list<int> maxCliqueExact(unsigned int max_time);
+	std::list<int> maxCliqueAprox();
 
 	double inDegreeDistribution(unsigned int vertex_id);
 	double outDegreeDistribution(unsigned int vertex_id);
