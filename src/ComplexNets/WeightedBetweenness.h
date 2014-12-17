@@ -59,7 +59,7 @@ public:
 
 private:
 
-    double INF = 1.0/0.0;
+    double const inf = 1.0/0.0;
 
     void calculateBetweenness(Graph& g)
     {
@@ -79,7 +79,7 @@ private:
 
             initMap(g, s->getVertexId(), sigma, 0.0, 1.0);
             initMap(g, s->getVertexId(), delta, 0.0, 0.0);
-	    initDistances(g, INF);
+	    initDistances(g, inf);
 	    s->distance=0.0;
 
             Q.push(s);
@@ -107,7 +107,7 @@ private:
 			//refreshing ordering of priority queues
 			std::make_heap(const_cast<Vertex**>(&Q.top()),const_cast<Vertex**>(&Q.top()) + Q.size(),BrandesNodeComparatorSmallerFirst());
 			std::make_heap(const_cast<Vertex**>(&S.top()),const_cast<Vertex**>(&S.top()) + S.size(),BrandesNodeComparatorLargerFirst());
-                        if ( wValue == INF  )
+                        if ( wValue == inf  )
 			{
 			   Q.push(w);
 			}
