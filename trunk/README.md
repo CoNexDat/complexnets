@@ -38,6 +38,8 @@ Then run the following commands
 qmake
 make all
 ```
+Version (at least)  4.8 of g++ must be installed
+
 
 Running the tests
 =================
