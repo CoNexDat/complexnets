@@ -112,3 +112,4 @@ Developers:
   - Alan Fabian Idesis      2-2012
   - Fernando Dávila         2-2012
   - Luciana Reznik          2-2014
+  - Jose Ignacio Galindo    2-2014
