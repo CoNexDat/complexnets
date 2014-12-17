@@ -222,8 +222,25 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 		ui->actionExportMaxClique_distribution->setEnabled(true);
 		ui->actionExportMaxCliqueExact_distribution->setEnabled(true);
 	}
+
+	if (weightedgraph){
+		ui->actionBetweenness->setEnabled(true);
+		ui->actionBetweenness_vs_Degree->setEnabled(true);
+		ui->actionMaxClique->setEnabled(false);
+		ui->action_maxClique_plotting->setEnabled(false);
+		ui->actionMaxCliqueExact->setEnabled(false);
+		ui->action_maxCliqueExact_plotting->setEnabled(false);
+		ui->actionShell_index->setEnabled(false);
+		ui->actionShell_Index_vs_Degree->setEnabled(false);
+		//export menue
+		ui->actionExportBetweenness_vs_Degree->setEnabled(true);
+		ui->actionExportShell_Index_vs_Degree->setEnabled(false);
+		ui->actionExportMaxClique_distribution->setEnabled(false);
+		ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
 	
-    ui->actionDegree_distribution->setEnabled(true);
+	}
+	
+    	ui->actionDegree_distribution->setEnabled(true);
 	ui->actionDegree_distribution_plotting->setEnabled(true);
 	ui->actionExportDegree_distribution->setEnabled(true);
 	ui->actionClose_current_network->setEnabled(true);
@@ -429,11 +446,11 @@ void MainWindow::on_actionMaxClique_generic_triggered(bool exact)
 
 void MainWindow::on_actionBetweenness_triggered()
 {
-    if (this->weightedgraph)
-    {
-        ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
-        return;
-    }
+    //if (this->weightedgraph)
+    //{
+    //    ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
+    //    return;
+    //}
     QString vertexId = inputId("Vertex id:");
     QString ret;
     double vertexBetweenness;
@@ -553,22 +570,34 @@ void MainWindow::computeBetweenness()
     if (!propertyMap.containsPropertySet("betweenness"))
     {
         ui->textBrowser->append("Betweenness has not been previously computed. Computing now.");
-        if (this->weightedgraph)
+        IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
+
+	if (this->weightedgraph)
         {
-            ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
-            return;
+            //ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
+            //return;
+ 	    printf("\nENTERING BETWEENNESS\n");
+            IBetweenness<WeightedGraph, WeightedVertex>* betweenness = weightedFactory->createBetweenness(weightedGraph);
+            IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator it = betweenness->iterator();
+            while (!it.end())
+            {
+               propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first), it->second);
+               ++it;
+            }
+            delete betweenness;
         }
         else
         {
             IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(graph);
             IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
-            while (!it.end())
+       	    while (!it.end())
             {
-                propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first), it->second);
-                ++it;
+               propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first), it->second);
+               ++it;
             }
-            delete betweenness;
-        }
+	    delete betweenness;
+	}
+        
     }
 }
 
@@ -973,14 +1002,8 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
         ui->textBrowser->append("An unexpected error has occured.\n");
 }
 
-//TODO check if betweennessVsDegree has previously calculated and avoid unnecesary computation. If not calculated save in property map
 void MainWindow::on_actionBetweenness_vs_Degree_triggered()
 {
-    if (this->weightedgraph)
-    {
-        ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
-        return;
-    }
     this->computeBetweenness();
     this->computeDegreeDistribution();
     double betweennessAuxAcum;
@@ -992,9 +1015,14 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
     VariantsSet::const_iterator it = degreeDistribution.begin();
     VariantsSet::const_iterator betwennessIt = betweenness.begin();
     VariantsSet::const_iterator betweennessVsDegreeIt;
+    //initialize for each degree betweenness in zero.
     while (it != degreeDistribution.end())
     {
         betweennessVsDegree.insert<double>(it->first, 0.0);
+	unsigned int degree  = from_string<unsigned int>(it->first);
+	unsigned int cant  = from_string<unsigned int>(it->second);
+        //TODO remove printf
+        printf("\n degree %i - n %i\n",degree, cant);
         ++it;
     }
 
@@ -1003,7 +1031,9 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
         unsigned int vertedId = from_string<unsigned int>(betwennessIt->first);
         Vertex* v = this->weightedgraph ? weightedGraph.getVertexById(vertedId) : graph.getVertexById(vertedId);
         betweennessAuxAcum = betweennessVsDegree.get_element<double>(to_string<unsigned int>(v->degree()));
-        betweennessVsDegree.insert<double>(to_string<unsigned int>(v->degree()) , betweennessAuxAcum + from_string<unsigned int>(betwennessIt->second));
+	//TODO remove printf
+	//printf("vertex id: %i - betweenness: %f \n",vertedId, );
+        betweennessVsDegree.insert<double>(to_string<unsigned int>(v->degree()) , betweennessAuxAcum + from_string<double>(betwennessIt->second));
 
         ++betwennessIt;
     }
