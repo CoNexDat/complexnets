@@ -15,6 +15,7 @@ public:
     typedef double Weight;
     typedef std::map<VertexId, Weight> NeighborsWeights;
     typedef AutonomousIterator<NeighborsWeights> WeightsIterator;
+    double distance;
 
     WeightedVertexAspect(VertexId id) : T(id) { }
 
