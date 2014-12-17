@@ -99,3 +99,4 @@ Developers:
   - Alejandro Magnorsky     2-2012 
   - Alan Fabian Idesis      2-2012
   - Fernando Dávila         2-2012
+  - Jose Ignacio galindo    2-2014
