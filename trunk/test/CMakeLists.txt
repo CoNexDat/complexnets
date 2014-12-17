@@ -8,10 +8,14 @@ set(test_src TestMain.cpp
          TraverserForwardTest.cpp
          AdjacencyListGraphTest.cpp
          AdjacencyListVertexTest.cpp
-	 ShellIndexTest.cpp
-	 WeightedNearestNeighborsDegreeTest.cpp
-	 WeightedClusteringCoefficientTest.cpp
-)
+         ShellIndexTest.cpp
+         WeightedNearestNeighborsDegreeTest.cpp
+         WeightedClusteringCoefficientTest.cpp
+         TraverserBFSTest.cpp
+         TraverserOrderedTest.cpp
+         DirectedDegreeDistributionTest.cpp
+)       
+
 
 INCLUDE_DIRECTORIES(../src)
 
