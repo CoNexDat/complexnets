@@ -48,9 +48,19 @@ Adding the previously mentioned requirements, install this other ones:
 
 ``` sudo apt-get install cmake unzip ```
 
-And run
+And then to install the Gtest library
 
-``` test/install_gtest.sh ```
+``` 
+- wget http://googletest.googlecode.com/files/gtest-1.7.0.zip
+- unzip gtest-1.7.0.zip
+- cd gtest-1.7.0
+- ./configure
+- make
+- sudo cp -a include/gtest /usr/include
+- sudo cp -a lib/.libs/* /usr/lib/
+
+```
+Finnaly
 
 ```
 cmake CMakeLists.txt
@@ -101,4 +111,4 @@ Developers:
   - Alejandro Magnorsky     2-2012 
   - Alan Fabian Idesis      2-2012
   - Fernando Dávila         2-2012
-  - Jose Ignacio galindo    2-2014
+  - Luciana Reznik          2-2014

@@ -39,3 +39,4 @@ Developers:      Carlos Castro           1-2012
 		 Alejandro Magnorsky     2-2012 
 		 Alan Fabian Idesis      2-2012
 		 Fernando Dávila         2-2012
+		 Luciana Reznik			 2-2014
