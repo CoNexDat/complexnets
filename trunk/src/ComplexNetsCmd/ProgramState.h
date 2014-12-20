@@ -47,6 +47,8 @@ public:
 	void setHiperbolicGraph(unsigned int n, float a, float c);
 
 	double betweenness(unsigned int vertex_id);
+	double wbetweenness(unsigned int vertex_id);
+
 	double degreeDistribution(unsigned int vertex_id);
 	double clustering(unsigned int vertex_id);
 	double knn(unsigned int vertex_id);
