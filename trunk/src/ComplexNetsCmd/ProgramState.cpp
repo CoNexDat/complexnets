@@ -308,31 +308,55 @@ double ProgramState::outDegreeDistribution(unsigned int vertex_id) {
 }
 
 void ProgramState::computeBetweenness(PropertyMap& propertyMap) {
-    IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
-    IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
-    IBetweenness<Graph, Vertex>::BetweennessIterator betweennessIterator = betweenness->iterator();
+    IGraphFactory<Graph, Vertex> *factory;
+    IBetweenness<Graph, Vertex>* betweenness;
+    IGraphFactory<WeightedGraph, WeightedVertex> *wfactory;
+    IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
+    IDegreeDistribution<WeightedGraph, WeightedVertex>* wdegreeDistribution;
+    IDegreeDistribution<Graph, Vertex>* degreeDistribution;
 
     // Calculate betweenness.
-
-    while (!betweennessIterator.end()) {
-        propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(betweennessIterator->first), betweennessIterator->second);
-        ++betweennessIterator;
+    if (this->weighted){
+        wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        wbetweenness = wfactory->createBetweenness(this->weightedGraph);
+        IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator betweennessIterator = wbetweenness->iterator();
+        while (!betweennessIterator.end()) {
+                propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(betweennessIterator->first), betweennessIterator->second);
+                ++betweennessIterator;
+        }
+	delete wbetweenness;
+    }else{
+    	factory = new GraphFactory<Graph, Vertex>();
+    	betweenness = factory->createBetweenness(this->graph);
+    	IBetweenness<Graph, Vertex>::BetweennessIterator betweennessIterator = betweenness->iterator();
+    	while (!betweennessIterator.end()) {
+       		propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(betweennessIterator->first), betweennessIterator->second);
+        	++betweennessIterator;
+    	}
+	delete betweenness;
     }
-
-    delete betweenness;
 
     // Calculate degree distribution.
-
-    IDegreeDistribution<Graph, Vertex>* degreeDistribution = factory->createDegreeDistribution(graph);
-    DegreeDistribution<Graph, Vertex>::DistributionIterator degreeIterator = degreeDistribution->iterator();
-
-    while (!degreeIterator.end()) {
-        propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(degreeIterator->first), degreeIterator->second);
-        propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(degreeIterator->first), degreeIterator->second / (double)graph.verticesCount());
-        ++degreeIterator;
+    if (this->weighted){
+        wdegreeDistribution = wfactory->createDegreeDistribution(this->weightedGraph);
+        DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator degreeIterator = wdegreeDistribution->iterator();
+        while (!degreeIterator.end()) {
+                propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(degreeIterator->first), degreeIterator->second);
+                propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(degreeIterator->first), degreeIterator->second / (double)graph.verticesCount());
+                ++degreeIterator;
+        }
+        delete degreeDistribution;
+    } else {
+	degreeDistribution = factory->createDegreeDistribution(graph);
+    	DegreeDistribution<Graph, Vertex>::DistributionIterator degreeIterator = degreeDistribution->iterator();
+    	while (!degreeIterator.end()) {
+        	propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(degreeIterator->first), degreeIterator->second);
+        	propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(degreeIterator->first), degreeIterator->second / (double)graph.verticesCount());
+        	++degreeIterator;
+    	}
+    	delete degreeDistribution;
     }
 
-    delete degreeDistribution;
 
     double betweennessAuxAcum;
     unsigned int degreeAmount;
@@ -347,16 +371,17 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap) {
         betweennessVsDegree.insert<double>(it->first, 0.0);
         ++it;
     }
-
     while (betwennessIt != betweennessSet.end())
     {
         unsigned int vertedId = from_string<unsigned int>(betwennessIt->first);
-        Vertex* v = graph.getVertexById(vertedId);
+        //Vertex* v = graph.getVertexById(vertedId);
+	Vertex* v = this->weighted ? weightedGraph.getVertexById(vertedId) : graph.getVertexById(vertedId);
         betweennessAuxAcum = betweennessVsDegree.get_element<double>(to_string<unsigned int>(v->degree()));
         betweennessVsDegree.insert<double>(to_string<unsigned int>(v->degree()) , betweennessAuxAcum + from_string<unsigned int>(betwennessIt->second));
 
         ++betwennessIt;
     }
+
 
     betweennessVsDegreeIt = betweennessVsDegree.begin();
     while (betweennessVsDegreeIt != betweennessVsDegree.end())
