@@ -138,22 +138,6 @@ double ProgramState::betweenness(unsigned int vertex_id) {
     return ret;
 }
 
-double ProgramState::wbetweenness(unsigned int vertex_id) {
-    IGraphFactory<WeightedGraph, WeightedVertex> *factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-    IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness = factory->createBetweenness(this->weightedGraph);
-    IBetweenness<Graph, Vertex>::BetweennessIterator it = wbetweenness->iterator();
-    double ret = -1;
-    while (!it.end())
-    {
-        if(it->first == vertex_id) {
-                ret = it->second;
-                break;
-        }
-        ++it;
-    }
-    delete wbetweenness;
-    return ret;
-}
 
 
 std::list<int> ProgramState::maxCliqueAprox(){
