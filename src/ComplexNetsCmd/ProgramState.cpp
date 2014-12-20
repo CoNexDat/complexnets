@@ -95,21 +95,66 @@ void ProgramState::setHiperbolicGraph(unsigned int n, float a, float c) {
 }
 
 double ProgramState::betweenness(unsigned int vertex_id) {
-	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
-	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
-    IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
+    IGraphFactory<Graph, Vertex> *factory;
+    IBetweenness<Graph, Vertex>* betweenness;
+    IGraphFactory<WeightedGraph, WeightedVertex> *wfactory;
+    IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
+    //IBetweenness<Graph, Vertex>::BetweennessIterator it;
+    //IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator wit;
+    double ret;
+    double wret;
+
+    if (this->weighted)
+    {
+        wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        wbetweenness = wfactory->createBetweenness(this->weightedGraph);
+	IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator wit = wbetweenness->iterator();
+        ret = -1;
+        while (!wit.end())
+        {
+                if(wit->first == vertex_id) {
+                        ret = wit->second;
+                        break;
+                }
+                ++wit;
+        }
+	delete wbetweenness;
+    }else{
+        factory = new GraphFactory<Graph, Vertex>();
+        betweenness = factory->createBetweenness(this->graph);
+	IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
+    	ret = -1;
+    	while (!it.end())
+    	{
+        	if(it->first == vertex_id) {
+                	ret = it->second;
+                	break;
+        	}
+        	++it;
+    	}
+	delete betweenness;
+    }
+
+    return ret;
+}
+
+double ProgramState::wbetweenness(unsigned int vertex_id) {
+    IGraphFactory<WeightedGraph, WeightedVertex> *factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+    IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness = factory->createBetweenness(this->weightedGraph);
+    IBetweenness<Graph, Vertex>::BetweennessIterator it = wbetweenness->iterator();
     double ret = -1;
     while (!it.end())
     {
-     	if(it->first == vertex_id) {
-     		ret = it->second;
-     		break;
-     	}
+        if(it->first == vertex_id) {
+                ret = it->second;
+                break;
+        }
         ++it;
     }
-    delete betweenness;
+    delete wbetweenness;
     return ret;
 }
+
 
 std::list<int> ProgramState::maxCliqueAprox(){
 	IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
