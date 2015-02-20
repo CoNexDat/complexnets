@@ -67,6 +67,9 @@ struct gengetopt_args_info
   int q_arg;	/**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model)..  */
   char * q_orig;	/**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model). original value given at command line.  */
   const char *q_help; /**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model). help description.  */
+  int t_arg;  /**< @brief How many loops to wait until new root is selected (only for Extended Hot Model)..  */
+  char * t_orig;  /**< @brief How many loops to wait until new root is selected (only for Extended Hot Model)..  */
+  const char *t_help; /**< @brief How many loops to wait until new root is selected (only for Extended Hot Model)..  */
   float r_arg;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model)..  */
   char * r_orig;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). original value given at command line.  */
   const char *r_help; /**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). help description.  */
@@ -131,6 +134,7 @@ struct gengetopt_args_info
   unsigned int m_given ;	/**< @brief Whether m was given.  */
   unsigned int xi_given ;	/**< @brief Whether xi was given.  */
   unsigned int q_given ;	/**< @brief Whether q was given.  */
+  unsigned int t_given ;  /**< @brief Whether t was given.  */
   unsigned int r_given ;	/**< @brief Whether r was given.  */
   unsigned int ks_given ;	/**< @brief Whether ks was given.  */
   unsigned int deg_given ;	/**< @brief Whether deg was given.  */

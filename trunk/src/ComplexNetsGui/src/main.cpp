@@ -135,18 +135,25 @@ int main(int argc, char* argv[])
 				ERROR_EXIT;
 			}
 
+			if (!args_info->t_given) {
+				usageErrorMessage("Extended Hot graph generation requires the parameter user select between how many loops the core is recalculated.");
+				ERROR_EXIT;
+			}
+
  			int n = args_info->n_arg;
  			int m = args_info->m_arg;
  			float xi = args_info->xi_arg;
  			int q = args_info->q_arg;
  			float r = args_info->r_arg;
+ 			int t = args_info->t_arg;
  			VALIDATE_POS(n);
  			VALIDATE_POS(m);
  			VALIDATE_POS(q);
  			VALIDATE_POS(xi);
  			VALIDATE_POS(r);
+ 			VALIDATE_POS(t);
 
- 			state->setExtendedHotGraph(m, n, xi, q, r);
+ 			state->setExtendedHotGraph(m, n, xi, q, r, t);
  			cout << "Succesfully created an Extended Hot graph with " + to_string(n) + " nodes.\n";
 
 		} else if (args_info->molloy_given) {

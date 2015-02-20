@@ -116,6 +116,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->xi_given = 0 ;
   args_info->q_given = 0 ;
   args_info->r_given = 0 ;
+  args_info->t_given = 0 ;
   args_info->ks_given = 0 ;
   args_info->deg_given = 0 ;
   args_info->a_given = 0 ;
@@ -155,6 +156,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->m_orig = NULL;
   args_info->xi_orig = NULL;
   args_info->q_orig = NULL;
+  args_info->t_orig = NULL;
   args_info->r_orig = NULL;
   args_info->ks_arg = NULL;
   args_info->ks_orig = NULL;
@@ -305,6 +307,7 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->m_orig));
   free_string_field (&(args_info->xi_orig));
   free_string_field (&(args_info->q_orig));
+  free_string_field (&(args_info->t_orig));
   free_string_field (&(args_info->r_orig));
   free_string_field (&(args_info->ks_arg));
   free_string_field (&(args_info->ks_orig));
@@ -382,6 +385,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "xi", args_info->xi_orig, 0);
   if (args_info->q_given)
     write_into_file(outfile, "q", args_info->q_orig, 0);
+  if (args_info->t_given)
+    write_into_file(outfile, "t", args_info->t_orig, 0);
   if (args_info->r_given)
     write_into_file(outfile, "r", args_info->r_orig, 0);
   if (args_info->ks_given)
@@ -616,6 +621,11 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (args_info->q_given && ! args_info->hot_given)
     {
       fprintf (stderr, "%s: '--q' ('-q') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->t_given && ! args_info->hot_given)
+    {
+      fprintf (stderr, "%s: '--t' ('-t') option depends on option 'hot'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
   if (args_info->r_given && ! args_info->hot_given)
@@ -876,7 +886,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVi:n:p:c:m:x:q:r:k:d:a:o:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVi:n:p:c:m:x:q:r:k:d:a:o:t:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -991,6 +1001,19 @@ cmdline_parser_internal (
             goto failure;
         
           break;
+
+        case 't': /* Parameter used to selecte how many loops to wait to select new root  (only for Extended Hot Model)..  */
+
+          if (update_arg( (void *)&(args_info->t_arg), 
+               &(args_info->t_orig), &(args_info->t_given),
+              &(local_args_info.t_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "t", 't',
+              additional_error))
+            goto failure;
+        
+          break;
+
         case 'k':	/* Input file that specifies, for each K, how many nodes have that K..  */
         
         
