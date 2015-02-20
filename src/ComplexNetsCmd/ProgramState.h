@@ -42,7 +42,7 @@ public:
 	void readGraphFromFile(string path);
 	void setErdosRenyiGraph(unsigned int n, float p);
 	void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
-	void setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r);
+	void setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r, unsigned int t);
 	void setMolloyReedGraph(string path);
 	void setHiperbolicGraph(unsigned int n, float a, float c);
 

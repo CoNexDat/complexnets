@@ -144,21 +144,23 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
 }
 
 /*
+ * The Paper can be checked in: http://cnet.fi.uba.ar/ignacio.alvarez-hamelin/pdf/model_internet_jiah_ns.pdf
  * HOT Extended Model
- * m represents the number of edges in each new vertex
+ * m represents the number of edges in each new vertex (k in the paper)
  * n is the total nodes number
- * xi is the parameter used to select the neighbors for new vertex.
- * q  represents the number of edges added in the graph after of connect a vertex.
- * r is the parameter user to selected the edges in the graph after of connect a vertex.
+ * xi is the parameter used to select the neighbors for new vertex. (Theta in the paper)
+ * q  represents the number of edges added in the graph after of connect a vertex. (q in the paper as well)
+ * r is the parameter used to selected the edges in the graph after of connect a vertex. (γ in the paper)
+ * t is the parameter that represent how many rounds until a new root selection (τ in the paper)
  *
  * Algorithm summary
- * 1) Create the first vertex with random position and set it as root
- * 2) Create new vertexes V with random positions and then connect to the vertixes U which minimizes the euclidean distance from U to V and the hoops distance from U to root. This process is repeated m times for each new vertex added.
- * 3) Create q new edges on the graph for the vertex added
- * A new root is chosen with probability dependant on the node degree.
+ * Step 1) Create the first vertex with random position and set it as root
+ * Step 2) Create new vertexes V with random positions and then connect to the vertixes U which minimizes the euclidean distance from U to V and the hoops distance from U to root. This process is repeated m times for each new vertex added.
+ * Step 3) Create q new edges on the graph for the vertex added
+ * Step 4) A new root is chosen with probability dependant on the node degree every t rounds.
  * */
 
-Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, float xi,  unsigned int q, float r)
+Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, float xi,  unsigned int q, float r, unsigned int t)
 {
 	Graph* graph = new Graph(false, false);
 	vector<unsigned int> vertexIndexes;
@@ -166,14 +168,16 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 
 	vertexesPositions.clear();
 	//Firts vertex
+	// Step 1
 	Vertex* newVertex = new Vertex(1);
 	graph->addVertex(newVertex);
 	addVertexPosition();
 	unsigned int root = 1;
 
-	//Creation of vertex
 	for(unsigned int i = 2; i <= n; i++)
 	{
+		// Step 2
+		// Creation of vertex
 		newVertex = new Vertex(i);
 		graph->addVertex(newVertex);
 		addVertexPosition();
@@ -181,33 +185,63 @@ Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, 
 		{
 			unsigned HopsDistance = graph->hops(graph->getVertexById(j), graph->getVertexById(root)); //distance between vertex evaluated and root vertex
 			float euclidianDistance = distanceBetweenVertex(j, i); //Distance between vertex evaluated and new vertex
+			
+			// Original FKP Algorithm chooses a new connection between the new vertex and the one with minimum W
+			
 			float w = euclidianDistance + xi * HopsDistance;
-				distance[w]=j; //stores 'w' as key of a map
+			distance[w]=j; //stores 'w' as key of a map
 		}
 		addEdges(graph, newVertex,distance, m, &vertexIndexes);
 		distance.clear();
-		for(unsigned int j = 1; j <= i; j++) //selected the edges that will be added, is necessary to evaluate all nodes.
+		// Step 3
+		for (unsigned int qfinal = 0 ; qfinal < q; qfinal++)
 		{
-			float euclidianDistance = 0;
-			unsigned int HopsWithEdge = 0;
-			unsigned int HopsWithOutEdge = 0;
-			if (!graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(root)) && j!=root) //If the node selected as candidate to add an edge is the root or is already connected, don't do anything
+			float minDist = 0;
+			unsigned int finalJ = 0;
+			unsigned int finalK = 0;
+			for(unsigned int j = 1; j <= i; j++) //selected the edges that will be added, is necessary to evaluate all nodes.
 			{
-				for (unsigned int l = 1; l <= i; l++) //Calculate the distance sumarize from each existant vertex to the root, with the edge and without it.
+				for (unsigned int k = 1; k <= i; k++)
 				{
-					HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge; //Hops between evaluated vertex and root vertex without new edge
-					graph->addEdge(graph->getVertexById(j), graph->getVertexById(root)); //Add new edges only for evaluation, later will be removed
-					HopsWithEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root)) + HopsWithEdge; //Hops between evaluated vertex and root vertex with new edge
-					graph->removeEdge(graph->getVertexById(j), graph->getVertexById(root)); //remove the edge previously added
+					float euclidianDistance = 0;
+					unsigned int HopsWithEdge = 0;
+					unsigned int HopsWithOutEdge = 0;
+					if (k != j && !graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(k)))
+					{
+						for (unsigned int l = 1; l <= i; l++) //Calculate the distance sumarize from each existant vertex to the root, with the edge and without it.
+						{
+							HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge; //Hops between evaluated vertex and root vertex without new edge
+							graph->addEdge(graph->getVertexById(j), graph->getVertexById(k)); //Add new edges only for evaluation, later will be removed
+							HopsWithEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root)) + HopsWithEdge; //Hops between evaluated vertex and root vertex with new edge
+							graph->removeEdge(graph->getVertexById(j), graph->getVertexById(k)); //remove the edge previously added
+						}
+
+						euclidianDistance = distanceBetweenVertex(j, k);
+						float w = euclidianDistance + (r/i) * (HopsWithEdge - HopsWithOutEdge);
+						if (minDist == 0 || w < minDist)
+						{
+							minDist = w;
+							finalJ = j;
+							finalK = k;
+						}
+					}
 				}
-				euclidianDistance = distanceBetweenVertex(j, root);
-				float w = euclidianDistance + (r/i) * (HopsWithEdge - HopsWithOutEdge);
-				distance[w]=j;
+			}
+
+			if (minDist != 0)
+			{
+				vertexIndexes.push_back(finalJ);
+				vertexIndexes.push_back(finalK);
+				graph->addEdge(graph->getVertexById(finalJ), graph->getVertexById(finalK));
 			}
 		}
-		addEdges(graph, graph->getVertexById(root),distance, q, &vertexIndexes);
 		distance.clear();
-		root = vertexIndexes[rand() % vertexIndexes.size()];
+
+		//Step 4
+		if ((i - 1) % t == 0)
+		{
+			root = vertexIndexes[rand() % vertexIndexes.size()];
+		}
 	}
 	return graph;
 }

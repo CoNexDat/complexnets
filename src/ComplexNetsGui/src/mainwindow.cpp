@@ -240,7 +240,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 	
 	}
 	
-    	ui->actionDegree_distribution->setEnabled(true);
+    ui->actionDegree_distribution->setEnabled(true);
 	ui->actionDegree_distribution_plotting->setEnabled(true);
 	ui->actionExportDegree_distribution->setEnabled(true);
 	ui->actionClose_current_network->setEnabled(true);
@@ -1407,14 +1407,17 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 		QString inputM = inputId("m:");
 		QString inputXI = inputId("xi:");
 		QString inputQ = inputId("q:");
+        QString inputT = inputId("T:");
 		QString ret;
 
+        // The default parameters are taken from the paper (http://cnet.fi.uba.ar/ignacio.alvarez-hamelin/pdf/model_internet_jiah_ns.pdf)
 
-		unsigned int m = 2;
-		unsigned int n = 20;
-		unsigned int q = 2;
-		float xi = 0.02;
-		float r = 0.01;
+		unsigned int m = 1;
+		unsigned int n = 50;
+		unsigned int q = 1;
+		float xi = 0.03;
+		float r = xi;
+        unsigned int t = 1;
 
 	    try
 	    {
@@ -1429,8 +1432,10 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 	        	xi = inputXI.toInt();
 			if(!inputQ.isEmpty())
 	        	q = inputQ.toInt();
+            if (!inputT.isEmpty())
+                t = inputT.toInt();
 
-			graph = *(GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r));
+			graph = *(GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r, t));
 
 			QString text("Network created using HOT extended Algorithm");
 			text.append("\nReference: J. I. Alvarez-Hamelin y N. Schabanel. An Internet Graph Model Based on Trade-Off Optimization.Eur. Phys.J.B, special issue on 'Applications of networks', 38(2):231-237, march II2004.");
@@ -1442,6 +1447,9 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 	        text.append(QString("%1").arg(xi));
 	        text.append("\nq: ");
 	        text.append(QString("%1").arg(q));
+            text.append("\nT: ");
+            text.append(QString("%1").arg(t));
+            text.append("\nVertixes count:");
 	        unsigned int verticesCount = graph.verticesCount();
 	        text.append(QString("%1").arg(verticesCount));
 	        text.append(".\n");

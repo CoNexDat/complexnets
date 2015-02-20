@@ -78,9 +78,9 @@ void ProgramState::setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsi
 	this->graph = *GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n);
 }
 
-void ProgramState::setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r) {
+void ProgramState::setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r, unsigned int t) {
     setWeighted(false);
-    this->graph = *GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r);
+    this->graph = *GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r, t);
 }
 
 void ProgramState::setMolloyReedGraph(string path) {
