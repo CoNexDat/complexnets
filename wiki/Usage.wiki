@@ -48,7 +48,7 @@ Where `<model_parameters>` can take one of the following values depending on the
 }}}
  * Extended Hot:
 {{{
---hot -n <number_of_nodes> -m <new_vertex_edges> -x <neighbors_select> -q <added_edges> -r <edges_select>
+--hot -n <number_of_nodes> -m <new_vertex_edges> -x <neighbors_select> -q <added_edges> -r <edges_select> -t <root_regeneration_rate>
 }}}
  * Molloy-Reed:
 {{{
