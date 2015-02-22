@@ -1445,11 +1445,13 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 	        text.append(QString("%1").arg(m));
 	        text.append("\nxi: ");
 	        text.append(QString("%1").arg(xi));
+            text.append("\nr: ");
+            text.append(QString("%1").arg(r));
 	        text.append("\nq: ");
 	        text.append(QString("%1").arg(q));
             text.append("\nT: ");
             text.append(QString("%1").arg(t));
-            text.append("\nVertixes count:");
+            text.append("\nVertex count:");
 	        unsigned int verticesCount = graph.verticesCount();
 	        text.append(QString("%1").arg(verticesCount));
 	        text.append(".\n");

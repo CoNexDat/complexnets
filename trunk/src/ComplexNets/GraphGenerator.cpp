@@ -144,8 +144,8 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
 }
 
 /*
- * The Paper can be checked in: http://cnet.fi.uba.ar/ignacio.alvarez-hamelin/pdf/model_internet_jiah_ns.pdf
  * HOT Extended Model
+ * The Paper can be checked in: http://cnet.fi.uba.ar/ignacio.alvarez-hamelin/pdf/model_internet_jiah_ns.pdf
  * m represents the number of edges in each new vertex (k in the paper)
  * n is the total nodes number
  * xi is the parameter used to select the neighbors for new vertex. (Theta in the paper)
@@ -163,87 +163,145 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
 Graph* GraphGenerator::generateHotExtendedGraph(unsigned int m, unsigned int n, float xi,  unsigned int q, float r, unsigned int t)
 {
 	Graph* graph = new Graph(false, false);
+
+	//Every time an edge is added, two entries are added in vertexIndexes, the two indexes of the nodes joined.
 	vector<unsigned int> vertexIndexes;
-	map<float,unsigned int> distance;
+	unsigned int root = 1;
 
 	vertexesPositions.clear();
 	//Firts vertex
-	// Step 1
-	Vertex* newVertex = new Vertex(1);
-	graph->addVertex(newVertex);
-	addVertexPosition();
-	unsigned int root = 1;
 
+	// Step 1
+	
+	addOriginalVertex(graph);
+
+	//For each of the nodes we will be adding to the graph
 	for(unsigned int i = 2; i <= n; i++)
 	{
 		// Step 2
-		// Creation of vertex
-		newVertex = new Vertex(i);
-		graph->addVertex(newVertex);
-		addVertexPosition();
-		for(unsigned int j = 1; j < i; j++) //this for evaluated "w" for each vertex in the graph
-		{
-			unsigned HopsDistance = graph->hops(graph->getVertexById(j), graph->getVertexById(root)); //distance between vertex evaluated and root vertex
-			float euclidianDistance = distanceBetweenVertex(j, i); //Distance between vertex evaluated and new vertex
-			
-			// Original FKP Algorithm chooses a new connection between the new vertex and the one with minimum W
-			
-			float w = euclidianDistance + xi * HopsDistance;
-			distance[w]=j; //stores 'w' as key of a map
-		}
-		addEdges(graph, newVertex,distance, m, &vertexIndexes);
-		distance.clear();
-		// Step 3
-		for (unsigned int qfinal = 0 ; qfinal < q; qfinal++)
-		{
-			float minDist = 0;
-			unsigned int finalJ = 0;
-			unsigned int finalK = 0;
-			for(unsigned int j = 1; j <= i; j++) //selected the edges that will be added, is necessary to evaluate all nodes.
-			{
-				for (unsigned int k = 1; k <= i; k++)
-				{
-					float euclidianDistance = 0;
-					unsigned int HopsWithEdge = 0;
-					unsigned int HopsWithOutEdge = 0;
-					if (k != j && !graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(k)))
-					{
-						for (unsigned int l = 1; l <= i; l++) //Calculate the distance sumarize from each existant vertex to the root, with the edge and without it.
-						{
-							HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge; //Hops between evaluated vertex and root vertex without new edge
-							graph->addEdge(graph->getVertexById(j), graph->getVertexById(k)); //Add new edges only for evaluation, later will be removed
-							HopsWithEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root)) + HopsWithEdge; //Hops between evaluated vertex and root vertex with new edge
-							graph->removeEdge(graph->getVertexById(j), graph->getVertexById(k)); //remove the edge previously added
-						}
+		
+		addFKPNode(i, graph, root, xi, &vertexIndexes, m);
 
-						euclidianDistance = distanceBetweenVertex(j, k);
-						float w = euclidianDistance + (r/i) * (HopsWithEdge - HopsWithOutEdge);
-						if (minDist == 0 || w < minDist)
-						{
-							minDist = w;
-							finalJ = j;
-							finalK = k;
-						}
+		// Step 3
+		
+		addExtendedEdges(q, i, graph, root, r, &vertexIndexes);
+
+		//Step 4
+		
+		root = chooseNewRoot(i, t, root, vertexIndexes);
+	}
+	return graph;
+}
+
+/**
+	The main Vertex is created, added to the graph and a position is generated
+*/
+void GraphGenerator::addOriginalVertex(Graph* graph)
+{
+	Vertex* newVertex = new Vertex(1);
+	graph->addVertex(newVertex);
+	addVertexPosition();
+}
+
+/**
+	A new vertex is created and added. Then m edges are added according to the original FKP function
+
+	TODO: Optimize this function using Voronoi Diagrams
+*/
+void GraphGenerator::addFKPNode(unsigned int vertexIndex, Graph* graph, unsigned int root, float xi, vector<unsigned int>* vertexIndexes, unsigned int m)
+{
+	map<float,unsigned int> distance;
+
+	// Creation of vertex
+	Vertex* newVertex = new Vertex(vertexIndex);
+	graph->addVertex(newVertex);
+	addVertexPosition();
+	
+	for(unsigned int j = 1; j < vertexIndex; j++) //this for evaluated "w" for each vertex already in the graph
+	{
+		unsigned HopsDistance = graph->hops(graph->getVertexById(j), graph->getVertexById(root)); //distance between vertex evaluated and root vertex
+		float euclidianDistance = distanceBetweenVertex(j, vertexIndex); //Distance between vertex evaluated and new vertex
+		
+		// Original FKP Algorithm chooses a new connection between the new vertex and the one with minimum W
+		
+		float w = euclidianDistance + xi * HopsDistance;
+		distance[w]=j; //stores 'w' as key of a map
+	}
+	addEdges(graph, newVertex,distance, m, vertexIndexes); //m edges are added acording to the minimum distances
+	distance.clear();
+}
+
+/**
+	q edges are added according to the function in the paper
+
+	TODO: Optimize the complexity of the algorithm using Voronoi diagrams.
+*/
+void GraphGenerator::addExtendedEdges(unsigned int q, unsigned int vertexIndex, Graph* graph, unsigned int root, float r, vector<unsigned int>* vertexIndexes)
+{
+	// We will go through this function q times, adding q edges
+	for (unsigned int qfinal = 0 ; qfinal < q; qfinal++)
+	{
+		// At the end of the loop we only add one edge, so we save the minimum distance and the indexes of the nodes
+		float minDist = 0;
+		unsigned int finalJ = 0;
+		unsigned int finalK = 0;
+
+		// We loop through every combination of nodes
+		for(unsigned int j = 1; j <= vertexIndex; j++) 
+		{
+			for (unsigned int k = 1; k <= vertexIndex; k++)
+			{
+				// For each combination of nodes we calculate the function
+				float euclidianDistance = 0;
+				unsigned int HopsWithEdge = 0;
+				unsigned int HopsWithOutEdge = 0;
+				if (k != j && !graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(k)))
+				{
+					for (unsigned int l = 1; l <= vertexIndex; l++) 
+					{
+						// We calculate the hops to the root with and without the edge
+						HopsWithOutEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root))+HopsWithOutEdge; //Hops between evaluated vertex and root vertex without new edge
+						graph->addEdge(graph->getVertexById(j), graph->getVertexById(k)); //Add new edges only for evaluation, later will be removed
+						HopsWithEdge = graph->hops(graph->getVertexById(l), graph->getVertexById(root)) + HopsWithEdge; //Hops between evaluated vertex and root vertex with new edge
+						graph->removeEdge(graph->getVertexById(j), graph->getVertexById(k)); //remove the edge previously added
+					}
+
+					euclidianDistance = distanceBetweenVertex(j, k);
+					float w = euclidianDistance + (r/vertexIndex) * (HopsWithEdge - HopsWithOutEdge);
+						
+					// We save only the minimum
+
+					if (minDist == 0 || w < minDist)
+					{
+						minDist = w;
+						finalJ = j;
+						finalK = k;
 					}
 				}
 			}
-
-			if (minDist != 0)
-			{
-				vertexIndexes.push_back(finalJ);
-				vertexIndexes.push_back(finalK);
-				graph->addEdge(graph->getVertexById(finalJ), graph->getVertexById(finalK));
-			}
 		}
-		distance.clear();
 
-		//Step 4
-		if ((i - 1) % t == 0)
+		// Finally, we add a new edge
+
+		if (minDist != 0)
 		{
-			root = vertexIndexes[rand() % vertexIndexes.size()];
+			vertexIndexes->push_back(finalJ);
+			vertexIndexes->push_back(finalK);
+			graph->addEdge(graph->getVertexById(finalJ), graph->getVertexById(finalK));
 		}
 	}
-	return graph;
+}
+
+/**
+	A new root is choosen according to the parameter t and the indexes distribution
+*/
+int GraphGenerator::chooseNewRoot(unsigned int vertexIndex, unsigned int t, unsigned int root, vector<unsigned int> vertexIndexes)
+{
+	if ((vertexIndex - 1) % t == 0)
+	{
+		return vertexIndexes[rand() % vertexIndexes.size()];
+	}
+	return root;
 }
 
 void GraphGenerator::addEdges(Graph* graph, Vertex* vertex, map<float, unsigned int> distance, unsigned int quant, vector<unsigned int>* vertexIndexes)
