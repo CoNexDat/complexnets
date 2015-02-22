@@ -24,6 +24,10 @@ private:
 	inline PolarPosition getRandomHyperbolicCoordinates( float a, double maxr );
 public:
 	static GraphGenerator *getInstance();
+	void addOriginalVertex(Graph* graph);
+	void addFKPNode(unsigned int vertexIndex, Graph* graph, unsigned int root, float xi, vector<unsigned int>* vertexIndexes, unsigned int m);
+	void addExtendedEdges(unsigned int q, unsigned int vertexIndex, Graph* graph, unsigned int root, float r, vector<unsigned int>* vertexIndexes);
+	int chooseNewRoot(unsigned int vertexIndex, unsigned int t, unsigned int root, vector<unsigned int> vertexIndexes);
 
 	Graph *generateGraphFromFile(string path, bool directed, bool multigraph);
 	DirectedGraph *generateDirectedGraphFromFile(string path, bool multigraph);
