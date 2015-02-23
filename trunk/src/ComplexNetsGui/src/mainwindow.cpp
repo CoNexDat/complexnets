@@ -485,17 +485,36 @@ void MainWindow::on_actionShell_index_triggered()
     if (!vertexId.isEmpty())
     {
         this->computeShellIndex();
-        try
-        {
-            vertexShellIndex = propertyMap.getProperty<unsigned int>("shellIndex", vertexId.toStdString());
-            ret.append("Shell index for vertex ").append(vertexId);
-            ret.append(" is: ").append(to_string<unsigned int>(vertexShellIndex).c_str()).append(".\n");
-            ui->textBrowser->append(ret);
-        }
-        catch (const BadElementName& ex)
-        {
-            ret.append("Shell index: Vertex with id ").append(vertexId).append(" was not found.");
-            ui->textBrowser->append(ret);
+        if(vertexId.toStdString() == "all"){
+            try
+            {
+                ret.append("Looking for all the vertexes starting from 1\n");
+            	unsigned int i = 1;
+            	while(true) {
+                    vertexShellIndex = propertyMap.getProperty<unsigned int>("shellIndex", to_string<unsigned int>(i));
+                    ret.append("Shell index for vertex ").append(to_string<int>(i).c_str());
+                    ret.append(" is: ").append(to_string<unsigned int>(vertexShellIndex).c_str()).append(".\n");
+                    i++;
+            	}
+            }
+            catch (const BadElementName& ex)
+            {
+                ui->textBrowser->append(ret);
+            }
+
+        }else{
+            try
+            {
+                vertexShellIndex = propertyMap.getProperty<unsigned int>("shellIndex", vertexId.toStdString());
+                ret.append("Shell index for vertex ").append(vertexId);
+                ret.append(" is: ").append(to_string<unsigned int>(vertexShellIndex).c_str()).append(".\n");
+                ui->textBrowser->append(ret);
+            }
+            catch (const BadElementName& ex)
+            {
+                ret.append("Shell index: Vertex with id ").append(vertexId).append(" was not found.");
+                ui->textBrowser->append(ret);
+            }
         }
     }
 }
