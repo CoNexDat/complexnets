@@ -163,6 +163,7 @@ int main(int argc, char* argv[])
 			}
 
 			string path = args_info->ks_arg;
+			state->setMolloyReedGraph(path);
 		} else if (args_info->hyperbolic_given) {
 			if (!args_info->n_given) {
 				usageErrorMessage("Hiperbolic graph generation requires a number of nodes.");
