@@ -9,12 +9,19 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <set>
 #include <vector>
 #include <math.h>
 #include "IGraphReader.h"
 
 namespace graphpp
 {
+
+struct pair_hash {
+    inline std::size_t operator()(const std::pair<int,int> & v) const {
+        return v.first*31+v.second;
+    }
+};
 
 using namespace std;
 
@@ -68,213 +75,271 @@ public:
 
 private:
 
-	/*
-	Algorithm summary
+	void Print (const vector<unsigned int>& v) {
+  		for (int i=0; i<v.size();i++) {
+    		cout << v[i] << endl;
+  		}
+	}
 
-	k is an histogram with the degree distribution
-
-	Iniallty all the future nodes are created with their ids and stored in "vec" vector
-
-	We have to choose randomly nodes from vec. It's necessary for the algorithm to choose first the nodes with greater degree first. If not the graph could be complete before finishing the process of adding nodes
-	In order to choose randomnly nodes from one degree, we use the variables actualDegree, actualDegreeAmount, actualDegreeStartIndex
-	In other map we store the future degree that each vertex needs to have after the algoritmh finishes.
-	
-	First Step:
-	The first node is added simply added to the graph
-	Secuentially the nodes are added to the graph and connected with an existant vertex that has free degrees. 
-	There is a vector vertexesWithFreeDegrees that stores de vertexes that had free degrees. Each time a node is added, an existant node is randomly selected from this vector.
-	Free degree of a vertex is calculated from the differente between its future degree stored and the neighbours count (actual degree)
-	
-	Second step:
-	After first step, could be some nodes with free degrees, they will be listed on vertexesWithFreeDegrees. Randomly we get two nodes from this vector that are not connected and connect them.
-	If after adding the edge, one of them is full-degree, it's removed from the vector. This process is done until there are no more nodes in the vector or the nodes that remains are already connected between them.
-	
-	Third stem:
-	If there are still nodes with free degrees, we use existint randomly selected edges as a bridge to connect the nodes that remain free.
-	*/
+	void printSet (const set<unsigned int>& s) {
+		set<unsigned int>::const_iterator it = s.begin();
+  		for (; it != s.end();it++) {
+    		cout << *it << endl;
+  		}
+	}
 
 	void molloyReedAlgorithm(Graph& graph, map<unsigned int, unsigned int> k) {
 
-		unsigned int sum = 0, index, i, j, chosenId, existentVertexId, actualDegree, actualDegreeAmount = 0, actualDegreeStartIndex;
-		vector<unsigned int> vec, vertexesWithFreeDegrees;
-		Vertex* v;
-		Vertex* existentVertex;
-		Vertex* otherVertex;
+		int totalNodes = 0;
+		int freeDegrees = 0;
+		bool vertexesWithOneFreeDegreeFull = false;
+		set<unsigned int> nodesSet;
+		map<unsigned int, unsigned int> vertexesIdsDegrees;
+		map<unsigned int, set<unsigned int> > nodesNotConnectedTo;
+		vector<unsigned int> unconectedVertexesIds;
+		vector<unsigned int> unconectedVertexesOneDegreeIds;
+		vector<unsigned int> vertexesWithOneFreeDegree;
+		vector<unsigned int> vertexesWithFreeDegrees;
+		vector<unsigned int> vertexesWitNoFreeDegrees;
+		vector<unsigned int> vertexesInTheGraph;
+		unsigned int id = 0;
+		unsigned int maxDegreeId = 0;
+		unsigned int maxDegreeQuant = 0;
+
 		map<unsigned int, unsigned int>::iterator it;
-		map<unsigned int, unsigned int>::reverse_iterator rit;
-		bool first=true;
-
-		vertexesFutureDegrees.clear();
-
-		for (it = k.begin(); it != k.end(); it++)
-		{			
-			for (i = 0; i < it->second; i++){
-				vec.push_back(++sum);
-				vertexesFutureDegrees.push_back(it->first);
+		
+		unsigned int maxIndex = 0;
+		unsigned int maxIndexOneDegree = 0;
+		unsigned int maxDegreeIndex = 0;
+		for (it = k.begin(); it != k.end(); it++) {
+			cout << "key: " << it->first << " value: " << it->second << "\n";
+			unsigned int quantityOfVertexes = it->second;
+			unsigned int degrees = it->first;
+			if (maxDegreeQuant < degrees) {
+				if (degrees > 1) {
+					maxDegreeIndex = maxIndex;
+				} else {
+					maxDegreeIndex = maxIndexOneDegree;
+				}
+				maxDegreeQuant = degrees;
+				maxDegreeId = id;
+			}
+			for (unsigned int i = 0; i < quantityOfVertexes; i++) {
+				vertexesIdsDegrees[id] = degrees;
+				if (degrees == 1) {
+					unconectedVertexesOneDegreeIds.push_back(id);
+					maxIndexOneDegree++;
+				} else {
+					unconectedVertexesIds.push_back(id);
+					maxIndex++;
+				}
+				nodesSet.insert(id);
+				id++;	
 			}
 		}
+
+
+		for (int i = 0; i < id; i++) {
+			set<unsigned int> newNodeSet = nodesSet;
+			newNodeSet.erase(i);
+			nodesNotConnectedTo[i] = newNodeSet;
+		}
+		cout << "maxDegreeQuant: " << maxDegreeQuant << "\n";
+		totalNodes = id;
+		freeDegrees = maxDegreeQuant;
+		if (freeDegrees == 1) {
+			vertexesWithOneFreeDegree.push_back(maxDegreeId);
+			unconectedVertexesOneDegreeIds.erase(unconectedVertexesOneDegreeIds.begin() + maxDegreeIndex);
+		} else {
+			vertexesWithFreeDegrees.push_back(maxDegreeId);
+			unconectedVertexesIds.erase(unconectedVertexesIds.begin() + maxDegreeIndex);
+		}
+		cout << "asd1" << "\n";
+		vertexesInTheGraph.push_back(maxDegreeId);
+
+		Vertex* firstVertex = new Vertex(maxDegreeId);
+		graph.addVertex(firstVertex);
+
+		cout << "maxDegreeId: " << maxDegreeId << "\n";
+		cout << "maxDegreeQuant: " << maxDegreeQuant << "\n";
+		cout << "unconectedVertexesIds: \n";
+		Print(unconectedVertexesIds);
+		cout << "unconectedVertexesOneDegreeIds: \n";
+		Print(unconectedVertexesOneDegreeIds);
+
 		
-		rit = k.rbegin();
-		actualDegreeStartIndex = sum;
-		while (sum > 0)
-		{
-			if (actualDegreeAmount == 0) {
-				actualDegree = rit->first;
-				actualDegreeAmount = rit->second;
-				actualDegreeStartIndex = actualDegreeStartIndex - actualDegreeAmount;
-				if(rit != k.rend())
-					rit++;
+		cout << "StartAlgorithm: \n\n";
+
+		while (!unconectedVertexesIds.empty() || !unconectedVertexesOneDegreeIds.empty()) {
+			//cout << "unconectedVertexesIds: \n";
+			//Print(unconectedVertexesIds);
+			//cout << "unconectedVertexesOneDegreeIds: \n";
+			//Print(unconectedVertexesOneDegreeIds);
+
+			int unconectedSize;
+			unsigned int nextVertexId;
+			unsigned int nextVertexDegree;
+
+			int index_new;
+			if (!unconectedVertexesIds.empty()) {
+				unconectedSize = unconectedVertexesIds.size();
+				index_new = rand() % unconectedSize;
+				nextVertexId = unconectedVertexesIds[index_new];
+				nextVertexDegree = vertexesIdsDegrees[nextVertexId];
+				unconectedVertexesIds.erase(unconectedVertexesIds.begin() + index_new);
+			} else {
+				unconectedSize = unconectedVertexesOneDegreeIds.size();
+				index_new = rand() % unconectedSize;
+				nextVertexId = unconectedVertexesOneDegreeIds[index_new];
+				nextVertexDegree = vertexesIdsDegrees[nextVertexId];
+				unconectedVertexesOneDegreeIds.erase(unconectedVertexesOneDegreeIds.begin() + index_new);
 			}
 
-			//cout << "sum vale: " << sum << "\n";
-			//cout << "Estoy extrayendo vertices de grado " << actualDegree << "\n";
-			//cout << "Quedan extraer " << actualDegreeAmount << "\n";
-
-			// Choose randomly an index that representes a node with the degree we are working
-			index = actualDegreeStartIndex + (rand() % actualDegreeAmount);
-			chosenId = vec[index];
-
-			if (first)
-			{
-				// If it's the first node, add it to the graph and to thevertexesWithFreeDegrees vector. It always has free degrees
-				first = false;
-				Vertex* newVertex = new Vertex(chosenId);
-				graph.addVertex(newVertex);
-				vertexesWithFreeDegrees.push_back(chosenId);
-				//cout << "Agrego vertice " << chosenId << "\n";
-			}
-			else
-			{
-			
-				if (vertexesWithFreeDegrees.size()==0)
-				{
-					// If the graph is complete before finishing the addition of nodes, the algorithm fails and return the partial graph
-					return;
+			cout << "unconected is empty?: " << unconectedVertexesIds.empty() << "\n";
+			cout << "unconectedSize: " << unconectedSize << "\n";
+			cout << "nodeFromIndex: " << index_new << "\n";
+			cout << "nodeFromId: " << nextVertexId << "\n";
+			cout << "nodeFromDegree: " << nextVertexDegree << "\n";
+			if (nextVertexDegree != 0) {
+				vertexesIdsDegrees[nextVertexId] = nextVertexDegree - 1;
+				int noFreeAndOneFreeSize = vertexesWithOneFreeDegree.size() + vertexesWitNoFreeDegrees.size();
+				if (noFreeAndOneFreeSize == vertexesInTheGraph.size()) {
+					vertexesWithOneFreeDegreeFull = true;
 				}
-				else
-				{
-					// Choose a random node from the ones that has free degrees
-					existentVertexId = vertexesWithFreeDegrees[rand() % vertexesWithFreeDegrees.size()];
-					existentVertex = graph.getVertexById(existentVertexId);
-	
-					Vertex* newVertex = new Vertex(chosenId);
+				
+				unsigned int selectedId;
+				int size;
+				int index;
+				if (vertexesWithOneFreeDegreeFull) {
+					size = vertexesWithOneFreeDegree.size();
+					if (size == 0) {
+						break;
+					}
+					index = rand() % size;
+					selectedId = vertexesWithOneFreeDegree[index];
+				} else {
+					size = vertexesWithFreeDegrees.size();
+					index = rand() % size;
+					selectedId = vertexesWithFreeDegrees[index];
+				}
+				cout << "nodeToIndex: " << index << "\n";
+				cout << "nodeToId: " << selectedId << "\n";
+				cout << "nodeToDegree: " << vertexesIdsDegrees[selectedId] << "\n";
+
+				if (vertexesIdsDegrees[selectedId] == 0) {
+					vertexesWithOneFreeDegree.erase(vertexesWithOneFreeDegree.begin() + index);
+					vertexesWitNoFreeDegrees.push_back(selectedId);
+				} else {
+					int degreesLeft = vertexesIdsDegrees[selectedId] - 1;
+					vertexesIdsDegrees[selectedId] = degreesLeft;
+					if (degreesLeft == 1) {
+						vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + index);
+						vertexesWithOneFreeDegree.push_back(selectedId);
+					} else if (degreesLeft == 0) {
+						vertexesWithOneFreeDegree.erase(vertexesWithOneFreeDegree.begin() + index);
+						vertexesWitNoFreeDegrees.push_back(selectedId);
+					}
+					//cout << "vertexesWithFreeDegrees: \n";
+					//Print(vertexesWithFreeDegrees);
+					//cout << "vertexesWithOneFreeDegree: \n";
+					//Print(vertexesWithOneFreeDegree);
+					Vertex* existentVertex = graph.getVertexById(selectedId);
+					Vertex* newVertex = new Vertex(nextVertexId);
 					graph.addVertex(newVertex);
 					graph.addEdge(existentVertex, newVertex);
-					//cout << "Agrego vertice " << chosenId << " unido a " << existentVertexId << "\n";
+
+					vertexesInTheGraph.push_back(nextVertexId);
+					nodesNotConnectedTo[selectedId].erase(nextVertexId);
+					nodesNotConnectedTo[nextVertexId].erase(selectedId);
+					
+					
+					if (nextVertexDegree - 1 == 0) {
+
+						vertexesWitNoFreeDegrees.push_back(nextVertexId);
+					} else if (nextVertexDegree - 1 == 1) {
+						vertexesWithOneFreeDegree.push_back(nextVertexId);
+					} else {
+						vertexesWithFreeDegrees.push_back(nextVertexId);
+						vertexesWithOneFreeDegreeFull = false;
+					}
+				}
+			}
+			//printVertexVector(graph, vertexesInTheGraph);
+		}
+
+
+
+
+
+		
+		cout << "####################### Begin rewire! #######################: \n\n";
+		while(!vertexesWithFreeDegrees.empty() || !vertexesWithOneFreeDegree.empty()) {
 			
-					// If new node has free degrees, add it to the vector
-					if (openDegrees(newVertex) > 0)
-						vertexesWithFreeDegrees.push_back(chosenId);
-
-					// IF the existant node is complete, remove from the vector
-					if (openDegrees(existentVertex)==0)
-						for(i = 0; i < vertexesWithFreeDegrees.size(); i++)
-							if(vertexesWithFreeDegrees[i] == existentVertexId)
-								vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + i);
-				}
+			unsigned int index_new;
+			unsigned int selectedId;
+			unsigned int selectedDegrees;
+			bool fromFreeDegrees;
+			if (!vertexesWithFreeDegrees.empty()) {
+				index_new = rand() % vertexesWithFreeDegrees.size();
+				selectedId = vertexesWithFreeDegrees[index_new];
+				selectedDegrees = vertexesIdsDegrees[selectedId];
+				fromFreeDegrees = true;
+			} else {
+				index_new = rand() % vertexesWithOneFreeDegree.size();
+				selectedId = vertexesWithOneFreeDegree[index_new];
+				selectedDegrees = vertexesIdsDegrees[selectedId]; 
+				fromFreeDegrees = false;
 			}
-			// Delete node from the nodes vector and decrement counters
-			vec.erase(vec.begin()+index);
-			sum--;
-			actualDegreeAmount--;
+			cout << "fromFreeDegrees: " << fromFreeDegrees << "\n";
+			cout << "selectedId: " << selectedId << "\n";
+			cout << "selectedDegrees: " << selectedDegrees << "\n";
+			cout << "nodesNotConnectedTo: " << "\n";
 
-			//if (actualDegreeAmount==0)
-				//cout << "Termine de poner los nodos de grado " << actualDegree << "\n";
-		}
-		//cout << "Termine de generar todo el grafo!\n";
-		// Finish step 1
+			set<unsigned int> unconectedVertexes = nodesNotConnectedTo[selectedId];
+			set<unsigned int>::const_iterator it(nodesNotConnectedTo[selectedId].begin());
 
-		// DEBUG: print vector with free degrees nodes
-		//printVertexVector(graph, vertexesWithFreeDegrees);
-
-		// With each node, try to connect it's free degrees with the other nodes in the vector
-		for (i = 0; i < vertexesWithFreeDegrees.size(); i++)
-		{
-			v = graph.getVertexById(vertexesWithFreeDegrees[i]);
-			//cout << "QUIERO ENCONTRARLE VECINOS A " << vertexesWithFreeDegrees[i] << "\n";
-			if (openDegrees(v) > 0)
-			{
-				for (j = i+1; j < vertexesWithFreeDegrees.size() && openDegrees(v) > 0; j++)
-				{
-					otherVertex = graph.getVertexById(vertexesWithFreeDegrees[j]);
-					if (!v->isNeighbourOf(otherVertex) && openDegrees(otherVertex)>0)
-					{
-						//cout << "Conecto el vertice " << vertexesWithFreeDegrees[i] << " con el vertice " << vertexesWithFreeDegrees[j] << "\n";
-						graph.addEdge(v, otherVertex);
+			//printSet(unconectedVertexes);
+			if (!unconectedVertexes.empty() && selectedDegrees != 0) {
+				unsigned int willConnectIndex = rand() % unconectedVertexes.size();
+				advance(it, willConnectIndex);
+				unsigned int willConnect = *it;
+				unsigned int willConnectDegrees = vertexesIdsDegrees[willConnect];
+				if (willConnectDegrees != 0) {
+					if (fromFreeDegrees) {
+						vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + index_new);
+					}else {
+						vertexesWithOneFreeDegree.erase(vertexesWithOneFreeDegree.begin() + index_new);
 					}
+
+					if (selectedDegrees - 1 == 1) {
+						vertexesWithOneFreeDegree.push_back(selectedId);
+					} else if (selectedDegrees - 1 == 0) {
+						vertexesWitNoFreeDegrees.push_back(selectedId);					
+					}
+					vertexesIdsDegrees[selectedId] = selectedDegrees -1;
+					vertexesIdsDegrees[willConnect] = willConnectDegrees - 1;
+					Vertex* existentVertexFrom = graph.getVertexById(selectedId);
+					Vertex* existentVertexTo = graph.getVertexById(willConnect);
+					graph.addEdge(existentVertexFrom, existentVertexTo);
+					nodesNotConnectedTo[selectedId].erase(willConnect);
+					nodesNotConnectedTo[willConnect].erase(selectedId);
+				} else {
+					nodesNotConnectedTo[selectedId].erase(willConnect);
+
 				}
+			} else {
+				nodesNotConnectedTo.erase(selectedId);
+				if (fromFreeDegrees) {
+					vertexesWithFreeDegrees.erase(vertexesWithFreeDegrees.begin() + index_new);
+				} else {
+					vertexesWithOneFreeDegree.erase(vertexesWithOneFreeDegree.begin() + index_new);
+				}
+				vertexesIdsDegrees[selectedId] = 0;
 			}
+			//printVertexVector(graph, vertexesInTheGraph);
 		}
-		// DEBUG: print vector with free degrees nodes
-		//printVertexVector(graph, vertexesWithFreeDegrees);
 
-		// Step 3
-		//cout << "ETAPA 3"<< "\n";
-		for (i = 0; i < vertexesWithFreeDegrees.size(); i++) 
-				{
-					Vertex* VfreeDegrees = graph.getVertexById(vertexesWithFreeDegrees[i]); 
-					for (j=1; j<=graph.verticesCount() && openDegrees(VfreeDegrees)>1 ; j++)
-					{
-						//cout << "Buscando nodos de rewiring para vertice "<<vertexesWithFreeDegrees[i]<<" con "<< openDegrees(graph.getVertexById(vertexesWithFreeDegrees[i]))<< " grados libres\n";
-						Vertex* V1Rewiring = graph.getVertexById(j);
-						if (vertexesWithFreeDegrees[i]!=j && !V1Rewiring ->isNeighbourOf(VfreeDegrees))
-						{
-							NeighborsIterator it = V1Rewiring->neighborsIterator(); 
-							while (!it.end()) //If a node is selected, we search it's neighbouts
-							{
-								Vertex* V2Rewiring = *it;
-								if(!V2Rewiring ->isNeighbourOf(VfreeDegrees))
-								{
-										graph.addEdge(V1Rewiring, VfreeDegrees);
-										graph.addEdge(V2Rewiring, VfreeDegrees);
-										graph.removeEdge(V1Rewiring, V2Rewiring);
-										//cout<<"removiendo aristas entre nodos "<<j<<" y "<<V2Rewiring->getVertexId()<<"\n";
-										//cout<<"Añadiendo aristas desde los nodos "<<j<<" y "<<V2Rewiring->getVertexId()<<" hacia el nodo "<<vertexesWithFreeDegrees[i]<<"\n";
-										//cout<<"\n";
-										break;
-								}
-								it++;
-							}
-						}
-					}
-					if (openDegrees(graph.getVertexById(vertexesWithFreeDegrees[i]))==1)
-					{
-						Vertex* V1freeDegrees = graph.getVertexById(vertexesWithFreeDegrees[i]); 
-						NeighborsIterator it = V1freeDegrees->neighborsIterator();
-						while (!it.end() && openDegrees(V1freeDegrees)==1)
-						{
-							Vertex* V2freeDegrees = *it; 
-							for (j=1; j<=graph.verticesCount() && openDegrees(V2freeDegrees)==1; j++)
-							{
-								Vertex* SelectedVertex1 = graph.getVertexById(j); 
-								if (vertexesWithFreeDegrees[i]!=j && !SelectedVertex1 ->isNeighbourOf(V1freeDegrees)) 
-								{
-									NeighborsIterator it2 = SelectedVertex1->neighborsIterator(); 
-									while (!it2.end()) 
-									{
-										Vertex* SelectedVertex2 = *it2; 
-										if(!SelectedVertex2 ->isNeighbourOf(V2freeDegrees))
-										{
-												graph.addEdge(V1freeDegrees, SelectedVertex1);
-												graph.addEdge(V2freeDegrees, SelectedVertex2);
-												graph.removeEdge(SelectedVertex1, SelectedVertex2);
-												//cout<<"Removiendo aristas entre nodos "<<SelectedVertex1->getVertexId()<<" y "<<SelectedVertex2->getVertexId()<<"\n";
-												//cout<<"Añadiendo aristas entre los nodos "<<SelectedVertex1->getVertexId()<<"-"<<V1freeDegrees->getVertexId()<<" y "<<SelectedVertex2->getVertexId()<<"-"<<V2freeDegrees->getVertexId()<<"\n";
-												//cout<<"\n";
-												break;
-										}
-										it2++;
-									}
-								}
-							}
-							it++;
-						}
-					}
-				}
-		 // Finish step 3
-
-		vertexesWithFreeDegrees.clear();
-		vec.clear();
+		
 	}
 
 
@@ -285,7 +350,7 @@ private:
 		for (unsigned int i=0;i<vec.size();i++)
 		{
 			v = graph.getVertexById(vec[i]);
-			cout << "The vertex " << vec[i] << " has " << v->degree() << " neighbours, left " << openDegrees(v) << " degrees\n";
+			cout << "The vertex " << vec[i] << " has " << v->degree() << " neighbours\n";
 		}
 	}
 

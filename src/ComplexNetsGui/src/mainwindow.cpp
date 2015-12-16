@@ -12,6 +12,8 @@
 #include <ctime>
 #include <vector>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 
 //File ui_mainwindow.h will be generated on compile time. Don't look for it, unless you have already compiled the project.
 #include "ComplexNetsGui/inc/ui_mainwindow.h"
@@ -160,6 +162,51 @@ void MainWindow::on_actionOpen_triggered()
     {
         ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
     }
+}
+
+void MainWindow::on_actionExportPowerLawDegreeDistribution_triggered()
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting power law distribution...");
+    ret = this->getSavePath();
+    cout << ret << "\n";
+    int alfa;
+    int n;
+    if (!ret.empty())
+    {
+        QString inputN = inputId("alfa:");
+        if(!inputN.isEmpty()) {
+            alfa = inputN.toInt();
+
+
+            inputN = inputId("nodes:");
+            if(!inputN.isEmpty()) {
+                n = inputN.toInt();
+                double dmax = pow(n, 1.0 / alfa);
+                cout << "dmax: " << dmax << "\n";
+                double c2 = (double) n / alfa;
+                cout << "c2: " << c2 << "\n";
+                ofstream myfile;
+                myfile.open (ret.c_str());
+                for(int i = 1 ; i <= dmax; i++) {
+                    double quant = c2 * pow(i, -alfa);
+                    if ((int)quant != 0) {
+                        myfile << i << " " << (int) quant << "\n";
+                    }  
+                }
+                myfile.close();
+                 ui->textBrowser->append("Power law succefully exported.");
+            } else {
+                ui->textBrowser->append("Action canceled by user.");
+            }
+        } else {
+            ui->textBrowser->append("Action canceled by user.");
+        }
+
+
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
 }
 
 void MainWindow::on_actionQuit_triggered()

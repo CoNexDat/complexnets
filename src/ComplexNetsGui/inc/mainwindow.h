@@ -63,6 +63,7 @@ private:
     void on_actionMaxClique_generic_triggered(bool);
 	void on_action_maxClique_plotting_generic_triggered(bool exact);
 	void on_actionExportMaxClique_distribution_generic_triggered(bool exact);
+
 //    void computeMaxCliqueExact();
     void computeBetweenness();
     int LogBinningDialog();
@@ -75,6 +76,7 @@ private:
     QString inputId(const std::string label);
 
 private slots:
+    void on_actionExportPowerLawDegreeDistribution_triggered();
     void on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered();
     void on_actionExportShell_Index_vs_Degree_triggered();
     void on_actionExportClustering_Coefficient_vs_Degree_triggered();
