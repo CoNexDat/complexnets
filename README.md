@@ -103,13 +103,14 @@ Project manager: José Ignacio Alvarez-Hamelin
 =============================================
 
 Developers:
-
-  - Carlos Castro           1-2012
-  - Nicolás Bombau          1-2012
-  - Ezequiel Scaruli        2-2012
-  - Pablo Andres Ballesty   2-2012
-  - Alejandro Magnorsky     2-2012 
-  - Alan Fabian Idesis      2-2012
-  - Fernando Dávila         2-2012
-  - Luciana Reznik          2-2014
-  - Jose Ignacio Galindo    2-2014
+                               semester-year
+  - Carlos Castro                     1-2012
+  - Nicolás Bombau                    1-2012
+  - Ezequiel Scaruli                  2-2012
+  - Pablo Andres Ballesty             2-2012
+  - Alejandro Magnorsky               2-2012 
+  - Alan Fabian Idesis                2-2012
+  - Fernando Dávila                   2-2012
+  - Luciana Reznik                    2-2014
+  - Jose Ignacio Galindo              2-2014
+  - Jaime Alexander Campos Iannacone  2-2015
