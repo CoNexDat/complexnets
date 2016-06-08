@@ -23,13 +23,14 @@ GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QD
     verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget_2);
     verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
     verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+
     radioButton_3 = new QRadioButton(verticalLayoutWidget_2);
     radioButton_3->setObjectName(QString::fromUtf8("radioButton_3"));
 
     verticalLayout_2->addWidget(radioButton_3);
 
     radioButton_4 = new QRadioButton(verticalLayoutWidget_2);
-	connect(radioButton_4, SIGNAL(clicked(bool)), this, SLOT(foo(bool)));
+	connect(radioButton_4, SIGNAL(toggled(bool)), this, SLOT(radioButton4Changed(bool)));
     radioButton_4->setObjectName(QString::fromUtf8("radioButton_4"));
 
     verticalLayout_2->addWidget(radioButton_4);
@@ -98,7 +99,7 @@ bool GraphLoadingValidationDialog::isDirected() const
 
 //TODO within this signal handler we could disable all functionality that it isnt supported by directed graph yet
 // or throw signals to let other components know
-void GraphLoadingValidationDialog::foo(bool checked)
+void GraphLoadingValidationDialog::radioButton4Changed(bool checked)
 {
 	if (checked) {
 		radioButton->setChecked(true);
