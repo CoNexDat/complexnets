@@ -3,25 +3,13 @@
 # -------------------------------------------------
 TARGET = complexnetspp
 TEMPLATE = app
-SOURCES += ComplexNetsGui/src/main.cpp \
-    ComplexNetsGui/src/mainwindow.cpp \
-    ComplexNetsGui/src/GraphLoadingValidationDialog.cpp \
-    ComplexNetsGui/src/GnuplotConsole.cpp \
-    ComplexNets/GraphGenerator.cpp \
-    ComplexNets/GraphWriter.cpp \
-    ComplexNetsCmd/ProgramState.cpp \
-    ComplexNetsCmd/cmdmessages.cpp \
-    ComplexNetsCmd/cmdline.c
-HEADERS += ComplexNetsGui/inc/mainwindow.h \
-    ComplexNetsGui/inc/GraphLoadingValidationDialog.h \
-    ComplexNetsGui/inc/GrapherUtils.h \
-    ComplexNetsGui/inc/GnuplotConsole.h \
-    ComplexNetsGui/inc/LogBinningPolicy.h \
-    ComplexNets/GraphGenerator.h \
-    ComplexNets/GraphWriter.h \
-    ComplexNetsCmd/ProgramState.h \
-    ComplexNetsCmd/cmdmessages.h \
-    ComplexNetsCmd/cmdline.h
+SOURCES += ComplexNetsGui/src/*.cpp \
+    ComplexNets/*.cpp \
+    ComplexNetsCmd/*.cpp \
+    ComplexNetsCmd/*.c
+HEADERS += ComplexNetsGui/inc/*.h \
+    ComplexNets/*.h \
+    ComplexNetsCmd/*.h
 FORMS += ComplexNetsGui/forms/mainwindow.ui
 #MOC_DIR = .moc/release-shared
 #OBJECTS_DIR = .obj/release-shared
