@@ -46,8 +46,8 @@ MainWindow::MainWindow(QWidget* parent) :
     this->onNetworkUnload();
     this->console = new GnuplotConsole();
     ui->textBrowser->setOpenExternalLinks(true);
-    ui->textBrowser->append("Welcome to ComplexNets++!!\nIf you are a developer feel free to visit our Google Code site:");
-    ui->textBrowser->append("<a href='http://code.google.com/p/complexnets/'>ComplexNets++ - Google Code</a>");
+    ui->textBrowser->append("Welcome to ComplexNets++!!\nIf you are a developer feel free to visit our GitHub page:");
+    ui->textBrowser->append("<a href='https://github.com/ihameli/complexnets'>ComplexNets++ - GitHub</a>");
     ui->textBrowser->append("\n");
 }
 
