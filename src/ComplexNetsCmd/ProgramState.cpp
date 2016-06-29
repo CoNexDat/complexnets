@@ -682,3 +682,9 @@ void ProgramState::exportCurrentGraph(string outputPath) {
 
     delete graphWriter;
 }
+
+void ProgramState::setDirectedPositiveNegative(bool p, bool n) {
+    std::cout << "directed given: " << p << " " << n << std::endl;
+    directed_positive = p;
+    directed_negative = n;
+}

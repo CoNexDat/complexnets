@@ -19,6 +19,8 @@ private:
     WeightedGraph weightedGraph;
 	DirectedGraph directedGraph;
     Graph graph;
+    bool directed_positive;
+    bool directed_negative;
 
     void computeBetweenness(PropertyMap& propertyMap);
     void computeDegreeDistribution(PropertyMap& propertyMap);
@@ -69,6 +71,8 @@ public:
 	void exportClusteringVsDegree(string outputPath);
 	void exportNearestNeighborsDegreeVsDegree(string outputPath);
 	void exportShellIndexVsDegree(string outputPath);
+    
+    void setDirectedPositiveNegative(bool p, bool n);
 };
 
 #endif
