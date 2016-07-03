@@ -43,7 +43,17 @@ Version (at least)  4.8 of g++ must be installed
 
 Building in Mac OS
 ------------------
+Since there is not default package installer in Mac OS X, you can use [Homebrew](http://brew.sh/) to install the required packages.
 
+`brew install cmake qt`
+
+If your compiler is not GNU you can also download it with Homebrew (`brew install gcc`).
+
+If the downloaded version is different to **gcc-6**, you will have to changed it in the *ComplexnetsGui.pro* file.
+
+It is also recommended to download *gnuplot* from Homebrew:
+
+`brew install gnuplot --with-qt`
 
 Running the tests
 =================
