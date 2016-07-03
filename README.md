@@ -2,18 +2,18 @@ ComplexNets++
 =============
 
 This toolbox provides deferent tools to analyze complex networks, i.e.,
-networks issues from complex systems or any graph in general. 
+networks issues from complex systems or any graph in general.
 We provide:
 
   - Degree distribution
   - Knn: average neighbors degree distribution
   - Cnn: average cluster coefficient distribution
-  - k-core shells 
+  - k-core shells
 
 We deal with several graphs types:
 
-  - Undirected 
-  - Weighted 
+  - Undirected
+  - Weighted
   - Directed (in a short term)
   - Any combination (in a short term)
 
@@ -22,7 +22,7 @@ We also generate graphs according different models:
   - Erdös-Renyi
   - Bárabasi-Albert
   - Molloy-Reed
-  - FKP-extended 
+  - FKP-extended
 
 
 Building the main project
@@ -30,7 +30,7 @@ Building the main project
 
 First install the following requirements
 
-``` sudo apt-get install qt4-qmake libqt4-dev make build-essential ```
+`sudo apt-get install qt4-qmake libqt4-dev make build-essential`
 
 Then run the following commands
 
@@ -38,7 +38,11 @@ Then run the following commands
 qmake
 make all
 ```
+
 Version (at least)  4.8 of g++ must be installed
+
+Building in Mac OS
+------------------
 
 
 Running the tests
@@ -50,7 +54,7 @@ Adding the previously mentioned requirements, install this other ones:
 
 And then to install the Gtest library
 
-``` 
+```
 - wget http://googletest.googlecode.com/files/gtest-1.7.0.zip
 - unzip gtest-1.7.0.zip
 - cd gtest-1.7.0
@@ -60,7 +64,7 @@ And then to install the Gtest library
 - sudo cp -a lib/.libs/* /usr/lib/
 
 ```
-Finnaly
+Finally
 
 ```
 cmake CMakeLists.txt
@@ -108,7 +112,7 @@ Developers:
   - Nicolás Bombau                    1-2012
   - Ezequiel Scaruli                  2-2012
   - Pablo Andres Ballesty             2-2012
-  - Alejandro Magnorsky               2-2012 
+  - Alejandro Magnorsky               2-2012
   - Alan Fabian Idesis                2-2012
   - Fernando Dávila                   2-2012
   - Luciana Reznik                    2-2014

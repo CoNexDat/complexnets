@@ -7,7 +7,7 @@
 #include "WeightedNearestNeighborsDegree.h"
 //#include "WeightedShellIndex.h"
 #include "WeightedGraphReader.h"
-#include "DegreeDistribution.h"
+#include "StrengthDistribution.h"
 #include "Betweenness.h"
 #include "IBetweenness.h"
 
@@ -39,7 +39,7 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
     }
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {
-        return new DegreeDistribution<Graph, Vertex>(g);
+        return new StrengthDistribution<Graph, Vertex>(g);
     }
     
     virtual MaxClique<Graph, Vertex>* createMaxClique(Graph&)
