@@ -64,6 +64,7 @@
     </property>
     <addaction name="actionBetweenness_vs_Degree"/>
     <addaction name="actionDegree_distribution_plotting"/>
+    <addaction name="actionCumulativeDegree_distribution_plotting"/>
     <addaction name="action_maxClique_plotting"/>
     <addaction name="action_maxCliqueExact_plotting"/>
     <addaction name="actionClustering_Coefficient_vs_Degree"/>
@@ -170,6 +171,11 @@
   <action name="actionDegree_distribution_plotting">
    <property name="text">
     <string>Degree distribution</string>
+   </property>
+  </action>
+  <action name="actionCumulativeDegree_distribution_plotting">
+   <property name="text">
+    <string>Cumulative Degree distribution</string>
    </property>
   </action>
   <action name="actionAbout">

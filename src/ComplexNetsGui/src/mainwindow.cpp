@@ -291,6 +291,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 	ui->actionDegree_distribution_plotting->setEnabled(true);
 	ui->actionExportDegree_distribution->setEnabled(true);
 	ui->actionClose_current_network->setEnabled(true);
+    ui->actionCumulativeDegree_distribution_plotting->setEnabled(true);
 }
 
 void MainWindow::onNetworkUnload()
@@ -327,6 +328,7 @@ void MainWindow::disableActions()
     ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(false);
     ui->actionExportMaxClique_distribution->setEnabled(false);
     ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
+    ui->actionCumulativeDegree_distribution_plotting->setEnabled(false);
 }
 
 
@@ -1591,5 +1593,57 @@ void MainWindow::on_actionNewMolloyReed_triggered()
         ui->textBrowser->append("Action canceled: Only one network can be loaded at any given time.\n");
     }
 	
+}
+void MainWindow::computeCumulativeDegreeDistribution() 
+{
+    this->computeDegreeDistribution();
+    VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+    if(this->digraph)
+    {
+        degrees = propertyMap.getPropertySet("inDegreeDistribution");
+    }
+
+    VariantsSet::const_iterator transferIt = degrees.begin();
+
+    std::map<unsigned int, double> myMap;
+    double total = 0;
+    while (transferIt != degrees.end())
+    {
+        double degree = from_string<double>(transferIt->second);
+        myMap[from_string<unsigned int>(transferIt->first)] = degree;
+        total=+degree;
+        ++transferIt;
+    }
+
+    std::map<unsigned int, double>::const_iterator it = myMap.begin();
+    double cumulate = 0;
+    while (it != myMap.end())
+    {
+        cumulate+= it->second;
+        propertyMap.addProperty<double>("cumulativeDegreeDistribution", to_string<unsigned int>(it->first), cumulate);
+        propertyMap.addProperty<double>("cumulativeDegreeDistributionProbability", to_string<unsigned int>(it->first), cumulate/total);
+
+        ++it;
+    }
+
+
+}
+void MainWindow::on_actionCumulativeDegree_distribution_plotting_triggered()
+{
+    bool ret = false;
+    ui->textBrowser->append("Plotting Cumulative Degree Distribution...");
+    if (!propertyMap.containsPropertySet("cumulativeDegreeDistribution"))
+    {
+        ui->textBrowser->append("Cumulative Degree distribution has not been previously computed. Computing now.");
+        this->computeCumulativeDegreeDistribution();
+    }
+
+    ui->textBrowser->append("Done\n");
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet("cumulativeDegreeDistribution"), "cumulativeDegreeDistribution");
+    this->console->show();
+    this->activateWindow();
+    if (!ret)
+        ui->textBrowser->append("An unexpected error has occured.\n");
+    
 }
 
