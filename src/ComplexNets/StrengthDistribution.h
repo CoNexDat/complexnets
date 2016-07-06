@@ -52,11 +52,11 @@ private:
 };
 
 template <class Graph, class Vertex>
-class StrengthDistribution : public IDegreeDistribution<Graph, Vertex>
+class StrengthDistribution
 {
 public:
 
-    typedef std::map<typename Vertex::Degree, unsigned int> DistributionContainer;
+    typedef std::map<typename Vertex::Weight, unsigned int> DistributionContainer;
     typedef CAutonomousIterator<DistributionContainer> DistributionIterator;
 
     StrengthDistribution(Graph& graph)

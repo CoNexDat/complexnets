@@ -675,12 +675,12 @@ void MainWindow::computeDegreeDistribution()
     {
         if (this->weightedgraph)
         {
-            IDegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
-            DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
+            StrengthDistribution<WeightedGraph, WeightedVertex>* degreeDistribution = weightedFactory->createStrengthDistribution(weightedGraph);
+            StrengthDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it = degreeDistribution->iterator();
             while (!it.end())
             {
-                propertyMap.addProperty<double>("degreeDistribution", to_string<unsigned int>(it->first), it->second);
-                propertyMap.addProperty<double>("degreeDistributionProbability", to_string<unsigned int>(it->first), it->second / (double)weightedGraph.verticesCount());
+                propertyMap.addProperty<double>("degreeDistribution", to_string<double>(it->first), it->second);
+                propertyMap.addProperty<double>("degreeDistributionProbability", to_string<double>(it->first), it->second / (double)weightedGraph.verticesCount());
                 ++it;
             }
             delete degreeDistribution;
