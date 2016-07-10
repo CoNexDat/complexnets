@@ -292,6 +292,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 	ui->actionExportDegree_distribution->setEnabled(true);
 	ui->actionClose_current_network->setEnabled(true);
     ui->actionCumulativeDegree_distribution_plotting->setEnabled(true);
+    ui->actionExportCumulativeDegree_distribution->setEnabled(true);
 }
 
 void MainWindow::onNetworkUnload()
@@ -329,6 +330,7 @@ void MainWindow::disableActions()
     ui->actionExportMaxClique_distribution->setEnabled(false);
     ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
     ui->actionCumulativeDegree_distribution_plotting->setEnabled(false);
+    ui->actionExportCumulativeDegree_distribution->setEnabled(false);
 }
 
 
@@ -1298,6 +1300,14 @@ int MainWindow::LogBinningDialog()
     return msgBox.exec();
 }
 
+int MainWindow::ChooseDigraphDegreeDialog()
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("Which degree would you like to use?"));
+    QPushButton* pButtonYes = msgBox.addButton(tr("In"), QMessageBox::YesRole);
+    msgBox.addButton(tr("Out"), QMessageBox::NoRole);
+    return msgBox.exec();
+}
 
 
 
@@ -1597,12 +1607,19 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 void MainWindow::computeCumulativeDegreeDistribution() 
 {
     this->computeDegreeDistribution();
-    VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
-    if(this->digraph)
+    string dist = "degreeDistribution";
+    if(this->digraph) 
     {
-        degrees = propertyMap.getPropertySet("inDegreeDistribution");
+        if(ChooseDigraphDegreeDialog() == QMessageBox::YesRole)
+        {
+            dist = "inDegreeDistribution";
+        } else
+        {
+            dist = "outDegreeDistribution";
+        }
     }
 
+    VariantsSet& degrees = propertyMap.getPropertySet(dist);
     VariantsSet::const_iterator transferIt = degrees.begin();
 
     std::map<unsigned int, double> myMap;
@@ -1611,7 +1628,7 @@ void MainWindow::computeCumulativeDegreeDistribution()
     {
         double degree = from_string<double>(transferIt->second);
         myMap[from_string<unsigned int>(transferIt->first)] = degree;
-        total=+degree;
+        total+=degree;
         ++transferIt;
     }
 
@@ -1628,11 +1645,12 @@ void MainWindow::computeCumulativeDegreeDistribution()
 
 
 }
+
 void MainWindow::on_actionCumulativeDegree_distribution_plotting_triggered()
 {
     bool ret = false;
     ui->textBrowser->append("Plotting Cumulative Degree Distribution...");
-    if (!propertyMap.containsPropertySet("cumulativeDegreeDistribution"))
+    if (!propertyMap.containsPropertySet("cumulativeDegreeDistribution") || this->digraph)
     {
         ui->textBrowser->append("Cumulative Degree distribution has not been previously computed. Computing now.");
         this->computeCumulativeDegreeDistribution();
@@ -1645,5 +1663,27 @@ void MainWindow::on_actionCumulativeDegree_distribution_plotting_triggered()
     if (!ret)
         ui->textBrowser->append("An unexpected error has occured.\n");
     
+}
+
+void MainWindow::on_actionExportCumulativeDegree_distribution_triggered()
+{
+    std::string ret;
+    ui->textBrowser->append("Exporting Cumulative Degree Distribution...");
+    ret = this->getSavePath();
+    std::string filename = ret;
+    if (!ret.empty())
+    {
+        if (propertyMap.containsPropertySet("cumulativeDegreeDistributionProbability"))
+        {
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet("cumulativeDegreeDistributionProbability"), ret);
+            ui->textBrowser->append("Done.");
+        }
+        else
+        {
+            ui->textBrowser->append("Cumulative Degree Distribution has not been previously computed. Please go to Plot->Cumulative Degree Distribution first.");
+        }
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
 }
 

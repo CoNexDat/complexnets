@@ -68,6 +68,7 @@ private:
 //    void computeMaxCliqueExact();
     void computeBetweenness();
     int LogBinningDialog();
+    int ChooseDigraphDegreeDialog();
     void readGraph(const std::string path);
     void buildGraphFactory(const bool isWeighted, const bool isDirected);
     void deleteGraphFactory();
@@ -109,6 +110,7 @@ private slots:
     void on_actionNewMolloyReed_triggered();
     void on_actionExport_current_network_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
+    void on_actionExportCumulativeDegree_distribution_triggered();
 };
 
 }

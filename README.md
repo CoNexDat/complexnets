@@ -55,6 +55,10 @@ It is also recommended to download *gnuplot* from Homebrew:
 
 `brew install gnuplot --with-qt`
 
+If you had previously installed one of these dependencies with Macports or Fisk, you can move them in order to have the ones downloaded from Homebrew take precedence:
+
+`mv /opt/local ~/macports`
+
 Running the tests
 =================
 

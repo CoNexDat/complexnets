@@ -83,6 +83,7 @@
     </property>
     <addaction name="actionExportBetweenness_vs_Degree"/>
     <addaction name="actionExportDegree_distribution"/>
+    <addaction name="actionExportCumulativeDegree_distribution"/>
     <addaction name="actionExportMaxClique_distribution"/>
     <addaction name="actionExportMaxCliqueExact_distribution"/>
     <addaction name="actionExportClustering_Coefficient_vs_Degree"/>
@@ -256,6 +257,11 @@
   <action name="actionExportDegree_distribution">
    <property name="text">
     <string>Degree distribution</string>
+   </property>
+  </action>
+  <action name="actionExportCumulativeDegree_distribution">
+   <property name="text">
+    <string>Cumulative Degree distribution</string>
    </property>
   </action>
   <action name="actionExportClustering_Coefficient_vs_Degree">
