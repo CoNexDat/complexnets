@@ -179,7 +179,18 @@ double ProgramState::clustering(unsigned int vertex_id) {
                     delete clusteringCoefficient;
                 }
             }
-            else
+    else if (this->isDigraph())
+            {
+                DirectedVertex *vertex;
+                if ((vertex = directedGraph.getVertexById(vertex_id)) != NULL)
+                {
+                    IGraphFactory<DirectedGraph, DirectedVertex> *factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+                    IClusteringCoefficient<DirectedGraph, DirectedVertex> *clusteringCoefficient = factory->createClusteringCoefficient();
+                    ret = clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_positive, directed_negative);
+                    delete clusteringCoefficient;
+                }
+            }
+    else
             {
                 Vertex* vertex;
                 if ((vertex = graph.getVertexById(vertex_id)) != NULL)
@@ -684,7 +695,6 @@ void ProgramState::exportCurrentGraph(string outputPath) {
 }
 
 void ProgramState::setDirectedPositiveNegative(bool p, bool n) {
-    std::cout << "directed given: " << p << " " << n << std::endl;
     directed_positive = p;
     directed_negative = n;
 }

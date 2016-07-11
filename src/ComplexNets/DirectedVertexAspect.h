@@ -51,6 +51,11 @@ public:
     {
         return outNeighbors.size();
     }
+    
+    Degree inOutDegree() const
+    {
+        return inDegree() + outDegree();
+    }
 	
 	VerticesConstIterator inNeighborsConstIterator() const
     {

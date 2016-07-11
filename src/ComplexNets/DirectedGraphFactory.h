@@ -3,6 +3,7 @@
 
 #include "IGraphFactory.h"
 #include "DirectedDegreeDistribution.h"
+#include "DirectedClusteringCoefficient.h"
 #include "GraphReader.h"
 
 namespace graphpp
@@ -22,9 +23,7 @@ class DirectedGraphFactory: public IGraphFactory<Graph, Vertex>
     }
     virtual IClusteringCoefficient<Graph, Vertex>* createClusteringCoefficient()
     {
-		//TODO Implement this
-        //return new DirectedClusteringCoefficient<Graph,Vertex>();
-        return NULL;
+        return new DirectedClusteringCoefficient<Graph,Vertex>();
 	}
     virtual INearestNeighborsDegree<Graph, Vertex>* createNearestNeighborsDegree()
     {
