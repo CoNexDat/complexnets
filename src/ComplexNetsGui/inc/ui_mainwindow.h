@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 4.8.6
+** Created by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -36,7 +36,6 @@ public:
     QAction *actionNewHiperbolic;
     QAction *actionExport_current_network;
     QAction *actionClose_current_network;
-    QAction *actionExportPowerLawDegreeDistribution;
     QAction *actionQuit;
     QAction *action_maxClique_plotting;
     QAction *action_maxCliqueExact_plotting;
@@ -60,6 +59,7 @@ public:
     QAction *actionExportClustering_Coefficient_vs_Degree;
     QAction *actionExportShell_Index_vs_Degree;
     QAction *actionExportNearest_Neighbors_Degree_vs_Degree;
+    QAction *actionConfigure_Directed_Degree_sign;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QTextBrowser *textBrowser;
@@ -93,8 +93,6 @@ public:
         actionExport_current_network->setObjectName(QString::fromUtf8("actionExport_current_network"));
         actionClose_current_network = new QAction(MainWindow);
         actionClose_current_network->setObjectName(QString::fromUtf8("actionClose_current_network"));
-        actionExportPowerLawDegreeDistribution = new QAction(MainWindow);
-        actionExportPowerLawDegreeDistribution->setObjectName(QString::fromUtf8("actionExportPowerLawDegreeDistribution"));
         actionQuit = new QAction(MainWindow);
         actionQuit->setObjectName(QString::fromUtf8("actionQuit"));
         action_maxClique_plotting = new QAction(MainWindow);
@@ -141,6 +139,9 @@ public:
         actionExportShell_Index_vs_Degree->setObjectName(QString::fromUtf8("actionExportShell_Index_vs_Degree"));
         actionExportNearest_Neighbors_Degree_vs_Degree = new QAction(MainWindow);
         actionExportNearest_Neighbors_Degree_vs_Degree->setObjectName(QString::fromUtf8("actionExportNearest_Neighbors_Degree_vs_Degree"));
+        actionConfigure_Directed_Degree_sign = new QAction(MainWindow);
+        actionConfigure_Directed_Degree_sign->setObjectName(QString::fromUtf8("actionConfigure_Directed_Degree_sign"));
+        actionConfigure_Directed_Degree_sign->setEnabled(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -155,7 +156,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 23));
+        menuBar->setGeometry(QRect(0, 0, 600, 26));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuNode = new QMenu(menuBar);
@@ -186,7 +187,6 @@ public:
         menuFile->addAction(actionNewMolloyReed);
         menuFile->addAction(actionNewHiperbolic);
         menuFile->addSeparator();
-        menuFile->addAction(actionExportPowerLawDegreeDistribution);
         menuFile->addAction(actionExport_current_network);
         menuFile->addSeparator();
         menuFile->addAction(actionClose_current_network);
@@ -199,6 +199,7 @@ public:
         menuNode->addAction(actionClustering_coefficient);
         menuNode->addAction(actionNearest_neighbors_degree);
         menuNode->addAction(actionShell_index);
+        menuNode->addAction(actionConfigure_Directed_Degree_sign);
         menuPlot->addAction(actionBetweenness_vs_Degree);
         menuPlot->addAction(actionDegree_distribution_plotting);
         menuPlot->addAction(action_maxClique_plotting);
@@ -233,7 +234,6 @@ public:
         actionExport_current_network->setText(QApplication::translate("MainWindow", "Export current network...", 0, QApplication::UnicodeUTF8));
         actionClose_current_network->setText(QApplication::translate("MainWindow", "Close current network...", 0, QApplication::UnicodeUTF8));
         actionClose_current_network->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", 0, QApplication::UnicodeUTF8));
-        actionExportPowerLawDegreeDistribution->setText(QApplication::translate("MainWindow", "Export Power law distribution", 0, QApplication::UnicodeUTF8));
         actionQuit->setText(QApplication::translate("MainWindow", "Quit", 0, QApplication::UnicodeUTF8));
         actionQuit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
         action_maxClique_plotting->setText(QApplication::translate("MainWindow", "maxClique distribution", 0, QApplication::UnicodeUTF8));
@@ -258,6 +258,7 @@ public:
         actionExportClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", 0, QApplication::UnicodeUTF8));
         actionExportShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", 0, QApplication::UnicodeUTF8));
         actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
+        actionConfigure_Directed_Degree_sign->setText(QApplication::translate("MainWindow", "Configure Directed Degree sign...", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "&Analysis", 0, QApplication::UnicodeUTF8));
         menuPlot->setTitle(QApplication::translate("MainWindow", "&Plot", 0, QApplication::UnicodeUTF8));

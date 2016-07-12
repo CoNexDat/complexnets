@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -57,6 +57,7 @@
     <addaction name="actionClustering_coefficient"/>
     <addaction name="actionNearest_neighbors_degree"/>
     <addaction name="actionShell_index"/>
+    <addaction name="actionConfigure_Directed_Degree_sign"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
@@ -162,7 +163,7 @@
     <string>maxClique distribution</string>
    </property>
   </action>
-    <action name="action_maxCliqueExact_plotting">
+  <action name="action_maxCliqueExact_plotting">
    <property name="text">
     <string>maxCliqueExact distribution</string>
    </property>
@@ -265,6 +266,14 @@
   <action name="actionExportNearest_Neighbors_Degree_vs_Degree">
    <property name="text">
     <string>Nearest Neighbors Degree vs Degree</string>
+   </property>
+  </action>
+  <action name="actionConfigure_Directed_Degree_sign">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Configure Directed Degree sign...</string>
    </property>
   </action>
  </widget>

@@ -43,6 +43,8 @@ MainWindow::MainWindow(QWidget* parent) :
     weightedFactory = NULL;
     factory = NULL;
 	directedFactory = NULL;
+    directed_negative = false;
+    directed_positive = true;
     this->onNetworkUnload();
     this->console = new GnuplotConsole();
     ui->textBrowser->setOpenExternalLinks(true);
@@ -284,9 +286,15 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 		ui->actionExportShell_Index_vs_Degree->setEnabled(false);
 		ui->actionExportMaxClique_distribution->setEnabled(false);
 		ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
-	
 	}
+    
+    if (digraph) {
+        ui->actionClustering_coefficient->setEnabled(true);
+		ui->actionNearest_neighbors_degree->setEnabled(true);
+        ui->actionConfigure_Directed_Degree_sign->setEnabled(true);
+    }
 	
+    // Enabled actions for all graph types
     ui->actionDegree_distribution->setEnabled(true);
 	ui->actionDegree_distribution_plotting->setEnabled(true);
 	ui->actionExportDegree_distribution->setEnabled(true);
@@ -327,6 +335,7 @@ void MainWindow::disableActions()
     ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(false);
     ui->actionExportMaxClique_distribution->setEnabled(false);
     ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
+    ui->actionConfigure_Directed_Degree_sign->setEnabled(false);
 }
 
 
@@ -1593,3 +1602,33 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 	
 }
 
+void MainWindow::on_actionConfigure_Directed_Degree_sign_triggered()
+{
+    QStringList items;
+    
+    QString p = "Positive";
+    QString n = "Negative";
+    QString pn = "Positive and Negative";
+    
+    items << p << n << pn;
+    bool ok;
+    
+    QString item = QInputDialog::getItem(this, "Directed Degree sign", "Sign:", items, 0, false, &ok);
+    if (ok && !item.isEmpty()) {
+        if (item == pn) {
+            directed_positive = true;
+            directed_negative = true;
+        } else if (item == n) {
+            directed_negative = true;
+            directed_positive = false;
+        } else if (item == p) {
+            directed_positive = true;
+            directed_negative = false;
+        }
+        
+        ui->textBrowser->append("Directed degree sign set to:");
+        ui->textBrowser->append(QString("Positive: ") + (directed_positive ? "true" : "false"));
+        ui->textBrowser->append(QString("Negative: ") + (directed_negative ? "true" : "false"));
+        ui->textBrowser->append("");
+    }
+}
