@@ -836,9 +836,23 @@ void MainWindow::on_actionClustering_coefficient_triggered()
     QString vertexId = inputId("Vertex id:");
     QString ret;
     double coefficient;
+    
+    std::string directedPostfix = "d";
+    if (directed_positive) {
+        directedPostfix += "p";
+    }
+    if (directed_negative) {
+        directedPostfix += "n";
+    }
+    
     if (!vertexId.isEmpty())
     {
-        if (!propertyMap.containsProperty("clusteringCoeficientForVertex", vertexId.toStdString()))
+        std::string key = vertexId.toStdString();
+        if (this->digraph) {
+            key += directedPostfix;
+        }
+        
+        if (!propertyMap.containsProperty("clusteringCoeficientForVertex", key))
         {
             ui->textBrowser->append("Clustering coefficient has not been previously computed. Computing now.");
             if (this->weightedgraph)
@@ -851,6 +865,16 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                     delete clusteringCoefficient;
                 }
             }
+            else if (this->digraph)
+            {
+                   DirectedVertex* vertex;
+                   if ((vertex = directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                   {
+                       IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient = directedFactory->createClusteringCoefficient();
+                       propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()) + directedPostfix, clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_positive, directed_negative));
+                       delete clusteringCoefficient;
+                   }
+            }
             else
             {
                 Vertex* vertex;
@@ -862,11 +886,18 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                 }
             }
         }
-        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+        
+        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL || 
+              (this->digraph && directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) != NULL ))
         {
           try
           {
-              coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", vertexId.toStdString());
+              std::string key = vertexId.toStdString();
+              if (this->digraph) {
+                  key += directedPostfix;
+              }
+
+              coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", key);
               ret.append("Clustering coefficient for vertex ").append(vertexId);
               ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
               ui->textBrowser->append(ret);
