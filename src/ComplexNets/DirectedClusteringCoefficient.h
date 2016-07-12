@@ -129,7 +129,7 @@ public:
     }
     
     // true if a --> b
-    bool isDirectedAdjacent(DirectedVertex *a, DirectedVertex *b)
+    static bool isDirectedAdjacent(DirectedVertex *a, DirectedVertex *b)
     {
         NeighborsIterator it = a->outNeighborsIterator();
         while (!it.end())

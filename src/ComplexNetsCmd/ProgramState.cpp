@@ -217,6 +217,17 @@ double ProgramState::knn(unsigned int vertex_id) {
             delete nearestNeighborsDegree;
         }
     }
+    else if (this->isDigraph())
+    {
+        DirectedVertex* vertex;
+        if ((vertex = directedGraph.getVertexById(vertex_id)) != NULL)
+        {
+            IGraphFactory<DirectedGraph, DirectedVertex> *factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+            INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborsDegree = factory->createNearestNeighborsDegree();
+            ret = nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_positive, directed_negative);
+            delete nearestNeighborsDegree;           
+        }
+    }
     else
     {
         Vertex* vertex;
