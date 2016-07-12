@@ -111,6 +111,7 @@ private slots:
     void on_actionNewMolloyReed_triggered();
     void on_actionExport_current_network_triggered();
     void on_actionConfigure_Directed_Degree_sign_triggered();
+    void on_actionAbout_triggered();
 };
 
 }

@@ -1633,6 +1633,18 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 	
 }
 
+void MainWindow::on_actionAbout_triggered()
+{
+    QString title = "About ComplexNets++";
+    QString body;
+    
+    body += "This toolbox provides different tools to analyze complex networks, i.e., networks issues from complex systems or any graph in general.\n\n";
+    body += "Project manager: Jose Ignacio Alvarez-Hamelin.\n\n";
+    body += "This toolbox is licensed under the Academic Free License 3.0, and it was developed in the Instituto Tecnologico de Buenos Aires (http://itba.edu.ar). The first version was released in 2012.\n\n";
+    
+    QMessageBox::about(this, title, body);
+}
+
 void MainWindow::on_actionConfigure_Directed_Degree_sign_triggered()
 {
     QStringList items;
