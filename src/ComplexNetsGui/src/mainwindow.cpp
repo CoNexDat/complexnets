@@ -811,14 +811,30 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
         }
     }
     if (!this->digraph) {
+        if(logBin)
+        {
 		ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", logBin, bins);
-	} else {
+	    } else
+        {
+        ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistributionProbability"), "degreeDistribution", logBin, bins);
+        }
+    } else {
+        if(logBin)
+        {
 		ret = this->console->plotPropertySet(propertyMap.getPropertySet("inDegreeDistribution"), "inDegreeDistribution", logBin, bins);
 		this->console->show();
 		this->activateWindow();
 		ret = this->console->plotPropertySet(propertyMap.getPropertySet("outDegreeDistribution"), "outDegreeDistribution", logBin, bins);
 		this->console->show();
 		this->activateWindow();
+        } else {
+        ret = this->console->plotPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), "inDegreeDistribution", logBin, bins);
+        this->console->show();
+        this->activateWindow();
+        ret = this->console->plotPropertySet(propertyMap.getPropertySet("outDegreeDistributionProbability"), "outDegreeDistribution", logBin, bins);
+        this->console->show();
+        this->activateWindow();  
+        }
 	}
     if (!ret)
         ui->textBrowser->append("An unexpected error has occured.\n");
@@ -1657,7 +1673,7 @@ void MainWindow::on_actionCumulativeDegree_distribution_plotting_triggered()
     }
 
     ui->textBrowser->append("Done\n");
-    ret = this->console->plotPropertySet(propertyMap.getPropertySet("cumulativeDegreeDistribution"), "cumulativeDegreeDistribution");
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet("cumulativeDegreeDistributionProbability"), "cumulativeDegreeDistribution");
     this->console->show();
     this->activateWindow();
     if (!ret)
