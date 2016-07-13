@@ -7,6 +7,7 @@
 #include "IShellIndex.h"
 #include "IGraphReader.h"
 #include "IDegreeDistribution.h"
+#include "StrengthDistribution.h"
 #include "MaxClique.h"
 namespace graphpp
 {
@@ -25,6 +26,8 @@ public:
     virtual IGraphReader<Graph, Vertex>* createGraphReader() = 0;
 
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g) = 0;
+
+    virtual StrengthDistribution<Graph, Vertex>* createStrengthDistribution(Graph& g) = 0;
     
 	virtual MaxClique<Graph, Vertex>* createMaxClique(Graph& g) = 0;
 	
