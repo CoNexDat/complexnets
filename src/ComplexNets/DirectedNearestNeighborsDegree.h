@@ -60,8 +60,9 @@ public:
         {
             NeighborsIterator it = directedVertex->inNeighborsIterator();
             while (!it.end())
-            {                
-                negativeLinks += 1.0;
+            {   
+                DirectedVertex* vertex = static_cast<DirectedVertex*>(*i);
+                negativeLinks += vertex->inDegree();
                 
                 ++it;
             }
@@ -72,7 +73,8 @@ public:
             NeighborsIterator it = directedVertex->outNeighborsIterator();
             while (!it.end())
             {                
-                positiveLinks += 1.0;
+                DirectedVertex* vertex = static_cast<DirectedVertex*>(*it);                
+                positiveLinks += vertex->outDegree();
                 
                 ++it;
             }           
