@@ -40,6 +40,7 @@ public:
     QAction *action_maxClique_plotting;
     QAction *action_maxCliqueExact_plotting;
     QAction *actionDegree_distribution_plotting;
+    QAction *actionCumulativeDegree_distribution_plotting;
     QAction *actionAbout;
     QAction *actionMaxClique;
     QAction *actionMaxCliqueExact;
@@ -56,6 +57,7 @@ public:
     QAction *actionExportMaxClique_distribution;
     QAction *actionExportMaxCliqueExact_distribution;
     QAction *actionExportDegree_distribution;
+    QAction *actionExportCumulativeDegree_distribution;
     QAction *actionExportClustering_Coefficient_vs_Degree;
     QAction *actionExportShell_Index_vs_Degree;
     QAction *actionExportNearest_Neighbors_Degree_vs_Degree;
@@ -101,6 +103,8 @@ public:
         action_maxCliqueExact_plotting->setObjectName(QString::fromUtf8("action_maxCliqueExact_plotting"));
         actionDegree_distribution_plotting = new QAction(MainWindow);
         actionDegree_distribution_plotting->setObjectName(QString::fromUtf8("actionDegree_distribution_plotting"));
+        actionCumulativeDegree_distribution_plotting = new QAction(MainWindow);
+        actionCumulativeDegree_distribution_plotting->setObjectName(QString::fromUtf8("actionCumulativeDegree_distribution_plotting"));
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         actionMaxClique = new QAction(MainWindow);
@@ -133,6 +137,8 @@ public:
         actionExportMaxCliqueExact_distribution->setObjectName(QString::fromUtf8("actionExportMaxCliqueExact_distribution"));
         actionExportDegree_distribution = new QAction(MainWindow);
         actionExportDegree_distribution->setObjectName(QString::fromUtf8("actionExportDegree_distribution"));
+        actionExportCumulativeDegree_distribution = new QAction(MainWindow);
+        actionExportCumulativeDegree_distribution->setObjectName(QString::fromUtf8("actionExportCumulativeDegree_distribution"));
         actionExportClustering_Coefficient_vs_Degree = new QAction(MainWindow);
         actionExportClustering_Coefficient_vs_Degree->setObjectName(QString::fromUtf8("actionExportClustering_Coefficient_vs_Degree"));
         actionExportShell_Index_vs_Degree = new QAction(MainWindow);
@@ -202,6 +208,7 @@ public:
         menuNode->addAction(actionConfigure_Directed_Degree_sign);
         menuPlot->addAction(actionBetweenness_vs_Degree);
         menuPlot->addAction(actionDegree_distribution_plotting);
+        menuPlot->addAction(actionCumulativeDegree_distribution_plotting);
         menuPlot->addAction(action_maxClique_plotting);
         menuPlot->addAction(action_maxCliqueExact_plotting);
         menuPlot->addAction(actionClustering_Coefficient_vs_Degree);
@@ -210,6 +217,7 @@ public:
         menuHelp->addAction(actionAbout);
         menu_Export->addAction(actionExportBetweenness_vs_Degree);
         menu_Export->addAction(actionExportDegree_distribution);
+        menu_Export->addAction(actionExportCumulativeDegree_distribution);
         menu_Export->addAction(actionExportMaxClique_distribution);
         menu_Export->addAction(actionExportMaxCliqueExact_distribution);
         menu_Export->addAction(actionExportClustering_Coefficient_vs_Degree);
@@ -239,6 +247,7 @@ public:
         action_maxClique_plotting->setText(QApplication::translate("MainWindow", "maxClique distribution", 0, QApplication::UnicodeUTF8));
         action_maxCliqueExact_plotting->setText(QApplication::translate("MainWindow", "maxCliqueExact distribution", 0, QApplication::UnicodeUTF8));
         actionDegree_distribution_plotting->setText(QApplication::translate("MainWindow", "Degree distribution", 0, QApplication::UnicodeUTF8));
+        actionCumulativeDegree_distribution_plotting->setText(QApplication::translate("MainWindow", "Cumulative Degree distribution", 0, QApplication::UnicodeUTF8));
         actionAbout->setText(QApplication::translate("MainWindow", "About...", 0, QApplication::UnicodeUTF8));
         actionMaxClique->setText(QApplication::translate("MainWindow", "Max Clique Aprox...", 0, QApplication::UnicodeUTF8));
         actionMaxCliqueExact->setText(QApplication::translate("MainWindow", "Max Clique Exact...", 0, QApplication::UnicodeUTF8));
@@ -255,6 +264,7 @@ public:
         actionExportMaxClique_distribution->setText(QApplication::translate("MainWindow", "maxClique distribution", 0, QApplication::UnicodeUTF8));
         actionExportMaxCliqueExact_distribution->setText(QApplication::translate("MainWindow", "maxCliqueExact distribution", 0, QApplication::UnicodeUTF8));
         actionExportDegree_distribution->setText(QApplication::translate("MainWindow", "Degree distribution", 0, QApplication::UnicodeUTF8));
+        actionExportCumulativeDegree_distribution->setText(QApplication::translate("MainWindow", "Cumulative Degree distribution", 0, QApplication::UnicodeUTF8));
         actionExportClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", 0, QApplication::UnicodeUTF8));
         actionExportShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", 0, QApplication::UnicodeUTF8));
         actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
