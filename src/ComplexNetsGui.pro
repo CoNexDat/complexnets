@@ -25,3 +25,11 @@ QMAKE_CXXFLAGS_DEBUG += -Wextra \
     -Wno-long-long \
     -ggdb3 \
     -I.
+macx {
+    message(Using Mac OS configuration)
+    QMAKE_CXXFLAGS-= -stdlib=libc++
+    QMAKE_LFLAGS-= -stdlib=libc++
+    QMAKE_CC = gcc-6
+    QMAKE_CXX = g++-6
+    QMAKE_LINK = g++-6
+}

@@ -61,6 +61,7 @@ private:
     bool directed_negative;
 	
     void computeDegreeDistribution();
+    void computeCumulativeDegreeDistribution();
     void computeShellIndex();
     void computeMaxClique(bool exact);
     void on_actionMaxClique_generic_triggered(bool);
@@ -70,6 +71,7 @@ private:
 //    void computeMaxCliqueExact();
     void computeBetweenness();
     int LogBinningDialog();
+    int ChooseDigraphDegreeDialog();
     void readGraph(const std::string path);
     void buildGraphFactory(const bool isWeighted, const bool isDirected);
     void deleteGraphFactory();
@@ -112,6 +114,8 @@ private slots:
     void on_actionExport_current_network_triggered();
     void on_actionConfigure_Directed_Degree_sign_triggered();
     void on_actionAbout_triggered();
+    void on_actionCumulativeDegree_distribution_plotting_triggered();
+    void on_actionExportCumulativeDegree_distribution_triggered();
 };
 
 }

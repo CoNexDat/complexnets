@@ -50,6 +50,11 @@ class DirectedGraphFactory: public IGraphFactory<Graph, Vertex>
     {
         return NULL;
     }
+
+    virtual StrengthDistribution<Graph, Vertex>* createStrengthDistribution(Graph& g)
+    {
+        return NULL;
+    }
 };
 }
 

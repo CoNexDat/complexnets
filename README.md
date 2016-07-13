@@ -8,12 +8,12 @@ We provide:
   - Degree distribution
   - Knn: average neighbors degree distribution
   - Cnn: average cluster coefficient distribution
-  - k-core shells 
+  - k-core shells
 
 We deal with several graph types:
 
-  - Undirected 
-  - Weighted 
+  - Undirected
+  - Weighted
   - Directed (in a short term)
   - Any combination (in a short term)
 
@@ -22,7 +22,7 @@ We also generate graphs according to different models:
   - Erdös-Renyi
   - Bárabasi-Albert
   - Molloy-Reed
-  - FKP-extended 
+  - FKP-extended
 
 
 Building the main project
@@ -30,7 +30,7 @@ Building the main project
 
 First, install the project dependencies (tested on Ubuntu/Debian):
 
-``` sudo apt-get install qt4-qmake libqt4-dev make build-essential ```
+`sudo apt-get install qt4-qmake libqt4-dev make build-essential`
 
 Then, at the project root directory, run the following commands:
 
@@ -42,6 +42,23 @@ $ make all
 
 Version 4.8 (or greater) of g++ is required.
 
+Building in Mac OS
+------------------
+Since there is not default package installer in Mac OS X, you can use [Homebrew](http://brew.sh/) to install the required packages.
+
+`brew install cmake qt`
+
+If your compiler is not GNU you can also download it with Homebrew (`brew install gcc`).
+
+If the downloaded version is different to **gcc-6**, you will have to changed it in the *ComplexnetsGui.pro* file.
+
+It is also recommended to download *gnuplot* from Homebrew:
+
+`brew install gnuplot --with-qt`
+
+If you had previously installed one of these dependencies with Macports or Fisk, you can move them in order to have the ones downloaded from Homebrew take precedence:
+
+`mv /opt/local ~/macports`
 
 Running the tests
 =================
@@ -112,7 +129,7 @@ Developers:
   - Nicolás Bombau                    1-2012
   - Ezequiel Scaruli                  2-2012
   - Pablo Andres Ballesty             2-2012
-  - Alejandro Magnorsky               2-2012 
+  - Alejandro Magnorsky               2-2012
   - Alan Fabian Idesis                2-2012
   - Fernando Dávila                   2-2012
   - Luciana Reznik                    2-2014
