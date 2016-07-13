@@ -888,7 +888,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
         }
         
         if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL || 
-              (this->digraph && directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) != NULL ))
+                (this->digraph && directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) != NULL ))
         {
           try
           {
@@ -919,9 +919,23 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
     QString vertexId = inputId("Vertex id:");
     QString ret;
     double neighborsDegree;
+    
+    std::string directedPostfix = "d";
+    if (directed_positive) {
+        directedPostfix += "p";
+    }
+    if (directed_negative) {
+        directedPostfix += "n";
+    }
+    
     if (!vertexId.isEmpty())
     {
-        if (!propertyMap.containsProperty("nearestNeighborsDegreeForVertex", vertexId.toStdString()))
+        std::string key = vertexId.toStdString();
+        if (this->digraph) {
+            key += directedPostfix;
+        }
+        
+        if (!propertyMap.containsProperty("nearestNeighborsDegreeForVertex", key))
         {
             ui->textBrowser->append("Nearest neighbors degree has not been previously computed. Computing now.");
             if (this->weightedgraph)
@@ -934,6 +948,16 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                     delete nearestNeighborsDegree;
                 }
             }
+            else if (this->digraph)
+            {
+                DirectedVertex* vertex;
+                if ((vertex = directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                {
+                    INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborsDegree = directedFactory->createNearestNeighborsDegree();
+                    propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex", to_string<unsigned int>(vertex->getVertexId()) + directedPostfix, nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_positive, directed_negative));
+                    delete nearestNeighborsDegree;
+                }               
+            }
             else
             {
                 Vertex* vertex;
@@ -945,11 +969,18 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 }
             }
         }
-        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+
+        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL || 
+                (this->digraph && directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) != NULL ))
         {
           try
           {
-            neighborsDegree = propertyMap.getProperty<double>("nearestNeighborsDegreeForVertex", vertexId.toStdString());
+            std::string key = vertexId.toStdString();
+            if (this->digraph) {
+                key += directedPostfix;
+            }    
+                
+            neighborsDegree = propertyMap.getProperty<double>("nearestNeighborsDegreeForVertex", key);
             ret.append("Nearest neighbors degree for vertex ").append(vertexId);
             ret.append(" is: ").append(to_string<double>(neighborsDegree).c_str()).append(".\n");
             ui->textBrowser->append(ret);

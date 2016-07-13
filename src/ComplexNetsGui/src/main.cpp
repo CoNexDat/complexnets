@@ -240,7 +240,7 @@ int main(int argc, char* argv[])
 			}
 		} else if (args_info->knn_given) {
 			int vertex_id = args_info->knn_arg;
-			double ret = state->clustering(vertex_id);
+			double ret = state->knn(vertex_id);
 			if(ret != -1) {
 				cout << "Nearest neighbors degree for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
 			} else {
