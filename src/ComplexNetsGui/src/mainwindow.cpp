@@ -1309,13 +1309,23 @@ void MainWindow::on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered()
     ret = this->getSavePath();
     if (!ret.empty())
     {
-        if (propertyMap.containsPropertySet("nearestNeighborDegreeForDegree"))
+        std::string directedPostfix;
+        if (directed_out) {
+            directedPostfix += "O";
+        }
+        if (directed_in) {
+            directedPostfix += "I";
+        }
+        
+        std::string nnKey = "nearestNeighborDegreeForDegree" + directedPostfix;
+        
+        if (propertyMap.containsPropertySet(nnKey))
         {
-            grapherUtils.exportPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), ret);
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet(nnKey), ret);
             ui->textBrowser->append("Done.");
         }
         else
-            ui->textBrowser->append("Nearest Neighbors Degree vs Degree has not been previously computed. Please go to Plot->Nearest Neighbors Degree vs Degree first.");
+            ui->textBrowser->append("Nearest Neighbors Degree vs Degree has not been previously computed. Please go to Plot->Nearest Neighbors Degree vs Degree first.\n");
     }
     else
         ui->textBrowser->append("Action canceled by user.");
@@ -1347,13 +1357,23 @@ void MainWindow::on_actionExportClustering_Coefficient_vs_Degree_triggered()
     ret = this->getSavePath();
     if (!ret.empty())
     {
-        if (propertyMap.containsPropertySet("clusteringCoeficientForDegree"))
+        std::string directedPostfix;
+        if (directed_out) {
+            directedPostfix += "O";
+        }
+        if (directed_in) {
+            directedPostfix += "I";
+        }
+        
+        std::string ccKey = "clusteringCoeficientForDegree" + directedPostfix;
+        
+        if (propertyMap.containsPropertySet(ccKey))
         {
-            grapherUtils.exportPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), ret);
+            grapherUtils.exportPropertySet(propertyMap.getPropertySet(ccKey), ret);
             ui->textBrowser->append("Done.");
         }
         else
-            ui->textBrowser->append("Clustering Coefficient vs Degree has not been previously computed. Please go to Plot->Clustering Coefficient vs Degree first.");
+            ui->textBrowser->append("Clustering Coefficient vs Degree has not been previously computed. Please go to Plot->Clustering Coefficient vs Degree first.\n");
     }
     else
         ui->textBrowser->append("Action canceled by user.");
