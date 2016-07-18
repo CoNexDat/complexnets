@@ -21,6 +21,11 @@ public:
         unsigned int count = 0;
         MeanDegree meanDegreeSums = 0.0;
 
+        if (!in && !out)
+        {
+            std::cout << "Warning: DirectedNearestNeighborsDegree::meanDegree no direction given." << std::endl;
+        }
+        
         while (!it.end())
         {
             Vertex* v = *it;

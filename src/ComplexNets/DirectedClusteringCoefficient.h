@@ -21,6 +21,11 @@ public:
         unsigned int count = 0;
         Coefficient clusteringCoefSums = 0.0;
 
+        if (!in && !out)
+        {
+            std::cout << "Warning: DirectedClusteringCoefficient::clusteringCoefficient no direction given." << std::endl;
+        }
+        
         while (!it.end())
         {
             Vertex* v = *it;

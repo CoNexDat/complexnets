@@ -292,8 +292,12 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
         ui->actionClustering_coefficient->setEnabled(true);
 		ui->actionNearest_neighbors_degree->setEnabled(true);
         ui->actionConfigure_Directed_Degree_sign->setEnabled(true);
-        //ui->actionClustering_Coefficient_vs_Degree->setEnabled(true);
-		//ui->actionNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
+
+        ui->actionClustering_Coefficient_vs_Degree->setEnabled(true);
+		ui->actionNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
+        
+        ui->actionExportClustering_Coefficient_vs_Degree->setEnabled(true);
+		ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
     }
 	
     // Enabled actions for all graph types
@@ -684,7 +688,7 @@ void MainWindow::computeBetweenness()
 
 void MainWindow::computeDegreeDistribution()
 {
-    if (!propertyMap.containsPropertySet("degreeDistribution"))
+    if (!propertyMap.containsPropertySet("degreeDistribution") || this->digraph)
     {
         if (this->weightedgraph)
         {
@@ -703,7 +707,9 @@ void MainWindow::computeDegreeDistribution()
             DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*> (directedFactory->createDegreeDistribution(directedGraph));
             DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it = degreeDistribution->inDegreeIterator();
 			DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it2 = degreeDistribution->outDegreeIterator();
-            while (!it.end() || !it2.end())
+            DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it3 = degreeDistribution->inOutDegreeIterator();                        
+            
+            while (!it.end() || !it2.end() || !it3.end())
             {
 				if (!it.end()) {
 					propertyMap.addProperty<double>("inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
@@ -714,6 +720,11 @@ void MainWindow::computeDegreeDistribution()
 					propertyMap.addProperty<double>("outDegreeDistribution", to_string<unsigned int>(it2->first), it2->second);
 					propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)directedGraph.verticesCount());
 					++it2;
+				}
+                if (!it3.end()) {
+					propertyMap.addProperty<double>("inOutDegreeDistribution", to_string<unsigned int>(it3->first), it3->second);
+					propertyMap.addProperty<double>("inOutDegreeDistributionProbability", to_string<unsigned int>(it3->first), it3->second / (double)directedGraph.verticesCount());
+					++it3;
 				}
             }
             delete degreeDistribution;
@@ -1024,10 +1035,33 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
     int ret = 0 ;
     ui->textBrowser->append("Plotting Clustering Coefficient vs Degree...");
     double cc = 0;
-    if (!propertyMap.containsPropertySet("clusteringCoeficientForDegree"))
+    
+    std::string directedPostfix;
+    if (directed_out) {
+        directedPostfix += "O";
+    }
+    if (directed_in) {
+        directedPostfix += "I";
+    }
+    
+    std::string ccKey = "clusteringCoeficientForDegree" + directedPostfix;
+    
+    if (!propertyMap.containsPropertySet(ccKey))
     {
         this->computeDegreeDistribution();
-        VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+        
+        std::string key = "degreeDistribution";
+        if (this->digraph) {
+            if (directed_in && directed_out) {
+                key = "inOutDegreeDistribution";
+            } else if (directed_in) {
+                key = "inDegreeDistribution";
+            } else if (directed_out) {
+                key = "outDegreeDistribution";
+            }
+        }
+        
+        VariantsSet& degrees = propertyMap.getPropertySet(key);
         VariantsSet::const_iterator it = degrees.begin();
 
         if (this->weightedgraph)
@@ -1036,7 +1070,18 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
             while (it != degrees.end())
             {
                 cc = clusteringCoefficient->clusteringCoefficient(weightedGraph, from_string<unsigned int>(it->first));
-                propertyMap.addProperty<double>("clusteringCoeficientForDegree", it->first, cc);
+                propertyMap.addProperty<double>(ccKey, it->first, cc);
+                ++it;
+            }
+            delete clusteringCoefficient;
+        }
+        else if (this->digraph)
+        {
+            IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient = directedFactory->createClusteringCoefficient();
+            while (it != degrees.end())
+            {
+                cc = clusteringCoefficient->clusteringCoefficient(directedGraph, from_string<unsigned int>(it->first), directed_out, directed_in);
+                propertyMap.addProperty<double>(ccKey, it->first, cc);
                 ++it;
             }
             delete clusteringCoefficient;
@@ -1047,13 +1092,13 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
             while (it != degrees.end())
             {
                 cc = clusteringCoefficient->clusteringCoefficient(graph, from_string<unsigned int>(it->first));
-                propertyMap.addProperty<double>("clusteringCoeficientForDegree", it->first, cc);
+                propertyMap.addProperty<double>(ccKey, it->first, cc);
                 ++it;
             }
             delete clusteringCoefficient;
         }
     }
-    ret = this->console->plotPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), "clusteringCoeficientForDegree");
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet(ccKey), ccKey);
     this->console->show();
     this->activateWindow();
     if (!ret)
@@ -1063,12 +1108,35 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
 void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
 {
     int ret = 0 ;
-    ui->textBrowser->append("Plotting Neirest Neighbors Degree vs Degree...");
+    ui->textBrowser->append("Plotting Nearest Neighbors Degree vs Degree...");
     double knn = 0;
-    if (!propertyMap.containsPropertySet("nearestNeighborDegreeForDegree"))
+    
+    std::string directedPostfix;
+    if (directed_out) {
+        directedPostfix += "O";
+    }
+    if (directed_in) {
+        directedPostfix += "I";
+    }
+    
+    std::string nnKey = "nearestNeighborDegreeForDegree" + directedPostfix;
+    
+    if (!propertyMap.containsPropertySet(nnKey))
     {
         this->computeDegreeDistribution();
-        VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+        
+        std::string key = "degreeDistribution";
+        if (this->digraph) {
+            if (directed_in && directed_out) {
+                key = "inOutDegreeDistribution";
+            } else if (directed_in) {
+                key = "inDegreeDistribution";
+            } else if (directed_out) {
+                key = "outDegreeDistribution";
+            }
+        }
+        
+        VariantsSet& degrees = propertyMap.getPropertySet(key);
         VariantsSet::const_iterator it = degrees.begin();
 
         if (this->weightedgraph)
@@ -1077,7 +1145,18 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
             while (it != degrees.end())
             {
                 knn = nearestNeighborDegree->meanDegree(weightedGraph, from_string<unsigned int>(it->first));
-                propertyMap.addProperty<double>("nearestNeighborDegreeForDegree", it->first, knn);
+                propertyMap.addProperty<double>(nnKey, it->first, knn);
+                ++it;
+            }
+            delete nearestNeighborDegree;
+        }
+        else if (this->digraph)
+        {
+            INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborDegree = directedFactory->createNearestNeighborsDegree();
+            while (it != degrees.end())
+            {
+                knn = nearestNeighborDegree->meanDegree(directedGraph, from_string<unsigned int>(it->first), directed_out, directed_in);
+                propertyMap.addProperty<double>(nnKey, it->first, knn);
                 ++it;
             }
             delete nearestNeighborDegree;
@@ -1088,13 +1167,13 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
             while (it != degrees.end())
             {
                 knn = nearestNeighborDegree->meanDegree(graph, from_string<unsigned int>(it->first));
-                propertyMap.addProperty<double>("nearestNeighborDegreeForDegree", it->first, knn);
+                propertyMap.addProperty<double>(nnKey, it->first, knn);
                 ++it;
             }
             delete nearestNeighborDegree;
         }
     }
-    ret = this->console->plotPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), "nearestNeighborDegreeForDegree");
+    ret = this->console->plotPropertySet(propertyMap.getPropertySet(nnKey), nnKey);
     this->console->show();
     this->activateWindow();
     if (!ret)
