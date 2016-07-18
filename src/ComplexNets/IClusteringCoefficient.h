@@ -12,12 +12,12 @@ public:
     virtual Coefficient clusteringCoefficient(Graph& g, Degree d) = 0;
     virtual Coefficient vertexClusteringCoefficient(Vertex* vertex) = 0;
     
-    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex, bool positive, bool negative)
+    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex, bool out, bool in)
     {
         return vertexClusteringCoefficient(vertex);
     }
     
-    virtual Coefficient clusteringCoefficient(Graph &g, Degree d, bool positive, bool negative)
+    virtual Coefficient clusteringCoefficient(Graph &g, Degree d, bool out, bool in)
     {
         return clusteringCoefficient(g, d);
     }

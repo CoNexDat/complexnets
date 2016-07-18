@@ -186,7 +186,7 @@ double ProgramState::clustering(unsigned int vertex_id) {
                 {
                     IGraphFactory<DirectedGraph, DirectedVertex> *factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
                     IClusteringCoefficient<DirectedGraph, DirectedVertex> *clusteringCoefficient = factory->createClusteringCoefficient();
-                    ret = clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_positive, directed_negative);
+                    ret = clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_out, directed_in);
                     delete clusteringCoefficient;
                 }
             }
@@ -224,7 +224,7 @@ double ProgramState::knn(unsigned int vertex_id) {
         {
             IGraphFactory<DirectedGraph, DirectedVertex> *factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
             INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborsDegree = factory->createNearestNeighborsDegree();
-            ret = nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_positive, directed_negative);
+            ret = nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_out, directed_in);
             delete nearestNeighborsDegree;           
         }
     }
@@ -705,7 +705,7 @@ void ProgramState::exportCurrentGraph(string outputPath) {
     delete graphWriter;
 }
 
-void ProgramState::setDirectedPositiveNegative(bool p, bool n) {
-    directed_positive = p;
-    directed_negative = n;
+void ProgramState::setDirectedInOut(bool o, bool i) {
+    directed_out = o;
+    directed_in = i;
 }

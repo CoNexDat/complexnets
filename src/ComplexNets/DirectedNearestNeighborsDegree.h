@@ -15,7 +15,7 @@ public:
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename Graph::VerticesIterator VerticesIterator;
 
-    virtual MeanDegree meanDegree(Graph& g, typename Vertex::Degree d, bool positive, bool negative)
+    virtual MeanDegree meanDegree(Graph& g, typename Vertex::Degree d, bool out, bool in)
     {
         VerticesIterator it = g.verticesIterator();
         unsigned int count = 0;
@@ -28,7 +28,7 @@ public:
             if (v->degree() == d)
             {
                 ++count;
-                meanDegreeSums += meanDegreeForVertex(v, positive, negative);
+                meanDegreeSums += meanDegreeForVertex(v, out, in);
             }
 
             ++it;
@@ -43,38 +43,38 @@ public:
         return meanDegree(g, d, false, false);
     }
 
-    virtual MeanDegree meanDegreeForVertex(Vertex* v, bool positive, bool negative)
+    virtual MeanDegree meanDegreeForVertex(Vertex* v, bool out, bool in)
     {
         DirectedVertex* directedVertex = static_cast<DirectedVertex*>(v);
         
-        if (!positive && !negative)
+        if (!out && !in)
         {
-            // Do positive by default
-            positive = true;
+            // Do out by default
+            out = true;
         }
        
-        MeanDegree positiveLinks = 0.0;
-        MeanDegree negativeLinks = 0.0;
+        MeanDegree outLinks = 0.0;
+        MeanDegree inLinks = 0.0;
         
-        if (negative)
+        if (in)
         {
             NeighborsIterator it = directedVertex->inNeighborsIterator();
             while (!it.end())
             {   
                 DirectedVertex* vertex = static_cast<DirectedVertex*>(*it);
-                negativeLinks += vertex->inDegree();
+                inLinks += vertex->inDegree();
                 
                 ++it;
             }
         }
         
-        if (positive)
+        if (out)
         {
             NeighborsIterator it = directedVertex->outNeighborsIterator();
             while (!it.end())
             {                
                 DirectedVertex* vertex = static_cast<DirectedVertex*>(*it);                
-                positiveLinks += vertex->outDegree();
+                outLinks += vertex->outDegree();
                 
                 ++it;
             }           
@@ -83,19 +83,19 @@ public:
         MeanDegree degree = 0.0;
         MeanDegree links = 0.0;
         
-        if (positive && negative)
+        if (out && in)
         {
-            links = negativeLinks + positiveLinks;
+            links = inLinks + outLinks;
             degree = directedVertex->inOutDegree();
         }
-        else if (negative)
+        else if (in)
         {
-            links = negativeLinks;
+            links = inLinks;
             degree = directedVertex->inDegree();
         }
         else
         {
-            links = positiveLinks;
+            links = outLinks;
             degree = directedVertex->outDegree();
         }
         

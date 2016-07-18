@@ -268,7 +268,7 @@ public:
         actionExportClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", 0, QApplication::UnicodeUTF8));
         actionExportShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", 0, QApplication::UnicodeUTF8));
         actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
-        actionConfigure_Directed_Degree_sign->setText(QApplication::translate("MainWindow", "Configure Directed Degree sign...", 0, QApplication::UnicodeUTF8));
+        actionConfigure_Directed_Degree_sign->setText(QApplication::translate("MainWindow", "Configure Directed Degree direction...", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "&Analysis", 0, QApplication::UnicodeUTF8));
         menuPlot->setTitle(QApplication::translate("MainWindow", "&Plot", 0, QApplication::UnicodeUTF8));

@@ -57,8 +57,8 @@ private:
     WeightedGraph weightedGraph;
 	DirectedGraph directedGraph;
     
-    bool directed_positive;
-    bool directed_negative;
+    bool directed_out;
+    bool directed_in;
 	
     void computeDegreeDistribution();
     void computeCumulativeDegreeDistribution();

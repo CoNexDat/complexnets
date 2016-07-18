@@ -43,8 +43,8 @@ MainWindow::MainWindow(QWidget* parent) :
     weightedFactory = NULL;
     factory = NULL;
 	directedFactory = NULL;
-    directed_negative = false;
-    directed_positive = true;
+    directed_in = false;
+    directed_out = true;
     this->onNetworkUnload();
     this->console = new GnuplotConsole();
     ui->textBrowser->setOpenExternalLinks(true);
@@ -292,6 +292,8 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
         ui->actionClustering_coefficient->setEnabled(true);
 		ui->actionNearest_neighbors_degree->setEnabled(true);
         ui->actionConfigure_Directed_Degree_sign->setEnabled(true);
+        //ui->actionClustering_Coefficient_vs_Degree->setEnabled(true);
+		//ui->actionNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
     }
 	
     // Enabled actions for all graph types
@@ -858,10 +860,10 @@ void MainWindow::on_actionClustering_coefficient_triggered()
     double coefficient;
     
     std::string directedPostfix = "d";
-    if (directed_positive) {
+    if (directed_out) {
         directedPostfix += "p";
     }
-    if (directed_negative) {
+    if (directed_in) {
         directedPostfix += "n";
     }
     
@@ -891,7 +893,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                    if ((vertex = directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
                    {
                        IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient = directedFactory->createClusteringCoefficient();
-                       propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()) + directedPostfix, clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_positive, directed_negative));
+                       propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()) + directedPostfix, clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_out, directed_in));
                        delete clusteringCoefficient;
                    }
             }
@@ -941,10 +943,10 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
     double neighborsDegree;
     
     std::string directedPostfix = "d";
-    if (directed_positive) {
+    if (directed_out) {
         directedPostfix += "p";
     }
-    if (directed_negative) {
+    if (directed_in) {
         directedPostfix += "n";
     }
     
@@ -974,7 +976,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 if ((vertex = directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
                 {
                     INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborsDegree = directedFactory->createNearestNeighborsDegree();
-                    propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex", to_string<unsigned int>(vertex->getVertexId()) + directedPostfix, nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_positive, directed_negative));
+                    propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex", to_string<unsigned int>(vertex->getVertexId()) + directedPostfix, nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_out, directed_in));
                     delete nearestNeighborsDegree;
                 }               
             }
@@ -1790,29 +1792,29 @@ void MainWindow::on_actionConfigure_Directed_Degree_sign_triggered()
 {
     QStringList items;
     
-    QString p = "Positive";
-    QString n = "Negative";
-    QString pn = "Positive and Negative";
+    QString p = "Out";
+    QString n = "In";
+    QString pn = "In and Out";
     
     items << p << n << pn;
     bool ok;
     
-    QString item = QInputDialog::getItem(this, "Directed Degree sign", "Sign:", items, 0, false, &ok);
+    QString item = QInputDialog::getItem(this, "Directed Degree direction", "Direction:", items, 0, false, &ok);
     if (ok && !item.isEmpty()) {
         if (item == pn) {
-            directed_positive = true;
-            directed_negative = true;
+            directed_out = true;
+            directed_in = true;
         } else if (item == n) {
-            directed_negative = true;
-            directed_positive = false;
+            directed_in = true;
+            directed_out = false;
         } else if (item == p) {
-            directed_positive = true;
-            directed_negative = false;
+            directed_out = true;
+            directed_in = false;
         }
         
-        ui->textBrowser->append("Directed degree sign set to:");
-        ui->textBrowser->append(QString("Positive: ") + (directed_positive ? "true" : "false"));
-        ui->textBrowser->append(QString("Negative: ") + (directed_negative ? "true" : "false"));
+        ui->textBrowser->append("Directed degree direction set to:");
+        ui->textBrowser->append(QString("Out: ") + (directed_out ? "true" : "false"));
+        ui->textBrowser->append(QString("In: ") + (directed_in ? "true" : "false"));
         ui->textBrowser->append("");
     }
 }

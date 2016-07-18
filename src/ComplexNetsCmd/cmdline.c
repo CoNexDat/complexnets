@@ -64,8 +64,8 @@ const char *gengetopt_args_info_help[] = {
   "      --shell=<vertex id>       Calculate the shell index of a given node",
   "      --maxCliqueExact=<max time>\n                                Calculate max clique if time (in seconds) is\n                                  enough",
   "      --maxCliqueAprox          Calculate max clique aproximation",
-  "      --positive                Use positive degrees (directed)  (default=off)",
-  "      --negative                Use negative degrees (directed)  (default=off)",
+  "      --out                     Use out degrees (directed)  (default=off)",
+  "      --in                      Use in degrees (directed)  (default=off)",
   "      --betweenness-output      Betweenness vs. Degree",
   "      --ddist-output            Degree distribution",
   "      --log-bin=<number of bins>\n                                Log-bin the output (only for Degree\n                                  distribution)",
@@ -131,8 +131,8 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->shell_given = 0 ;
   args_info->maxCliqueExact_given = 0 ;
   args_info->maxCliqueAprox_given = 0 ;
-  args_info->positive_given = 0 ;
-  args_info->negative_given = 0 ;
+  args_info->out_given = 0 ;
+  args_info->in_given = 0 ;
   args_info->betweenness_output_given = 0 ;
   args_info->ddist_output_given = 0 ;
   args_info->log_bin_given = 0 ;
@@ -176,8 +176,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->knn_orig = NULL;
   args_info->shell_orig = NULL;
   args_info->maxCliqueExact_orig = NULL;
-  args_info->positive_flag = 0;
-  args_info->negative_flag = 0;
+  args_info->out_flag = 0;
+  args_info->in_flag = 0;
   args_info->log_bin_orig = NULL;
   args_info->maxCliqueExact_output_orig = NULL;
   args_info->output_file_arg = NULL;
@@ -217,8 +217,8 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->shell_help = gengetopt_args_info_help[27] ;
   args_info->maxCliqueExact_help = gengetopt_args_info_help[28] ;
   args_info->maxCliqueAprox_help = gengetopt_args_info_help[29] ;
-  args_info->positive_help = gengetopt_args_info_help[30] ;
-  args_info->negative_help = gengetopt_args_info_help[31] ;
+  args_info->out_help = gengetopt_args_info_help[30] ;
+  args_info->in_help = gengetopt_args_info_help[31] ;
   args_info->betweenness_output_help = gengetopt_args_info_help[32] ;
   args_info->ddist_output_help = gengetopt_args_info_help[33] ;
   args_info->log_bin_help = gengetopt_args_info_help[34] ;
@@ -419,10 +419,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "maxCliqueExact", args_info->maxCliqueExact_orig, 0);
   if (args_info->maxCliqueAprox_given)
     write_into_file(outfile, "maxCliqueAprox", 0, 0 );
-  if (args_info->positive_given)
-    write_into_file(outfile, "positive", 0, 0 );
-  if (args_info->negative_given)
-    write_into_file(outfile, "negative", 0, 0 );
+  if (args_info->out_given)
+    write_into_file(outfile, "out", 0, 0 );
+  if (args_info->in_given)
+    write_into_file(outfile, "in", 0, 0 );
   if (args_info->betweenness_output_given)
     write_into_file(outfile, "betweenness-output", 0, 0 );
   if (args_info->ddist_output_given)
@@ -886,8 +886,8 @@ cmdline_parser_internal (
         { "shell",	1, NULL, 0 },
         { "maxCliqueExact",	1, NULL, 0 },
         { "maxCliqueAprox",	0, NULL, 0 },
-        { "positive",	0, NULL, 0 },
-        { "negative",	0, NULL, 0 },
+        { "out",	0, NULL, 0 },
+        { "in",	0, NULL, 0 },
         { "betweenness-output",	0, NULL, 0 },
         { "ddist-output",	0, NULL, 0 },
         { "log-bin",	1, NULL, 0 },
@@ -1298,26 +1298,26 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* Use positive degrees (directed).  */
-          else if (strcmp (long_options[option_index].name, "positive") == 0)
+          /* Use out degrees (directed).  */
+          else if (strcmp (long_options[option_index].name, "out") == 0)
           {
           
           
-            if (update_arg((void *)&(args_info->positive_flag), 0, &(args_info->positive_given),
-                &(local_args_info.positive_given), optarg, 0, 0, ARG_FLAG,
-                check_ambiguity, override, 1, 0, "positive", '-',
+            if (update_arg((void *)&(args_info->out_flag), 0, &(args_info->out_given),
+                &(local_args_info.out_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "out", '-',
                 additional_error))
               goto failure;
           
           }
-          /* Use negative degrees (directed).  */
-          else if (strcmp (long_options[option_index].name, "negative") == 0)
+          /* Use in degrees (directed).  */
+          else if (strcmp (long_options[option_index].name, "in") == 0)
           {
           
           
-            if (update_arg((void *)&(args_info->negative_flag), 0, &(args_info->negative_given),
-                &(local_args_info.negative_given), optarg, 0, 0, ARG_FLAG,
-                check_ambiguity, override, 1, 0, "negative", '-',
+            if (update_arg((void *)&(args_info->in_flag), 0, &(args_info->in_given),
+                &(local_args_info.in_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "in", '-',
                 additional_error))
               goto failure;
           

@@ -15,7 +15,7 @@ public:
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
 
-    virtual Coefficient clusteringCoefficient(Graph& g, Degree d, bool positive, bool negative)
+    virtual Coefficient clusteringCoefficient(Graph& g, Degree d, bool out, bool in)
     {
         VerticesIterator it = g.verticesIterator();
         unsigned int count = 0;
@@ -28,7 +28,7 @@ public:
             if (v->degree() == d)
             {
                 count++;
-                clusteringCoefSums += vertexClusteringCoefficient(v, positive, negative);
+                clusteringCoefSums += vertexClusteringCoefficient(v, out, in);
             }
 
             ++it;
@@ -42,20 +42,20 @@ public:
         return clusteringCoefficient(g, d, false, false);
     }
 
-    virtual Coefficient vertexClusteringCoefficient(Vertex *vertex, bool positive, bool negative)
+    virtual Coefficient vertexClusteringCoefficient(Vertex *vertex, bool out, bool in)
     {
         DirectedVertex* directedVertex = static_cast<DirectedVertex*>(vertex);
         
-        if (!negative && !positive)
+        if (!in && !out)
         {
-            // Do positive by default
-            positive = true;
+            // Do out by default
+            out = true;
         }
         
-        Coefficient positiveLinks = 0.0;
-        Coefficient negativeLinks = 0.0;
+        Coefficient outLinks = 0.0;
+        Coefficient inLinks = 0.0;
 
-        if (negative)
+        if (in)
         {
             NeighborsIterator outer = directedVertex->inNeighborsIterator();
             while (!outer.end())
@@ -68,7 +68,7 @@ public:
                     
                     if (isDirectedAdjacent(j, h))
                     {
-                        negativeLinks += 1.0;
+                        inLinks += 1.0;
                     }
                     
                     ++inner;
@@ -78,7 +78,7 @@ public:
             }           
         }
 
-        if (positive)
+        if (out)
         {
              NeighborsIterator outer = directedVertex->outNeighborsIterator();
              while (!outer.end())
@@ -91,7 +91,7 @@ public:
                      
                      if (isDirectedAdjacent(j, h))
                      {
-                         positiveLinks += 1.0;
+                         outLinks += 1.0;
                      }
                      
                      ++inner;
@@ -104,19 +104,19 @@ public:
         Coefficient degree = 0.0;
         Coefficient links = 0.0;
         
-        if (positive && negative)
+        if (out && in)
         {
-            links = negativeLinks + positiveLinks;
+            links = inLinks + outLinks;
             degree = directedVertex->inOutDegree();
         }
-        else if (negative)
+        else if (in)
         {
-            links = negativeLinks;
+            links = inLinks;
             degree = directedVertex->inDegree();
         }
         else
         {
-            links = positiveLinks;
+            links = outLinks;
             degree = directedVertex->outDegree();
         }
         

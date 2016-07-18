@@ -98,10 +98,10 @@ struct gengetopt_args_info
   char * maxCliqueExact_orig;	/**< @brief Calculate max clique if time (in seconds) is enough original value given at command line.  */
   const char *maxCliqueExact_help; /**< @brief Calculate max clique if time (in seconds) is enough help description.  */
   const char *maxCliqueAprox_help; /**< @brief Calculate max clique aproximation help description.  */
-  int positive_flag;	/**< @brief Use positive degrees (directed) (default=off).  */
-  const char *positive_help; /**< @brief Use positive degrees (directed) help description.  */
-  int negative_flag;	/**< @brief Use negative degrees (directed) (default=off).  */
-  const char *negative_help; /**< @brief Use negative degrees (directed) help description.  */
+  int out_flag;	/**< @brief Use out degrees (directed) (default=off).  */
+  const char *out_help; /**< @brief Use out degrees (directed) help description.  */
+  int in_flag;	/**< @brief Use in degrees (directed) (default=off).  */
+  const char *in_help; /**< @brief Use in degrees (directed) help description.  */
   const char *betweenness_output_help; /**< @brief Betweenness vs. Degree help description.  */
   const char *ddist_output_help; /**< @brief Degree distribution help description.  */
   int log_bin_arg;	/**< @brief Log-bin the output (only for Degree distribution).  */
@@ -146,8 +146,8 @@ struct gengetopt_args_info
   unsigned int shell_given ;	/**< @brief Whether shell was given.  */
   unsigned int maxCliqueExact_given ;	/**< @brief Whether maxCliqueExact was given.  */
   unsigned int maxCliqueAprox_given ;	/**< @brief Whether maxCliqueAprox was given.  */
-  unsigned int positive_given ;	/**< @brief Whether positive was given.  */
-  unsigned int negative_given ;	/**< @brief Whether negative was given.  */
+  unsigned int out_given ;	/**< @brief Whether out was given.  */
+  unsigned int in_given ;	/**< @brief Whether in was given.  */
   unsigned int betweenness_output_given ;	/**< @brief Whether betweenness-output was given.  */
   unsigned int ddist_output_given ;	/**< @brief Whether ddist-output was given.  */
   unsigned int log_bin_given ;	/**< @brief Whether log-bin was given.  */

@@ -108,8 +108,8 @@ defgroup "analysis" groupdesc="Network analysis methods"
 
 defgroup "directed" groupdesc="Directed graph options"
 
-		option "positive" - "Use positive degrees (directed)" flag off
-		option "negative" - "Use negative degrees (directed)" flag off
+		option "out" - "Use out degrees (directed)" flag off
+		option "in" - "Use in degrees (directed)" flag off
 
 # ----- Group of network analysis methods.
 
