@@ -43,22 +43,22 @@ $ make all
 Version 4.8 (or greater) of g++ is required.
 
 Building in Mac OS
-------------------
-Since there is not default package installer in Mac OS X, you can use [Homebrew](http://brew.sh/) to install the required packages.
+=========================
+Since there is no default package manager in Mac OS X, you can use [Homebrew](http://brew.sh/) to install the required packages.
 
-`brew install cmake qt`
+`$ brew install cmake qt`
 
-If your compiler is not GNU you can also download it with Homebrew (`brew install gcc`).
+If your compiler is not `gcc`, you can also download it using Homebrew (`brew install gcc`).
 
-If the downloaded version is different to **gcc-6**, you will have to changed it in the *ComplexnetsGui.pro* file.
+If the downloaded version is different than **gcc-6**, you'll have to change the *ComplexnetsGui.pro* file to match your version.
 
 It is also recommended to download *gnuplot* from Homebrew:
 
-`brew install gnuplot --with-qt`
+`$ brew install gnuplot --with-qt`
 
 If you had previously installed one of these dependencies with Macports or Fisk, you can move them in order to have the ones downloaded from Homebrew take precedence:
 
-`mv /opt/local ~/macports`
+`$ mv /opt/local ~/macports`
 
 Running the tests
 =================
