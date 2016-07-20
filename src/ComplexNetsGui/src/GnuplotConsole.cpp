@@ -129,3 +129,149 @@ void GnuplotConsole::writeCommand(const std::string& command)
     this->textBrowser->clear();
     this->textBrowser->append(console);*/
 }
+
+bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries, const bool logBin, unsigned int bins)
+{
+    std::vector<double> Q1, Q2, Q3, d, m;
+    std::vector<double> bin;
+    if(logBin){
+        addLogBins(bpentries, bins);
+    }
+
+    for (int i = 0; i < bpentries.size(); ++i)
+    {
+        graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
+        printf("[Degree %d] Size: %d, Mean CC: %f\n", entry.degree, entry.clusteringCoefs.size(), entry.mean);
+        printf("   Min: %f - Max: %f\n", entry.min, entry.max);
+        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);
+        d.push_back(entry.degree);
+        Q1.push_back(entry.Q1);
+        Q2.push_back(entry.Q2);
+        Q3.push_back(entry.Q3);
+        m.push_back(entry.mean);
+        if(logBin){
+            bin.push_back(entry.bin);
+        }
+    }
+    
+    GrapherUtils utils;
+    if (pipe == NULL)
+    {
+        pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
+    }
+    if (pipe == NULL)
+        return false;
+
+    if (logBin)
+    {
+        std::string file = "/tmp/";
+        file = "/tmp/mean";
+        utils.exportThreeVectors(d, m,  bin, file);
+        writeCommand("set style data boxplot");
+
+        std::string command = std::string("plot ").append("\"/tmp/").append("mean").append("\"").append(" using  (1):2:(0.5):3");
+
+        writeCommand(command);
+    }else{
+        writeCommand("set style data linespoints");
+        std::string command = std::string("plot ").append("\"/tmp/").append("Q1").append("\"").append(" title 'Q1' with lines, ");
+
+        std::string file = "/tmp/";
+        file.append("Q1");
+        utils.exportVectors(Q1, d, file);
+
+        command.append("\"/tmp/").append("Q2").append("\"").append(" title 'Q2' with lines, ");
+        file = "/tmp/";
+        file.append("Q2");
+        utils.exportVectors(Q2, d, file);
+
+        command.append("\"/tmp/").append("Q3").append("\"").append(" title 'Q3' with lines\n");
+        file = "/tmp/";
+        file.append("Q3");
+        utils.exportVectors(Q3, d, file);
+
+        writeCommand(command);
+    }
+
+    return true;
+}
+
+unsigned int GnuplotConsole::findBin(const std::vector<double>& bins, const unsigned int value)
+{
+    unsigned int lowerLimit = 0;
+    unsigned int upperLimit = bins.size() - 1;
+    unsigned int halfPoint;
+    while (upperLimit - lowerLimit > 1)
+    {
+        halfPoint = ceil(0.5 * (upperLimit + lowerLimit));
+        if (value >= bins[halfPoint])
+            lowerLimit = halfPoint;
+        else
+            upperLimit = halfPoint;
+    }
+    return lowerLimit;
+}
+
+bool GnuplotConsole::addLogBins(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec, unsigned int binsAmount)
+{
+    std::vector<double> toPlot;
+    std::list<double> xPoints;
+    std::vector<double> bins;
+
+    //assume it is already sorted
+
+    double min = vec.front().degree;
+    double max = vec.back().degree;
+    double r = pow(max - min + 1, 1 / (double)binsAmount);
+
+    int last = 0, current;
+    double cBin;
+    for(unsigned int i = 0; i <= binsAmount; i++) {
+        cBin = pow(r,i) + min - 1;
+        current = i < binsAmount ? floor(cBin) : ceil(cBin);
+        if(current != last) {
+            bins.push_back(current);
+            last = current;
+        }
+    }
+
+    //Go through each degree in the network and find wich bin the degree belongs to.
+    //Count how many elements are contained in a bin.
+    std::vector<unsigned int> pointsInBin(bins.size());
+    for (unsigned int i = 0; i < bins.size(); i++) {
+        pointsInBin[i++] = 0;
+    }
+
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>::iterator it = vec.begin();
+    while (it != vec.end())
+    {
+        unsigned int binNum = findBin(bins, it->degree);
+        pointsInBin[binNum] += 1;
+        it->bin = bins.at(binNum+1);
+        ++it;
+    }
+
+    for(unsigned int i = 0; i < pointsInBin.size() - 1; i++) {
+        printf("Bin[%g, %g]: %d\n", bins.at(i), bins.at(i + 1), pointsInBin.at(i));
+    }
+
+    // Probability density per bin
+    // Normalization and plotting
+    double sum = 0.0;
+    for (unsigned int i = 0; i < bins.size(); ++i)
+    {
+        sum += pointsInBin[i];
+    }
+
+    double binWidth, PBin, checkIntegral = 0, binPos;
+    for (unsigned int i = 0; i < bins.size(); ++i)
+    {
+        binWidth = fabs(bins[i + 1] - bins[i]);
+        PBin = (pointsInBin[i] / sum) / binWidth;
+        checkIntegral += PBin * binWidth;
+        binPos = bins[i] + (binWidth / 2.0);
+        //toPlot.insert<double>(to_string<double>(binPos), PBin);
+    }
+
+    return true;
+}

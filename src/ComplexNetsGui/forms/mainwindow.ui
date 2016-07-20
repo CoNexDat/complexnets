@@ -70,6 +70,7 @@
     <addaction name="actionClustering_Coefficient_vs_Degree"/>
     <addaction name="actionNearest_Neighbors_Degree_vs_Degree"/>
     <addaction name="actionShell_Index_vs_Degree"/>
+    <addaction name="actionBoxplotCC"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -277,6 +278,11 @@
   <action name="actionExportNearest_Neighbors_Degree_vs_Degree">
    <property name="text">
     <string>Nearest Neighbors Degree vs Degree</string>
+   </property>
+  </action>
+  <action name="actionBoxplotCC">
+   <property name="text">
+    <string>Boxplot Clustering Coeficient</string>
    </property>
   </action>
  </widget>

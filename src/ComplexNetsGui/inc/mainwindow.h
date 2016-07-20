@@ -58,6 +58,7 @@ private:
 	DirectedGraph directedGraph;
 	
     void computeDegreeDistribution();
+    void computeClusteringCoefficient(QString vertexId);
     void computeCumulativeDegreeDistribution();
     void computeShellIndex();
     void computeMaxClique(bool exact);
@@ -111,6 +112,7 @@ private slots:
     void on_actionExport_current_network_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
     void on_actionExportCumulativeDegree_distribution_triggered();
+    void on_actionBoxplotCC_triggered();        
 };
 
 }
