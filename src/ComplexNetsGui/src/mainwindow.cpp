@@ -271,6 +271,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 		ui->actionExportMaxCliqueExact_distribution->setEnabled(true);
         ui->actionBoxplotCC->setEnabled(true);
         ui->actionExportCCBoxplot->setEnabled(true);
+        ui->actionExportKnnBoxplot->setEnabled(true);
         ui->actionBoxplotNearestNeighborsDegree->setEnabled(true);
 	}
 
@@ -336,6 +337,8 @@ void MainWindow::disableActions()
     //ui->actionCumulativeDegree_distribution_plotting->setEnabled(false);
     //ui->actionExportCumulativeDegree_distribution->setEnabled(false);
     ui->actionBoxplotCC->setEnabled(false);
+    ui->actionExportKnnBoxplot->setEnabled(false);
+    ui->actionExportCCBoxplot->setEnabled(false);
     ui->actionBoxplotNearestNeighborsDegree->setEnabled(false);
 }
 
@@ -1860,10 +1863,10 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
             policy.transform(bpentries, bins);
             std::vector<double> d, m;
             std::vector<unsigned int> bin;
-            for (int i = 0; i < bpentries.size(); ++i)
+            for (unsigned int i = 0; i < bpentries.size(); ++i)
             {
                 graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
-                for(int w = 0; w < entry.values.size(); w++){
+                for(unsigned int w = 0; w < entry.values.size(); w++){
                     d.push_back(entry.degree);
                     m.push_back(entry.values[w]);
                     bin.push_back(entry.bin);
@@ -1873,7 +1876,7 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
             ui->textBrowser->append("Done exporting.");
         }else{
             std::vector<double> d, q1, q2, q3;
-            for (int i = 0; i < bpentries.size(); ++i)
+            for (unsigned int i = 0; i < bpentries.size(); ++i)
             {
                 graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
                 d.push_back(entry.degree);
@@ -1991,4 +1994,59 @@ std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> MainWi
     
     std::sort(bpentries.begin(), bpentries.end());
     return bpentries;
+}
+
+void MainWindow::on_actionExportKnnBoxplot_triggered()
+{
+    std::string ret;
+    bool logBin = false;
+    unsigned int bins = 10;
+    ui->textBrowser->append("Exporting Nearest Neighbors Degree boxplot data...");
+    ret = this->getSavePath();
+    if (!ret.empty())
+    {
+        if (!propertyMap.containsPropertySet("degreeDistribution"))
+        {
+            ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
+            this->computeDegreeDistribution();
+        }
+
+        GrapherUtils utils;
+        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries = this->computeBpentriesKnn();
+        if (LogBinningDialog() == QMessageBox::Yes) {
+            QString inputN = inputId("bins:");
+            if(!inputN.isEmpty()) {
+                bins = inputN.toInt();
+            }
+            LogBinningPolicy policy;
+            policy.transform(bpentries, bins);
+            std::vector<double> d, m;
+            std::vector<unsigned int> bin;
+            for (int i = 0; i < bpentries.size(); ++i)
+            {
+                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
+                for(int w = 0; w < entry.values.size(); w++){
+                    d.push_back(entry.degree);
+                    m.push_back(entry.values[w]);
+                    bin.push_back(entry.bin);
+                }
+            }
+            utils.exportThreeVectors(d, m, bin, ret);
+            ui->textBrowser->append("Done exporting.");
+        }else{
+            std::vector<double> d, q1, q2, q3;
+            for (int i = 0; i < bpentries.size(); ++i)
+            {
+                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
+                d.push_back(entry.degree);
+                q1.push_back(entry.Q1);
+                q2.push_back(entry.Q2);
+                q3.push_back(entry.Q3);
+            }
+            utils.exportFourVectors(d, q1, q2, q3, ret);
+            ui->textBrowser->append("Done exporting.");
+        }
+    }
+    else
+        ui->textBrowser->append("Action canceled by user.");
 }

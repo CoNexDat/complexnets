@@ -92,6 +92,7 @@
     <addaction name="actionExportNearest_Neighbors_Degree_vs_Degree"/>
     <addaction name="actionExportShell_Index_vs_Degree"/>
     <addaction name="actionExportCCBoxplot"/>
+    <addaction name="actionExportKnnBoxplot"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNode"/>
@@ -280,6 +281,11 @@
   <action name="actionExportCCBoxplot">
    <property name="text">
     <string>Boxplot Clustering Coeficient</string>
+   </property>
+  </action>
+  <action name="actionExportKnnBoxplot">
+   <property name="text">
+    <string>Boxplot Nearest Neighbors Degree</string>
    </property>
   </action>
   <action name="actionExportNearest_Neighbors_Degree_vs_Degree">

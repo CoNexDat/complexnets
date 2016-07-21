@@ -116,7 +116,8 @@ private slots:
     void on_actionExportCumulativeDegree_distribution_triggered();
     void on_actionBoxplotCC_triggered();   
     void on_actionExportCCBoxplot_triggered();
-    void on_actionBoxplotNearestNeighborsDegree_triggered();     
+    void on_actionBoxplotNearestNeighborsDegree_triggered();
+    void on_actionExportKnnBoxplot_triggered();
 };
 
 }
