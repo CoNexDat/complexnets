@@ -28,7 +28,7 @@ public:
             double Q2;
             double Q3;
             unsigned int bin;
-            std::vector<double> clusteringCoefs;
+            std::vector<double> values;
 
            	// define the operator to order vectors properly
             bool operator<(const Boxplotentry& other) const

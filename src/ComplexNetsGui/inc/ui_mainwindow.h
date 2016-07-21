@@ -63,6 +63,7 @@ public:
     QAction *actionExportCCBoxplot;
     QAction *actionExportNearest_Neighbors_Degree_vs_Degree;
     QAction *actionBoxplotCC;
+    QAction *actionBoxplotNearestNeighborsDegree;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QTextBrowser *textBrowser;
@@ -150,6 +151,8 @@ public:
         actionExportNearest_Neighbors_Degree_vs_Degree->setObjectName(QString::fromUtf8("actionExportNearest_Neighbors_Degree_vs_Degree"));
         actionBoxplotCC = new QAction(MainWindow);
         actionBoxplotCC->setObjectName(QString::fromUtf8("actionBoxplotCC"));
+        actionBoxplotNearestNeighborsDegree = new QAction(MainWindow);
+        actionBoxplotNearestNeighborsDegree->setObjectName(QString::fromUtf8("actionBoxplotNearestNeighborsDegree"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -216,6 +219,7 @@ public:
         menuPlot->addAction(actionNearest_Neighbors_Degree_vs_Degree);
         menuPlot->addAction(actionShell_Index_vs_Degree);
         menuPlot->addAction(actionBoxplotCC);
+        menuPlot->addAction(actionBoxplotNearestNeighborsDegree);
         menuHelp->addAction(actionAbout);
         menu_Export->addAction(actionExportBetweenness_vs_Degree);
         menu_Export->addAction(actionExportDegree_distribution);
@@ -273,6 +277,7 @@ public:
         actionExportCCBoxplot->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", 0, QApplication::UnicodeUTF8));
         actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
         actionBoxplotCC->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", 0, QApplication::UnicodeUTF8));
+        actionBoxplotNearestNeighborsDegree->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbor Degree", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "&Analysis", 0, QApplication::UnicodeUTF8));
         menuPlot->setTitle(QApplication::translate("MainWindow", "&Plot", 0, QApplication::UnicodeUTF8));

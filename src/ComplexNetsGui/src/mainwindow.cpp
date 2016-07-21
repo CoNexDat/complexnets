@@ -271,6 +271,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 		ui->actionExportMaxCliqueExact_distribution->setEnabled(true);
         ui->actionBoxplotCC->setEnabled(true);
         ui->actionExportCCBoxplot->setEnabled(true);
+        ui->actionBoxplotNearestNeighborsDegree->setEnabled(true);
 	}
 
 	if (weightedgraph){
@@ -335,6 +336,7 @@ void MainWindow::disableActions()
     //ui->actionCumulativeDegree_distribution_plotting->setEnabled(false);
     //ui->actionExportCumulativeDegree_distribution->setEnabled(false);
     ui->actionBoxplotCC->setEnabled(false);
+    ui->actionBoxplotNearestNeighborsDegree->setEnabled(false);
 }
 
 
@@ -1795,7 +1797,7 @@ std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> MainWi
             entry.Q2 = clusteringCoefs.at(Q2);
             entry.Q3 = clusteringCoefs.at(Q3);
             for(int t=0; t < clusteringCoefs.size(); t++){
-                entry.clusteringCoefs.push_back(clusteringCoefs[t]);    
+                entry.values.push_back(clusteringCoefs[t]);    
             }
         }
 
@@ -1846,7 +1848,7 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
             ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
             this->computeDegreeDistribution();
         }
-        
+
         GrapherUtils utils;
         std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries = this->computeBpentries();
         if (LogBinningDialog() == QMessageBox::Yes) {
@@ -1861,9 +1863,9 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
             for (int i = 0; i < bpentries.size(); ++i)
             {
                 graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
-                for(int w = 0; w < entry.clusteringCoefs.size(); w++){
+                for(int w = 0; w < entry.values.size(); w++){
                     d.push_back(entry.degree);
-                    m.push_back(entry.clusteringCoefs[w]);
+                    m.push_back(entry.values[w]);
                     bin.push_back(entry.bin);
                 }
             }
@@ -1885,4 +1887,108 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
     }
     else
         ui->textBrowser->append("Action canceled by user.");
+}
+
+
+// Calculates for each node the 5 relevant values for a boxplot regarding Nearest Neighbors Degree.
+// Min, Max, Q1, Q2, Q3.
+// If the user chooses to bin the data, the result will be a boxplot.
+// For non-bined data, the result will be a line plot of Q1, Q2 and Q3
+void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered() {
+    bool ret, logBin = false;
+    unsigned int bins = 10;
+
+    ui->textBrowser->append("Initializing boxplot for Nearest Neighbors Degree...");
+        
+    if (!propertyMap.containsPropertySet("degreeDistribution"))
+    {
+        ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
+        this->computeDegreeDistribution();
+    }
+
+    if (this->weightedgraph)
+    {   // Weighted
+        printf("Function not available for weighted graphs. \n");
+    }
+    else
+    {   // Unweighted
+        
+        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries = this->computeBpentriesKnn();
+
+        if (LogBinningDialog() == QMessageBox::Yes) {
+            logBin = true;
+            QString inputN = inputId("bins:");
+            if(!inputN.isEmpty()) {
+                bins = inputN.toInt();
+            }
+        }
+
+        ret = this->console->boxplotCC(bpentries, logBin, bins);
+        if (!ret)
+            ui->textBrowser->append("An unexpected error has occured.\n");
+    }
+
+    ui->textBrowser->append("Done\n");
+}
+
+std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> MainWindow::computeBpentriesKnn(){
+    VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+    VariantsSet::const_iterator it = degrees.begin();
+    INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree = factory->createNearestNeighborsDegree();
+    double nnd = 0;
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries;
+    while (it != degrees.end())
+    {
+        // this calculates the Mean Knn for a degree. I think it's unnecesary.. 
+        nnd = nearestNeighborDegree->meanDegree(graph, from_string<unsigned int>(it->first));
+
+        // Starting here: instead of calling a function at NearestNeighborsDegree.h, I've put everything here because the other way was not working.
+        
+        Graph& g = graph;
+        INearestNeighborsDegree<Graph, Vertex>::Degree d = from_string<unsigned int>(it->first);
+        Graph::VerticesIterator vit = g.verticesIterator();
+        std::vector<graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree> nnCoefs;
+
+        while (!vit.end())
+        {
+            Vertex* v = *vit;
+
+            if (v->degree() == d)
+            {
+                graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c = nearestNeighborDegree->meanDegreeForVertex(v);
+                nnCoefs.push_back(c);
+            }
+
+            ++vit;
+        }
+        //to here
+        
+        std::sort(nnCoefs.begin(), nnCoefs.end());
+        // Ok, we are using 'Boxplotentry' from clustering coefficient, 
+        // but it's a common class.. We should put it in a common location.
+        graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+        if(nnCoefs.size() > 0){
+            entry.degree = d;
+            entry.mean = nnd;
+            entry.min = nnCoefs.front();
+            entry.max = nnCoefs.back();
+            int const Q1 = nnCoefs.size() / 4;
+            int const Q2 = nnCoefs.size() / 2;
+            int const Q3 = Q1 + Q2;
+            entry.Q1 = nnCoefs.at(Q1);
+            entry.Q2 = nnCoefs.at(Q2);
+            entry.Q3 = nnCoefs.at(Q3);
+            for(int t=0; t < nnCoefs.size(); t++){
+                entry.values.push_back(nnCoefs[t]);    
+            }
+        }
+
+        bpentries.push_back(entry);
+        nnCoefs.clear();
+
+        ++it;
+    }
+    
+    std::sort(bpentries.begin(), bpentries.end());
+    return bpentries;
 }

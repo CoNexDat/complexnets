@@ -142,14 +142,14 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
     for (int i = 0; i < bpentries.size(); ++i)
     {
         graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
-        printf("[Degree %d] Size: %d, Mean CC: %f\n", entry.degree, entry.clusteringCoefs.size(), entry.mean);
+        printf("[Degree %d] Size: %d, Mean: %f\n", entry.degree, entry.values.size(), entry.mean);
         printf("   Min: %f - Max: %f\n", entry.min, entry.max);
         printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3); 
 
         if(logBin){
-            for(int w = 0; w < entry.clusteringCoefs.size(); w++){
+            for(int w = 0; w < entry.values.size(); w++){
                 d.push_back(entry.degree);
-                m.push_back(entry.clusteringCoefs[w]);
+                m.push_back(entry.values[w]);
                 bin.push_back(entry.bin);
             }
         }else{
@@ -171,13 +171,13 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
 
     if (logBin)
     {
-        std::string file = "/tmp/ccboxlog";
+        std::string file = "/tmp/boxplotlog";
         utils.exportThreeVectors(d, m,  bin, file);
         
         writeCommand("set style data boxplot");
         writeCommand("set logscale y");
         writeCommand("unset logscale x");
-        std::string command = std::string("plot \"/tmp/ccboxlog\" using  (1):2:(0.5):3");
+        std::string command = std::string("plot \"/tmp/boxplotlog\" using  (1):2:(0.5):3");
         writeCommand(command);
     }else{
         writeCommand("set logscale y");
@@ -192,7 +192,6 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
         command.append("\"/tmp/Q3\" title 'Q3' with lines\n");
         utils.exportVectors(Q3, d, "/tmp/Q3");
 
-        utils.exportFourVectors(d, Q1, Q2, Q3, "/tmp/testESTE");
         writeCommand(command);
     }
 
