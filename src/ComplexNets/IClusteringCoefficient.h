@@ -20,7 +20,6 @@ public:
     class Boxplotentry 
     {
         public:
-            std::vector<double> clusteringCoefs;
             int degree;
             double mean;
             double min;
@@ -29,11 +28,13 @@ public:
             double Q2;
             double Q3;
             unsigned int bin;
+            std::vector<double> clusteringCoefs;
 
-           	bool operator<(const Boxplotentry& other) const
-			   {
-			      return degree < other.degree;
-			   }
+           	// define the operator to order vectors properly
+            bool operator<(const Boxplotentry& other) const
+			{
+			     return degree < other.degree;
+			}
 
     };
 };

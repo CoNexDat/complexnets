@@ -1705,6 +1705,10 @@ void MainWindow::on_actionExportCumulativeDegree_distribution_triggered()
         ui->textBrowser->append("Action canceled by user.");
 }
 
+// Calculates for each node the 5 relevant values for a boxplot regarding Clustering Coefficient.
+// Min, Max, Q1, Q2, Q3.
+// If the user chooses to bin the data, the result will be a boxplot.
+// For non-bined data, the result will be a line plot of Q1, Q2 and Q3
 void MainWindow::on_actionBoxplotCC_triggered() {
     bool ret, logBin = false;
     unsigned int bins = 25;
@@ -1712,112 +1716,89 @@ void MainWindow::on_actionBoxplotCC_triggered() {
    
 
     ui->textBrowser->append("Initializing boxplot for Clustering Coefficient...");
-    // Probably this condition should, go because we will calculate CC for each degree individualy
-    if (!propertyMap.containsPropertySet("clusteringCoeficientForDegree"))
+        
+    if (!propertyMap.containsPropertySet("degreeDistribution"))
     {
-        ui->textBrowser->append("Clustering coefficient has not been previously computed. Computing now.");
-        
-        if (!propertyMap.containsPropertySet("degreeDistribution"))
+        ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
+        this->computeDegreeDistribution();
+    }
+    VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+    VariantsSet::const_iterator it = degrees.begin();
+
+
+    if (this->weightedgraph)
+    {   // Weighted
+        printf("Function not available for weighted graphs. \n");
+    }
+    else
+    {   // Unweighted
+        IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
+        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries;
+        while (it != degrees.end())
         {
-            ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
-            this->computeDegreeDistribution();
-        }
-        VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
-        VariantsSet::const_iterator it = degrees.begin();
+            // this calculates the Mean CC for a degree. I think it's unnecesary.. 
+            cc = clusteringCoefficient->clusteringCoefficient(graph, from_string<unsigned int>(it->first));
 
-
-        if (this->weightedgraph)
-        {   // Weighted
-            IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient = weightedFactory->createClusteringCoefficient();
-            while (it != degrees.end())
-            {
-                cc = clusteringCoefficient->clusteringCoefficient(weightedGraph, from_string<unsigned int>(it->first));
-                propertyMap.addProperty<double>("clusteringCoeficientForDegree", it->first, cc);
-                ++it;
-            }
-            delete clusteringCoefficient;
-        }
-        else
-        {   // Unweighted
-            IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
-            std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries;
-            while (it != degrees.end())
-            {
-                // this calculates the Mean CC for a degree. I think it's unnecesary.. 
-                cc = clusteringCoefficient->clusteringCoefficient(graph, from_string<unsigned int>(it->first));
-
-                // Starting here: instead of calling a function at ClusteringCoefficient.h, I've put everything here because the other way was not working.
-                
-                Graph& g = graph;
-                IClusteringCoefficient<Graph, Vertex>::Degree d = from_string<unsigned int>(it->first);
-                Graph::VerticesIterator vit = g.verticesIterator();
-                std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
-
-                while (!vit.end())
-                {
-                    Vertex* v = *vit;
-
-                    if (v->degree() == d)
-                    {
-                        graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c = clusteringCoefficient->vertexClusteringCoefficient(v);
-                        clusteringCoefs.push_back(c);
-                    }
-
-                    ++vit;
-                }
-                //to here
-                
-                std::sort(clusteringCoefs.begin(), clusteringCoefs.end());
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
-                if(clusteringCoefs.size() > 0){
-                    entry.degree = d;
-                    entry.mean = cc;
-                    entry.min = clusteringCoefs.front();
-                    entry.max = clusteringCoefs.back();
-                    int const Q1 = clusteringCoefs.size() / 4;
-                    int const Q2 = clusteringCoefs.size() / 2;
-                    int const Q3 = Q1 + Q2;
-                    entry.Q1 = clusteringCoefs.at(Q1);
-                    entry.Q2 = clusteringCoefs.at(Q2);
-                    entry.Q3 = clusteringCoefs.at(Q3);
-                    for(int t=0; t < clusteringCoefs.size(); t++){
-                        entry.clusteringCoefs.push_back(clusteringCoefs[t]);    
-                    }
-                }
-
-                bpentries.push_back(entry);
-                clusteringCoefs.clear();
-                ++it;
-            }
+            // Starting here: instead of calling a function at ClusteringCoefficient.h, I've put everything here because the other way was not working.
             
-            std::sort(bpentries.begin(), bpentries.end());
+            Graph& g = graph;
+            IClusteringCoefficient<Graph, Vertex>::Degree d = from_string<unsigned int>(it->first);
+            Graph::VerticesIterator vit = g.verticesIterator();
+            std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
 
-            if (LogBinningDialog() == QMessageBox::Yes) {
-                logBin = true;
-                QString inputN = inputId("bins:");
-                if(!inputN.isEmpty()) {
-                    bins = inputN.toInt();
+            while (!vit.end())
+            {
+                Vertex* v = *vit;
+
+                if (v->degree() == d)
+                {
+                    graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c = clusteringCoefficient->vertexClusteringCoefficient(v);
+                    clusteringCoefs.push_back(c);
+                }
+
+                ++vit;
+            }
+            //to here
+            
+            std::sort(clusteringCoefs.begin(), clusteringCoefs.end());
+            graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+            if(clusteringCoefs.size() > 0){
+                entry.degree = d;
+                entry.mean = cc;
+                entry.min = clusteringCoefs.front();
+                entry.max = clusteringCoefs.back();
+                int const Q1 = clusteringCoefs.size() / 4;
+                int const Q2 = clusteringCoefs.size() / 2;
+                int const Q3 = Q1 + Q2;
+                entry.Q1 = clusteringCoefs.at(Q1);
+                entry.Q2 = clusteringCoefs.at(Q2);
+                entry.Q3 = clusteringCoefs.at(Q3);
+                for(int t=0; t < clusteringCoefs.size(); t++){
+                    entry.clusteringCoefs.push_back(clusteringCoefs[t]);    
                 }
             }
 
-            ret = this->console->boxplotCC(bpentries, logBin, bins);
-            if (!ret)
-                ui->textBrowser->append("An unexpected error has occured.\n");
-            delete clusteringCoefficient;
+            bpentries.push_back(entry);
+            clusteringCoefs.clear();
+            ++it;
         }
         
-    }
+        std::sort(bpentries.begin(), bpentries.end());
 
-    
+        if (LogBinningDialog() == QMessageBox::Yes) {
+            logBin = true;
+            QString inputN = inputId("bins:");
+            if(!inputN.isEmpty()) {
+                bins = inputN.toInt();
+            }
+        }
 
-    if (!this->digraph) {
-        //ret = this->console->boxplotCCPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), "ccBoxplot", logBin, bins);
-    } else {
-        //Not implemeted for now
-        return ;
+        ret = this->console->boxplotCC(bpentries, logBin, bins);
+        if (!ret)
+            ui->textBrowser->append("An unexpected error has occured.\n");
+        delete clusteringCoefficient;
+        
     }
-    //if (!ret)
-    //    ui->textBrowser->append("An unexpected error has occured.\n");
 
     ui->textBrowser->append("Done\n");
 }
