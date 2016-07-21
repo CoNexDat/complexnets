@@ -820,7 +820,8 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
     bool ret, logBin = false;
     unsigned int bins = 25;
     ui->textBrowser->append("Plotting degree distribution...");
-    if ((!this->digraph && !propertyMap.containsPropertySet("degreeDistribution")) || (this->digraph && !propertyMap.containsPropertySet("degreeDistribution")))
+    
+    if (!this->digraph || !propertyMap.containsPropertySet("degreeDistribution"))
     {
         ui->textBrowser->append("Degree distribution has not been previously computed. Computing now.");
         this->computeDegreeDistribution();
@@ -841,21 +842,25 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
         ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistributionProbability"), "degreeDistribution", logBin, bins);
         }
     } else {
-        if(logBin)
+        configureDirectedDirection();
+        std::string key = "degreeDistribution";
+        if (directed_in && directed_out) {
+            key = "inOutDegreeDistribution";
+        } else if (directed_in) {
+            key = "inDegreeDistribution";
+        } else if (directed_out) {
+            key = "outDegreeDistribution";
+        }
+        
+        if (logBin)
         {
-		ret = this->console->plotPropertySet(propertyMap.getPropertySet("inDegreeDistribution"), "inDegreeDistribution", logBin, bins);
-		this->console->show();
-		this->activateWindow();
-		ret = this->console->plotPropertySet(propertyMap.getPropertySet("outDegreeDistribution"), "outDegreeDistribution", logBin, bins);
-		this->console->show();
-		this->activateWindow();
+            ret = this->console->plotPropertySet(propertyMap.getPropertySet(key), key, logBin, bins);
+            this->console->show();
+            this->activateWindow();
         } else {
-        ret = this->console->plotPropertySet(propertyMap.getPropertySet("inDegreeDistributionProbability"), "inDegreeDistribution", logBin, bins);
-        this->console->show();
-        this->activateWindow();
-        ret = this->console->plotPropertySet(propertyMap.getPropertySet("outDegreeDistributionProbability"), "outDegreeDistribution", logBin, bins);
-        this->console->show();
-        this->activateWindow();  
+            ret = this->console->plotPropertySet(propertyMap.getPropertySet(key + "Probability"), key, logBin, bins);
+            this->console->show();
+            this->activateWindow(); 
         }
 	}
     if (!ret)
