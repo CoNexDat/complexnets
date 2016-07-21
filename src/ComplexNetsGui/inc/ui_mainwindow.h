@@ -205,7 +205,6 @@ public:
         menuNode->addAction(actionClustering_coefficient);
         menuNode->addAction(actionNearest_neighbors_degree);
         menuNode->addAction(actionShell_index);
-        menuNode->addAction(actionConfigure_Directed_Degree_sign);
         menuPlot->addAction(actionBetweenness_vs_Degree);
         menuPlot->addAction(actionDegree_distribution_plotting);
         menuPlot->addAction(actionCumulativeDegree_distribution_plotting);

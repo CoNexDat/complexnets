@@ -1032,6 +1032,8 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
 
 void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
 {
+    configureDirectedDirection();
+    
     int ret = 0 ;
     ui->textBrowser->append("Plotting Clustering Coefficient vs Degree...");
     double cc = 0;
@@ -1107,6 +1109,8 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
 
 void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
 {
+    configureDirectedDirection();
+    
     int ret = 0 ;
     ui->textBrowser->append("Plotting Nearest Neighbors Degree vs Degree...");
     double knn = 0;
@@ -1304,6 +1308,8 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
 
 void MainWindow::on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered()
 {
+    configureDirectedDirection();
+    
     std::string ret;
     ui->textBrowser->append("Exporting Nearest Neighbors Degree vs Degree...");
     ret = this->getSavePath();
@@ -1352,6 +1358,8 @@ void MainWindow::on_actionExportShell_Index_vs_Degree_triggered()
 
 void MainWindow::on_actionExportClustering_Coefficient_vs_Degree_triggered()
 {
+    configureDirectedDirection();
+    
     std::string ret;
     ui->textBrowser->append("Exporting Clustering Coefficient vs Degree...");
     ret = this->getSavePath();
@@ -1794,20 +1802,21 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 }
 void MainWindow::computeCumulativeDegreeDistribution() 
 {
+    configureDirectedDirection();
     this->computeDegreeDistribution();
-    string dist = "degreeDistribution";
-    if(this->digraph) 
-    {
-        if(ChooseDigraphDegreeDialog() == QMessageBox::YesRole)
-        {
-            dist = "inDegreeDistribution";
-        } else
-        {
-            dist = "outDegreeDistribution";
+    
+    std::string key = "degreeDistribution";
+    if (this->digraph) {
+        if (directed_in && directed_out) {
+            key = "inOutDegreeDistribution";
+        } else if (directed_in) {
+            key = "inDegreeDistribution";
+        } else if (directed_out) {
+            key = "outDegreeDistribution";
         }
     }
 
-    VariantsSet& degrees = propertyMap.getPropertySet(dist);
+    VariantsSet& degrees = propertyMap.getPropertySet(key);
     VariantsSet::const_iterator transferIt = degrees.begin();
 
     std::map<unsigned int, double> myMap;
@@ -1887,8 +1896,12 @@ void MainWindow::on_actionAbout_triggered()
     QMessageBox::about(this, title, body);
 }
 
-void MainWindow::on_actionConfigure_Directed_Degree_sign_triggered()
+void MainWindow::configureDirectedDirection()
 {
+    if (!this->digraph) {
+        return;
+    }
+    
     QStringList items;
     
     QString p = "Out";

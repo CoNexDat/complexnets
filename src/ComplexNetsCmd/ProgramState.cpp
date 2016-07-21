@@ -436,7 +436,9 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap) {
         DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*> (directedFactory->createDegreeDistribution(directedGraph));
 		DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it = degreeDistribution->inDegreeIterator();
 		DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it2 = degreeDistribution->outDegreeIterator();
-		while (!it.end() || !it2.end())
+        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it3 = degreeDistribution->inOutDegreeIterator();
+
+        while (!it.end() || !it2.end())
 		{
 			if (!it.end()) {
 				propertyMap.addProperty<double>("inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
@@ -447,6 +449,11 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap) {
 				propertyMap.addProperty<double>("outDegreeDistribution", to_string<unsigned int>(it2->first), it2->second);
 				propertyMap.addProperty<double>("outDegreeDistributionProbability", to_string<unsigned int>(it2->first), it2->second / (double)directedGraph.verticesCount());
 				++it2;
+			}
+            if (!it3.end()) {
+				propertyMap.addProperty<double>("inOutDegreeDistribution", to_string<unsigned int>(it3->first), it3->second);
+				propertyMap.addProperty<double>("inOutDegreeDistributionProbability", to_string<unsigned int>(it3->first), it3->second / (double)directedGraph.verticesCount());
+				++it3;
 			}
 		}
         
@@ -471,7 +478,19 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap) {
         computeDegreeDistribution(propertyMap);
     }
 
-    VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+    std::string key = "degreeDistribution";
+    if (isDigraph()) {
+        if (directed_in && directed_out) {
+            key = "inOutDegreeDistribution";
+        } else if (directed_in) {
+            key = "inDegreeDistribution";
+        } else if (directed_out) {
+            key = "outDegreeDistribution";
+        }
+    }
+    
+    
+    VariantsSet& degrees = propertyMap.getPropertySet(key);
     VariantsSet::const_iterator it = degrees.begin();
 
     double cc = 0;
@@ -486,8 +505,21 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap) {
         }
 
         delete clusteringCoefficient;
+    }
+    else if (isDigraph())
+    {
+        IGraphFactory<DirectedGraph, DirectedVertex> *directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        IClusteringCoefficient<DirectedGraph,DirectedVertex> *clusteringCoefficient = directedFactory->createClusteringCoefficient();
+        while (it != degrees.end()) {
+            cc = clusteringCoefficient->clusteringCoefficient(directedGraph, from_string<unsigned int>(it->first), directed_out, directed_in);
+            propertyMap.addProperty<double>("clusteringCoeficientForDegree" + getDirectedPostfix(), it->first, cc);
+            ++it;
+        }
 
-    } else {
+        delete clusteringCoefficient;
+    } 
+    else
+    {
         IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
         IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
         while (it != degrees.end()) {
@@ -505,7 +537,18 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap) {
         computeDegreeDistribution(propertyMap);
     }
 
-    VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
+    std::string key = "degreeDistribution";
+    if (isDigraph()) {
+        if (directed_in && directed_out) {
+            key = "inOutDegreeDistribution";
+        } else if (directed_in) {
+            key = "inDegreeDistribution";
+        } else if (directed_out) {
+            key = "outDegreeDistribution";
+        }
+    }
+    
+    VariantsSet& degrees = propertyMap.getPropertySet(key);
     VariantsSet::const_iterator it = degrees.begin();
 
     double knn = 0;
@@ -521,8 +564,22 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap) {
         }
 
         delete nearestNeighborDegree;
+    }
+    else if (isDigraph())
+    {
+        IGraphFactory<DirectedGraph, DirectedVertex> *directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        INearestNeighborsDegree<DirectedGraph, DirectedVertex> *nearestNeighborDegree = directedFactory->createNearestNeighborsDegree();
 
-    } else {
+        while (it != degrees.end()) {
+            knn = nearestNeighborDegree->meanDegree(directedGraph, from_string<unsigned int>(it->first), directed_out, directed_in);
+            propertyMap.addProperty<double>("nearestNeighborDegreeForDegree" + getDirectedPostfix(), it->first, knn);
+            ++it;
+        }
+
+        delete nearestNeighborDegree;
+    }
+    else
+    {
         IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
         INearestNeighborsDegree<Graph, Vertex> *nearestNeighborDegree = factory->createNearestNeighborsDegree();
 
@@ -634,18 +691,30 @@ void ProgramState::exportDegreeDistribution(string outputPath, unsigned int log_
     }
 }
 
-void ProgramState::exportClusteringVsDegree(string outputPath) {
+void ProgramState::exportClusteringVsDegree(string outputPath) {    
     PropertyMap propertyMap;
     computeClusteringCoefficient(propertyMap);
     GrapherUtils grapherUtils;
-    grapherUtils.exportPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree"), outputPath);
+    grapherUtils.exportPropertySet(propertyMap.getPropertySet("clusteringCoeficientForDegree" + getDirectedPostfix()), outputPath);
+}
+
+std::string ProgramState::getDirectedPostfix()
+{
+    std::string directedPostfix;
+    if (directed_out) {
+        directedPostfix += "O";
+    }
+    if (directed_in) {
+        directedPostfix += "I";
+    }
+    return directedPostfix;
 }
 
 void ProgramState::exportNearestNeighborsDegreeVsDegree(string outputPath) {
     PropertyMap propertyMap;
     computeNearestNeighborsDegree(propertyMap);
     GrapherUtils grapherUtils;
-    grapherUtils.exportPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), outputPath);
+    grapherUtils.exportPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree" + getDirectedPostfix()), outputPath);
 }
 
 void ProgramState::exportShellIndexVsDegree(string outputPath) {

@@ -65,7 +65,7 @@ const char *gengetopt_args_info_help[] = {
   "      --maxCliqueExact=<max time>\n                                Calculate max clique if time (in seconds) is\n                                  enough",
   "      --maxCliqueAprox          Calculate max clique aproximation",
   "      --out                     Use out degrees (directed)  (default=off)",
-  "      --in                      Use in degrees (directed)  (default=off)",
+  "      --in                      Use in degrees (directed) (use --in --out to\n                                  use in and out degrees)  (default=off)",
   "      --betweenness-output      Betweenness vs. Degree",
   "      --ddist-output            Degree distribution",
   "      --log-bin=<number of bins>\n                                Log-bin the output (only for Degree\n                                  distribution)",
@@ -1310,7 +1310,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* Use in degrees (directed).  */
+          /* Use in degrees (directed) (use --in --out to use in and out degrees).  */
           else if (strcmp (long_options[option_index].name, "in") == 0)
           {
           

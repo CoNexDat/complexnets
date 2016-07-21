@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 			if (args_info->digraph_given) {
 				state->setDigraph(true);
                 state->setDirectedInOut(args_info->out_given, args_info->in_given);
-                cout << "Directed graph: positive: " << (args_info->out_given ? "true" : "false") << ", negative: " << (args_info->in_given ? "true" : "false") << endl;
+                cout << "Directed graph: out: " << (args_info->out_given ? "true" : "false") << ", in: " << (args_info->in_given ? "true" : "false") << endl;
 			} 
 
 			string path = args_info->input_file_arg;

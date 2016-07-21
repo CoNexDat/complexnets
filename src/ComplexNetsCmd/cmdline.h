@@ -100,8 +100,8 @@ struct gengetopt_args_info
   const char *maxCliqueAprox_help; /**< @brief Calculate max clique aproximation help description.  */
   int out_flag;	/**< @brief Use out degrees (directed) (default=off).  */
   const char *out_help; /**< @brief Use out degrees (directed) help description.  */
-  int in_flag;	/**< @brief Use in degrees (directed) (default=off).  */
-  const char *in_help; /**< @brief Use in degrees (directed) help description.  */
+  int in_flag;	/**< @brief Use in degrees (directed) (use --in --out to use in and out degrees) (default=off).  */
+  const char *in_help; /**< @brief Use in degrees (directed) (use --in --out to use in and out degrees) help description.  */
   const char *betweenness_output_help; /**< @brief Betweenness vs. Degree help description.  */
   const char *ddist_output_help; /**< @brief Degree distribution help description.  */
   int log_bin_arg;	/**< @brief Log-bin the output (only for Degree distribution).  */

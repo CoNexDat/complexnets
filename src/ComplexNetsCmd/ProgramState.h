@@ -29,6 +29,8 @@ private:
     void computeShellIndex(PropertyMap &propertyMap);
 
 	bool computeMaxCliqueDistr(PropertyMap &propertyMap,bool exact, unsigned int max_time);
+    
+    std::string getDirectedPostfix();
 public:
 	ProgramState();
 

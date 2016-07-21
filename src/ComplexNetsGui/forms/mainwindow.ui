@@ -57,7 +57,6 @@
     <addaction name="actionClustering_coefficient"/>
     <addaction name="actionNearest_neighbors_degree"/>
     <addaction name="actionShell_index"/>
-    <addaction name="actionConfigure_Directed_Degree_sign"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">

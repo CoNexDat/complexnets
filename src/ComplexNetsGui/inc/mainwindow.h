@@ -112,7 +112,7 @@ private slots:
     void on_actionNewExtendedHOT_triggered();
     void on_actionNewMolloyReed_triggered();
     void on_actionExport_current_network_triggered();
-    void on_actionConfigure_Directed_Degree_sign_triggered();
+    void configureDirectedDirection();
     void on_actionAbout_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
     void on_actionExportCumulativeDegree_distribution_triggered();
