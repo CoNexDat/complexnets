@@ -90,6 +90,7 @@
     <addaction name="actionExportClustering_Coefficient_vs_Degree"/>
     <addaction name="actionExportNearest_Neighbors_Degree_vs_Degree"/>
     <addaction name="actionExportShell_Index_vs_Degree"/>
+    <addaction name="actionExportCCBoxplot"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNode"/>
@@ -273,6 +274,11 @@
   <action name="actionExportShell_Index_vs_Degree">
    <property name="text">
     <string>Shell Index vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportCCBoxplot">
+   <property name="text">
+    <string>Boxplot Clustering Coeficient</string>
    </property>
   </action>
   <action name="actionExportNearest_Neighbors_Degree_vs_Degree">

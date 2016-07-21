@@ -65,7 +65,8 @@ private:
     void on_actionMaxClique_generic_triggered(bool);
 	void on_action_maxClique_plotting_generic_triggered(bool exact);
 	void on_actionExportMaxClique_distribution_generic_triggered(bool exact);
-
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> computeBpentries();
+    
 //    void computeMaxCliqueExact();
     void computeBetweenness();
     int LogBinningDialog();
@@ -112,7 +113,8 @@ private slots:
     void on_actionExport_current_network_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
     void on_actionExportCumulativeDegree_distribution_triggered();
-    void on_actionBoxplotCC_triggered();        
+    void on_actionBoxplotCC_triggered();   
+    void on_actionExportCCBoxplot_triggered();     
 };
 
 }

@@ -135,7 +135,8 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
     std::vector<double> Q1, Q2, Q3, d, m;
     std::vector<unsigned int> bin;
     if(logBin){
-        addLogBins(bpentries, bins);
+        LogBinningPolicy policy;
+        policy.transform(bpentries, bins);
     }
 
     for (int i = 0; i < bpentries.size(); ++i)
@@ -143,12 +144,7 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
         graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
         printf("[Degree %d] Size: %d, Mean CC: %f\n", entry.degree, entry.clusteringCoefs.size(), entry.mean);
         printf("   Min: %f - Max: %f\n", entry.min, entry.max);
-        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);  
-        Q1.push_back(entry.Q1);
-        Q2.push_back(entry.Q2);
-        Q3.push_back(entry.Q3);
-
-        printf("Degree: %d --> bin %d\n", entry.degree, entry.bin);
+        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3); 
 
         if(logBin){
             for(int w = 0; w < entry.clusteringCoefs.size(); w++){
@@ -159,6 +155,9 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
         }else{
             d.push_back(entry.degree);
             m.push_back(entry.mean);
+            Q1.push_back(entry.Q1);
+            Q2.push_back(entry.Q2);
+            Q3.push_back(entry.Q3);
         }
     }
     
@@ -172,34 +171,28 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
 
     if (logBin)
     {
-        std::string file = "/tmp/";
-        file = "/tmp/mean";
+        std::string file = "/tmp/ccboxlog";
         utils.exportThreeVectors(d, m,  bin, file);
         
         writeCommand("set style data boxplot");
         writeCommand("set logscale y");
         writeCommand("unset logscale x");
-        std::string command = std::string("plot ").append("\"/tmp/").append("mean").append("\"").append(" using  (1):2:(0.5):3");
+        std::string command = std::string("plot \"/tmp/ccboxlog\" using  (1):2:(0.5):3");
         writeCommand(command);
     }else{
         writeCommand("set logscale y");
         writeCommand("set logscale x");
-        std::string command = std::string("plot ").append("\"/tmp/").append("Q1").append("\"").append(" title 'Q1' with lines, ");
 
-        std::string file = "/tmp/";
-        file.append("Q1");
-        utils.exportVectors(Q1, d, file);
+        std::string command = std::string("plot \"/tmp/Q1\" title 'Q1' with lines, ");
+        utils.exportVectors(Q1, d, "/tmp/Q1");
 
-        command.append("\"/tmp/").append("Q2").append("\"").append(" title 'Q2' with lines, ");
-        file = "/tmp/";
-        file.append("Q2");
-        utils.exportVectors(Q2, d, file);
+        command.append("\"/tmp/Q2\" title 'Q2' with lines, ");
+        utils.exportVectors(Q2, d, "/tmp/Q2");
 
-        command.append("\"/tmp/").append("Q3").append("\"").append(" title 'Q3' with lines\n");
-        file = "/tmp/";
-        file.append("Q3");
-        utils.exportVectors(Q3, d, file);
+        command.append("\"/tmp/Q3\" title 'Q3' with lines\n");
+        utils.exportVectors(Q3, d, "/tmp/Q3");
 
+        utils.exportFourVectors(d, Q1, Q2, Q3, "/tmp/testESTE");
         writeCommand(command);
     }
 
