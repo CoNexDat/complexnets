@@ -68,14 +68,14 @@ public:
         destinationFile.close();
     }
 
-    static void exportThreeVectors(const std::vector<double> x, const std::vector<double> y, const std::vector<double> z, const FilePath& data_path)
+    static void exportThreeVectors(const std::vector<double> x, const std::vector<double> y, const std::vector<unsigned int> z, const FilePath& data_path)
     {
         std::ofstream destinationFile;
         std::map<double , double> sortedMap;
         destinationFile.open(data_path.c_str(), std::ios_base::out);
         std::vector<double>::const_iterator itx = x.begin();
         std::vector<double>::const_iterator ity = y.begin();
-        std::vector<double>::const_iterator itz = z.begin();
+        std::vector<unsigned int>::const_iterator itz = z.begin();
         //std::vector<double>::const_iterator itz = z.begin();
 
         // if length of x != length of y, return error

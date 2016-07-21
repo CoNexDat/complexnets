@@ -59,13 +59,13 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
     if (pipe == NULL)
     {
         pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
-        writeCommand("set logscale x");
-        writeCommand("set logscale y");
-        writeCommand("set style data linespoints");
     }
     if (pipe == NULL)
         return false;
 
+    writeCommand("set logscale x");
+    writeCommand("set logscale y");
+    writeCommand("set style data linespoints");
     std::string command = std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
     std::string file = "/tmp/";
     file.append(propertyName);
@@ -133,7 +133,7 @@ void GnuplotConsole::writeCommand(const std::string& command)
 bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries, const bool logBin, unsigned int bins)
 {
     std::vector<double> Q1, Q2, Q3, d, m;
-    std::vector<double> bin;
+    std::vector<unsigned int> bin;
     if(logBin){
         addLogBins(bpentries, bins);
     }
@@ -143,14 +143,22 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
         graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
         printf("[Degree %d] Size: %d, Mean CC: %f\n", entry.degree, entry.clusteringCoefs.size(), entry.mean);
         printf("   Min: %f - Max: %f\n", entry.min, entry.max);
-        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);
-        d.push_back(entry.degree);
+        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);  
         Q1.push_back(entry.Q1);
         Q2.push_back(entry.Q2);
         Q3.push_back(entry.Q3);
-        m.push_back(entry.mean);
+
+        printf("Degree: %d --> bin %d\n", entry.degree, entry.bin);
+
         if(logBin){
-            bin.push_back(entry.bin);
+            for(int w = 0; w < entry.clusteringCoefs.size(); w++){
+                d.push_back(entry.degree);
+                m.push_back(entry.clusteringCoefs[w]);
+                bin.push_back(entry.bin);
+            }
+        }else{
+            d.push_back(entry.degree);
+            m.push_back(entry.mean);
         }
     }
     
@@ -167,13 +175,15 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
         std::string file = "/tmp/";
         file = "/tmp/mean";
         utils.exportThreeVectors(d, m,  bin, file);
+        
         writeCommand("set style data boxplot");
-
+        writeCommand("set logscale y");
+        writeCommand("unset logscale x");
         std::string command = std::string("plot ").append("\"/tmp/").append("mean").append("\"").append(" using  (1):2:(0.5):3");
-
         writeCommand(command);
     }else{
-        writeCommand("set style data linespoints");
+        writeCommand("set logscale y");
+        writeCommand("set logscale x");
         std::string command = std::string("plot ").append("\"/tmp/").append("Q1").append("\"").append(" title 'Q1' with lines, ");
 
         std::string file = "/tmp/";
@@ -248,6 +258,7 @@ bool GnuplotConsole::addLogBins(std::vector<graphpp::IClusteringCoefficient<Grap
         unsigned int binNum = findBin(bins, it->degree);
         pointsInBin[binNum] += 1;
         it->bin = bins.at(binNum+1);
+        //printf("Degree: %d --> bin %d\n", it->degree, binNum+1);
         ++it;
     }
 
@@ -270,7 +281,6 @@ bool GnuplotConsole::addLogBins(std::vector<graphpp::IClusteringCoefficient<Grap
         PBin = (pointsInBin[i] / sum) / binWidth;
         checkIntegral += PBin * binWidth;
         binPos = bins[i] + (binWidth / 2.0);
-        //toPlot.insert<double>(to_string<double>(binPos), PBin);
     }
 
     return true;

@@ -1780,26 +1780,16 @@ void MainWindow::on_actionBoxplotCC_triggered() {
                     entry.Q1 = clusteringCoefs.at(Q1);
                     entry.Q2 = clusteringCoefs.at(Q2);
                     entry.Q3 = clusteringCoefs.at(Q3);
-                    entry.clusteringCoefs =  clusteringCoefs;
-                    /*printf("[Degree: %d] Size: %d, CC: %f\n", entry.degree, clusteringCoefs.size(), entry.mean);
-                    printf("   Min: %f - Max: %f\n", entry.min, entry.max);
-                    printf("   Q1: %d / Q2: %d / Q3: %d\n", Q1, Q2, Q3);
-                    printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);*/
+                    for(int t=0; t < clusteringCoefs.size(); t++){
+                        entry.clusteringCoefs.push_back(clusteringCoefs[t]);    
+                    }
                 }
 
                 bpentries.push_back(entry);
-                /*
-                for (int i = 0; i < clusteringCoefs.size(); ++i)
-                {
-                    printf("\t>>%f\n", clusteringCoefs.at(i));
-                }*/
-                
-                
                 clusteringCoefs.clear();
-                //propertyMap.addProperty<double>("clusteringCoeficientForDegree", it->first, cc);
                 ++it;
             }
-            // plot bpentries / MainWindow::compareBoxplotentry
+            
             std::sort(bpentries.begin(), bpentries.end());
 
             if (LogBinningDialog() == QMessageBox::Yes) {

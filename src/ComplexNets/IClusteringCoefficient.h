@@ -20,7 +20,7 @@ public:
     class Boxplotentry 
     {
         public:
-            std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
+            std::vector<double> clusteringCoefs;
             int degree;
             double mean;
             double min;
@@ -28,7 +28,7 @@ public:
             double Q1;
             double Q2;
             double Q3;
-            double bin;
+            unsigned int bin;
 
            	bool operator<(const Boxplotentry& other) const
 			   {
