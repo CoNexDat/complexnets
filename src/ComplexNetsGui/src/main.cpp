@@ -45,6 +45,8 @@ int main(int argc, char* argv[])
 			
 			if (args_info->digraph_given) {
 				state->setDigraph(true);
+                state->setDirectedInOut(args_info->out_given, args_info->in_given);
+                cout << "Directed graph: out: " << (args_info->out_given ? "true" : "false") << ", in: " << (args_info->in_given ? "true" : "false") << endl;
 			} 
 
 			string path = args_info->input_file_arg;
@@ -138,17 +140,18 @@ int main(int argc, char* argv[])
 				ERROR_EXIT;
 			}
 
-			if (!args_info->t_given) {
-				usageErrorMessage("Extended Hot graph generation requires the parameter user select between how many loops the core is recalculated.");
-				ERROR_EXIT;
-			}
+            // Variable 't_given' no longer exists after using gengetopt on cmdline.ggo
+//			if (!args_info->t_given) {
+//				usageErrorMessage("Extended Hot graph generation requires the parameter user select between how many loops the core is recalculated.");
+//				ERROR_EXIT;
+//			}
 
  			int n = args_info->n_arg;
  			int m = args_info->m_arg;
  			float xi = args_info->xi_arg;
  			int q = args_info->q_arg;
  			float r = args_info->r_arg;
- 			int t = args_info->t_arg;
+ 			int t = 0; //args_info->t_arg;
  			VALIDATE_POS(n);
  			VALIDATE_POS(m);
  			VALIDATE_POS(q);
@@ -237,7 +240,7 @@ int main(int argc, char* argv[])
 			}
 		} else if (args_info->knn_given) {
 			int vertex_id = args_info->knn_arg;
-			double ret = state->clustering(vertex_id);
+			double ret = state->knn(vertex_id);
 			if(ret != -1) {
 				cout << "Nearest neighbors degree for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
 			} else {

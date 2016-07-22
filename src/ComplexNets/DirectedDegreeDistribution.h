@@ -44,6 +44,7 @@ public:
     {
         degreeDistributionObserver.notifyInDegree(vertex->inDegree());
 		degreeDistributionObserver.notifyOutDegree(vertex->outDegree());
+        degreeDistributionObserver.notifyInOutDegree(vertex->inOutDegree());
         return true;
     }
 
@@ -78,6 +79,11 @@ public:
     {
         return DistributionIterator(outDegreeDistribution);
     }
+    
+    DistributionIterator inOutDegreeIterator() const
+    {
+        return DistributionIterator(inOutDegreeDistribution);
+    }
 
     void notifyInDegree(typename Vertex::Degree d)
     {
@@ -94,6 +100,14 @@ public:
         else
             outDegreeDistribution[d] = 1;
     }
+    
+    void notifyInOutDegree(typename Vertex::Degree d)
+    {
+        if (inOutDegreeDistribution.count(d) != 0)
+            inOutDegreeDistribution[d]++;
+        else 
+            inOutDegreeDistribution[d] = 1;
+    }
 
 private:
 
@@ -105,6 +119,7 @@ private:
 
     DistributionContainer inDegreeDistribution;
 	DistributionContainer outDegreeDistribution;
+    DistributionContainer inOutDegreeDistribution;
 };
 }
 
