@@ -69,6 +69,7 @@ public:
 	void exportClusteringVsDegree(string outputPath);
 	void exportNearestNeighborsDegreeVsDegree(string outputPath);
 	void exportShellIndexVsDegree(string outputPath);
+	void exportCCBoxplot(string outputPath);
 };
 
 #endif
