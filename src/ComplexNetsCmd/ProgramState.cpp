@@ -682,3 +682,10 @@ void ProgramState::exportCurrentGraph(string outputPath) {
 
     delete graphWriter;
 }
+
+void ProgramState::exportCCBoxplot(string outputPath) {
+    PropertyMap propertyMap;
+    computeNearestNeighborsDegree(propertyMap);
+    GrapherUtils grapherUtils;
+    grapherUtils.exportPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), outputPath);
+}

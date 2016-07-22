@@ -70,6 +70,8 @@
     <addaction name="actionClustering_Coefficient_vs_Degree"/>
     <addaction name="actionNearest_Neighbors_Degree_vs_Degree"/>
     <addaction name="actionShell_Index_vs_Degree"/>
+    <addaction name="actionBoxplotCC"/>
+    <addaction name="actionBoxplotNearestNeighborsDegree"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -89,6 +91,8 @@
     <addaction name="actionExportClustering_Coefficient_vs_Degree"/>
     <addaction name="actionExportNearest_Neighbors_Degree_vs_Degree"/>
     <addaction name="actionExportShell_Index_vs_Degree"/>
+    <addaction name="actionExportCCBoxplot"/>
+    <addaction name="actionExportKnnBoxplot"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNode"/>
@@ -274,11 +278,31 @@
     <string>Shell Index vs Degree</string>
    </property>
   </action>
+  <action name="actionExportCCBoxplot">
+   <property name="text">
+    <string>Boxplot Clustering Coeficient</string>
+   </property>
+  </action>
+  <action name="actionExportKnnBoxplot">
+   <property name="text">
+    <string>Boxplot Nearest Neighbors Degree</string>
+   </property>
+  </action>
   <action name="actionExportNearest_Neighbors_Degree_vs_Degree">
    <property name="text">
     <string>Nearest Neighbors Degree vs Degree</string>
    </property>
   </action>
+  <action name="actionBoxplotCC">
+   <property name="text">
+    <string>Boxplot Clustering Coeficient</string>
+   </property>
+  </action>
+  <action name="actionBoxplotNearestNeighborsDegree">
+   <property name="text">
+    <string>Boxplot Nearest Neighbor Degree</string>
+   </property>
+  </action> 
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
