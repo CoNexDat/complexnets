@@ -59,13 +59,13 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
     if (pipe == NULL)
     {
         pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
-        writeCommand("set logscale x");
-        writeCommand("set logscale y");
-        writeCommand("set style data linespoints");
     }
     if (pipe == NULL)
         return false;
 
+    writeCommand("set logscale x");
+    writeCommand("set logscale y");
+    writeCommand("set style data linespoints");
     std::string command = std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
     std::string file = "/tmp/";
     file.append(propertyName);
@@ -128,4 +128,152 @@ void GnuplotConsole::writeCommand(const std::string& command)
     }
     this->textBrowser->clear();
     this->textBrowser->append(console);*/
+}
+
+bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries, const bool logBin, unsigned int bins)
+{
+    std::vector<double> Q1, Q2, Q3, d, m;
+    std::vector<unsigned int> bin;
+    if(logBin){
+        LogBinningPolicy policy;
+        policy.transform(bpentries, bins);
+    }
+
+    for (int i = 0; i < bpentries.size(); ++i)
+    {
+        graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
+        printf("[Degree %d] Size: %d, Mean: %f\n", entry.degree, entry.values.size(), entry.mean);
+        printf("   Min: %f - Max: %f\n", entry.min, entry.max);
+        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3); 
+
+        if(logBin){
+            for(int w = 0; w < entry.values.size(); w++){
+                d.push_back(entry.degree);
+                m.push_back(entry.values[w]);
+                bin.push_back(entry.bin);
+            }
+        }else{
+            d.push_back(entry.degree);
+            m.push_back(entry.mean);
+            Q1.push_back(entry.Q1);
+            Q2.push_back(entry.Q2);
+            Q3.push_back(entry.Q3);
+        }
+    }
+    
+    GrapherUtils utils;
+    if (pipe == NULL)
+    {
+        pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
+    }
+    if (pipe == NULL)
+        return false;
+
+    if (logBin)
+    {
+        std::string file = "/tmp/boxplotlog";
+        utils.exportThreeVectors(d, m,  bin, file);
+        
+        writeCommand("set style data boxplot");
+        writeCommand("set logscale y");
+        writeCommand("unset logscale x");
+        std::string command = std::string("plot \"/tmp/boxplotlog\" using  (1):2:(0.5):3");
+        writeCommand(command);
+    }else{
+        writeCommand("set logscale y");
+        writeCommand("set logscale x");
+
+        std::string command = std::string("plot \"/tmp/Q1\" title 'Q1' with lines, ");
+        utils.exportVectors(Q1, d, "/tmp/Q1");
+
+        command.append("\"/tmp/Q2\" title 'Q2' with lines, ");
+        utils.exportVectors(Q2, d, "/tmp/Q2");
+
+        command.append("\"/tmp/Q3\" title 'Q3' with lines\n");
+        utils.exportVectors(Q3, d, "/tmp/Q3");
+
+        writeCommand(command);
+    }
+
+    return true;
+}
+
+unsigned int GnuplotConsole::findBin(const std::vector<double>& bins, const unsigned int value)
+{
+    unsigned int lowerLimit = 0;
+    unsigned int upperLimit = bins.size() - 1;
+    unsigned int halfPoint;
+    while (upperLimit - lowerLimit > 1)
+    {
+        halfPoint = ceil(0.5 * (upperLimit + lowerLimit));
+        if (value >= bins[halfPoint])
+            lowerLimit = halfPoint;
+        else
+            upperLimit = halfPoint;
+    }
+    return lowerLimit;
+}
+
+bool GnuplotConsole::addLogBins(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec, unsigned int binsAmount)
+{
+    std::vector<double> toPlot;
+    std::list<double> xPoints;
+    std::vector<double> bins;
+
+    //assume it is already sorted
+
+    double min = vec.front().degree;
+    double max = vec.back().degree;
+    double r = pow(max - min + 1, 1 / (double)binsAmount);
+
+    int last = 0, current;
+    double cBin;
+    for(unsigned int i = 0; i <= binsAmount; i++) {
+        cBin = pow(r,i) + min - 1;
+        current = i < binsAmount ? floor(cBin) : ceil(cBin);
+        if(current != last) {
+            bins.push_back(current);
+            last = current;
+        }
+    }
+
+    //Go through each degree in the network and find wich bin the degree belongs to.
+    //Count how many elements are contained in a bin.
+    std::vector<unsigned int> pointsInBin(bins.size());
+    for (unsigned int i = 0; i < bins.size(); i++) {
+        pointsInBin[i++] = 0;
+    }
+
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>::iterator it = vec.begin();
+    while (it != vec.end())
+    {
+        unsigned int binNum = findBin(bins, it->degree);
+        pointsInBin[binNum] += 1;
+        it->bin = bins.at(binNum+1);
+        //printf("Degree: %d --> bin %d\n", it->degree, binNum+1);
+        ++it;
+    }
+
+    for(unsigned int i = 0; i < pointsInBin.size() - 1; i++) {
+        printf("Bin[%g, %g]: %d\n", bins.at(i), bins.at(i + 1), pointsInBin.at(i));
+    }
+
+    // Probability density per bin
+    // Normalization and plotting
+    double sum = 0.0;
+    for (unsigned int i = 0; i < bins.size(); ++i)
+    {
+        sum += pointsInBin[i];
+    }
+
+    double binWidth, PBin, checkIntegral = 0, binPos;
+    for (unsigned int i = 0; i < bins.size(); ++i)
+    {
+        binWidth = fabs(bins[i + 1] - bins[i]);
+        PBin = (pointsInBin[i] / sum) / binWidth;
+        checkIntegral += PBin * binWidth;
+        binPos = bins[i] + (binWidth / 2.0);
+    }
+
+    return true;
 }

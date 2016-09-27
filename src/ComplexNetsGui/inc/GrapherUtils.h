@@ -43,6 +43,72 @@ public:
 
         destinationFile.close();
     }
+
+    static void exportVectors(const std::vector<double> x, const std::vector<double> y, const FilePath& data_path)
+    {
+        std::ofstream destinationFile;
+        std::map<double , double> sortedMap;
+        destinationFile.open(data_path.c_str(), std::ios_base::out);
+        std::vector<double>::const_iterator itx = x.begin();
+        std::vector<double>::const_iterator ity = y.begin();
+
+        // if length of x != length of y, return error
+        if(x.size() != y.size()) {
+            printf("Different size vectors. Cannot export. \n");
+            return ;
+        }
+
+        while (*itx != *x.end())
+        {
+            destinationFile << *ity << " " << *itx << std::endl;
+            ++itx;
+            ++ity;
+        }
+
+        destinationFile.close();
+    }
+
+    static void exportThreeVectors(const std::vector<double> x, const std::vector<double> y, const std::vector<unsigned int> z, const FilePath& data_path)
+    {
+        std::ofstream destinationFile;
+        destinationFile.open(data_path.c_str(), std::ios_base::out);
+        std::vector<double>::const_iterator itx = x.begin();
+        std::vector<double>::const_iterator ity = y.begin();
+        std::vector<unsigned int>::const_iterator itz = z.begin();
+
+        // if length of x != length of y, return error
+        while (*itx != *x.end())
+        {
+            destinationFile << *itx << " " << *ity << " " << *itz << std::endl;
+            ++itx;
+            ++ity;
+            ++itz;
+        }
+
+        destinationFile.close();
+    }
+
+    static void exportFourVectors(const std::vector<double> w,const std::vector<double> x, const std::vector<double> y, const std::vector<double> z, const FilePath& data_path)
+    {
+        std::ofstream destinationFile;
+        destinationFile.open(data_path.c_str(), std::ios_base::out);
+        std::vector<double>::const_iterator itw = w.begin();
+        std::vector<double>::const_iterator itx = x.begin();
+        std::vector<double>::const_iterator ity = y.begin();
+        std::vector<double>::const_iterator itz = z.begin();
+
+        // if length of x != length of y, return error
+        while (*itx != *x.end())
+        {
+            destinationFile << *itw << " " << *itx << " " << *ity << " " << *itz << std::endl;
+            ++itw;
+            ++itx;
+            ++ity;
+            ++itz;
+        }
+
+        destinationFile.close();
+    }
 };
 }
 

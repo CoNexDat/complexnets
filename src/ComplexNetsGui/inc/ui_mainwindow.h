@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 4.8.7
+** Created by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -60,7 +60,11 @@ public:
     QAction *actionExportCumulativeDegree_distribution;
     QAction *actionExportClustering_Coefficient_vs_Degree;
     QAction *actionExportShell_Index_vs_Degree;
+    QAction *actionExportCCBoxplot;
+    QAction *actionExportKnnBoxplot;
     QAction *actionExportNearest_Neighbors_Degree_vs_Degree;
+    QAction *actionBoxplotCC;
+    QAction *actionBoxplotNearestNeighborsDegree;
     QAction *actionConfigure_Directed_Degree_sign;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
@@ -143,8 +147,16 @@ public:
         actionExportClustering_Coefficient_vs_Degree->setObjectName(QString::fromUtf8("actionExportClustering_Coefficient_vs_Degree"));
         actionExportShell_Index_vs_Degree = new QAction(MainWindow);
         actionExportShell_Index_vs_Degree->setObjectName(QString::fromUtf8("actionExportShell_Index_vs_Degree"));
+        actionExportCCBoxplot = new QAction(MainWindow);
+        actionExportCCBoxplot->setObjectName(QString::fromUtf8("actionExportCCBoxplot"));
+        actionExportKnnBoxplot = new QAction(MainWindow);
+        actionExportKnnBoxplot->setObjectName(QString::fromUtf8("actionExportKnnBoxplot"));
         actionExportNearest_Neighbors_Degree_vs_Degree = new QAction(MainWindow);
         actionExportNearest_Neighbors_Degree_vs_Degree->setObjectName(QString::fromUtf8("actionExportNearest_Neighbors_Degree_vs_Degree"));
+        actionBoxplotCC = new QAction(MainWindow);
+        actionBoxplotCC->setObjectName(QString::fromUtf8("actionBoxplotCC"));
+        actionBoxplotNearestNeighborsDegree = new QAction(MainWindow);
+        actionBoxplotNearestNeighborsDegree->setObjectName(QString::fromUtf8("actionBoxplotNearestNeighborsDegree"));
         actionConfigure_Directed_Degree_sign = new QAction(MainWindow);
         actionConfigure_Directed_Degree_sign->setObjectName(QString::fromUtf8("actionConfigure_Directed_Degree_sign"));
         actionConfigure_Directed_Degree_sign->setEnabled(false);
@@ -213,6 +225,8 @@ public:
         menuPlot->addAction(actionClustering_Coefficient_vs_Degree);
         menuPlot->addAction(actionNearest_Neighbors_Degree_vs_Degree);
         menuPlot->addAction(actionShell_Index_vs_Degree);
+        menuPlot->addAction(actionBoxplotCC);
+        menuPlot->addAction(actionBoxplotNearestNeighborsDegree);
         menuHelp->addAction(actionAbout);
         menu_Export->addAction(actionExportBetweenness_vs_Degree);
         menu_Export->addAction(actionExportDegree_distribution);
@@ -222,6 +236,8 @@ public:
         menu_Export->addAction(actionExportClustering_Coefficient_vs_Degree);
         menu_Export->addAction(actionExportNearest_Neighbors_Degree_vs_Degree);
         menu_Export->addAction(actionExportShell_Index_vs_Degree);
+        menu_Export->addAction(actionExportCCBoxplot);
+        menu_Export->addAction(actionExportKnnBoxplot);
 
         retranslateUi(MainWindow);
 
@@ -266,7 +282,11 @@ public:
         actionExportCumulativeDegree_distribution->setText(QApplication::translate("MainWindow", "Cumulative Degree distribution", 0, QApplication::UnicodeUTF8));
         actionExportClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", 0, QApplication::UnicodeUTF8));
         actionExportShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", 0, QApplication::UnicodeUTF8));
+        actionExportCCBoxplot->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", 0, QApplication::UnicodeUTF8));
+        actionExportKnnBoxplot->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbors Degree", 0, QApplication::UnicodeUTF8));
         actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
+        actionBoxplotCC->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", 0, QApplication::UnicodeUTF8));
+        actionBoxplotNearestNeighborsDegree->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbor Degree", 0, QApplication::UnicodeUTF8));
         actionConfigure_Directed_Degree_sign->setText(QApplication::translate("MainWindow", "Configure Directed Degree direction...", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "&Analysis", 0, QApplication::UnicodeUTF8));

@@ -61,12 +61,15 @@ private:
     bool directed_in;
 	
     void computeDegreeDistribution();
+    void computeClusteringCoefficient(QString vertexId);
     void computeCumulativeDegreeDistribution();
     void computeShellIndex();
     void computeMaxClique(bool exact);
     void on_actionMaxClique_generic_triggered(bool);
 	void on_action_maxClique_plotting_generic_triggered(bool exact);
 	void on_actionExportMaxClique_distribution_generic_triggered(bool exact);
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> computeBpentries();
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> computeBpentriesKnn();
 
 //    void computeMaxCliqueExact();
     void computeBetweenness();
@@ -116,6 +119,10 @@ private slots:
     void on_actionAbout_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
     void on_actionExportCumulativeDegree_distribution_triggered();
+    void on_actionBoxplotCC_triggered();   
+    void on_actionExportCCBoxplot_triggered();
+    void on_actionBoxplotNearestNeighborsDegree_triggered();
+    void on_actionExportKnnBoxplot_triggered();
 };
 
 }
