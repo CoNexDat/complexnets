@@ -34,7 +34,7 @@ public:
 	MainWindow* mainWindow;
 
 public slots:
-	void foo(bool checked);
+	void radioButton4Changed(bool checked);
 
 private:
     void retranslateUi();

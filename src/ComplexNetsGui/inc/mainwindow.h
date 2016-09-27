@@ -56,6 +56,9 @@ private:
     Graph graph;
     WeightedGraph weightedGraph;
 	DirectedGraph directedGraph;
+    
+    bool directed_out;
+    bool directed_in;
 	
     void computeDegreeDistribution();
     void computeClusteringCoefficient(QString vertexId);
@@ -112,6 +115,8 @@ private slots:
     void on_actionNewExtendedHOT_triggered();
     void on_actionNewMolloyReed_triggered();
     void on_actionExport_current_network_triggered();
+    void configureDirectedDirection();
+    void on_actionAbout_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
     void on_actionExportCumulativeDegree_distribution_triggered();
     void on_actionBoxplotCC_triggered();   

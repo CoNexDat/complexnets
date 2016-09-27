@@ -65,6 +65,7 @@ public:
     QAction *actionExportNearest_Neighbors_Degree_vs_Degree;
     QAction *actionBoxplotCC;
     QAction *actionBoxplotNearestNeighborsDegree;
+    QAction *actionConfigure_Directed_Degree_sign;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QTextBrowser *textBrowser;
@@ -156,6 +157,9 @@ public:
         actionBoxplotCC->setObjectName(QString::fromUtf8("actionBoxplotCC"));
         actionBoxplotNearestNeighborsDegree = new QAction(MainWindow);
         actionBoxplotNearestNeighborsDegree->setObjectName(QString::fromUtf8("actionBoxplotNearestNeighborsDegree"));
+        actionConfigure_Directed_Degree_sign = new QAction(MainWindow);
+        actionConfigure_Directed_Degree_sign->setObjectName(QString::fromUtf8("actionConfigure_Directed_Degree_sign"));
+        actionConfigure_Directed_Degree_sign->setEnabled(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -170,7 +174,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 23));
+        menuBar->setGeometry(QRect(0, 0, 600, 26));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuNode = new QMenu(menuBar);
@@ -283,6 +287,7 @@ public:
         actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
         actionBoxplotCC->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", 0, QApplication::UnicodeUTF8));
         actionBoxplotNearestNeighborsDegree->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbor Degree", 0, QApplication::UnicodeUTF8));
+        actionConfigure_Directed_Degree_sign->setText(QApplication::translate("MainWindow", "Configure Directed Degree direction...", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "&Analysis", 0, QApplication::UnicodeUTF8));
         menuPlot->setTitle(QApplication::translate("MainWindow", "&Plot", 0, QApplication::UnicodeUTF8));

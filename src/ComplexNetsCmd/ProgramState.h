@@ -19,6 +19,8 @@ private:
     WeightedGraph weightedGraph;
 	DirectedGraph directedGraph;
     Graph graph;
+    bool directed_out;
+    bool directed_in;
 
     void computeBetweenness(PropertyMap& propertyMap);
     void computeDegreeDistribution(PropertyMap& propertyMap);
@@ -27,6 +29,8 @@ private:
     void computeShellIndex(PropertyMap &propertyMap);
 
 	bool computeMaxCliqueDistr(PropertyMap &propertyMap,bool exact, unsigned int max_time);
+    
+    std::string getDirectedPostfix();
 public:
 	ProgramState();
 
@@ -70,6 +74,8 @@ public:
 	void exportNearestNeighborsDegreeVsDegree(string outputPath);
 	void exportShellIndexVsDegree(string outputPath);
 	void exportCCBoxplot(string outputPath);
+    
+    void setDirectedInOut(bool o, bool i);
 };
 
 #endif

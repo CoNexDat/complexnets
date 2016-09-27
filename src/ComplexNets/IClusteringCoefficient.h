@@ -37,6 +37,17 @@ public:
 			}
 
     };
+    
+    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex, bool out, bool in)
+    {
+        return vertexClusteringCoefficient(vertex);
+    }
+    
+    virtual Coefficient clusteringCoefficient(Graph &g, Degree d, bool out, bool in)
+    {
+        return clusteringCoefficient(g, d);
+    }
+    
 };
 }
 #endif

@@ -104,6 +104,13 @@ defgroup "analysis" groupdesc="Network analysis methods"
 
 	groupoption "maxCliqueAprox" - "Calculate max clique aproximation" group="analysis"
 
+# ----- Group of Directed graph options
+
+defgroup "directed" groupdesc="Directed graph options"
+
+		option "out" - "Use out degrees (directed)" flag off
+		option "in" - "Use in degrees (directed) (use --in --out to use in and out degrees)" flag off
+
 # ----- Group of network analysis methods.
 
 defgroup "output" groupdesc="Network analysis graphics"
