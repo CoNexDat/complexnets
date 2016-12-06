@@ -538,9 +538,35 @@ void MainWindow::on_actionBetweenness_triggered()
         this->computeBetweenness();
         try
         {
-            vertexBetweenness = propertyMap.getProperty<double>("betweenness", vertexId.toStdString());
-            ret.append("Betweenness for vertex ").append(vertexId);
-            ret.append(" is: ").append(to_string<double>(vertexBetweenness).c_str()).append(".\n");
+		  graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+		  if (!propertyMap.containsProperty("BetweennessBPMean",to_string(0))) {
+			  entry = this->computeTotalBpEntriesBetweenness();
+			  propertyMap.addProperty<double>("BetweennessBPMean",to_string(0),entry.mean);
+			  propertyMap.addProperty<double>("BetweennessBPMin",to_string(0),entry.min);
+			  propertyMap.addProperty<double>("BetweennessBPQ1",to_string(0),entry.Q1);
+			  propertyMap.addProperty<double>("BetweennessBPQ2",to_string(0),entry.Q2);
+			  propertyMap.addProperty<double>("BetweennessBPQ3",to_string(0),entry.Q3);
+			  propertyMap.addProperty<double>("BetweennessBPMax",to_string(0),entry.max);
+		  }
+		  else
+		  {
+			  ret.append("Data already calculated. \n");
+			  entry.mean = propertyMap.getProperty<double>("BetweennessBPMean",to_string(0));
+			  entry.min = propertyMap.getProperty<double>("BetweennessBPMin",to_string(0));
+			  entry.Q1 = propertyMap.getProperty<double>("BetweennessBPQ1",to_string(0));
+			  entry.Q2 = propertyMap.getProperty<double>("BetweennessBPQ2",to_string(0));
+			  entry.Q3 = propertyMap.getProperty<double>("BetweennessBPQ3",to_string(0));
+			  entry.max = propertyMap.getProperty<double>("BetweennessBPMax",to_string(0));
+		  }
+		  ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
+		  ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
+		  ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
+		  ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
+		  ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
+		  ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
+            //coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", key);
+            //ret.append("Clustering coefficient for vertex ").append(vertexId);
+            //ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
             ui->textBrowser->append(ret);
         }
         catch (const BadElementName& ex)
@@ -584,10 +610,36 @@ void MainWindow::on_actionShell_index_triggered()
         }else{
             try
             {
-                vertexShellIndex = propertyMap.getProperty<unsigned int>("shellIndex", vertexId.toStdString());
-                ret.append("Shell index for vertex ").append(vertexId);
-                ret.append(" is: ").append(to_string<unsigned int>(vertexShellIndex).c_str()).append(".\n");
-                ui->textBrowser->append(ret);
+  			  graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+			  if (!propertyMap.containsProperty("ShellIndexBPMean",to_string(0))) {
+				  entry = this->computeTotalBpEntriesShellIndex();
+				  propertyMap.addProperty<double>("ShellIndexBPMean",to_string(0),entry.mean);
+				  propertyMap.addProperty<double>("ShellIndexBPMin",to_string(0),entry.min);
+				  propertyMap.addProperty<double>("ShellIndexBPQ1",to_string(0),entry.Q1);
+				  propertyMap.addProperty<double>("ShellIndexBPQ2",to_string(0),entry.Q2);
+				  propertyMap.addProperty<double>("ShellIndexBPQ3",to_string(0),entry.Q3);
+				  propertyMap.addProperty<double>("ShellIndexBPMax",to_string(0),entry.max);
+			  }
+			  else
+			  {
+				  ret.append("Data already calculated. \n");
+				  entry.mean = propertyMap.getProperty<double>("ShellIndexBPMean",to_string(0));
+				  entry.min = propertyMap.getProperty<double>("ShellIndexBPMin",to_string(0));
+				  entry.Q1 = propertyMap.getProperty<double>("ShellIndexBPQ1",to_string(0));
+				  entry.Q2 = propertyMap.getProperty<double>("ShellIndexBPQ2",to_string(0));
+				  entry.Q3 = propertyMap.getProperty<double>("ShellIndexBPQ3",to_string(0));
+				  entry.max = propertyMap.getProperty<double>("ShellIndexBPMax",to_string(0));
+			  }
+	  		  ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
+	  		  ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
+	  		  ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
+	  		  ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
+	  		  ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
+	  		  ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
+	              //coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", key);
+	              //ret.append("Clustering coefficient for vertex ").append(vertexId);
+	              //ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
+	              ui->textBrowser->append(ret);
             }
             catch (const BadElementName& ex)
             {
@@ -779,9 +831,39 @@ void MainWindow::on_actionDegree_distribution_triggered()
         }
         try
         {
-            degreeAmount = propertyMap.getProperty<unsigned int>("degreeDistribution", degree.toStdString());
-            ret.append("Degree distribution for degree ").append(degree);
-            ret.append(" is: ").append(to_string<unsigned int>(degreeAmount).c_str()).append(".\n");
+            //degreeAmount = propertyMap.getProperty<unsigned int>("degreeDistribution", degree.toStdString());
+            //ret.append("Degree distribution for degree ").append(degree);
+            //ret.append(" is: ").append(to_string<unsigned int>(degreeAmount).c_str()).append(".\n");
+            //ui->textBrowser->append(ret);			  
+			  graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+			  if (!propertyMap.containsProperty("degreeDistributionBPMean",to_string(0))) {
+				  entry = this->computeTotalBpEntriesDegreeDistribution();
+				  propertyMap.addProperty<double>("degreeDistributionBPMean",to_string(0),entry.mean);
+				  propertyMap.addProperty<double>("degreeDistributionBPMin",to_string(0),entry.min);
+				  propertyMap.addProperty<double>("degreeDistributionBPQ1",to_string(0),entry.Q1);
+				  propertyMap.addProperty<double>("degreeDistributionBPQ2",to_string(0),entry.Q2);
+				  propertyMap.addProperty<double>("degreeDistributionBPQ3",to_string(0),entry.Q3);
+				  propertyMap.addProperty<double>("degreeDistributionBPMax",to_string(0),entry.max);
+			  }
+			  else
+			  {
+				  ret.append("Data already calculated. \n");
+				  entry.mean = propertyMap.getProperty<double>("degreeDistributionBPMean",to_string(0));
+				  entry.min = propertyMap.getProperty<double>("degreeDistributionBPMin",to_string(0));
+				  entry.Q1 = propertyMap.getProperty<double>("degreeDistributionBPQ1",to_string(0));
+				  entry.Q2 = propertyMap.getProperty<double>("degreeDistributionBPQ2",to_string(0));
+				  entry.Q3 = propertyMap.getProperty<double>("degreeDistributionBPQ3",to_string(0));
+				  entry.max = propertyMap.getProperty<double>("degreeDistributionBPMax",to_string(0));
+			  }
+		  ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
+		  ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
+		  ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
+		  ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
+		  ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
+		  ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
+            //coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", key);
+            //ret.append("Clustering coefficient for vertex ").append(vertexId);
+            //ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
             ui->textBrowser->append(ret);
         }
         catch (const BadElementName& ex)
@@ -884,7 +966,7 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
 
 void MainWindow::on_actionClustering_coefficient_triggered()
 {
-    QString vertexId = inputId("Vertex id:");
+    QString vertexId = "2";
     QString ret;
     double coefficient;
     
@@ -905,7 +987,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
         
         if (!propertyMap.containsProperty("clusteringCoeficientForVertex", key))
         {
-            ui->textBrowser->append("Clustering coefficient has not been previously computed. Computing now.");
+            ui->textBrowser->append("Clustering coefficient has not been previously computed.");
             if (this->weightedgraph)
             {
                 WeightedVertex* vertex;
@@ -943,14 +1025,43 @@ void MainWindow::on_actionClustering_coefficient_triggered()
         {
           try
           {
-              std::string key = vertexId.toStdString();
-              if (this->digraph) {
-                  key += directedPostfix;
-              }
-
-              coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", key);
-              ret.append("Clustering coefficient for vertex ").append(vertexId);
-              ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
+              //std::string key = vertexId.toStdString();
+              //if (this->digraph) {
+              //    key += directedPostfix;
+              //}
+			  graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+			  if (!propertyMap.containsProperty("ClusteringCoefficientBPMean",to_string(0))) {
+				  entry = this->computeTotalBpEntries();
+				  propertyMap.addProperty<double>("ClusteringCoefficientBPMean",to_string(0),entry.mean);
+				  propertyMap.addProperty<double>("ClusteringCoefficientBPMin",to_string(0),entry.min);
+				  propertyMap.addProperty<double>("ClusteringCoefficientBPQ1",to_string(0),entry.Q1);
+				  propertyMap.addProperty<double>("ClusteringCoefficientBPQ2",to_string(0),entry.Q2);
+				  propertyMap.addProperty<double>("ClusteringCoefficientBPQ3",to_string(0),entry.Q3);
+				  propertyMap.addProperty<double>("ClusteringCoefficientBPMax",to_string(0),entry.max);
+				  //while(1);
+				  
+			  }
+			  else
+			  {
+				  ret.append("Data already calculated. \n");
+				  entry.mean = propertyMap.getProperty<double>("ClusteringCoefficientBPMean",to_string(0));
+				  entry.min = propertyMap.getProperty<double>("ClusteringCoefficientBPMin",to_string(0));
+				  entry.Q1 = propertyMap.getProperty<double>("ClusteringCoefficientBPQ1",to_string(0));
+				  entry.Q2 = propertyMap.getProperty<double>("ClusteringCoefficientBPQ2",to_string(0));
+				  entry.Q3 = propertyMap.getProperty<double>("ClusteringCoefficientBPQ3",to_string(0));
+				  entry.max = propertyMap.getProperty<double>("ClusteringCoefficientBPMax",to_string(0));
+			  }
+			  //graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = this->computeTotalBpEntries();
+			  //while(1);
+			  ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
+			  ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
+			  ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
+			  ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
+			  ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
+			  ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
+              //coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", key);
+              //ret.append("Clustering coefficient for vertex ").append(vertexId);
+              //ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
               ui->textBrowser->append(ret);
           }
           catch (const BadElementName& ex)
@@ -1026,14 +1137,39 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
         {
           try
           {
-            std::string key = vertexId.toStdString();
-            if (this->digraph) {
-                key += directedPostfix;
-            }    
-                
-            neighborsDegree = propertyMap.getProperty<double>("nearestNeighborsDegreeForVertex", key);
-            ret.append("Nearest neighbors degree for vertex ").append(vertexId);
-            ret.append(" is: ").append(to_string<double>(neighborsDegree).c_str()).append(".\n");
+            //std::string key = vertexId.toStdString();
+            //if (this->digraph) {
+            //    key += directedPostfix;
+            //}
+			  graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+			  if (!propertyMap.containsProperty("KnnBPMean",to_string(0))) {
+				  entry = this->computeTotalBpEntriesKnn();
+				  propertyMap.addProperty<double>("KnnBPMean",to_string(0),entry.mean);
+				  propertyMap.addProperty<double>("KnnBPMin",to_string(0),entry.min);
+				  propertyMap.addProperty<double>("KnnBPQ1",to_string(0),entry.Q1);
+				  propertyMap.addProperty<double>("KnnBPQ2",to_string(0),entry.Q2);
+				  propertyMap.addProperty<double>("KnnBPQ3",to_string(0),entry.Q3);
+				  propertyMap.addProperty<double>("KnnBPMax",to_string(0),entry.max);
+			  }
+			  else
+			  {
+				  ret.append("Data already calculated. \n");
+				  entry.mean = propertyMap.getProperty<double>("KnnBPMean",to_string(0));
+				  entry.min = propertyMap.getProperty<double>("KnnBPMin",to_string(0));
+				  entry.Q1 = propertyMap.getProperty<double>("KnnBPQ1",to_string(0));
+				  entry.Q2 = propertyMap.getProperty<double>("KnnBPQ2",to_string(0));
+				  entry.Q3 = propertyMap.getProperty<double>("KnnBPQ3",to_string(0));
+				  entry.max = propertyMap.getProperty<double>("KnnBPMax",to_string(0));
+			  }
+		  	ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
+		  	ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
+		  	ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
+		  	ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
+		  	ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
+		  	ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
+            //neighborsDegree = propertyMap.getProperty<double>("nearestNeighborsDegreeForVertex", key);
+            //ret.append("Nearest neighbors degree for vertex ").append(vertexId);
+            //ret.append(" is: ").append(to_string<double>(neighborsDegree).c_str()).append(".\n");
             ui->textBrowser->append(ret);
           }
           catch (const BadElementName& ex)
@@ -1985,7 +2121,7 @@ std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> MainWi
             entry.max = clusteringCoefs.back();
             int const Q1 = clusteringCoefs.size() / 4;
             int const Q2 = clusteringCoefs.size() / 2;
-            int const Q3 = Q1 + Q2;
+            int const Q3 = clusteringCoefs.size() * (0.75);
             entry.Q1 = clusteringCoefs.at(Q1);
             entry.Q2 = clusteringCoefs.at(Q2);
             entry.Q3 = clusteringCoefs.at(Q3);
@@ -2002,6 +2138,191 @@ std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> MainWi
     
     std::sort(bpentries.begin(), bpentries.end());
     return bpentries;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntries(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
+	IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
+	double coefSums = 0.0;
+	unsigned int count = 0;
+	
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c = clusteringCoefficient->vertexClusteringCoefficient(v);
+        clusteringCoefs.push_back(c);
+		coefSums += c;
+        ++vit;
+		count++;
+    }
+	std::sort(clusteringCoefs.begin(), clusteringCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(clusteringCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = clusteringCoefs.front();
+        entry.max = clusteringCoefs.back();
+        int const Q1 = clusteringCoefs.size() / 4;
+        int const Q2 = clusteringCoefs.size() / 2;
+        int const Q3 = clusteringCoefs.size() * (0.75);
+        entry.Q1 = clusteringCoefs.at(Q1);
+        entry.Q2 = clusteringCoefs.at(Q2);
+        entry.Q3 = clusteringCoefs.at(Q3);
+        for(int t=0; t < clusteringCoefs.size(); t++){
+            entry.values.push_back(clusteringCoefs[t]);    
+        }
+    }
+	clusteringCoefs.clear();
+	return entry;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntriesKnn(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree> nnCoefs;
+	INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree = factory->createNearestNeighborsDegree();
+	double coefSums = 0.0;
+	unsigned int count = 0;
+	
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c = nearestNeighborDegree->meanDegreeForVertex(v);
+        nnCoefs.push_back(c);
+		coefSums += c;
+        ++vit;
+		count++;
+    }
+	std::sort(nnCoefs.begin(), nnCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(nnCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = nnCoefs.front();
+        entry.max = nnCoefs.back();
+        int const Q1 = nnCoefs.size() / 4;
+        int const Q2 = nnCoefs.size() / 2;
+        int const Q3 = nnCoefs.size() * (0.75);
+        entry.Q1 = nnCoefs.at(Q1);
+        entry.Q2 = nnCoefs.at(Q2);
+        entry.Q3 = nnCoefs.at(Q3);
+        for(int t=0; t < nnCoefs.size(); t++){
+            entry.values.push_back(nnCoefs[t]);    
+        }
+    }
+	nnCoefs.clear();
+	return entry;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntriesBetweenness(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<double> bCoefs;
+	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
+	double coefSums = 0.0;
+	unsigned int count = 0;
+	
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        double c = propertyMap.getProperty<double>("betweenness", to_string<unsigned int>(v->getVertexId()));
+        bCoefs.push_back(c);
+		coefSums += c;
+        ++vit;
+		count++;
+    }
+	std::sort(bCoefs.begin(), bCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(bCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = bCoefs.front();
+        entry.max = bCoefs.back();
+        int const Q1 = bCoefs.size() / 4;
+        int const Q2 = bCoefs.size() / 2;
+        int const Q3 = bCoefs.size() * (0.75);
+        entry.Q1 = bCoefs.at(Q1);
+        entry.Q2 = bCoefs.at(Q2);
+        entry.Q3 = bCoefs.at(Q3);
+        for(int t=0; t < bCoefs.size(); t++){
+            entry.values.push_back(bCoefs[t]);    
+        }
+    }
+	bCoefs.clear();
+	return entry;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntriesDegreeDistribution(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<int> bCoefs;
+	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
+	double coefSums = 0.0;
+	unsigned int count = 0;
+	
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        int c = v->degree();
+        bCoefs.push_back(c);
+		coefSums += c;
+        ++vit;
+		count++;
+    }
+	std::sort(bCoefs.begin(), bCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(bCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = bCoefs.front();
+        entry.max = bCoefs.back();
+        int const Q1 = bCoefs.size() / 4;
+        int const Q2 = bCoefs.size() / 2;
+        int const Q3 = bCoefs.size() * (0.75);
+        entry.Q1 = bCoefs.at(Q1);
+        entry.Q2 = bCoefs.at(Q2);
+        entry.Q3 = bCoefs.at(Q3);
+        for(int t=0; t < bCoefs.size(); t++){
+            entry.values.push_back(bCoefs[t]);    
+        }
+    }
+	bCoefs.clear();
+	return entry;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<double> bCoefs;
+	IShellIndex<Graph, Vertex>* betweenness = factory->createShellIndex(g);
+	double coefSums = 0.0;
+	unsigned int count = 0;
+	
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        int c = propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+        bCoefs.push_back(c);
+		coefSums += c;
+        ++vit;
+		count++;
+    }
+	std::sort(bCoefs.begin(), bCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(bCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = bCoefs.front();
+        entry.max = bCoefs.back();
+        int const Q1 = bCoefs.size() / 4;
+        int const Q2 = bCoefs.size() / 2;
+        int const Q3 = bCoefs.size() * (0.75);
+        entry.Q1 = bCoefs.at(Q1);
+        entry.Q2 = bCoefs.at(Q2);
+        entry.Q3 = bCoefs.at(Q3);
+        for(int t=0; t < bCoefs.size(); t++){
+            entry.values.push_back(bCoefs[t]);    
+        }
+    }
+	bCoefs.clear();
+	return entry;
 }
 
 void MainWindow::computeClusteringCoefficient(QString vertexId) {
@@ -2167,7 +2488,7 @@ std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> MainWi
             entry.max = nnCoefs.back();
             int const Q1 = nnCoefs.size() / 4;
             int const Q2 = nnCoefs.size() / 2;
-            int const Q3 = Q1 + Q2;
+            int const Q3 = nnCoefs.size() * (0.75);
             entry.Q1 = nnCoefs.at(Q1);
             entry.Q2 = nnCoefs.at(Q2);
             entry.Q3 = nnCoefs.at(Q3);
