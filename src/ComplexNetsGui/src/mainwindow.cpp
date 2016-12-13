@@ -530,7 +530,7 @@ void MainWindow::on_actionBetweenness_triggered()
     //    ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
     //    return;
     //}
-    QString vertexId = inputId("Vertex id:");
+    QString vertexId = "2";
     QString ret;
     double vertexBetweenness;
     if (!vertexId.isEmpty())
@@ -584,7 +584,7 @@ void MainWindow::on_actionShell_index_triggered()
         ui->textBrowser->append("Shell index for weighted graphs is not supported.");
         return;
     }
-    QString vertexId = inputId("Vertex id:");
+    QString vertexId = "2";
     QString ret;
     unsigned int vertexShellIndex;
     if (!vertexId.isEmpty())
@@ -815,7 +815,7 @@ void MainWindow::on_actionDegree_distribution_triggered()
 	QString outDegree;
 	QString inDegree;
 	if (!this->digraph)  {
-		degree = inputId("Degree:");
+		degree =  "1";
 	} else {
 		outDegree = inputId("OutDegree:");
 		inDegree = inputId("InDegree:");
@@ -1013,9 +1013,9 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                 Vertex* vertex;
                 if ((vertex = graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
                 {
-                    IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
-                    propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()), clusteringCoefficient->vertexClusteringCoefficient(vertex));
-                    delete clusteringCoefficient;
+                    //IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
+                    //propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()), clusteringCoefficient->vertexClusteringCoefficient(vertex));
+                    //delete clusteringCoefficient;
                 }
             }
         }
@@ -1031,6 +1031,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
               //}
 			  graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
 			  if (!propertyMap.containsProperty("ClusteringCoefficientBPMean",to_string(0))) {
+				  this->computeDegreeDistribution();
 				  entry = this->computeTotalBpEntries();
 				  propertyMap.addProperty<double>("ClusteringCoefficientBPMean",to_string(0),entry.mean);
 				  propertyMap.addProperty<double>("ClusteringCoefficientBPMin",to_string(0),entry.min);
@@ -1078,7 +1079,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
 
 void MainWindow::on_actionNearest_neighbors_degree_triggered()
 {
-    QString vertexId = inputId("Vertex id:");
+    QString vertexId = "2";
     QString ret;
     double neighborsDegree;
     
@@ -1125,9 +1126,9 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 Vertex* vertex;
                 if ((vertex = graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL)
                 {
-                    INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree = factory->createNearestNeighborsDegree();
-                    propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex", to_string<unsigned int>(vertex->getVertexId()), nearestNeighborsDegree->meanDegreeForVertex(vertex));
-                    delete nearestNeighborsDegree;
+                    //INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree = factory->createNearestNeighborsDegree();
+                    //propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex", to_string<unsigned int>(vertex->getVertexId()), nearestNeighborsDegree->meanDegreeForVertex(vertex));
+                    //delete nearestNeighborsDegree;
                 }
             }
         }
@@ -1143,6 +1144,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             //}
 			  graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
 			  if (!propertyMap.containsProperty("KnnBPMean",to_string(0))) {
+				  this->computeDegreeDistribution();
 				  entry = this->computeTotalBpEntriesKnn();
 				  propertyMap.addProperty<double>("KnnBPMean",to_string(0),entry.mean);
 				  propertyMap.addProperty<double>("KnnBPMin",to_string(0),entry.min);
@@ -1204,6 +1206,7 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
     
     if (!propertyMap.containsPropertySet(ccKey))
     {
+		ui->textBrowser->append("Some data missing.\n");
         this->computeDegreeDistribution();
         
         std::string key = "degreeDistribution";
@@ -2147,11 +2150,24 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
 	IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
 	double coefSums = 0.0;
 	unsigned int count = 0;
+	double oldCoef;
+	int degree_exists = propertyMap.containsPropertySet("clusteringCoeficientForDegreeO")?1:0;
 	
     while (!vit.end())
     {
         Vertex* v = *vit;
+		if (!propertyMap.containsProperty("clusteringCoeficientForDegreeO",to_string<unsigned int>(v->degree())))
+		{
+			oldCoef = 0;
+		}
+		else
+		{
+			oldCoef = propertyMap.getProperty<double>("clusteringCoeficientForDegreeO",to_string<unsigned int>(v->degree()));
+		}
         graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c = clusteringCoefficient->vertexClusteringCoefficient(v);
+		propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(v->getVertexId()), c);
+		if (degree_exists == 0)
+			propertyMap.addProperty<double>("clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()), oldCoef + (c / propertyMap.getProperty<double>("degreeDistribution",to_string<unsigned int>(v->degree()))));
         clusteringCoefs.push_back(c);
 		coefSums += c;
         ++vit;
@@ -2184,11 +2200,25 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
 	INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree = factory->createNearestNeighborsDegree();
 	double coefSums = 0.0;
 	unsigned int count = 0;
+
+	double oldCoef;
+	int degree_exists = propertyMap.containsPropertySet("nearestNeighborDegreeForDegreeO")?1:0;
 	
     while (!vit.end())
     {
         Vertex* v = *vit;
+		if (!propertyMap.containsProperty("nearestNeighborDegreeForDegreeO",to_string<unsigned int>(v->degree())))
+		{
+			oldCoef = 0;
+		}
+		else
+		{
+			oldCoef = propertyMap.getProperty<double>("nearestNeighborDegreeForDegreeO",to_string<unsigned int>(v->degree()));
+		}
         graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c = nearestNeighborDegree->meanDegreeForVertex(v);
+		propertyMap.addProperty<double>("nearestNeighborDegreeForVertex", to_string<unsigned int>(v->getVertexId()), c);
+		if (degree_exists == 0)
+			propertyMap.addProperty<double>("nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()), oldCoef + (c / propertyMap.getProperty<double>("degreeDistribution",to_string<unsigned int>(v->degree()))));
         nnCoefs.push_back(c);
 		coefSums += c;
         ++vit;
@@ -2255,7 +2285,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
     std::vector<int> bCoefs;
-	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
+//	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
 	double coefSums = 0.0;
 	unsigned int count = 0;
 	
