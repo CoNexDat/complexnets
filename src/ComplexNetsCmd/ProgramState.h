@@ -8,6 +8,10 @@
 #include "../ComplexNets/typedefs.h"
 #include "../ComplexNets/PropertyMap.h"
 
+#include "../ComplexNets/IGraphFactory.h"
+#include "../ComplexNets/AdjacencyListVertex.h"
+#include "../ComplexNets/AdjacencyListGraph.h"
+
 using namespace std;
 using namespace graphpp;
 
@@ -76,6 +80,10 @@ public:
 	void exportCCBoxplot(string outputPath);
     
     void setDirectedInOut(bool o, bool i);
+
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesDegreeDistribution();
+
+	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
 };
 
 #endif

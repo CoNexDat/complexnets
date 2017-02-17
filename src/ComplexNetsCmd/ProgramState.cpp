@@ -785,3 +785,79 @@ void ProgramState::setDirectedInOut(bool o, bool i) {
     directed_out = o;
     directed_in = i;
 }
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::computeTotalBpEntriesDegreeDistribution(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<int> bCoefs;
+//  IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
+    double coefSums = 0.0;
+    unsigned int count = 0;
+    
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        int c = v->degree();
+        bCoefs.push_back(c);
+        coefSums += c;
+        ++vit;
+        count++;
+    }
+    std::sort(bCoefs.begin(), bCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(bCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = bCoefs.front();
+        entry.max = bCoefs.back();
+        int const Q1 = bCoefs.size() / 4;
+        int const Q2 = bCoefs.size() / 2;
+        int const Q3 = bCoefs.size() * (0.75);
+        entry.Q1 = bCoefs.at(Q1);
+        entry.Q2 = bCoefs.at(Q2);
+        entry.Q3 = bCoefs.at(Q3);
+        for(int t=0; t < bCoefs.size(); t++){
+            entry.values.push_back(bCoefs[t]);    
+        }
+    }
+    bCoefs.clear();
+    return entry;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::computeTotalBpEntriesShellIndex(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<double> bCoefs;
+    PropertyMap propertyMap;
+    computeShellIndex(propertyMap);
+    //IShellIndex<Graph, Vertex>* betweenness = factory->createShellIndex(g);
+    double coefSums = 0.0;
+    unsigned int count = 0;
+    
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        int c = propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+        bCoefs.push_back(c);
+        coefSums += c;
+        ++vit;
+        count++;
+    }
+    std::sort(bCoefs.begin(), bCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(bCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = bCoefs.front();
+        entry.max = bCoefs.back();
+        int const Q1 = bCoefs.size() / 4;
+        int const Q2 = bCoefs.size() / 2;
+        int const Q3 = bCoefs.size() * (0.75);
+        entry.Q1 = bCoefs.at(Q1);
+        entry.Q2 = bCoefs.at(Q2);
+        entry.Q3 = bCoefs.at(Q3);
+        for(int t=0; t < bCoefs.size(); t++){
+            entry.values.push_back(bCoefs[t]);    
+        }
+    }
+    bCoefs.clear();
+    return entry;
+}

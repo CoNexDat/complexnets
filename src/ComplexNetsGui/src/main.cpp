@@ -210,9 +210,16 @@ int main(int argc, char* argv[])
 		} else if (args_info->ddist_given) {
 			int degree = args_info->ddist_arg;
 			if (!state->isDigraph()) {
-				double ret = state->degreeDistribution(degree);
-				if(ret != -1) {
-					cout << "Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret) + ".\n";
+				graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = state->computeTotalBpEntriesDegreeDistribution();
+				//double ret = state->degreeDistribution(degree);
+				if(1 == 1) {
+					//cout << "Degree distribution for degree " + to_string(degree) + " is: " + to_string(ret) + ".\n";
+					cout << "Min:" + to_string(entry.min) + ".\n";
+					cout << "Q1:" + to_string(entry.Q1) + ".\n";
+					cout << "Q2:" + to_string(entry.Q2) + ".\n";
+					cout << "Q3:" + to_string(entry.Q3) + ".\n";
+					cout << "Max:" + to_string(entry.max) + ".\n";
+					cout << "Mean:" + to_string(entry.mean) + ".\n";
 				}else {
 					cout << "There are no vertices with degree " + to_string(degree) + ".\n";
 				}
@@ -276,8 +283,16 @@ int main(int argc, char* argv[])
 		}else if (args_info->shell_given) {
 			int vertex_id = args_info->shell_arg;
 			double ret = state->shellIndex(vertex_id);
-			if(ret != -1) {
-				cout << "Shell index for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+
+			graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = state->computeTotalBpEntriesShellIndex();
+			if(1 == 1) {
+				//cout << "Shell index for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+				cout << "Min:" + to_string(entry.min) + ".\n";
+				cout << "Q1:" + to_string(entry.Q1) + ".\n";
+				cout << "Q2:" + to_string(entry.Q2) + ".\n";
+				cout << "Q3:" + to_string(entry.Q3) + ".\n";
+				cout << "Max:" + to_string(entry.max) + ".\n";
+				cout << "Mean:" + to_string(entry.mean) + ".\n";
 			} else {
 				errorMessage("Invalid vertex id");
 			}
