@@ -135,3 +135,4 @@ Developers:
   - Luciana Reznik                    2-2014
   - Jose Ignacio Galindo              2-2014
   - Jaime Alexander Campos Iannacone  2-2015
+  - Juan Pablo Dantur                 2-2016
