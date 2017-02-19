@@ -200,9 +200,17 @@ int main(int argc, char* argv[])
 			//}else{
 			printf("Weighted Betweenness");
 				int vertex_id = args_info->betweenness_arg;
-				double ret = state->betweenness((unsigned int)args_info->betweenness_arg);
-				if(ret != -1) {
-					cout << "Betweenness for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+
+				graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = state->computeTotalBpEntriesBetweenness();
+				//double ret = state->betweenness((unsigned int)args_info->betweenness_arg);
+				if(1 == 1) {
+					//cout << "Betweenness for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+					cout << "Min:" + to_string(entry.min) + ".\n";
+					cout << "Q1:" + to_string(entry.Q1) + ".\n";
+					cout << "Q2:" + to_string(entry.Q2) + ".\n";
+					cout << "Q3:" + to_string(entry.Q3) + ".\n";
+					cout << "Max:" + to_string(entry.max) + ".\n";
+					cout << "Mean:" + to_string(entry.mean) + ".\n";
 				}else {
 					errorMessage("Invalid vertex id");
 				}
@@ -239,17 +247,33 @@ int main(int argc, char* argv[])
 			}
 		} else if (args_info->clustering_given) {
 			int vertex_id = args_info->clustering_arg;
-			double ret = state->clustering(vertex_id);
-			if(ret != -1) {
-				cout << "Clustering coefficient for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+
+			graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = state->computeTotalBpEntries();
+			//double ret = state->clustering(vertex_id);
+			if(1 == 1) {
+				//cout << "Clustering coefficient for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+				cout << "Min:" + to_string(entry.min) + ".\n";
+				cout << "Q1:" + to_string(entry.Q1) + ".\n";
+				cout << "Q2:" + to_string(entry.Q2) + ".\n";
+				cout << "Q3:" + to_string(entry.Q3) + ".\n";
+				cout << "Max:" + to_string(entry.max) + ".\n";
+				cout << "Mean:" + to_string(entry.mean) + ".\n";
 			} else {
 				errorMessage("Invalid vertex id");
 			}
 		} else if (args_info->knn_given) {
 			int vertex_id = args_info->knn_arg;
-			double ret = state->knn(vertex_id);
-			if(ret != -1) {
-				cout << "Nearest neighbors degree for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+
+			graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = state->computeTotalBpEntriesKnn();
+			//double ret = state->knn(vertex_id);
+			if(1 == 1) {
+				//cout << "Nearest neighbors degree for vertex " + to_string(vertex_id) + " is: " + to_string(ret) + ".\n";
+				cout << "Min:" + to_string(entry.min) + ".\n";
+				cout << "Q1:" + to_string(entry.Q1) + ".\n";
+				cout << "Q2:" + to_string(entry.Q2) + ".\n";
+				cout << "Q3:" + to_string(entry.Q3) + ".\n";
+				cout << "Max:" + to_string(entry.max) + ".\n";
+				cout << "Mean:" + to_string(entry.mean) + ".\n";
 			} else {
 				errorMessage("Invalid vertex id");
 			}

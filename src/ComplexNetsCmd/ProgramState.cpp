@@ -861,3 +861,149 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
     bCoefs.clear();
     return entry;
 }
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::computeTotalBpEntriesBetweenness(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<double> bCoefs;
+    PropertyMap propertyMap;
+    computeBetweenness(propertyMap);
+    //IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
+    double coefSums = 0.0;
+    unsigned int count = 0;
+    
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        double c = propertyMap.getProperty<double>("betweenness", to_string<unsigned int>(v->getVertexId()));
+        bCoefs.push_back(c);
+        coefSums += c;
+        ++vit;
+        count++;
+    }
+    std::sort(bCoefs.begin(), bCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(bCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = bCoefs.front();
+        entry.max = bCoefs.back();
+        int const Q1 = bCoefs.size() / 4;
+        int const Q2 = bCoefs.size() / 2;
+        int const Q3 = bCoefs.size() * (0.75);
+        entry.Q1 = bCoefs.at(Q1);
+        entry.Q2 = bCoefs.at(Q2);
+        entry.Q3 = bCoefs.at(Q3);
+        for(int t=0; t < bCoefs.size(); t++){
+            entry.values.push_back(bCoefs[t]);    
+        }
+    }
+    bCoefs.clear();
+    return entry;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::computeTotalBpEntriesKnn(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree> nnCoefs;
+    PropertyMap propertyMap;
+    computeDegreeDistribution(propertyMap);
+    IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+    INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree = factory->createNearestNeighborsDegree();
+    double coefSums = 0.0;
+    unsigned int count = 0;
+
+    double oldCoef;
+    int degree_exists = propertyMap.containsPropertySet("nearestNeighborDegreeForDegreeO")?1:0;
+    
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        if (!propertyMap.containsProperty("nearestNeighborDegreeForDegreeO",to_string<unsigned int>(v->degree())))
+        {
+            oldCoef = 0;
+        }
+        else
+        {
+            oldCoef = propertyMap.getProperty<double>("nearestNeighborDegreeForDegreeO",to_string<unsigned int>(v->degree()));
+        }
+        graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c = nearestNeighborDegree->meanDegreeForVertex(v);
+        propertyMap.addProperty<double>("nearestNeighborDegreeForVertex", to_string<unsigned int>(v->getVertexId()), c);
+        if (degree_exists == 0)
+            propertyMap.addProperty<double>("nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()), oldCoef + (c / propertyMap.getProperty<double>("degreeDistribution",to_string<unsigned int>(v->degree()))));
+        nnCoefs.push_back(c);
+        coefSums += c;
+        ++vit;
+        count++;
+    }
+    std::sort(nnCoefs.begin(), nnCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(nnCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = nnCoefs.front();
+        entry.max = nnCoefs.back();
+        int const Q1 = nnCoefs.size() / 4;
+        int const Q2 = nnCoefs.size() / 2;
+        int const Q3 = nnCoefs.size() * (0.75);
+        entry.Q1 = nnCoefs.at(Q1);
+        entry.Q2 = nnCoefs.at(Q2);
+        entry.Q3 = nnCoefs.at(Q3);
+        for(int t=0; t < nnCoefs.size(); t++){
+            entry.values.push_back(nnCoefs[t]);    
+        }
+    }
+    nnCoefs.clear();
+    return entry;
+}
+
+graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::computeTotalBpEntries(){
+    Graph& g = graph;
+    Graph::VerticesIterator vit = g.verticesIterator();
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
+    PropertyMap propertyMap;
+    computeDegreeDistribution(propertyMap);
+    IGraphFactory<Graph, Vertex> *factory = new GraphFactory<Graph, Vertex>();
+    IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient = factory->createClusteringCoefficient();
+    double coefSums = 0.0;
+    unsigned int count = 0;
+    double oldCoef;
+    int degree_exists = propertyMap.containsPropertySet("clusteringCoeficientForDegreeO")?1:0;
+    
+    while (!vit.end())
+    {
+        Vertex* v = *vit;
+        if (!propertyMap.containsProperty("clusteringCoeficientForDegreeO",to_string<unsigned int>(v->degree())))
+        {
+            oldCoef = 0;
+        }
+        else
+        {
+            oldCoef = propertyMap.getProperty<double>("clusteringCoeficientForDegreeO",to_string<unsigned int>(v->degree()));
+        }
+        graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c = clusteringCoefficient->vertexClusteringCoefficient(v);
+        propertyMap.addProperty<double>("clusteringCoeficientForVertex", to_string<unsigned int>(v->getVertexId()), c);
+        if (degree_exists == 0)
+            propertyMap.addProperty<double>("clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()), oldCoef + (c / propertyMap.getProperty<double>("degreeDistribution",to_string<unsigned int>(v->degree()))));
+        clusteringCoefs.push_back(c);
+        coefSums += c;
+        ++vit;
+        count++;
+    }
+    std::sort(clusteringCoefs.begin(), clusteringCoefs.end());
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    if(clusteringCoefs.size() > 0){
+        entry.mean = count == 0? 0:coefSums/count;
+        entry.min = clusteringCoefs.front();
+        entry.max = clusteringCoefs.back();
+        int const Q1 = clusteringCoefs.size() / 4;
+        int const Q2 = clusteringCoefs.size() / 2;
+        int const Q3 = clusteringCoefs.size() * (0.75);
+        entry.Q1 = clusteringCoefs.at(Q1);
+        entry.Q2 = clusteringCoefs.at(Q2);
+        entry.Q3 = clusteringCoefs.at(Q3);
+        for(int t=0; t < clusteringCoefs.size(); t++){
+            entry.values.push_back(clusteringCoefs[t]);    
+        }
+    }
+    clusteringCoefs.clear();
+    return entry;
+}

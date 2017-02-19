@@ -84,6 +84,13 @@ public:
     graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesDegreeDistribution();
 
 	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
+
+	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesBetweenness();
+
+	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesKnn();
+
+
+	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
 };
 
 #endif
