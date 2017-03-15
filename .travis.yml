@@ -1,0 +1,10 @@
+language: cpp
+script: cd src && qmake && make all
+addons:
+  apt:
+    packages:
+      - gcc-6
+      - g++-6
+    sources: &sources
+      - ubuntu-toolchain-r-test
+before_install: if [ "$TRAVIS_OS_NAME" == "linux"  ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6; fi
