@@ -14,7 +14,7 @@ FORMS += ComplexNetsGui/forms/mainwindow.ui
 #MOC_DIR = .moc/release-shared
 #OBJECTS_DIR = .obj/release-shared
 UI_DIR = ComplexNetsGui/inc/
-CONFIG += release
+CONFIG += c++11 release
 QMAKE_CXXFLAGS_RELEASE += -Wextra \
     -ansi \
     -Wno-long-long \
