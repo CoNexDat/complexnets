@@ -274,6 +274,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
         ui->actionBoxplotCC->setEnabled(true);
         ui->actionExportCCBoxplot->setEnabled(true);
         ui->actionExportKnnBoxplot->setEnabled(true);
+        ui->actionExportPowerLawDegreeDistribution->setEnabled(true);
         ui->actionBoxplotNearestNeighborsDegree->setEnabled(true);
 	}
 
@@ -294,6 +295,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
         ui->actionBoxplotCC->setEnabled(false);
         ui->actionExportCCBoxplot->setEnabled(false);
         ui->actionExportKnnBoxplot->setEnabled(false);
+        ui->actionExportPowerLawDegreeDistribution->setEnabled(false);
         ui->actionBoxplotNearestNeighborsDegree->setEnabled(false);
 	}
     
@@ -354,6 +356,7 @@ void MainWindow::disableActions()
     ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
     ui->actionBoxplotCC->setEnabled(false);
     ui->actionExportKnnBoxplot->setEnabled(false);
+    ui->actionExportPowerLawDegreeDistribution->setEnabled(false);
     ui->actionExportCCBoxplot->setEnabled(false);
     ui->actionBoxplotNearestNeighborsDegree->setEnabled(false);
     ui->actionConfigure_Directed_Degree_sign->setEnabled(false);

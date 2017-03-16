@@ -93,6 +93,7 @@
     <addaction name="actionExportShell_Index_vs_Degree"/>
     <addaction name="actionExportCCBoxplot"/>
     <addaction name="actionExportKnnBoxplot"/>
+    <addaction name="actionExportPowerLawDegreeDistribution"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNode"/>
@@ -278,6 +279,11 @@
   <action name="actionExportKnnBoxplot">
    <property name="text">
     <string>Boxplot Nearest Neighbors Degree</string>
+   </property>
+  </action>
+  <action name="actionExportPowerLawDegreeDistribution">
+   <property name="text">
+    <string>Power Law Degree Distribution</string>
    </property>
   </action>
   <action name="actionExportNearest_Neighbors_Degree_vs_Degree">
