@@ -1,9 +1,6 @@
 #ifndef GNUPLOTCONSOLE_H
 #define GNUPLOTCONSOLE_H
 
-#include <fstream>
-#include <cstdio>
-#include <iostream>
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
@@ -13,10 +10,13 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QTextBrowser>
-#include "ComplexNets/mili/mili.h"
-#include "ComplexNets/AdjacencyListVertex.h"
+#include <cstdio>
+#include <fstream>
+#include <iostream>
 #include "ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/AdjacencyListVertex.h"
 #include "ComplexNets/IClusteringCoefficient.h"
+#include "ComplexNets/mili/mili.h"
 #include "ComplexNets/typedefs.h"
 
 namespace ComplexNetsGui
@@ -27,13 +27,20 @@ class GnuplotConsole : public QDialog
 public:
     GnuplotConsole(QWidget* parent = 0);
     ~GnuplotConsole();
-    bool plotPropertySet(const VariantsSet& set, const std::string& propertyName, const bool logBin = false, unsigned int bins = 25);
+    bool plotPropertySet(const VariantsSet& set,
+                         const std::string& propertyName,
+                         const bool logBin = false,
+                         unsigned int bins = 25);
     void writeCommand(const std::string& command);
-    bool boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries,  const bool logBin = false, unsigned int bins = 25);
-    bool addLogBins(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec, unsigned int binsAmount);
+    bool boxplotCC(
+        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries,
+        const bool logBin = false,
+        unsigned int bins = 25);
+    bool addLogBins(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
+                    unsigned int binsAmount);
     unsigned int findBin(const std::vector<double>& bins, const unsigned int value);
 
-    //void closeDialog();
+    // void closeDialog();
 
     QGroupBox* groupBox;
     QTextBrowser* textBrowser;
@@ -46,7 +53,6 @@ private slots:
 private:
     std::ifstream outputFile;
     FILE* pipe;
-
 };
 }
 

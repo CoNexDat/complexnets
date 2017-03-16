@@ -6,15 +6,15 @@
 #include "WeightedClusteringCoefficient.h"
 #include "WeightedNearestNeighborsDegree.h"
 //#include "WeightedShellIndex.h"
-#include "WeightedGraphReader.h"
-#include "StrengthDistribution.h"
 #include "Betweenness.h"
 #include "IBetweenness.h"
+#include "StrengthDistribution.h"
+#include "WeightedGraphReader.h"
 
 namespace graphpp
 {
-template<class Graph, class Vertex>
-class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
+template <class Graph, class Vertex>
+class WeightedGraphFactory : public IGraphFactory<Graph, Vertex>
 {
     virtual IGraphReader<Graph, Vertex>* createGraphReader()
     {
@@ -22,7 +22,7 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
     }
     virtual IBetweenness<Graph, Vertex>* createBetweenness(Graph& g)
     {
-        return new WeightedBetweenness<Graph,Vertex>(g);
+        return new WeightedBetweenness<Graph, Vertex>(g);
     }
     virtual IClusteringCoefficient<Graph, Vertex>* createClusteringCoefficient()
     {
@@ -34,7 +34,7 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
     }
     virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph&)
     {
-        //return new WeightedShellIndex<Graph,Vertex>();
+        // return new WeightedShellIndex<Graph,Vertex>();
         return NULL;
     }
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
@@ -46,12 +46,12 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
     {
         return new StrengthDistribution<Graph, Vertex>(g);
     }
-    
+
     virtual MaxClique<Graph, Vertex>* createMaxClique(Graph&)
     {
         return NULL;
     }
-        
+
     virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph&, int)
     {
         return NULL;
@@ -60,4 +60,3 @@ class WeightedGraphFactory: public IGraphFactory<Graph, Vertex>
 }
 
 #endif
-

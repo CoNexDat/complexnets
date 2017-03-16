@@ -3,10 +3,11 @@
 
 #include <map>
 
-#include "mili/mili.h"
-#include "TraverserForward.h"
 #include <stdio.h>
 #include "DirectedVertexAspect.h"
+#include "IDegreeDistribution.h"
+#include "TraverserForward.h"
+#include "mili/mili.h"
 
 namespace graphpp
 {
@@ -29,9 +30,10 @@ template <class Graph, class Vertex>
 class DirectedDegreeDistributionVisitor
 {
 public:
-
     DirectedDegreeDistributionVisitor(DirectedDegreeDistribution<Graph, Vertex>& observer)
-        : degreeDistributionObserver(observer) {}
+        : degreeDistributionObserver(observer)
+    {
+    }
 
     /**
     * Method: visitVertex
@@ -43,13 +45,12 @@ public:
     bool visitVertex(Vertex* vertex)
     {
         degreeDistributionObserver.notifyInDegree(vertex->inDegree());
-		degreeDistributionObserver.notifyOutDegree(vertex->outDegree());
+        degreeDistributionObserver.notifyOutDegree(vertex->outDegree());
         degreeDistributionObserver.notifyInOutDegree(vertex->inOutDegree());
         return true;
     }
 
 private:
-
     DirectedDegreeDistribution<Graph, Vertex>& degreeDistributionObserver;
 };
 
@@ -57,7 +58,6 @@ template <class Graph, class Vertex>
 class DirectedDegreeDistribution : public IDegreeDistribution<Graph, Vertex>
 {
 public:
-
     typedef std::map<typename Vertex::Degree, unsigned int> DistributionContainer;
     typedef CAutonomousIterator<DistributionContainer> DistributionIterator;
 
@@ -66,10 +66,11 @@ public:
         calculateDistribution(graph);
     }
 
-    virtual DistributionIterator iterator() {
-		return DistributionIterator(inDegreeDistribution);
-	}
-    
+    virtual DistributionIterator iterator()
+    {
+        return DistributionIterator(inDegreeDistribution);
+    }
+
     DistributionIterator inDegreeIterator() const
     {
         return DistributionIterator(inDegreeDistribution);
@@ -79,7 +80,7 @@ public:
     {
         return DistributionIterator(outDegreeDistribution);
     }
-    
+
     DistributionIterator inOutDegreeIterator() const
     {
         return DistributionIterator(inOutDegreeDistribution);
@@ -92,7 +93,7 @@ public:
         else
             inDegreeDistribution[d] = 1;
     }
-    
+
     void notifyOutDegree(typename Vertex::Degree d)
     {
         if (outDegreeDistribution.count(d) != 0)
@@ -100,28 +101,27 @@ public:
         else
             outDegreeDistribution[d] = 1;
     }
-    
+
     void notifyInOutDegree(typename Vertex::Degree d)
     {
         if (inOutDegreeDistribution.count(d) != 0)
             inOutDegreeDistribution[d]++;
-        else 
+        else
             inOutDegreeDistribution[d] = 1;
     }
 
 private:
-
     void calculateDistribution(Graph& graph)
     {
         DirectedDegreeDistributionVisitor<Graph, Vertex> visitor(*this);
-        TraverserForward<Graph, Vertex, DirectedDegreeDistributionVisitor<Graph, Vertex> >::traverse(graph, visitor);
+        TraverserForward<Graph, Vertex, DirectedDegreeDistributionVisitor<Graph, Vertex>>::traverse(
+            graph, visitor);
     }
 
     DistributionContainer inDegreeDistribution;
-	DistributionContainer outDegreeDistribution;
+    DistributionContainer outDegreeDistribution;
     DistributionContainer inOutDegreeDistribution;
 };
 }
-
 
 #endif

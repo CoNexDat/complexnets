@@ -5,19 +5,17 @@
 #ifndef TRAVERSER_H
 #define TRAVERSER_H
 
-#include <queue>
 #include <iostream>
+#include <queue>
 
 #include "ComplexNets/typedefs.h"
 
 namespace graphpp
 {
-
 template <class Graph, class Vertex, class Visitor>
 class TraverserBFS
 {
 public:
-
     typedef typename Graph::VerticesConstIterator VertexForwardIterator;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
 
@@ -25,7 +23,8 @@ public:
     {
         VertexForwardIterator iter = graph.verticesIterator();
 
-        if (iter.end()) return;
+        if (iter.end())
+            return;
 
         Vertex* source = *iter;
         traverse(source, v);
@@ -44,8 +43,8 @@ public:
             Vertex* vertex = queue.front();
             queue.pop();
 
-			//cout << vertex->getVertexId();
-			//cout << '\n';
+            // cout << vertex->getVertexId();
+            // cout << '\n';
             keepTraversing = v.visitVertex(vertex);
 
             if (keepTraversing)
@@ -56,16 +55,15 @@ public:
                 {
                     Vertex* neighbour = *it;
                     if (!neighbour->getVisited())
-					{
+                    {
                         queue.push(neighbour);
-			            neighbour->setVisited(true);
-					}
+                        neighbour->setVisited(true);
+                    }
                     it++;
                 }
             }
         }
     }
-
 };
 }
 

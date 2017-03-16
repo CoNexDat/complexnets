@@ -7,18 +7,18 @@
 
 #include <QMainWindow>
 
-#include "ComplexNets/typedefs.h"
-#include "ComplexNets/IGraphFactory.h"
-#include "ComplexNets/AdjacencyListVertex.h"
 #include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/WeightedGraphAspect.h"
-#include "ComplexNets/WeightedVertexAspect.h"
+#include "ComplexNets/AdjacencyListVertex.h"
 #include "ComplexNets/DirectedGraphAspect.h"
 #include "ComplexNets/DirectedVertexAspect.h"
-#include "ComplexNets/PropertyMap.h"
-#include "ComplexNetsGui/inc/GrapherUtils.h"
-#include "ComplexNetsGui/inc/GnuplotConsole.h"
 #include "ComplexNets/GraphWriter.h"
+#include "ComplexNets/IGraphFactory.h"
+#include "ComplexNets/PropertyMap.h"
+#include "ComplexNets/WeightedGraphAspect.h"
+#include "ComplexNets/WeightedVertexAspect.h"
+#include "ComplexNets/typedefs.h"
+#include "ComplexNetsGui/inc/GnuplotConsole.h"
+#include "ComplexNetsGui/inc/GrapherUtils.h"
 
 namespace Ui
 {
@@ -27,15 +27,13 @@ class MainWindow;
 
 namespace ComplexNetsGui
 {
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-
     MainWindow(QWidget* parent = 0);
     ~MainWindow();
-	void disableActions();
+    void disableActions();
 
 protected:
     void changeEvent(QEvent* e);
@@ -52,31 +50,32 @@ private:
 
     graphpp::IGraphFactory<WeightedGraph, WeightedVertex>* weightedFactory;
     graphpp::IGraphFactory<Graph, Vertex>* factory;
-	graphpp::IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory;
+    graphpp::IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory;
     Graph graph;
     WeightedGraph weightedGraph;
-	DirectedGraph directedGraph;
-    
+    DirectedGraph directedGraph;
+
     bool directed_out;
     bool directed_in;
-	
+
     void computeDegreeDistribution();
     void computeClusteringCoefficient(QString vertexId);
     void computeCumulativeDegreeDistribution();
     void computeShellIndex();
     void computeMaxClique(bool exact);
     void on_actionMaxClique_generic_triggered(bool);
-	void on_action_maxClique_plotting_generic_triggered(bool exact);
-	void on_actionExportMaxClique_distribution_generic_triggered(bool exact);
+    void on_action_maxClique_plotting_generic_triggered(bool exact);
+    void on_actionExportMaxClique_distribution_generic_triggered(bool exact);
     std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> computeBpentries();
     std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> computeBpentriesKnn();
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesKnn();
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesBetweenness();
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesDegreeDistribution();
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesKnn();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesBetweenness();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+    computeTotalBpEntriesDegreeDistribution();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
 
-//    void computeMaxCliqueExact();
+    //    void computeMaxCliqueExact();
     void computeBetweenness();
     int LogBinningDialog();
     int ChooseDigraphDegreeDialog();
@@ -124,12 +123,11 @@ private slots:
     void on_actionAbout_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
     void on_actionExportCumulativeDegree_distribution_triggered();
-    void on_actionBoxplotCC_triggered();   
+    void on_actionBoxplotCC_triggered();
     void on_actionExportCCBoxplot_triggered();
     void on_actionBoxplotNearestNeighborsDegree_triggered();
     void on_actionExportKnnBoxplot_triggered();
 };
-
 }
 
 #endif

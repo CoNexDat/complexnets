@@ -1,10 +1,10 @@
 #ifndef I_WEIGHTED_BETWEENNESS_H
 #define I_WEIGHTED_BETWEENNESS_H
 
-#include <stack>
-#include <queue>
-#include <vector>
 #include <list>
+#include <queue>
+#include <stack>
+#include <vector>
 
 #include "mili/mili.h"
 
@@ -21,4 +21,3 @@ public:
 }
 
 #endif
-

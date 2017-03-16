@@ -5,23 +5,23 @@
 #ifndef PROGRAM_STATE_H
 #define PROGRAM_STATE_H
 
-#include "ComplexNets/typedefs.h"
 #include "ComplexNets/PropertyMap.h"
+#include "ComplexNets/typedefs.h"
 
-#include "ComplexNets/IGraphFactory.h"
-#include "ComplexNets/AdjacencyListVertex.h"
 #include "ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/IGraphFactory.h"
 
 using namespace std;
 using namespace graphpp;
 
-class ProgramState {
-
+class ProgramState
+{
 private:
-	bool weighted;
-	bool digraph;
+    bool weighted;
+    bool digraph;
     WeightedGraph weightedGraph;
-	DirectedGraph directedGraph;
+    DirectedGraph directedGraph;
     Graph graph;
     bool directed_out;
     bool directed_in;
@@ -30,67 +30,71 @@ private:
     void computeDegreeDistribution(PropertyMap& propertyMap);
     void computeClusteringCoefficient(PropertyMap& propertyMap);
     void computeNearestNeighborsDegree(PropertyMap& propertyMap);
-    void computeShellIndex(PropertyMap &propertyMap);
+    void computeShellIndex(PropertyMap& propertyMap);
 
-	bool computeMaxCliqueDistr(PropertyMap &propertyMap,bool exact, unsigned int max_time);
-    
+    bool computeMaxCliqueDistr(PropertyMap& propertyMap, bool exact, unsigned int max_time);
+
     std::string getDirectedPostfix();
+
 public:
-	ProgramState();
+    ProgramState();
 
-	void setWeighted(bool weighted);
-	void setDigraph(bool digraph);
-	
-	bool isWeighted();
-	bool isDigraph();
-	WeightedGraph getWeightedGraph();
-	DirectedGraph getDirectedGraph();
-	Graph getGraph();
+    void setWeighted(bool weighted);
+    void setDigraph(bool digraph);
 
-	void readGraphFromFile(string path);
-	void setErdosRenyiGraph(unsigned int n, float p);
-	void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
-	void setExtendedHotGraph(unsigned int m, unsigned int n, float xi, unsigned int q, float r, unsigned int t);
-	void setMolloyReedGraph(string path);
-	void setHiperbolicGraph(unsigned int n, float a, float c);
+    bool isWeighted();
+    bool isDigraph();
+    WeightedGraph getWeightedGraph();
+    DirectedGraph getDirectedGraph();
+    Graph getGraph();
 
-	double betweenness(unsigned int vertex_id);
-	double wbetweenness(unsigned int vertex_id);
+    void readGraphFromFile(string path);
+    void setErdosRenyiGraph(unsigned int n, float p);
+    void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
+    void setExtendedHotGraph(
+        unsigned int m, unsigned int n, float xi, unsigned int q, float r, unsigned int t);
+    void setMolloyReedGraph(string path);
+    void setHiperbolicGraph(unsigned int n, float a, float c);
 
-	double degreeDistribution(unsigned int vertex_id);
-	double clustering(unsigned int vertex_id);
-	double knn(unsigned int vertex_id);
-	double shellIndex(unsigned int vertex_id);
-	std::list<int> maxCliqueExact(unsigned int max_time);
-	std::list<int> maxCliqueAprox();
+    double betweenness(unsigned int vertex_id);
+    double wbetweenness(unsigned int vertex_id);
 
-	double inDegreeDistribution(unsigned int vertex_id);
-	double outDegreeDistribution(unsigned int vertex_id);
-	
-	void printDegrees();
-	
-	bool exportMaxCliqueExact(string outputPath, unsigned int max_time);
-	void exportMaxCliqueAprox(string outputPath);
-	void exportCurrentGraph(string outputPath);
-	void exportBetweennessVsDegree(string outputPath);
-	void exportDegreeDistribution(string outputPath, unsigned int log_bin_given = false, unsigned int binsAmount = -1);
-	void exportClusteringVsDegree(string outputPath);
-	void exportNearestNeighborsDegreeVsDegree(string outputPath);
-	void exportShellIndexVsDegree(string outputPath);
-	void exportCCBoxplot(string outputPath);
-    
+    double degreeDistribution(unsigned int vertex_id);
+    double clustering(unsigned int vertex_id);
+    double knn(unsigned int vertex_id);
+    double shellIndex(unsigned int vertex_id);
+    std::list<int> maxCliqueExact(unsigned int max_time);
+    std::list<int> maxCliqueAprox();
+
+    double inDegreeDistribution(unsigned int vertex_id);
+    double outDegreeDistribution(unsigned int vertex_id);
+
+    void printDegrees();
+
+    bool exportMaxCliqueExact(string outputPath, unsigned int max_time);
+    void exportMaxCliqueAprox(string outputPath);
+    void exportCurrentGraph(string outputPath);
+    void exportBetweennessVsDegree(string outputPath);
+    void exportDegreeDistribution(string outputPath,
+                                  unsigned int log_bin_given = false,
+                                  unsigned int binsAmount = -1);
+    void exportClusteringVsDegree(string outputPath);
+    void exportNearestNeighborsDegreeVsDegree(string outputPath);
+    void exportShellIndexVsDegree(string outputPath);
+    void exportCCBoxplot(string outputPath);
+
     void setDirectedInOut(bool o, bool i);
 
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesDegreeDistribution();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+    computeTotalBpEntriesDegreeDistribution();
 
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
 
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesBetweenness();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesBetweenness();
 
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesKnn();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesKnn();
 
-
-	graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
+    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
 };
 
 #endif

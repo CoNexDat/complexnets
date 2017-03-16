@@ -5,12 +5,10 @@
 
 namespace graphpp
 {
-
 template <class Graph, class Vertex>
 class NearestNeighborsDegree : public INearestNeighborsDegree<Graph, Vertex>
 {
 public:
-
     typedef typename graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree MeanDegree;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename Graph::VerticesIterator VerticesIterator;
@@ -54,8 +52,6 @@ public:
         return v->degree() == 0 ? 0 : MeanDegree(degreeSum) / MeanDegree(v->degree());
     }
 };
-
 }
-
 
 #endif

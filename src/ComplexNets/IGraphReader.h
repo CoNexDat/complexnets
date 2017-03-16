@@ -3,10 +3,11 @@
 
 #include "mili/mili.h"
 
-class GraphLoadExceptionHierarchy {};
+class GraphLoadExceptionHierarchy
+{
+};
 
 typedef GenericException<GraphLoadExceptionHierarchy> GraphLoadException;
-
 
 DEFINE_SPECIFIC_EXCEPTION_TEXT(FileNotFoundException,
                                GraphLoadExceptionHierarchy,
@@ -28,10 +29,9 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(DuplicatedEdgeLoading,
                                GraphLoadExceptionHierarchy,
                                "Graph does not allow duplicated edges.");
 
-
 namespace graphpp
 {
-template<class Graph, class Vertex>
+template <class Graph, class Vertex>
 class IGraphReader
 {
 public:

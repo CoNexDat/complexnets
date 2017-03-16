@@ -5,7 +5,6 @@
 
 namespace graphpp
 {
-
 template <class Graph, class Vertex>
 class ClusteringCoefficient : public IClusteringCoefficient<Graph, Vertex>
 {
@@ -52,7 +51,7 @@ public:
             while (!innerIter.end())
             {
                 Vertex* i = *innerIter;
-                //if i is neighbour of vertex, we close a triangle
+                // if i is neighbour of vertex, we close a triangle
                 if (i->isNeighbourOf(vertex))
                 {
                     links += 1.0;
@@ -64,14 +63,13 @@ public:
             ++it;
         }
 
-        //This is to avoid division by cero
+        // This is to avoid division by cero
         if (vertex->degree() == 0 || vertex->degree() == 1)
             ret = 0;
         else
             ret = links / (vertex->degree() * (vertex->degree() - 1));
 
         return ret;
-
     }
 };
 }

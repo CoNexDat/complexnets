@@ -1,19 +1,18 @@
 #ifndef WEIGHTEDGRAPHREADER_H
 #define WEIGHTEDGRAPHREADER_H
 
-#include <string>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include "IGraphReader.h"
 
 namespace graphpp
 {
-
 template <class Graph, class Vertex>
 class WeightedGraphReader : public IGraphReader<Graph, Vertex>
 {
 public:
-    //this typedefs are also present in the superclass. Any way to remove it?
+    // this typedefs are also present in the superclass. Any way to remove it?
     typedef unsigned int LineNumber;
     virtual void read(Graph& g, std::string source)
     {
@@ -68,11 +67,10 @@ public:
 private:
     std::string getLineNumberText() const
     {
-        std:: stringstream s;
+        std::stringstream s;
         s << "Line: " << currentLineNumber;
         return s.str();
     }
-
 
     Vertex* loadVertex(Graph& g)
     {
@@ -109,7 +107,7 @@ private:
         return ret;
     }
 
-    //TODO this method should be const
+    // TODO this method should be const
     bool isEmptyLine()
     {
         bool ret = false;
@@ -121,8 +119,7 @@ private:
 
     void consume_whitespace()
     {
-        while (*character == ' ' || *character == '\t')
-            ++character;
+        while (*character == ' ' || *character == '\t') ++character;
     }
 
     double consume_weigth()

@@ -52,8 +52,11 @@ GnuplotConsole::~GnuplotConsole()
     delete groupBox_2;
 }
 
-//TODO should be const
-bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& propertyName, const bool logBin, unsigned int bins)
+// TODO should be const
+bool GnuplotConsole::plotPropertySet(const VariantsSet& set,
+                                     const std::string& propertyName,
+                                     const bool logBin,
+                                     unsigned int bins)
 {
     GrapherUtils utils;
     if (pipe == NULL)
@@ -66,7 +69,8 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
     writeCommand("set logscale x");
     writeCommand("set logscale y");
     writeCommand("set style data linespoints");
-    std::string command = std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
+    std::string command =
+        std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
     std::string file = "/tmp/";
     file.append(propertyName);
     /*
@@ -88,7 +92,7 @@ bool GnuplotConsole::plotPropertySet(const VariantsSet& set, const std::string& 
 void GnuplotConsole::commandEntered()
 {
     std::string command = lineEdit->text().toStdString();
-    //TODO do nothing when the command is either exit or quit.
+    // TODO do nothing when the command is either exit or quit.
     if (!command.empty())
     {
         writeCommand(command);
@@ -130,11 +134,15 @@ void GnuplotConsole::writeCommand(const std::string& command)
     this->textBrowser->append(console);*/
 }
 
-bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries, const bool logBin, unsigned int bins)
+bool GnuplotConsole::boxplotCC(
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries,
+    const bool logBin,
+    unsigned int bins)
 {
     std::vector<double> Q1, Q2, Q3, d, m;
     std::vector<unsigned int> bin;
-    if(logBin){
+    if (logBin)
+    {
         LogBinningPolicy policy;
         policy.transform(bpentries, bins);
     }
@@ -144,15 +152,19 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
         graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
         printf("[Degree %d] Size: %d, Mean: %f\n", entry.degree, entry.values.size(), entry.mean);
         printf("   Min: %f - Max: %f\n", entry.min, entry.max);
-        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3); 
+        printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);
 
-        if(logBin){
-            for(int w = 0; w < entry.values.size(); w++){
+        if (logBin)
+        {
+            for (int w = 0; w < entry.values.size(); w++)
+            {
                 d.push_back(entry.degree);
                 m.push_back(entry.values[w]);
                 bin.push_back(entry.bin);
             }
-        }else{
+        }
+        else
+        {
             d.push_back(entry.degree);
             m.push_back(entry.mean);
             Q1.push_back(entry.Q1);
@@ -160,7 +172,7 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
             Q3.push_back(entry.Q3);
         }
     }
-    
+
     GrapherUtils utils;
     if (pipe == NULL)
     {
@@ -172,14 +184,16 @@ bool GnuplotConsole::boxplotCC(std::vector<graphpp::IClusteringCoefficient<Graph
     if (logBin)
     {
         std::string file = "/tmp/boxplotlog";
-        utils.exportThreeVectors(d, m,  bin, file);
-        
+        utils.exportThreeVectors(d, m, bin, file);
+
         writeCommand("set style data boxplot");
         writeCommand("set logscale y");
         writeCommand("unset logscale x");
         std::string command = std::string("plot \"/tmp/boxplotlog\" using  (1):2:(0.5):3");
         writeCommand(command);
-    }else{
+    }
+    else
+    {
         writeCommand("set logscale y");
         writeCommand("set logscale x");
 
@@ -214,13 +228,15 @@ unsigned int GnuplotConsole::findBin(const std::vector<double>& bins, const unsi
     return lowerLimit;
 }
 
-bool GnuplotConsole::addLogBins(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec, unsigned int binsAmount)
+bool GnuplotConsole::addLogBins(
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
+    unsigned int binsAmount)
 {
     std::vector<double> toPlot;
     std::list<double> xPoints;
     std::vector<double> bins;
 
-    //assume it is already sorted
+    // assume it is already sorted
 
     double min = vec.front().degree;
     double max = vec.back().degree;
@@ -228,33 +244,38 @@ bool GnuplotConsole::addLogBins(std::vector<graphpp::IClusteringCoefficient<Grap
 
     int last = 0, current;
     double cBin;
-    for(unsigned int i = 0; i <= binsAmount; i++) {
-        cBin = pow(r,i) + min - 1;
+    for (unsigned int i = 0; i <= binsAmount; i++)
+    {
+        cBin = pow(r, i) + min - 1;
         current = i < binsAmount ? floor(cBin) : ceil(cBin);
-        if(current != last) {
+        if (current != last)
+        {
             bins.push_back(current);
             last = current;
         }
     }
 
-    //Go through each degree in the network and find wich bin the degree belongs to.
-    //Count how many elements are contained in a bin.
+    // Go through each degree in the network and find wich bin the degree belongs to.
+    // Count how many elements are contained in a bin.
     std::vector<unsigned int> pointsInBin(bins.size());
-    for (unsigned int i = 0; i < bins.size(); i++) {
+    for (unsigned int i = 0; i < bins.size(); i++)
+    {
         pointsInBin[i++] = 0;
     }
 
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>::iterator it = vec.begin();
+    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>::iterator it =
+        vec.begin();
     while (it != vec.end())
     {
         unsigned int binNum = findBin(bins, it->degree);
         pointsInBin[binNum] += 1;
-        it->bin = bins.at(binNum+1);
-        //printf("Degree: %d --> bin %d\n", it->degree, binNum+1);
+        it->bin = bins.at(binNum + 1);
+        // printf("Degree: %d --> bin %d\n", it->degree, binNum+1);
         ++it;
     }
 
-    for(unsigned int i = 0; i < pointsInBin.size() - 1; i++) {
+    for (unsigned int i = 0; i < pointsInBin.size() - 1; i++)
+    {
         printf("Bin[%g, %g]: %d\n", bins.at(i), bins.at(i + 1), pointsInBin.at(i));
     }
 

@@ -22,6 +22,11 @@
 #ifndef TEMPLATE_INFO_H
 #define TEMPLATE_INFO_H
 
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+
 NAMESPACE_BEGIN
 
 template <class T>

@@ -1,11 +1,11 @@
 #ifndef GRAPHERUTILS_H
 #define GRAPHERUTILS_H
 
-#include <string>
+#include <cmath>
+#include <cstdio>
 #include <fstream>
 #include <ostream>
-#include <cstdio>
-#include <cmath>
+#include <string>
 #include "ComplexNets/PropertyMap.h"
 #include "ComplexNets/mili/mili.h"
 
@@ -21,7 +21,7 @@ public:
     static void exportPropertySet(const VariantsSet& set, const FilePath& data_path)
     {
         std::ofstream destinationFile;
-        std::map<double , double> sortedMap;
+        std::map<double, double> sortedMap;
         destinationFile.open(data_path.c_str(), std::ios_base::out);
         VariantsSet::const_iterator it = set.begin();
 
@@ -30,7 +30,8 @@ public:
          */
         while (it != set.end())
         {
-            sortedMap.insert(std::pair<double, double>(from_string<double>(it->first), from_string<double>(it->second)));
+            sortedMap.insert(std::pair<double, double>(from_string<double>(it->first),
+                                                       from_string<double>(it->second)));
             ++it;
         }
 
@@ -44,18 +45,21 @@ public:
         destinationFile.close();
     }
 
-    static void exportVectors(const std::vector<double> x, const std::vector<double> y, const FilePath& data_path)
+    static void exportVectors(const std::vector<double> x,
+                              const std::vector<double> y,
+                              const FilePath& data_path)
     {
         std::ofstream destinationFile;
-        std::map<double , double> sortedMap;
+        std::map<double, double> sortedMap;
         destinationFile.open(data_path.c_str(), std::ios_base::out);
         std::vector<double>::const_iterator itx = x.begin();
         std::vector<double>::const_iterator ity = y.begin();
 
         // if length of x != length of y, return error
-        if(x.size() != y.size()) {
+        if (x.size() != y.size())
+        {
             printf("Different size vectors. Cannot export. \n");
-            return ;
+            return;
         }
 
         while (*itx != *x.end())
@@ -68,7 +72,10 @@ public:
         destinationFile.close();
     }
 
-    static void exportThreeVectors(const std::vector<double> x, const std::vector<double> y, const std::vector<unsigned int> z, const FilePath& data_path)
+    static void exportThreeVectors(const std::vector<double> x,
+                                   const std::vector<double> y,
+                                   const std::vector<unsigned int> z,
+                                   const FilePath& data_path)
     {
         std::ofstream destinationFile;
         destinationFile.open(data_path.c_str(), std::ios_base::out);
@@ -88,7 +95,11 @@ public:
         destinationFile.close();
     }
 
-    static void exportFourVectors(const std::vector<double> w,const std::vector<double> x, const std::vector<double> y, const std::vector<double> z, const FilePath& data_path)
+    static void exportFourVectors(const std::vector<double> w,
+                                  const std::vector<double> x,
+                                  const std::vector<double> y,
+                                  const std::vector<double> z,
+                                  const FilePath& data_path)
     {
         std::ofstream destinationFile;
         destinationFile.open(data_path.c_str(), std::ios_base::out);

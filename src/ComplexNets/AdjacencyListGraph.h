@@ -7,14 +7,13 @@
 
 #define NO_RANKER
 
-#include <new>
 #include <iostream>
-#include "mili/mili.h"
+#include <new>
 #include "GraphExceptions.h"
+#include "mili/mili.h"
 
 namespace graphpp
 {
-
 /**
 * Class: VertexComparator
 * ------------
@@ -68,22 +67,22 @@ public:
  * more efficiently in sets.
  */
 template <class Vertex>
-class VertexFinder<Vertex, std::set<Vertex*, VertexComparator<Vertex> > >
+class VertexFinder<Vertex, std::set<Vertex*, VertexComparator<Vertex>>>
 {
 public:
-    static Vertex* find(typename Vertex::VertexId id, const std::set<Vertex*, VertexComparator<Vertex> >& c)
+    static Vertex* find(typename Vertex::VertexId id,
+                        const std::set<Vertex*, VertexComparator<Vertex>>& c)
     {
         Vertex* ret = NULL;
         Vertex* prototype = new Vertex(id);
 
-        typename std::set<Vertex*, VertexComparator<Vertex> >::iterator it = c.find(prototype);
+        typename std::set<Vertex*, VertexComparator<Vertex>>::iterator it = c.find(prototype);
         if (it != c.end())
             ret = *it;
 
         return ret;
     }
 };
-
 
 /**
 * Class: Graph
@@ -96,14 +95,13 @@ public:
 * std::list<Vertex>, std::vector<Vertex> or std::set<Vertex>, depending on the user's
 * preferences
 */
-template <class Vertex, class VertexContainer = std::set<Vertex*, VertexComparator<Vertex> > >
+template <class Vertex, class VertexContainer = std::set<Vertex*, VertexComparator<Vertex>>>
 class AdjacencyListGraph
 {
 public:
-
-    typedef CAutonomousIterator<VertexContainer>  VerticesConstIterator;
-    typedef AutonomousIterator<VertexContainer>  VerticesIterator;
-	typedef typename Vertex::VerticesIterator NeighborsIterator;
+    typedef CAutonomousIterator<VertexContainer> VerticesConstIterator;
+    typedef AutonomousIterator<VertexContainer> VerticesIterator;
+    typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename Vertex::VertexId VertexId;
 
     AdjacencyListGraph(const bool isDigraph = false, const bool isMultigraph = false)
@@ -130,10 +128,9 @@ public:
     */
     void addVertex(Vertex* v)
     {
-        //insert the vertex in the vertices container
+        // insert the vertex in the vertices container
         insert_into(vertices, v);
     }
-
 
     /**
     * Method: removeVertex
@@ -143,18 +140,17 @@ public:
     */
     void removeVertex(Vertex* v)
     {
-		NeighborsIterator it = v->neighborsIterator();
+        NeighborsIterator it = v->neighborsIterator();
 
         while (!it.end())
         {
             Vertex* neighbour = *it;
-			removeEdge(neighbour, v);
+            removeEdge(neighbour, v);
             it++;
         }
-        //removes the vertex from the vertices container
+        // removes the vertex from the vertices container
         remove_first_from(vertices, v);
     }
-
 
     /**
     * Method: addEdge
@@ -170,15 +166,12 @@ public:
         s->addEdge(d);
         if (!this->isDigraph())
             d->addEdge(s);
-        //Since by default this isn't multigraph, duplicate edges are not allowed
+        // Since by default this isn't multigraph, duplicate edges are not allowed
         /*if (s->isNeighbourOf(d))
             throw DuplicateEdge();
         s->addEdge(d);
         d->addEdge(s);*/
     }
-
-
-
 
     /**
     * Method: removeEdge
@@ -241,39 +234,37 @@ public:
         return vertices.size();
     }
 
-	int hops(Vertex* vertex1, Vertex* vertex2)
-	{
-		int hops = 0;
-		bool keepTraversing = true;
-		std::queue<Vertex*> queue;
-		queue.push(vertex1);
-		vertex1->setVisited(true);
+    int hops(Vertex* vertex1, Vertex* vertex2)
+    {
+        int hops = 0;
+        bool keepTraversing = true;
+        std::queue<Vertex*> queue;
+        queue.push(vertex1);
+        vertex1->setVisited(true);
 
-		while (!queue.empty() && keepTraversing)
-	    {
-	        Vertex* vertex = queue.front();
-	        queue.pop();
-	        hops++;
+        while (!queue.empty() && keepTraversing)
+        {
+            Vertex* vertex = queue.front();
+            queue.pop();
+            hops++;
 
-        	NeighborsIterator it = vertex->neighborsIterator();
+            NeighborsIterator it = vertex->neighborsIterator();
 
             while (!it.end() && keepTraversing)
             {
                 Vertex* neighbour = *it;
                 if (!neighbour->getVisited())
-				{
+                {
                     queue.push(neighbour);
-			        neighbour->setVisited(true);
-			        if (neighbour->getVertexId() == vertex2->getVertexId())
-			        	keepTraversing = false;
-				}
+                    neighbour->setVisited(true);
+                    if (neighbour->getVertexId() == vertex2->getVertexId())
+                        keepTraversing = false;
+                }
                 it++;
             }
-	    }
-		return hops - 1;
-	}
-
-
+        }
+        return hops - 1;
+    }
 
     bool isDigraph()
     {
@@ -286,12 +277,10 @@ public:
     }
 
 private:
-
     bool _isDigraph;
     bool _isMultigraph;
     VertexContainer vertices;
 };
-
 }
 
 #endif

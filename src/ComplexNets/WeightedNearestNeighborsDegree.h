@@ -8,14 +8,12 @@ namespace graphpp
 template <class Graph, class Vertex>
 class WeightedNearestNeighborsDegree : public INearestNeighborsDegree<Graph, Vertex>
 {
-
 public:
-
     typedef typename graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree MeanDegree;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename Graph::VerticesIterator VerticesIterator;
 
-    //TODO check if this method is implemented correctly
+    // TODO check if this method is implemented correctly
     virtual MeanDegree meanDegree(Graph& g, typename Vertex::Degree d)
     {
         VerticesIterator it = g.verticesIterator();
@@ -55,6 +53,5 @@ public:
     }
 };
 }
-
 
 #endif

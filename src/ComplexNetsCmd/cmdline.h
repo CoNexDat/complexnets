@@ -37,144 +37,212 @@ extern "C" {
 /** @brief Where the command line options are stored */
 struct gengetopt_args_info
 {
-  const char *help_help; /**< @brief Print help and exit help description.  */
-  const char *version_help; /**< @brief Print version and exit help description.  */
-  char * input_file_arg;	/**< @brief Load a network from an input file.  */
-  char * input_file_orig;	/**< @brief Load a network from an input file original value given at command line.  */
-  const char *input_file_help; /**< @brief Load a network from an input file help description.  */
-  const char *weighted_help; /**< @brief Specify if the input file is considered as a weighted graph help description.  */
-  const char *digraph_help; /**< @brief Specify if the input file is considered as a digraph help description.  */
-  const char *erdos_help; /**< @brief Erdos-Renyi model help description.  */
-  const char *barabasi_help; /**< @brief Barabasi-Albert model help description.  */
-  const char *hot_help; /**< @brief Extended Hot model help description.  */
-  const char *molloy_help; /**< @brief Molloy-Reed model help description.  */
-  const char *hyperbolic_help; /**< @brief Papadopoulos Hyperbolic model help description.  */
-  int n_arg;	/**< @brief Number of network nodes..  */
-  char * n_orig;	/**< @brief Number of network nodes. original value given at command line.  */
-  const char *n_help; /**< @brief Number of network nodes. help description.  */
-  float p_arg;	/**< @brief Connection probability (only for Erdos-Renyi model)..  */
-  char * p_orig;	/**< @brief Connection probability (only for Erdos-Renyi model). original value given at command line.  */
-  const char *p_help; /**< @brief Connection probability (only for Erdos-Renyi model). help description.  */
-  int m0_arg;	/**< @brief Initial number of nodes (only for Barabasi-Albert model). (default='10').  */
-  char * m0_orig;	/**< @brief Initial number of nodes (only for Barabasi-Albert model). original value given at command line.  */
-  const char *m0_help; /**< @brief Initial number of nodes (only for Barabasi-Albert model). help description.  */
-  int m_arg;	/**< @brief Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model)..  */
-  char * m_orig;	/**< @brief Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model). original value given at command line.  */
-  const char *m_help; /**< @brief Number of edges to attach from new node to existing nodes (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model). help description.  */
-  float xi_arg;	/**< @brief Parameter used to select the neighbors for a new vertex (only for Extended Hot Model)..  */
-  char * xi_orig;	/**< @brief Parameter used to select the neighbors for a new vertex (only for Extended Hot Model). original value given at command line.  */
-  const char *xi_help; /**< @brief Parameter used to select the neighbors for a new vertex (only for Extended Hot Model). help description.  */
-  int q_arg;	/**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model)..  */
-  char * q_orig;	/**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model). original value given at command line.  */
-  const char *q_help; /**< @brief Number of edges added in the graph after of connect a vertex (only for Extended Hot Model). help description.  */
-  float r_arg;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model)..  */
-  char * r_orig;	/**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). original value given at command line.  */
-  const char *r_help; /**< @brief Parameter user to selected the edges in the graph after connecting a vertex (only for Extended Hot Model). help description.  */
-  char * ks_arg;	/**< @brief Input file that specifies, for each K, how many nodes have that K..  */
-  char * ks_orig;	/**< @brief Input file that specifies, for each K, how many nodes have that K. original value given at command line.  */
-  const char *ks_help; /**< @brief Input file that specifies, for each K, how many nodes have that K. help description.  */
-  float deg_arg;	/**< @brief  Avg degree of nodes parameter (only for hyperbolic model). (default='0.0014').  */
-  char * deg_orig;	/**< @brief  Avg degree of nodes parameter (only for hyperbolic model). original value given at command line.  */
-  const char *deg_help; /**< @brief  Avg degree of nodes parameter (only for hyperbolic model). help description.  */
-  float a_arg;	/**< @brief Radial density of nodes (only for hyperbolic model). (default='0.75').  */
-  char * a_orig;	/**< @brief Radial density of nodes (only for hyperbolic model). original value given at command line.  */
-  const char *a_help; /**< @brief Radial density of nodes (only for hyperbolic model). help description.  */
-  int betweenness_arg;	/**< @brief Calculate betweenness of a given node.  */
-  char * betweenness_orig;	/**< @brief Calculate betweenness of a given node original value given at command line.  */
-  const char *betweenness_help; /**< @brief Calculate betweenness of a given node help description.  */
-  int ddist_arg;	/**< @brief Calculate the number of nodes with a given degree.  */
-  char * ddist_orig;	/**< @brief Calculate the number of nodes with a given degree original value given at command line.  */
-  const char *ddist_help; /**< @brief Calculate the number of nodes with a given degree help description.  */
-  int clustering_arg;	/**< @brief Calculate the clustering coefficient of a given node.  */
-  char * clustering_orig;	/**< @brief Calculate the clustering coefficient of a given node original value given at command line.  */
-  const char *clustering_help; /**< @brief Calculate the clustering coefficient of a given node help description.  */
-  int knn_arg;	/**< @brief Calculate the nearest neighbors degree of a given node.  */
-  char * knn_orig;	/**< @brief Calculate the nearest neighbors degree of a given node original value given at command line.  */
-  const char *knn_help; /**< @brief Calculate the nearest neighbors degree of a given node help description.  */
-  int shell_arg;	/**< @brief Calculate the shell index of a given node.  */
-  char * shell_orig;	/**< @brief Calculate the shell index of a given node original value given at command line.  */
-  const char *shell_help; /**< @brief Calculate the shell index of a given node help description.  */
-  int maxCliqueExact_arg;	/**< @brief Calculate max clique if time (in seconds) is enough.  */
-  char * maxCliqueExact_orig;	/**< @brief Calculate max clique if time (in seconds) is enough original value given at command line.  */
-  const char *maxCliqueExact_help; /**< @brief Calculate max clique if time (in seconds) is enough help description.  */
-  const char *maxCliqueAprox_help; /**< @brief Calculate max clique aproximation help description.  */
-  int out_flag;	/**< @brief Use out degrees (directed) (default=off).  */
-  const char *out_help; /**< @brief Use out degrees (directed) help description.  */
-  int in_flag;	/**< @brief Use in degrees (directed) (use --in --out to use in and out degrees) (default=off).  */
-  const char *in_help; /**< @brief Use in degrees (directed) (use --in --out to use in and out degrees) help description.  */
-  const char *betweenness_output_help; /**< @brief Betweenness vs. Degree help description.  */
-  const char *ddist_output_help; /**< @brief Degree distribution help description.  */
-  int log_bin_arg;	/**< @brief Log-bin the output (only for Degree distribution).  */
-  char * log_bin_orig;	/**< @brief Log-bin the output (only for Degree distribution) original value given at command line.  */
-  const char *log_bin_help; /**< @brief Log-bin the output (only for Degree distribution) help description.  */
-  const char *clustering_output_help; /**< @brief Clustering coefficient vs. Degree help description.  */
-  const char *knn_output_help; /**< @brief Nearest Neighbors Degree vs. Degree help description.  */
-  const char *shell_output_help; /**< @brief Shell index vs. Degree help description.  */
-  int maxCliqueExact_output_arg;	/**< @brief .  */
-  char * maxCliqueExact_output_orig;	/**< @brief  original value given at command line.  */
-  const char *maxCliqueExact_output_help; /**< @brief  help description.  */
-  const char *maxCliqueAprox_output_help; /**< @brief  help description.  */
-  char * output_file_arg;	/**< @brief Save the result in an output file.  */
-  char * output_file_orig;	/**< @brief Save the result in an output file original value given at command line.  */
-  const char *output_file_help; /**< @brief Save the result in an output file help description.  */
-  const char *print_deg_help; /**< @brief Print node degree for power law regression help description.  */
-  
-  unsigned int help_given ;	/**< @brief Whether help was given.  */
-  unsigned int version_given ;	/**< @brief Whether version was given.  */
-  unsigned int input_file_given ;	/**< @brief Whether input-file was given.  */
-  unsigned int weighted_given ;	/**< @brief Whether weighted was given.  */
-  unsigned int digraph_given ;	/**< @brief Whether digraph was given.  */
-  unsigned int erdos_given ;	/**< @brief Whether erdos was given.  */
-  unsigned int barabasi_given ;	/**< @brief Whether barabasi was given.  */
-  unsigned int hot_given ;	/**< @brief Whether hot was given.  */
-  unsigned int molloy_given ;	/**< @brief Whether molloy was given.  */
-  unsigned int hyperbolic_given ;	/**< @brief Whether hyperbolic was given.  */
-  unsigned int n_given ;	/**< @brief Whether n was given.  */
-  unsigned int p_given ;	/**< @brief Whether p was given.  */
-  unsigned int m0_given ;	/**< @brief Whether m0 was given.  */
-  unsigned int m_given ;	/**< @brief Whether m was given.  */
-  unsigned int xi_given ;	/**< @brief Whether xi was given.  */
-  unsigned int q_given ;	/**< @brief Whether q was given.  */
-  unsigned int r_given ;	/**< @brief Whether r was given.  */
-  unsigned int ks_given ;	/**< @brief Whether ks was given.  */
-  unsigned int deg_given ;	/**< @brief Whether deg was given.  */
-  unsigned int a_given ;	/**< @brief Whether a was given.  */
-  unsigned int betweenness_given ;	/**< @brief Whether betweenness was given.  */
-  unsigned int ddist_given ;	/**< @brief Whether ddist was given.  */
-  unsigned int clustering_given ;	/**< @brief Whether clustering was given.  */
-  unsigned int knn_given ;	/**< @brief Whether knn was given.  */
-  unsigned int shell_given ;	/**< @brief Whether shell was given.  */
-  unsigned int maxCliqueExact_given ;	/**< @brief Whether maxCliqueExact was given.  */
-  unsigned int maxCliqueAprox_given ;	/**< @brief Whether maxCliqueAprox was given.  */
-  unsigned int out_given ;	/**< @brief Whether out was given.  */
-  unsigned int in_given ;	/**< @brief Whether in was given.  */
-  unsigned int betweenness_output_given ;	/**< @brief Whether betweenness-output was given.  */
-  unsigned int ddist_output_given ;	/**< @brief Whether ddist-output was given.  */
-  unsigned int log_bin_given ;	/**< @brief Whether log-bin was given.  */
-  unsigned int clustering_output_given ;	/**< @brief Whether clustering-output was given.  */
-  unsigned int knn_output_given ;	/**< @brief Whether knn-output was given.  */
-  unsigned int shell_output_given ;	/**< @brief Whether shell-output was given.  */
-  unsigned int maxCliqueExact_output_given ;	/**< @brief Whether maxCliqueExact-output was given.  */
-  unsigned int maxCliqueAprox_output_given ;	/**< @brief Whether maxCliqueAprox-output was given.  */
-  unsigned int output_file_given ;	/**< @brief Whether output-file was given.  */
-  unsigned int print_deg_given ;	/**< @brief Whether print-deg was given.  */
+    const char *help_help;    /**< @brief Print help and exit help description.  */
+    const char *version_help; /**< @brief Print version and exit help description.  */
+    char *input_file_arg;     /**< @brief Load a network from an input file.  */
+    char *input_file_orig;    /**< @brief Load a network from an input file original value given at
+                                 command line.  */
+    const char *input_file_help; /**< @brief Load a network from an input file help description.  */
+    const char *weighted_help;   /**< @brief Specify if the input file is considered as a weighted
+                                    graph help description.  */
+    const char
+        *digraph_help;         /**< @brief Specify if the input file is considered as a digraph help
+                                  description.  */
+    const char *erdos_help;    /**< @brief Erdos-Renyi model help description.  */
+    const char *barabasi_help; /**< @brief Barabasi-Albert model help description.  */
+    const char *hot_help;      /**< @brief Extended Hot model help description.  */
+    const char *molloy_help;   /**< @brief Molloy-Reed model help description.  */
+    const char *hyperbolic_help; /**< @brief Papadopoulos Hyperbolic model help description.  */
+    int n_arg;                   /**< @brief Number of network nodes..  */
+    char *n_orig; /**< @brief Number of network nodes. original value given at command line.  */
+    const char *n_help; /**< @brief Number of network nodes. help description.  */
+    float p_arg;        /**< @brief Connection probability (only for Erdos-Renyi model)..  */
+    char *p_orig; /**< @brief Connection probability (only for Erdos-Renyi model). original value
+                     given at command line.  */
+    const char *p_help; /**< @brief Connection probability (only for Erdos-Renyi model). help
+                           description.  */
+    int m0_arg;         /**< @brief Initial number of nodes (only for Barabasi-Albert model).
+                           (default='10').  */
+    char *m0_orig; /**< @brief Initial number of nodes (only for Barabasi-Albert model). original
+                      value given at command line.  */
+    const char
+        *m0_help; /**< @brief Initial number of nodes (only for Barabasi-Albert model). help
+                     description.  */
+    int m_arg;    /**< @brief Number of edges to attach from new node to existing nodes
+                     (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot Model)..
+                     */
+    char *m_orig; /**< @brief Number of edges to attach from new node to existing nodes
+                     (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot
+                     Model). original value given at command line.  */
+    const char
+        *m_help;   /**< @brief Number of edges to attach from new node to existing nodes
+                      (Barabasi-Albert model). Number of edges in each new vertex (Extended Hot
+                      Model). help description.  */
+    float xi_arg;  /**< @brief Parameter used to select the neighbors for a new vertex (only for
+                      Extended Hot Model)..  */
+    char *xi_orig; /**< @brief Parameter used to select the neighbors for a new vertex (only for
+                      Extended Hot Model). original value given at command line.  */
+    const char *xi_help; /**< @brief Parameter used to select the neighbors for a new vertex (only
+                            for Extended Hot Model). help description.  */
+    int q_arg; /**< @brief Number of edges added in the graph after of connect a vertex (only for
+                  Extended Hot Model)..  */
+    char *
+        q_orig; /**< @brief Number of edges added in the graph after of connect a vertex (only for
+                   Extended Hot Model). original value given at command line.  */
+    const char *q_help; /**< @brief Number of edges added in the graph after of connect a vertex
+                           (only for Extended Hot Model). help description.  */
+    float r_arg;  /**< @brief Parameter user to selected the edges in the graph after connecting a
+                     vertex (only for Extended Hot Model)..  */
+    char *r_orig; /**< @brief Parameter user to selected the edges in the graph after connecting a
+                     vertex (only for Extended Hot Model). original value given at command line.  */
+    const char *r_help; /**< @brief Parameter user to selected the edges in the graph after
+                           connecting a vertex (only for Extended Hot Model). help description.  */
+    char *ks_arg; /**< @brief Input file that specifies, for each K, how many nodes have that K.. */
+    char *ks_orig; /**< @brief Input file that specifies, for each K, how many nodes have that K.
+                      original value given at command line.  */
+    const char
+        *ks_help;  /**< @brief Input file that specifies, for each K, how many nodes have that K.
+                      help description.  */
+    float deg_arg; /**< @brief  Avg degree of nodes parameter (only for hyperbolic model).
+                      (default='0.0014').  */
+    char *
+        deg_orig; /**< @brief  Avg degree of nodes parameter (only for hyperbolic model). original
+                     value given at command line.  */
+    const char *deg_help; /**< @brief  Avg degree of nodes parameter (only for hyperbolic model).
+                             help description.  */
+    float
+        a_arg; /**< @brief Radial density of nodes (only for hyperbolic model). (default='0.75'). */
+    char *a_orig; /**< @brief Radial density of nodes (only for hyperbolic model). original value
+                     given at command line.  */
+    const char *a_help;     /**< @brief Radial density of nodes (only for hyperbolic model). help
+                               description.  */
+    int betweenness_arg;    /**< @brief Calculate betweenness of a given node.  */
+    char *betweenness_orig; /**< @brief Calculate betweenness of a given node original value given
+                               at command line.  */
+    const char
+        *betweenness_help; /**< @brief Calculate betweenness of a given node help description.  */
+    int ddist_arg;         /**< @brief Calculate the number of nodes with a given degree.  */
+    char *ddist_orig; /**< @brief Calculate the number of nodes with a given degree original value
+                         given at command line.  */
+    const char *ddist_help; /**< @brief Calculate the number of nodes with a given degree help
+                               description.  */
+    int clustering_arg;     /**< @brief Calculate the clustering coefficient of a given node.  */
+    char *
+        clustering_orig; /**< @brief Calculate the clustering coefficient of a given node original
+                            value given at command line.  */
+    const char *clustering_help; /**< @brief Calculate the clustering coefficient of a given node
+                                    help description.  */
+    int knn_arg;    /**< @brief Calculate the nearest neighbors degree of a given node.  */
+    char *knn_orig; /**< @brief Calculate the nearest neighbors degree of a given node original
+                       value given at command line.  */
+    const char *knn_help; /**< @brief Calculate the nearest neighbors degree of a given node help
+                             description.  */
+    int shell_arg;        /**< @brief Calculate the shell index of a given node.  */
+    char
+        *shell_orig; /**< @brief Calculate the shell index of a given node original value given at
+                        command line.  */
+    const char
+        *shell_help; /**< @brief Calculate the shell index of a given node help description.  */
+    int maxCliqueExact_arg;    /**< @brief Calculate max clique if time (in seconds) is enough.  */
+    char *maxCliqueExact_orig; /**< @brief Calculate max clique if time (in seconds) is enough
+                                  original value given at command line.  */
+    const char
+        *maxCliqueExact_help; /**< @brief Calculate max clique if time (in seconds) is enough help
+                                 description.  */
+    const char
+        *maxCliqueAprox_help; /**< @brief Calculate max clique aproximation help description.  */
+    int out_flag;             /**< @brief Use out degrees (directed) (default=off).  */
+    const char *out_help;     /**< @brief Use out degrees (directed) help description.  */
+    int in_flag; /**< @brief Use in degrees (directed) (use --in --out to use in and out degrees)
+                    (default=off).  */
+    const char *in_help; /**< @brief Use in degrees (directed) (use --in --out to use in and out
+                            degrees) help description.  */
+    const char *betweenness_output_help; /**< @brief Betweenness vs. Degree help description.  */
+    const char *ddist_output_help;       /**< @brief Degree distribution help description.  */
+    int log_bin_arg; /**< @brief Log-bin the output (only for Degree distribution).  */
+    char *
+        log_bin_orig; /**< @brief Log-bin the output (only for Degree distribution) original value
+                         given at command line.  */
+    const char *log_bin_help; /**< @brief Log-bin the output (only for Degree distribution) help
+                                 description.  */
+    const char
+        *clustering_output_help; /**< @brief Clustering coefficient vs. Degree help description.  */
+    const char
+        *knn_output_help; /**< @brief Nearest Neighbors Degree vs. Degree help description.  */
+    const char *shell_output_help;          /**< @brief Shell index vs. Degree help description.  */
+    int maxCliqueExact_output_arg;          /**< @brief .  */
+    char *maxCliqueExact_output_orig;       /**< @brief  original value given at command line.  */
+    const char *maxCliqueExact_output_help; /**< @brief  help description.  */
+    const char *maxCliqueAprox_output_help; /**< @brief  help description.  */
+    char *output_file_arg;                  /**< @brief Save the result in an output file.  */
+    char *output_file_orig; /**< @brief Save the result in an output file original value given at
+                               command line.  */
+    const char *output_file_help; /**< @brief Save the result in an output file help description. */
+    const char
+        *print_deg_help; /**< @brief Print node degree for power law regression help description. */
 
-  int analysis_group_counter; /**< @brief Counter for group analysis */
-  int directed_group_counter; /**< @brief Counter for group directed */
-  int model_group_counter; /**< @brief Counter for group model */
-  int network_load_group_counter; /**< @brief Counter for group network_load */
-  int output_group_counter; /**< @brief Counter for group output */
-} ;
+    unsigned int help_given;               /**< @brief Whether help was given.  */
+    unsigned int version_given;            /**< @brief Whether version was given.  */
+    unsigned int input_file_given;         /**< @brief Whether input-file was given.  */
+    unsigned int weighted_given;           /**< @brief Whether weighted was given.  */
+    unsigned int digraph_given;            /**< @brief Whether digraph was given.  */
+    unsigned int erdos_given;              /**< @brief Whether erdos was given.  */
+    unsigned int barabasi_given;           /**< @brief Whether barabasi was given.  */
+    unsigned int hot_given;                /**< @brief Whether hot was given.  */
+    unsigned int molloy_given;             /**< @brief Whether molloy was given.  */
+    unsigned int hyperbolic_given;         /**< @brief Whether hyperbolic was given.  */
+    unsigned int n_given;                  /**< @brief Whether n was given.  */
+    unsigned int p_given;                  /**< @brief Whether p was given.  */
+    unsigned int m0_given;                 /**< @brief Whether m0 was given.  */
+    unsigned int m_given;                  /**< @brief Whether m was given.  */
+    unsigned int xi_given;                 /**< @brief Whether xi was given.  */
+    unsigned int q_given;                  /**< @brief Whether q was given.  */
+    unsigned int r_given;                  /**< @brief Whether r was given.  */
+    unsigned int ks_given;                 /**< @brief Whether ks was given.  */
+    unsigned int deg_given;                /**< @brief Whether deg was given.  */
+    unsigned int a_given;                  /**< @brief Whether a was given.  */
+    unsigned int betweenness_given;        /**< @brief Whether betweenness was given.  */
+    unsigned int ddist_given;              /**< @brief Whether ddist was given.  */
+    unsigned int clustering_given;         /**< @brief Whether clustering was given.  */
+    unsigned int knn_given;                /**< @brief Whether knn was given.  */
+    unsigned int shell_given;              /**< @brief Whether shell was given.  */
+    unsigned int maxCliqueExact_given;     /**< @brief Whether maxCliqueExact was given.  */
+    unsigned int maxCliqueAprox_given;     /**< @brief Whether maxCliqueAprox was given.  */
+    unsigned int out_given;                /**< @brief Whether out was given.  */
+    unsigned int in_given;                 /**< @brief Whether in was given.  */
+    unsigned int betweenness_output_given; /**< @brief Whether betweenness-output was given.  */
+    unsigned int ddist_output_given;       /**< @brief Whether ddist-output was given.  */
+    unsigned int log_bin_given;            /**< @brief Whether log-bin was given.  */
+    unsigned int clustering_output_given;  /**< @brief Whether clustering-output was given.  */
+    unsigned int knn_output_given;         /**< @brief Whether knn-output was given.  */
+    unsigned int shell_output_given;       /**< @brief Whether shell-output was given.  */
+    unsigned int
+        maxCliqueExact_output_given; /**< @brief Whether maxCliqueExact-output was given.  */
+    unsigned int
+        maxCliqueAprox_output_given; /**< @brief Whether maxCliqueAprox-output was given.  */
+    unsigned int output_file_given;  /**< @brief Whether output-file was given.  */
+    unsigned int print_deg_given;    /**< @brief Whether print-deg was given.  */
+
+    int analysis_group_counter;     /**< @brief Counter for group analysis */
+    int directed_group_counter;     /**< @brief Counter for group directed */
+    int model_group_counter;        /**< @brief Counter for group model */
+    int network_load_group_counter; /**< @brief Counter for group network_load */
+    int output_group_counter;       /**< @brief Counter for group output */
+};
 
 /** @brief The additional parameters to pass to parser functions */
 struct cmdline_parser_params
 {
-  int override; /**< @brief whether to override possibly already present options (default 0) */
-  int initialize; /**< @brief whether to initialize the option structure gengetopt_args_info (default 1) */
-  int check_required; /**< @brief whether to check that all required options were provided (default 1) */
-  int check_ambiguity; /**< @brief whether to check for options already specified in the option structure gengetopt_args_info (default 0) */
-  int print_errors; /**< @brief whether getopt_long should print an error message for a bad option (default 1) */
-} ;
+    int override;   /**< @brief whether to override possibly already present options (default 0) */
+    int initialize; /**< @brief whether to initialize the option structure gengetopt_args_info
+                       (default 1) */
+    int check_required;  /**< @brief whether to check that all required options were provided
+                            (default 1) */
+    int check_ambiguity; /**< @brief whether to check for options already specified in the option
+                            structure gengetopt_args_info (default 0) */
+    int print_errors; /**< @brief whether getopt_long should print an error message for a bad option
+                         (default 1) */
+};
 
 /** @brief the purpose string of the program */
 extern const char *gengetopt_args_info_purpose;
@@ -192,8 +260,7 @@ extern const char *gengetopt_args_info_help[];
  * @param args_info the structure where option information will be stored
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser (int argc, char **argv,
-  struct gengetopt_args_info *args_info);
+int cmdline_parser(int argc, char **argv, struct gengetopt_args_info *args_info);
 
 /**
  * The command line parser (version with additional parameters - deprecated)
@@ -206,9 +273,12 @@ int cmdline_parser (int argc, char **argv,
  * @return 0 if everything went fine, NON 0 if an error took place
  * @deprecated use cmdline_parser_ext() instead
  */
-int cmdline_parser2 (int argc, char **argv,
-  struct gengetopt_args_info *args_info,
-  int override, int initialize, int check_required);
+int cmdline_parser2(int argc,
+                    char **argv,
+                    struct gengetopt_args_info *args_info,
+                    int override,
+                    int initialize,
+                    int check_required);
 
 /**
  * The command line parser (version with additional parameters)
@@ -218,9 +288,10 @@ int cmdline_parser2 (int argc, char **argv,
  * @param params additional parameters for the parser
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser_ext (int argc, char **argv,
-  struct gengetopt_args_info *args_info,
-  struct cmdline_parser_params *params);
+int cmdline_parser_ext(int argc,
+                       char **argv,
+                       struct gengetopt_args_info *args_info,
+                       struct cmdline_parser_params *params);
 
 /**
  * Save the contents of the option struct into an already open FILE stream.
@@ -228,8 +299,7 @@ int cmdline_parser_ext (int argc, char **argv,
  * @param args_info the option struct to dump
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser_dump(FILE *outfile,
-  struct gengetopt_args_info *args_info);
+int cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info);
 
 /**
  * Save the contents of the option struct into a (text) file.
@@ -238,8 +308,7 @@ int cmdline_parser_dump(FILE *outfile,
  * @param args_info the option struct to save
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser_file_save(const char *filename,
-  struct gengetopt_args_info *args_info);
+int cmdline_parser_file_save(const char *filename, struct gengetopt_args_info *args_info);
 
 /**
  * Print the help
@@ -251,7 +320,7 @@ void cmdline_parser_print_help(void);
 void cmdline_parser_print_version(void);
 
 /**
- * Initializes all the fields a cmdline_parser_params structure 
+ * Initializes all the fields a cmdline_parser_params structure
  * to their default values
  * @param params the structure to initialize
  */
@@ -269,13 +338,13 @@ struct cmdline_parser_params *cmdline_parser_params_create(void);
  * (also set default values for options that have a default)
  * @param args_info the structure to initialize
  */
-void cmdline_parser_init (struct gengetopt_args_info *args_info);
+void cmdline_parser_init(struct gengetopt_args_info *args_info);
 /**
  * Deallocates the string fields of the gengetopt_args_info structure
  * (but does not deallocate the structure itself)
  * @param args_info the structure to deallocate
  */
-void cmdline_parser_free (struct gengetopt_args_info *args_info);
+void cmdline_parser_free(struct gengetopt_args_info *args_info);
 
 /**
  * Checks that all the required options were specified
@@ -284,9 +353,7 @@ void cmdline_parser_free (struct gengetopt_args_info *args_info);
  *   possible errors
  * @return
  */
-int cmdline_parser_required (struct gengetopt_args_info *args_info,
-  const char *prog_name);
-
+int cmdline_parser_required(struct gengetopt_args_info *args_info, const char *prog_name);
 
 #ifdef __cplusplus
 }

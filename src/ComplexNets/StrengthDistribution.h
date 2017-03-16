@@ -3,10 +3,10 @@
 
 #include <map>
 
-#include "mili/mili.h"
-#include "TraverserForward.h"
 #include <stdio.h>
+#include "TraverserForward.h"
 #include "WeightedVertexAspect.h"
+#include "mili/mili.h"
 
 namespace graphpp
 {
@@ -29,9 +29,10 @@ template <class Graph, class Vertex>
 class StrengthDistributionVisitor
 {
 public:
-
     StrengthDistributionVisitor(StrengthDistribution<Graph, Vertex>& observer)
-        : strengthDistributionObserver(observer) {}
+        : strengthDistributionObserver(observer)
+    {
+    }
 
     /**
     * Method: visitVertex
@@ -47,7 +48,6 @@ public:
     }
 
 private:
-
     StrengthDistribution<Graph, Vertex>& strengthDistributionObserver;
 };
 
@@ -55,7 +55,6 @@ template <class Graph, class Vertex>
 class StrengthDistribution
 {
 public:
-
     typedef std::map<typename Vertex::Weight, unsigned int> DistributionContainer;
     typedef CAutonomousIterator<DistributionContainer> DistributionIterator;
 
@@ -69,7 +68,6 @@ public:
         return DistributionIterator(distribution);
     }
 
-
     void notifyDegree(typename Vertex::Weight d)
     {
         if (distribution.count(d) != 0)
@@ -79,16 +77,15 @@ public:
     }
 
 private:
-
     void calculateDistribution(Graph& graph)
     {
         StrengthDistributionVisitor<Graph, Vertex> visitor(*this);
-        TraverserForward<Graph, Vertex, StrengthDistributionVisitor<Graph, Vertex> >::traverse(graph, visitor);
+        TraverserForward<Graph, Vertex, StrengthDistributionVisitor<Graph, Vertex>>::traverse(
+            graph, visitor);
     }
 
     DistributionContainer distribution;
 };
 }
-
 
 #endif

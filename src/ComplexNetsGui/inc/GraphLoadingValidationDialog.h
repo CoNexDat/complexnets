@@ -1,7 +1,6 @@
 #ifndef GRAPHLOADINGVALIDATIONDIALOG_H
 #define GRAPHLOADINGVALIDATIONDIALOG_H
 
-
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
@@ -17,24 +16,23 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <iostream>
-#include <iostream>
 #include "ComplexNetsGui/inc/mainwindow.h"
 
 namespace ComplexNetsGui
 {
 class GraphLoadingValidationDialog : public QDialog
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     GraphLoadingValidationDialog(QWidget* parent = 0);
     virtual ~GraphLoadingValidationDialog();
     bool isMultigraph() const;
     bool isWeigthed() const;
     bool isDirected() const;
-	MainWindow* mainWindow;
+    MainWindow* mainWindow;
 
 public slots:
-	void radioButton4Changed(bool checked);
+    void radioButton4Changed(bool checked);
 
 private:
     void retranslateUi();

@@ -14,7 +14,7 @@ public:
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
 
-    //TODO check if this method is implemented correctly
+    // TODO check if this method is implemented correctly
     virtual Coefficient clusteringCoefficient(Graph& g, Degree d)
     {
         VerticesIterator it = g.verticesIterator();
@@ -52,7 +52,7 @@ public:
             while (!innerIter.end())
             {
                 Vertex* i = static_cast<Vertex*>(*innerIter);
-                //if i is neighbour of vertex, we close a triangle
+                // if i is neighbour of vertex, we close a triangle
                 if (i->isNeighbourOf(vertex))
                     links += (vertex->edgeWeight(n) + i->edgeWeight(vertex)) / 2.0;
 

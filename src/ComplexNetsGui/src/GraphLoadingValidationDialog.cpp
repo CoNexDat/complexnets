@@ -4,7 +4,7 @@ using namespace ComplexNetsGui;
 
 GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QDialog(parent)
 {
-	this->mainWindow = static_cast<MainWindow*>(parent);
+    this->mainWindow = static_cast<MainWindow*>(parent);
 
     if (this->objectName().isEmpty())
         this->setObjectName(QString::fromUtf8("Dialog"));
@@ -30,7 +30,7 @@ GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QD
     verticalLayout_2->addWidget(radioButton_3);
 
     radioButton_4 = new QRadioButton(verticalLayoutWidget_2);
-	connect(radioButton_4, SIGNAL(toggled(bool)), this, SLOT(radioButton4Changed(bool)));
+    connect(radioButton_4, SIGNAL(toggled(bool)), this, SLOT(radioButton4Changed(bool)));
     radioButton_4->setObjectName(QString::fromUtf8("radioButton_4"));
 
     verticalLayout_2->addWidget(radioButton_4);
@@ -61,7 +61,6 @@ GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QD
 
     radioButton->setChecked(true);
 
-
     retranslateUi();
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
@@ -88,26 +87,30 @@ bool GraphLoadingValidationDialog::isMultigraph() const
 bool GraphLoadingValidationDialog::isWeigthed() const
 {
     return !radioButton->isChecked();
-    //return checkBox->isChecked();
+    // return checkBox->isChecked();
 }
 
 bool GraphLoadingValidationDialog::isDirected() const
 {
     return !radioButton_3->isChecked();
-    //return checkBox_2->isChecked();
+    // return checkBox_2->isChecked();
 }
 
-//TODO within this signal handler we could disable all functionality that it isnt supported by directed graph yet
+// TODO within this signal handler we could disable all functionality that it isnt supported by
+// directed graph yet
 // or throw signals to let other components know
 void GraphLoadingValidationDialog::radioButton4Changed(bool checked)
 {
-	if (checked) {
-		radioButton->setChecked(true);
-		radioButton_2->setEnabled(false);
-	} else {
-		radioButton_2->setEnabled(true);
-	}
-	this->mainWindow->disableActions();
+    if (checked)
+    {
+        radioButton->setChecked(true);
+        radioButton_2->setEnabled(false);
+    }
+    else
+    {
+        radioButton_2->setEnabled(true);
+    }
+    this->mainWindow->disableActions();
 }
 
 GraphLoadingValidationDialog::~GraphLoadingValidationDialog()

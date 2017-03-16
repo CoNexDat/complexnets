@@ -1,10 +1,10 @@
 #ifndef IBETWEENNESS_H
 #define IBETWEENNESS_H
 
-#include <stack>
-#include <queue>
-#include <vector>
 #include <list>
+#include <queue>
+#include <stack>
+#include <vector>
 
 #include "mili/mili.h"
 

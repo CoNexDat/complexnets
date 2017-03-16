@@ -3,10 +3,10 @@
 
 #include <map>
 
-#include "mili/mili.h"
-#include "TraverserForward.h"
 #include <stdio.h>
 #include "IDegreeDistribution.h"
+#include "TraverserForward.h"
+#include "mili/mili.h"
 
 namespace graphpp
 {
@@ -29,9 +29,10 @@ template <class Graph, class Vertex>
 class DegreeDistributionVisitor
 {
 public:
-
     DegreeDistributionVisitor(DegreeDistribution<Graph, Vertex>& observer)
-        : degreeDistributionObserver(observer) {}
+        : degreeDistributionObserver(observer)
+    {
+    }
 
     /**
     * Method: visitVertex
@@ -47,7 +48,6 @@ public:
     }
 
 private:
-
     DegreeDistribution<Graph, Vertex>& degreeDistributionObserver;
 };
 
@@ -55,7 +55,6 @@ template <class Graph, class Vertex>
 class DegreeDistribution : public IDegreeDistribution<Graph, Vertex>
 {
 public:
-
     typedef std::map<typename Vertex::Degree, unsigned int> DistributionContainer;
     typedef CAutonomousIterator<DistributionContainer> DistributionIterator;
 
@@ -69,7 +68,6 @@ public:
         return DistributionIterator(distribution);
     }
 
-
     void notifyDegree(typename Vertex::Degree d)
     {
         if (distribution.count(d) != 0)
@@ -79,16 +77,15 @@ public:
     }
 
 private:
-
     void calculateDistribution(Graph& graph)
     {
         DegreeDistributionVisitor<Graph, Vertex> visitor(*this);
-        TraverserForward<Graph, Vertex, DegreeDistributionVisitor<Graph, Vertex> >::traverse(graph, visitor);
+        TraverserForward<Graph, Vertex, DegreeDistributionVisitor<Graph, Vertex>>::traverse(
+            graph, visitor);
     }
 
     DistributionContainer distribution;
 };
 }
-
 
 #endif

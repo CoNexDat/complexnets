@@ -7,7 +7,6 @@ template <class Graph, class Vertex, class Visitor>
 class TraverserForward
 {
 public:
-
     static void traverse(Graph& graph, Visitor& visitor)
     {
         traverse(graph.verticesIterator(), visitor);

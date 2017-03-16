@@ -1,18 +1,18 @@
 #ifndef GRAPHFACTORY_H
 #define GRAPHFACTORY_H
 
-#include "IGraphFactory.h"
 #include "Betweenness.h"
 #include "ClusteringCoefficient.h"
+#include "DegreeDistribution.h"
+#include "GraphReader.h"
+#include "IGraphFactory.h"
 #include "NearestNeighborsDegree.h"
 #include "ShellIndex.h"
-#include "GraphReader.h"
-#include "DegreeDistribution.h"
 
 namespace graphpp
 {
-template<class Graph, class Vertex>
-class GraphFactory: public IGraphFactory<Graph, Vertex>
+template <class Graph, class Vertex>
+class GraphFactory : public IGraphFactory<Graph, Vertex>
 {
 public:
     virtual IGraphReader<Graph, Vertex>* createGraphReader()

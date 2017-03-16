@@ -1,9 +1,12 @@
 #ifndef GRAPH_EXCEPTIONS_H
 #define GRAPH_EXCEPTIONS_H
 
-class GraphExceptionHierarchy {};
-typedef GenericException<GraphExceptionHierarchy> GraphException;
+#include "ComplexNets/mili/mili.h"
 
+class GraphExceptionHierarchy
+{
+};
+typedef GenericException<GraphExceptionHierarchy> GraphException;
 
 /**
 * Exception: DuplicateEdge
@@ -14,6 +17,5 @@ typedef GenericException<GraphExceptionHierarchy> GraphException;
 DEFINE_SPECIFIC_EXCEPTION_TEXT(DuplicateEdge,
                                GraphExceptionHierarchy,
                                "Graph doesn't allow duplicate edges");
-
 
 #endif

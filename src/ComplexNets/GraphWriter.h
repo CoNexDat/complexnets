@@ -9,17 +9,16 @@
 
 using namespace std;
 
-class GraphWriter {
-
+class GraphWriter
+{
 public:
     void writeGraph(Graph *graph, string outputPath);
     void writeWeightedGraph(WeightedGraph *WeightedGraph, string outputPath);
-	void writeDirectedGraph(DirectedGraph *graph, string outputPath);
+    void writeDirectedGraph(DirectedGraph *graph, string outputPath);
 
 private:
-	list<unsigned int> visitedVertexes;
-	bool vertexWasVisited(unsigned int vertexId);
-
+    list<unsigned int> visitedVertexes;
+    bool vertexWasVisited(unsigned int vertexId);
 };
 
 #endif

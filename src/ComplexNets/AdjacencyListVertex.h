@@ -18,7 +18,6 @@ namespace graphpp
 class AdjacencyListVertex
 {
 public:
-
     typedef unsigned int VertexId;
     typedef unsigned int Degree;
 
@@ -26,8 +25,9 @@ public:
     typedef CAutonomousIterator<VertexContainer> VerticesConstIterator;
     typedef AutonomousIterator<VertexContainer> VerticesIterator;
 
-    AdjacencyListVertex(VertexId id) : vertexId(id), visited(false) {}
-
+    AdjacencyListVertex(VertexId id) : vertexId(id), visited(false)
+    {
+    }
 
     /**
     * Method: addEdge
@@ -36,13 +36,12 @@ public:
     * the vertex's neighbors
     * @param v Vertex neighbour to be added
     */
-    template<class T>
+    template <class T>
     void addEdge(T* v)
     {
         AdjacencyListVertex* other = static_cast<AdjacencyListVertex*>(v);
         insert_into(neighbors, other);
     }
-
 
     /**
     * Method: removeEdge
@@ -51,7 +50,7 @@ public:
     * the vertex's neighbors
     * @param v Vertex neighbour to be added
     */
-    template<class T>
+    template <class T>
     void removeEdge(T* v)
     {
         AdjacencyListVertex* other = static_cast<AdjacencyListVertex*>(v);
@@ -118,13 +117,13 @@ public:
         return vertexId;
     }
 
-    bool operator< (AdjacencyListVertex* other) const
+    bool operator<(AdjacencyListVertex* other) const
     {
         return getVertexId() < other->getVertexId();
     }
 
-    //These two methods shall be removed, and changed for a map in algorithms,
-    //or passed to an aspect of the vertex if needed
+    // These two methods shall be removed, and changed for a map in algorithms,
+    // or passed to an aspect of the vertex if needed
     bool getVisited() const
     {
         return visited;
@@ -132,14 +131,13 @@ public:
 
     void setVisited(bool v)
     {
-       visited=v;
+        visited = v;
     }
 
 private:
-
     VertexContainer neighbors;
     VertexId vertexId;
-   	bool visited;
+    bool visited;
 };
 }
 

@@ -3,15 +3,15 @@
 
 #include "IBetweenness.h"
 #include "IClusteringCoefficient.h"
+#include "IDegreeDistribution.h"
+#include "IGraphReader.h"
 #include "INearestNeighborsDegree.h"
 #include "IShellIndex.h"
-#include "IGraphReader.h"
-#include "IDegreeDistribution.h"
-#include "StrengthDistribution.h"
 #include "MaxClique.h"
+#include "StrengthDistribution.h"
 namespace graphpp
 {
-template<class Graph, class Vertex>
+template <class Graph, class Vertex>
 class IGraphFactory
 {
 public:
@@ -28,10 +28,10 @@ public:
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g) = 0;
 
     virtual StrengthDistribution<Graph, Vertex>* createStrengthDistribution(Graph& g) = 0;
-    
-	virtual MaxClique<Graph, Vertex>* createMaxClique(Graph& g) = 0;
-	
-	virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph& g, int max_time) = 0;
+
+    virtual MaxClique<Graph, Vertex>* createMaxClique(Graph& g) = 0;
+
+    virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph& g, int max_time) = 0;
 };
 }
 

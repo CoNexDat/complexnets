@@ -2,10 +2,10 @@
 #define DIRECTED_CLUSTERING_COEFFICIENT_H
 
 #include "IClusteringCoefficient.h"
+#include "typedefs.h"
 
 namespace graphpp
 {
-
 template <class Graph, class Vertex>
 class DirectedClusteringCoefficient : public IClusteringCoefficient<Graph, Vertex>
 {
@@ -23,9 +23,11 @@ public:
 
         if (!in && !out)
         {
-            std::cout << "Warning: DirectedClusteringCoefficient::clusteringCoefficient no direction given." << std::endl;
+            std::cout << "Warning: DirectedClusteringCoefficient::clusteringCoefficient no "
+                         "direction given."
+                      << std::endl;
         }
-        
+
         while (!it.end())
         {
             Vertex* v = *it;
@@ -41,22 +43,22 @@ public:
 
         return count == 0 ? 0 : clusteringCoefSums / count;
     }
-    
+
     virtual Coefficient clusteringCoefficient(Graph& g, Degree d)
     {
         return clusteringCoefficient(g, d, false, false);
     }
 
-    virtual Coefficient vertexClusteringCoefficient(Vertex *vertex, bool out, bool in)
+    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex, bool out, bool in)
     {
         DirectedVertex* directedVertex = static_cast<DirectedVertex*>(vertex);
-        
+
         if (!in && !out)
         {
             // Do out by default
             out = true;
         }
-        
+
         Coefficient outLinks = 0.0;
         Coefficient inLinks = 0.0;
 
@@ -70,45 +72,45 @@ public:
                 while (!inner.end())
                 {
                     DirectedVertex* h = static_cast<DirectedVertex*>(*inner);
-                    
+
                     if (isDirectedAdjacent(j, h))
                     {
                         inLinks += 1.0;
                     }
-                    
+
                     ++inner;
                 }
-                
+
                 ++outer;
-            }           
+            }
         }
 
         if (out)
         {
-             NeighborsIterator outer = directedVertex->outNeighborsIterator();
-             while (!outer.end())
-             {
-                 DirectedVertex* j = static_cast<DirectedVertex*>(*outer);
-                 NeighborsIterator inner = directedVertex->outNeighborsIterator();
-                 while (!inner.end())
-                 {
-                     DirectedVertex* h = static_cast<DirectedVertex*>(*inner);
-                     
-                     if (isDirectedAdjacent(j, h))
-                     {
-                         outLinks += 1.0;
-                     }
-                     
-                     ++inner;
-                 }
-                 
-                 ++outer;
-             }
+            NeighborsIterator outer = directedVertex->outNeighborsIterator();
+            while (!outer.end())
+            {
+                DirectedVertex* j = static_cast<DirectedVertex*>(*outer);
+                NeighborsIterator inner = directedVertex->outNeighborsIterator();
+                while (!inner.end())
+                {
+                    DirectedVertex* h = static_cast<DirectedVertex*>(*inner);
+
+                    if (isDirectedAdjacent(j, h))
+                    {
+                        outLinks += 1.0;
+                    }
+
+                    ++inner;
+                }
+
+                ++outer;
+            }
         }
-        
+
         Coefficient degree = 0.0;
         Coefficient links = 0.0;
-        
+
         if (out && in)
         {
             links = inLinks + outLinks;
@@ -124,33 +126,33 @@ public:
             links = outLinks;
             degree = directedVertex->outDegree();
         }
-        
+
         if (degree != 0 && degree != 1)
         {
             return links / (degree * (degree - 1));
         }
-        
+
         return 0.0;
     }
-    
+
     // true if a --> b
-    static bool isDirectedAdjacent(DirectedVertex *a, DirectedVertex *b)
+    static bool isDirectedAdjacent(DirectedVertex* a, DirectedVertex* b)
     {
         NeighborsIterator it = a->outNeighborsIterator();
         while (!it.end())
         {
-            DirectedVertex *v = static_cast<DirectedVertex*>(*it);
+            DirectedVertex* v = static_cast<DirectedVertex*>(*it);
             if (v->getVertexId() == b->getVertexId())
             {
                 return true;
             }
-            
+
             ++it;
         }
-        
+
         return false;
     }
-    
+
     virtual Coefficient vertexClusteringCoefficient(Vertex* vertex)
     {
         return vertexClusteringCoefficient(vertex, false, false);

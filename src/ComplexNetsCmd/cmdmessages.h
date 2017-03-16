@@ -4,7 +4,7 @@
 
 /*
  * cmdmessages.h
- * 
+ *
  * Functions that displays messages to the user related with the command line
  * options.
  */
