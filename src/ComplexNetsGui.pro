@@ -3,6 +3,7 @@
 # -------------------------------------------------
 TARGET = complexnetspp
 TEMPLATE = app
+DEFINES += NO_BITWISE_ENUMS
 SOURCES += ComplexNetsGui/src/*.cpp \
     ComplexNets/*.cpp \
     ComplexNetsCmd/*.cpp \
@@ -14,17 +15,12 @@ FORMS += ComplexNetsGui/forms/mainwindow.ui
 #MOC_DIR = .moc/release-shared
 #OBJECTS_DIR = .obj/release-shared
 UI_DIR = ComplexNetsGui/inc/
-CONFIG += c++11 release
-QMAKE_CXXFLAGS_RELEASE += -Wextra \
-    -ansi \
+CONFIG += release
+QMAKE_CXXFLAGS += -Wextra \
+    -std=c++11 \
     -Wno-long-long \
-    -ggdb3 \
     -I.
-QMAKE_CXXFLAGS_DEBUG += -Wextra \
-    -ansi \
-    -Wno-long-long \
-    -ggdb3 \
-    -I.
+QMAKE_CXXFLAGS_DEBUG += -ggdb3
 macx {
     message(Using Mac OS configuration)
     QMAKE_CXXFLAGS-= -stdlib=libc++

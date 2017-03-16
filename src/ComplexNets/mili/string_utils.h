@@ -279,7 +279,8 @@ template <class T>
 inline bool from_string(const std::string& s, T& t)
 {
     std::stringstream ss(s);
-    return (ss >> t);
+    ss >> t;
+    return true;
 }
 
 /* Special case: string -> string */
