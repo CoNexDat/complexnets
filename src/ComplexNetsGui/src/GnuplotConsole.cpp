@@ -25,9 +25,9 @@ GnuplotConsole::GnuplotConsole(QWidget* parent) : QDialog(parent)
     lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
     lineEdit->setGeometry(QRect(10, 20, 661, 27));
 
-    this->setWindowTitle(QApplication::translate("Dialog", "Gnuplot console", 0, QApplication::UnicodeUTF8));
-    groupBox->setTitle(QApplication::translate("Dialog", "Console", 0, QApplication::UnicodeUTF8));
-    groupBox_2->setTitle(QApplication::translate("Dialog", "Command", 0, QApplication::UnicodeUTF8));
+    this->setWindowTitle(QApplication::translate("Dialog", "Gnuplot console", 0));
+    groupBox->setTitle(QApplication::translate("Dialog", "Console", 0));
+    groupBox_2->setTitle(QApplication::translate("Dialog", "Command", 0));
 
     QObject::connect(lineEdit, SIGNAL(returnPressed()), this, SLOT(commandEntered()));
     QMetaObject::connectSlotsByName(this);

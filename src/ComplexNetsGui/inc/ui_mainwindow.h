@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 4.8.7
+** Created by: Qt User Interface Compiler version 5.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,17 +10,17 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QMainWindow>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QStatusBar>
-#include <QtGui/QTextBrowser>
-#include <QtGui/QWidget>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -79,113 +79,113 @@ public:
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+            MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(600, 400);
         actionOpen = new QAction(MainWindow);
-        actionOpen->setObjectName(QString::fromUtf8("actionOpen"));
+        actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionNewErdosRenyi = new QAction(MainWindow);
-        actionNewErdosRenyi->setObjectName(QString::fromUtf8("actionNewErdosRenyi"));
+        actionNewErdosRenyi->setObjectName(QStringLiteral("actionNewErdosRenyi"));
         actionNewBarabasiAlbert = new QAction(MainWindow);
-        actionNewBarabasiAlbert->setObjectName(QString::fromUtf8("actionNewBarabasiAlbert"));
+        actionNewBarabasiAlbert->setObjectName(QStringLiteral("actionNewBarabasiAlbert"));
         actionNewExtendedHOT = new QAction(MainWindow);
-        actionNewExtendedHOT->setObjectName(QString::fromUtf8("actionNewExtendedHOT"));
+        actionNewExtendedHOT->setObjectName(QStringLiteral("actionNewExtendedHOT"));
         actionNewMolloyReed = new QAction(MainWindow);
-        actionNewMolloyReed->setObjectName(QString::fromUtf8("actionNewMolloyReed"));
+        actionNewMolloyReed->setObjectName(QStringLiteral("actionNewMolloyReed"));
         actionNewHiperbolic = new QAction(MainWindow);
-        actionNewHiperbolic->setObjectName(QString::fromUtf8("actionNewHiperbolic"));
+        actionNewHiperbolic->setObjectName(QStringLiteral("actionNewHiperbolic"));
         actionExport_current_network = new QAction(MainWindow);
-        actionExport_current_network->setObjectName(QString::fromUtf8("actionExport_current_network"));
+        actionExport_current_network->setObjectName(QStringLiteral("actionExport_current_network"));
         actionClose_current_network = new QAction(MainWindow);
-        actionClose_current_network->setObjectName(QString::fromUtf8("actionClose_current_network"));
+        actionClose_current_network->setObjectName(QStringLiteral("actionClose_current_network"));
         actionQuit = new QAction(MainWindow);
-        actionQuit->setObjectName(QString::fromUtf8("actionQuit"));
+        actionQuit->setObjectName(QStringLiteral("actionQuit"));
         action_maxClique_plotting = new QAction(MainWindow);
-        action_maxClique_plotting->setObjectName(QString::fromUtf8("action_maxClique_plotting"));
+        action_maxClique_plotting->setObjectName(QStringLiteral("action_maxClique_plotting"));
         action_maxCliqueExact_plotting = new QAction(MainWindow);
-        action_maxCliqueExact_plotting->setObjectName(QString::fromUtf8("action_maxCliqueExact_plotting"));
+        action_maxCliqueExact_plotting->setObjectName(QStringLiteral("action_maxCliqueExact_plotting"));
         actionDegree_distribution_plotting = new QAction(MainWindow);
-        actionDegree_distribution_plotting->setObjectName(QString::fromUtf8("actionDegree_distribution_plotting"));
+        actionDegree_distribution_plotting->setObjectName(QStringLiteral("actionDegree_distribution_plotting"));
         actionCumulativeDegree_distribution_plotting = new QAction(MainWindow);
-        actionCumulativeDegree_distribution_plotting->setObjectName(QString::fromUtf8("actionCumulativeDegree_distribution_plotting"));
+        actionCumulativeDegree_distribution_plotting->setObjectName(QStringLiteral("actionCumulativeDegree_distribution_plotting"));
         actionAbout = new QAction(MainWindow);
-        actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
+        actionAbout->setObjectName(QStringLiteral("actionAbout"));
         actionMaxClique = new QAction(MainWindow);
-        actionMaxClique->setObjectName(QString::fromUtf8("actionMaxClique"));
+        actionMaxClique->setObjectName(QStringLiteral("actionMaxClique"));
         actionMaxCliqueExact = new QAction(MainWindow);
-        actionMaxCliqueExact->setObjectName(QString::fromUtf8("actionMaxCliqueExact"));
+        actionMaxCliqueExact->setObjectName(QStringLiteral("actionMaxCliqueExact"));
         actionBetweenness = new QAction(MainWindow);
-        actionBetweenness->setObjectName(QString::fromUtf8("actionBetweenness"));
+        actionBetweenness->setObjectName(QStringLiteral("actionBetweenness"));
         actionClustering_coefficient = new QAction(MainWindow);
-        actionClustering_coefficient->setObjectName(QString::fromUtf8("actionClustering_coefficient"));
+        actionClustering_coefficient->setObjectName(QStringLiteral("actionClustering_coefficient"));
         actionNearest_neighbors_degree = new QAction(MainWindow);
-        actionNearest_neighbors_degree->setObjectName(QString::fromUtf8("actionNearest_neighbors_degree"));
+        actionNearest_neighbors_degree->setObjectName(QStringLiteral("actionNearest_neighbors_degree"));
         actionShell_index = new QAction(MainWindow);
-        actionShell_index->setObjectName(QString::fromUtf8("actionShell_index"));
+        actionShell_index->setObjectName(QStringLiteral("actionShell_index"));
         actionDegree_distribution = new QAction(MainWindow);
-        actionDegree_distribution->setObjectName(QString::fromUtf8("actionDegree_distribution"));
+        actionDegree_distribution->setObjectName(QStringLiteral("actionDegree_distribution"));
         actionClustering_Coefficient_vs_Degree = new QAction(MainWindow);
-        actionClustering_Coefficient_vs_Degree->setObjectName(QString::fromUtf8("actionClustering_Coefficient_vs_Degree"));
+        actionClustering_Coefficient_vs_Degree->setObjectName(QStringLiteral("actionClustering_Coefficient_vs_Degree"));
         actionNearest_Neighbors_Degree_vs_Degree = new QAction(MainWindow);
-        actionNearest_Neighbors_Degree_vs_Degree->setObjectName(QString::fromUtf8("actionNearest_Neighbors_Degree_vs_Degree"));
+        actionNearest_Neighbors_Degree_vs_Degree->setObjectName(QStringLiteral("actionNearest_Neighbors_Degree_vs_Degree"));
         actionShell_Index_vs_Degree = new QAction(MainWindow);
-        actionShell_Index_vs_Degree->setObjectName(QString::fromUtf8("actionShell_Index_vs_Degree"));
+        actionShell_Index_vs_Degree->setObjectName(QStringLiteral("actionShell_Index_vs_Degree"));
         actionBetweenness_vs_Degree = new QAction(MainWindow);
-        actionBetweenness_vs_Degree->setObjectName(QString::fromUtf8("actionBetweenness_vs_Degree"));
+        actionBetweenness_vs_Degree->setObjectName(QStringLiteral("actionBetweenness_vs_Degree"));
         actionExportBetweenness_vs_Degree = new QAction(MainWindow);
-        actionExportBetweenness_vs_Degree->setObjectName(QString::fromUtf8("actionExportBetweenness_vs_Degree"));
+        actionExportBetweenness_vs_Degree->setObjectName(QStringLiteral("actionExportBetweenness_vs_Degree"));
         actionExportMaxClique_distribution = new QAction(MainWindow);
-        actionExportMaxClique_distribution->setObjectName(QString::fromUtf8("actionExportMaxClique_distribution"));
+        actionExportMaxClique_distribution->setObjectName(QStringLiteral("actionExportMaxClique_distribution"));
         actionExportMaxCliqueExact_distribution = new QAction(MainWindow);
-        actionExportMaxCliqueExact_distribution->setObjectName(QString::fromUtf8("actionExportMaxCliqueExact_distribution"));
+        actionExportMaxCliqueExact_distribution->setObjectName(QStringLiteral("actionExportMaxCliqueExact_distribution"));
         actionExportDegree_distribution = new QAction(MainWindow);
-        actionExportDegree_distribution->setObjectName(QString::fromUtf8("actionExportDegree_distribution"));
+        actionExportDegree_distribution->setObjectName(QStringLiteral("actionExportDegree_distribution"));
         actionExportCumulativeDegree_distribution = new QAction(MainWindow);
-        actionExportCumulativeDegree_distribution->setObjectName(QString::fromUtf8("actionExportCumulativeDegree_distribution"));
+        actionExportCumulativeDegree_distribution->setObjectName(QStringLiteral("actionExportCumulativeDegree_distribution"));
         actionExportClustering_Coefficient_vs_Degree = new QAction(MainWindow);
-        actionExportClustering_Coefficient_vs_Degree->setObjectName(QString::fromUtf8("actionExportClustering_Coefficient_vs_Degree"));
+        actionExportClustering_Coefficient_vs_Degree->setObjectName(QStringLiteral("actionExportClustering_Coefficient_vs_Degree"));
         actionExportShell_Index_vs_Degree = new QAction(MainWindow);
-        actionExportShell_Index_vs_Degree->setObjectName(QString::fromUtf8("actionExportShell_Index_vs_Degree"));
+        actionExportShell_Index_vs_Degree->setObjectName(QStringLiteral("actionExportShell_Index_vs_Degree"));
         actionExportCCBoxplot = new QAction(MainWindow);
-        actionExportCCBoxplot->setObjectName(QString::fromUtf8("actionExportCCBoxplot"));
+        actionExportCCBoxplot->setObjectName(QStringLiteral("actionExportCCBoxplot"));
         actionExportKnnBoxplot = new QAction(MainWindow);
-        actionExportKnnBoxplot->setObjectName(QString::fromUtf8("actionExportKnnBoxplot"));
+        actionExportKnnBoxplot->setObjectName(QStringLiteral("actionExportKnnBoxplot"));
         actionExportNearest_Neighbors_Degree_vs_Degree = new QAction(MainWindow);
-        actionExportNearest_Neighbors_Degree_vs_Degree->setObjectName(QString::fromUtf8("actionExportNearest_Neighbors_Degree_vs_Degree"));
+        actionExportNearest_Neighbors_Degree_vs_Degree->setObjectName(QStringLiteral("actionExportNearest_Neighbors_Degree_vs_Degree"));
         actionBoxplotCC = new QAction(MainWindow);
-        actionBoxplotCC->setObjectName(QString::fromUtf8("actionBoxplotCC"));
+        actionBoxplotCC->setObjectName(QStringLiteral("actionBoxplotCC"));
         actionBoxplotNearestNeighborsDegree = new QAction(MainWindow);
-        actionBoxplotNearestNeighborsDegree->setObjectName(QString::fromUtf8("actionBoxplotNearestNeighborsDegree"));
+        actionBoxplotNearestNeighborsDegree->setObjectName(QStringLiteral("actionBoxplotNearestNeighborsDegree"));
         actionConfigure_Directed_Degree_sign = new QAction(MainWindow);
-        actionConfigure_Directed_Degree_sign->setObjectName(QString::fromUtf8("actionConfigure_Directed_Degree_sign"));
+        actionConfigure_Directed_Degree_sign->setObjectName(QStringLiteral("actionConfigure_Directed_Degree_sign"));
         actionConfigure_Directed_Degree_sign->setEnabled(false);
         centralWidget = new QWidget(MainWindow);
-        centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
+        centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
         textBrowser = new QTextBrowser(centralWidget);
-        textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
+        textBrowser->setObjectName(QStringLiteral("textBrowser"));
 
         gridLayout->addWidget(textBrowser, 0, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
-        menuBar->setObjectName(QString::fromUtf8("menuBar"));
+        menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 600, 26));
         menuFile = new QMenu(menuBar);
-        menuFile->setObjectName(QString::fromUtf8("menuFile"));
+        menuFile->setObjectName(QStringLiteral("menuFile"));
         menuNode = new QMenu(menuBar);
-        menuNode->setObjectName(QString::fromUtf8("menuNode"));
+        menuNode->setObjectName(QStringLiteral("menuNode"));
         menuPlot = new QMenu(menuBar);
-        menuPlot->setObjectName(QString::fromUtf8("menuPlot"));
+        menuPlot->setObjectName(QStringLiteral("menuPlot"));
         menuHelp = new QMenu(menuBar);
-        menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
+        menuHelp->setObjectName(QStringLiteral("menuHelp"));
         menu_Export = new QMenu(menuBar);
-        menu_Export->setObjectName(QString::fromUtf8("menu_Export"));
+        menu_Export->setObjectName(QStringLiteral("menu_Export"));
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
-        statusBar->setObjectName(QString::fromUtf8("statusBar"));
+        statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
@@ -241,53 +241,53 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "ComplexNets++", 0, QApplication::UnicodeUTF8));
-        actionOpen->setText(QApplication::translate("MainWindow", "Open new network...", 0, QApplication::UnicodeUTF8));
-        actionOpen->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0, QApplication::UnicodeUTF8));
-        actionNewErdosRenyi->setText(QApplication::translate("MainWindow", "New Erdos-Renyi graph...", 0, QApplication::UnicodeUTF8));
-        actionNewBarabasiAlbert->setText(QApplication::translate("MainWindow", "New Barabasi-Albert graph...", 0, QApplication::UnicodeUTF8));
-        actionNewExtendedHOT->setText(QApplication::translate("MainWindow", "New Extended HOT graph...", 0, QApplication::UnicodeUTF8));
-        actionNewMolloyReed->setText(QApplication::translate("MainWindow", "New Molloy-Reed graph...", 0, QApplication::UnicodeUTF8));
-        actionNewHiperbolic->setText(QApplication::translate("MainWindow", "New Hyperbolic graph...", 0, QApplication::UnicodeUTF8));
-        actionExport_current_network->setText(QApplication::translate("MainWindow", "Export current network...", 0, QApplication::UnicodeUTF8));
-        actionClose_current_network->setText(QApplication::translate("MainWindow", "Close current network...", 0, QApplication::UnicodeUTF8));
-        actionClose_current_network->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", 0, QApplication::UnicodeUTF8));
-        actionQuit->setText(QApplication::translate("MainWindow", "Quit", 0, QApplication::UnicodeUTF8));
-        actionQuit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
-        action_maxClique_plotting->setText(QApplication::translate("MainWindow", "maxClique distribution", 0, QApplication::UnicodeUTF8));
-        action_maxCliqueExact_plotting->setText(QApplication::translate("MainWindow", "maxCliqueExact distribution", 0, QApplication::UnicodeUTF8));
-        actionDegree_distribution_plotting->setText(QApplication::translate("MainWindow", "Degree distribution", 0, QApplication::UnicodeUTF8));
-        actionCumulativeDegree_distribution_plotting->setText(QApplication::translate("MainWindow", "Cumulative Degree distribution", 0, QApplication::UnicodeUTF8));
-        actionAbout->setText(QApplication::translate("MainWindow", "About...", 0, QApplication::UnicodeUTF8));
-        actionMaxClique->setText(QApplication::translate("MainWindow", "Max Clique Aprox...", 0, QApplication::UnicodeUTF8));
-        actionMaxCliqueExact->setText(QApplication::translate("MainWindow", "Max Clique Exact...", 0, QApplication::UnicodeUTF8));
-        actionBetweenness->setText(QApplication::translate("MainWindow", "Betweenness...", 0, QApplication::UnicodeUTF8));
-        actionClustering_coefficient->setText(QApplication::translate("MainWindow", "Clustering coefficient...", 0, QApplication::UnicodeUTF8));
-        actionNearest_neighbors_degree->setText(QApplication::translate("MainWindow", "Nearest neighbors degree...", 0, QApplication::UnicodeUTF8));
-        actionShell_index->setText(QApplication::translate("MainWindow", "Shell index...", 0, QApplication::UnicodeUTF8));
-        actionDegree_distribution->setText(QApplication::translate("MainWindow", "Degree distribution...", 0, QApplication::UnicodeUTF8));
-        actionClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", 0, QApplication::UnicodeUTF8));
-        actionNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
-        actionShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", 0, QApplication::UnicodeUTF8));
-        actionBetweenness_vs_Degree->setText(QApplication::translate("MainWindow", "Betweenness vs Degree", 0, QApplication::UnicodeUTF8));
-        actionExportBetweenness_vs_Degree->setText(QApplication::translate("MainWindow", "Betweenness vs Degree", 0, QApplication::UnicodeUTF8));
-        actionExportMaxClique_distribution->setText(QApplication::translate("MainWindow", "maxClique distribution", 0, QApplication::UnicodeUTF8));
-        actionExportMaxCliqueExact_distribution->setText(QApplication::translate("MainWindow", "maxCliqueExact distribution", 0, QApplication::UnicodeUTF8));
-        actionExportDegree_distribution->setText(QApplication::translate("MainWindow", "Degree distribution", 0, QApplication::UnicodeUTF8));
-        actionExportCumulativeDegree_distribution->setText(QApplication::translate("MainWindow", "Cumulative Degree distribution", 0, QApplication::UnicodeUTF8));
-        actionExportClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", 0, QApplication::UnicodeUTF8));
-        actionExportShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", 0, QApplication::UnicodeUTF8));
-        actionExportCCBoxplot->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", 0, QApplication::UnicodeUTF8));
-        actionExportKnnBoxplot->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbors Degree", 0, QApplication::UnicodeUTF8));
-        actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", 0, QApplication::UnicodeUTF8));
-        actionBoxplotCC->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", 0, QApplication::UnicodeUTF8));
-        actionBoxplotNearestNeighborsDegree->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbor Degree", 0, QApplication::UnicodeUTF8));
-        actionConfigure_Directed_Degree_sign->setText(QApplication::translate("MainWindow", "Configure Directed Degree direction...", 0, QApplication::UnicodeUTF8));
-        menuFile->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
-        menuNode->setTitle(QApplication::translate("MainWindow", "&Analysis", 0, QApplication::UnicodeUTF8));
-        menuPlot->setTitle(QApplication::translate("MainWindow", "&Plot", 0, QApplication::UnicodeUTF8));
-        menuHelp->setTitle(QApplication::translate("MainWindow", "&Help", 0, QApplication::UnicodeUTF8));
-        menu_Export->setTitle(QApplication::translate("MainWindow", "&Export", 0, QApplication::UnicodeUTF8));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "ComplexNets++", Q_NULLPTR));
+        actionOpen->setText(QApplication::translate("MainWindow", "Open new network...", Q_NULLPTR));
+        actionOpen->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", Q_NULLPTR));
+        actionNewErdosRenyi->setText(QApplication::translate("MainWindow", "New Erdos-Renyi graph...", Q_NULLPTR));
+        actionNewBarabasiAlbert->setText(QApplication::translate("MainWindow", "New Barabasi-Albert graph...", Q_NULLPTR));
+        actionNewExtendedHOT->setText(QApplication::translate("MainWindow", "New Extended HOT graph...", Q_NULLPTR));
+        actionNewMolloyReed->setText(QApplication::translate("MainWindow", "New Molloy-Reed graph...", Q_NULLPTR));
+        actionNewHiperbolic->setText(QApplication::translate("MainWindow", "New Hyperbolic graph...", Q_NULLPTR));
+        actionExport_current_network->setText(QApplication::translate("MainWindow", "Export current network...", Q_NULLPTR));
+        actionClose_current_network->setText(QApplication::translate("MainWindow", "Close current network...", Q_NULLPTR));
+        actionClose_current_network->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", Q_NULLPTR));
+        actionQuit->setText(QApplication::translate("MainWindow", "Quit", Q_NULLPTR));
+        actionQuit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", Q_NULLPTR));
+        action_maxClique_plotting->setText(QApplication::translate("MainWindow", "maxClique distribution", Q_NULLPTR));
+        action_maxCliqueExact_plotting->setText(QApplication::translate("MainWindow", "maxCliqueExact distribution", Q_NULLPTR));
+        actionDegree_distribution_plotting->setText(QApplication::translate("MainWindow", "Degree distribution", Q_NULLPTR));
+        actionCumulativeDegree_distribution_plotting->setText(QApplication::translate("MainWindow", "Cumulative Degree distribution", Q_NULLPTR));
+        actionAbout->setText(QApplication::translate("MainWindow", "About...", Q_NULLPTR));
+        actionMaxClique->setText(QApplication::translate("MainWindow", "Max Clique Aprox...", Q_NULLPTR));
+        actionMaxCliqueExact->setText(QApplication::translate("MainWindow", "Max Clique Exact...", Q_NULLPTR));
+        actionBetweenness->setText(QApplication::translate("MainWindow", "Betweenness...", Q_NULLPTR));
+        actionClustering_coefficient->setText(QApplication::translate("MainWindow", "Clustering coefficient...", Q_NULLPTR));
+        actionNearest_neighbors_degree->setText(QApplication::translate("MainWindow", "Nearest neighbors degree...", Q_NULLPTR));
+        actionShell_index->setText(QApplication::translate("MainWindow", "Shell index...", Q_NULLPTR));
+        actionDegree_distribution->setText(QApplication::translate("MainWindow", "Degree distribution...", Q_NULLPTR));
+        actionClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", Q_NULLPTR));
+        actionNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", Q_NULLPTR));
+        actionShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", Q_NULLPTR));
+        actionBetweenness_vs_Degree->setText(QApplication::translate("MainWindow", "Betweenness vs Degree", Q_NULLPTR));
+        actionExportBetweenness_vs_Degree->setText(QApplication::translate("MainWindow", "Betweenness vs Degree", Q_NULLPTR));
+        actionExportMaxClique_distribution->setText(QApplication::translate("MainWindow", "maxClique distribution", Q_NULLPTR));
+        actionExportMaxCliqueExact_distribution->setText(QApplication::translate("MainWindow", "maxCliqueExact distribution", Q_NULLPTR));
+        actionExportDegree_distribution->setText(QApplication::translate("MainWindow", "Degree distribution", Q_NULLPTR));
+        actionExportCumulativeDegree_distribution->setText(QApplication::translate("MainWindow", "Cumulative Degree distribution", Q_NULLPTR));
+        actionExportClustering_Coefficient_vs_Degree->setText(QApplication::translate("MainWindow", "Clustering Coefficient vs Degree", Q_NULLPTR));
+        actionExportShell_Index_vs_Degree->setText(QApplication::translate("MainWindow", "Shell Index vs Degree", Q_NULLPTR));
+        actionExportCCBoxplot->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", Q_NULLPTR));
+        actionExportKnnBoxplot->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbors Degree", Q_NULLPTR));
+        actionExportNearest_Neighbors_Degree_vs_Degree->setText(QApplication::translate("MainWindow", "Nearest Neighbors Degree vs Degree", Q_NULLPTR));
+        actionBoxplotCC->setText(QApplication::translate("MainWindow", "Boxplot Clustering Coeficient", Q_NULLPTR));
+        actionBoxplotNearestNeighborsDegree->setText(QApplication::translate("MainWindow", "Boxplot Nearest Neighbor Degree", Q_NULLPTR));
+        actionConfigure_Directed_Degree_sign->setText(QApplication::translate("MainWindow", "Configure Directed Degree direction...", Q_NULLPTR));
+        menuFile->setTitle(QApplication::translate("MainWindow", "&File", Q_NULLPTR));
+        menuNode->setTitle(QApplication::translate("MainWindow", "&Analysis", Q_NULLPTR));
+        menuPlot->setTitle(QApplication::translate("MainWindow", "&Plot", Q_NULLPTR));
+        menuHelp->setTitle(QApplication::translate("MainWindow", "&Help", Q_NULLPTR));
+        menu_Export->setTitle(QApplication::translate("MainWindow", "&Export", Q_NULLPTR));
     } // retranslateUi
 
 };

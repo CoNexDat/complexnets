@@ -1,7 +1,7 @@
 // This toolbox is licensed under the Academic Free License 3.0.
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 16th, 2015.
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "ComplexNetsGui/inc/mainwindow.h"
 #include "ComplexNetsCmd/cmdline.h"

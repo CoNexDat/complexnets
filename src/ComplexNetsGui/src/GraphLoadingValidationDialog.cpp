@@ -71,13 +71,13 @@ GraphLoadingValidationDialog::GraphLoadingValidationDialog(QWidget* parent) : QD
 
 void GraphLoadingValidationDialog::retranslateUi()
 {
-    this->setWindowTitle(QApplication::translate("Dialog", "Load graph", 0, QApplication::UnicodeUTF8));
-    groupBox->setTitle(QApplication::translate("Dialog", "Undirected or directed graph", 0, QApplication::UnicodeUTF8));
-    radioButton_3->setText(QApplication::translate("Dialog", "Undirected graph", 0, QApplication::UnicodeUTF8));
-    radioButton_4->setText(QApplication::translate("Dialog", "Directed graph", 0, QApplication::UnicodeUTF8));
-    groupBox_2->setTitle(QApplication::translate("Dialog", "Unweighted or weighted graph", 0, QApplication::UnicodeUTF8));
-    radioButton->setText(QApplication::translate("Dialog", "Unweighted graph", 0, QApplication::UnicodeUTF8));
-    radioButton_2->setText(QApplication::translate("Dialog", "Weighted graph", 0, QApplication::UnicodeUTF8));
+    this->setWindowTitle(QApplication::translate("Dialog", "Load graph", 0));
+    groupBox->setTitle(QApplication::translate("Dialog", "Undirected or directed graph", 0));
+    radioButton_3->setText(QApplication::translate("Dialog", "Undirected graph", 0));
+    radioButton_4->setText(QApplication::translate("Dialog", "Directed graph", 0));
+    groupBox_2->setTitle(QApplication::translate("Dialog", "Unweighted or weighted graph", 0));
+    radioButton->setText(QApplication::translate("Dialog", "Unweighted graph", 0));
+    radioButton_2->setText(QApplication::translate("Dialog", "Weighted graph", 0));
 }
 
 bool GraphLoadingValidationDialog::isMultigraph() const
