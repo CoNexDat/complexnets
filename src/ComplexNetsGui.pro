@@ -14,6 +14,7 @@ HEADERS += ComplexNetsGui/inc/*.h \
 FORMS += ComplexNetsGui/forms/mainwindow.ui
 #MOC_DIR = .moc/release-shared
 #OBJECTS_DIR = .obj/release-shared
+QT += widgets
 UI_DIR = ComplexNetsGui/inc/
 CONFIG += release
 QMAKE_CXXFLAGS += -Wextra \
