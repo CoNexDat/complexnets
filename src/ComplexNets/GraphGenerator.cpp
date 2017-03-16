@@ -3,12 +3,12 @@
 // Last modification: December 19th, 2012.
 
 #include "GraphGenerator.h"
-#include "../ComplexNets/IGraphReader.h"
-#include "../ComplexNets/GraphFactory.h"
-#include "../ComplexNets/DirectedGraphFactory.h"
-#include "../ComplexNets/WeightedGraphFactory.h"
-#include "../ComplexNets/ConexityVerifier.h"
-#include "../ComplexNets/TraverserBFS.h"
+#include "ComplexNets/IGraphReader.h"
+#include "ComplexNets/GraphFactory.h"
+#include "ComplexNets/DirectedGraphFactory.h"
+#include "ComplexNets/WeightedGraphFactory.h"
+#include "ComplexNets/ConexityVerifier.h"
+#include "ComplexNets/TraverserBFS.h"
 #include <vector>
 #include <cmath>
 #include <map>

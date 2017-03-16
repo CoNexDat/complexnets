@@ -7,18 +7,18 @@
 
 #include <QMainWindow>
 
-#include "../../ComplexNets/typedefs.h"
-#include "../../ComplexNets/IGraphFactory.h"
-#include "../../ComplexNets/AdjacencyListVertex.h"
-#include "../../ComplexNets/AdjacencyListGraph.h"
-#include "../../ComplexNets/WeightedGraphAspect.h"
-#include "../../ComplexNets/WeightedVertexAspect.h"
-#include "../../ComplexNets/DirectedGraphAspect.h"
-#include "../../ComplexNets/DirectedVertexAspect.h"
-#include "../../ComplexNets/PropertyMap.h"
+#include "ComplexNets/typedefs.h"
+#include "ComplexNets/IGraphFactory.h"
+#include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/WeightedGraphAspect.h"
+#include "ComplexNets/WeightedVertexAspect.h"
+#include "ComplexNets/DirectedGraphAspect.h"
+#include "ComplexNets/DirectedVertexAspect.h"
+#include "ComplexNets/PropertyMap.h"
 #include "ComplexNetsGui/inc/GrapherUtils.h"
 #include "ComplexNetsGui/inc/GnuplotConsole.h"
-#include "../../ComplexNets/GraphWriter.h"
+#include "ComplexNets/GraphWriter.h"
 
 namespace Ui
 {

@@ -13,11 +13,11 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QLineEdit>
 #include <QtGui/QTextBrowser>
-#include "../../ComplexNets/mili/mili.h"
-#include "../../ComplexNets/AdjacencyListVertex.h"
-#include "../../ComplexNets/AdjacencyListGraph.h"
-#include "../../ComplexNets/IClusteringCoefficient.h"
-#include "../../ComplexNets/typedefs.h"
+#include "ComplexNets/mili/mili.h"
+#include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/IClusteringCoefficient.h"
+#include "ComplexNets/typedefs.h"
 
 namespace ComplexNetsGui
 {

@@ -1,7 +1,7 @@
 #ifndef LOGBINNINGPOLICY_H
 #define LOGBINNINGPOLICY_H
 
-#include "../../ComplexNets/mili/mili.h"
+#include "ComplexNets/mili/mili.h"
 
 namespace ComplexNetsGui
 {

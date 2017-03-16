@@ -5,8 +5,8 @@
 #ifndef GRAPH_GENERATOR_H
 #define GRAPH_GENERATOR_H
 
-#include "../ComplexNets/typedefs.h"
-#include "../ComplexNets/MolloyReedGraphReader.h"
+#include "ComplexNets/typedefs.h"
+#include "ComplexNets/MolloyReedGraphReader.h"
 
 using namespace std;
 

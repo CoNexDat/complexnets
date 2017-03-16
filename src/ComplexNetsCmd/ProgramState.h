@@ -5,12 +5,12 @@
 #ifndef PROGRAM_STATE_H
 #define PROGRAM_STATE_H
 
-#include "../ComplexNets/typedefs.h"
-#include "../ComplexNets/PropertyMap.h"
+#include "ComplexNets/typedefs.h"
+#include "ComplexNets/PropertyMap.h"
 
-#include "../ComplexNets/IGraphFactory.h"
-#include "../ComplexNets/AdjacencyListVertex.h"
-#include "../ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/IGraphFactory.h"
+#include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/AdjacencyListGraph.h"
 
 using namespace std;
 using namespace graphpp;

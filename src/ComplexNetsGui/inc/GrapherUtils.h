@@ -6,8 +6,8 @@
 #include <ostream>
 #include <cstdio>
 #include <cmath>
-#include "../../ComplexNets/PropertyMap.h"
-#include "../../ComplexNets/mili/mili.h"
+#include "ComplexNets/PropertyMap.h"
+#include "ComplexNets/mili/mili.h"
 
 namespace ComplexNetsGui
 {
