@@ -2,7 +2,6 @@
 #define GNUPLOTCONSOLE_H
 
 #include <fstream>
-#include <QDialog>
 #include <cstdio>
 #include <iostream>
 #include <QtCore/QVariant>
