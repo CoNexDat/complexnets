@@ -33,16 +33,10 @@
 
 using namespace ComplexNetsGui;
 using namespace graphpp;
-using namespace std;
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    weightedFactory = NULL;
-    factory = NULL;
-    directedFactory = NULL;
-    directed_in = false;
-    directed_out = true;
     this->onNetworkUnload();
     this->console = new GnuplotConsole();
     ui->textBrowser->setOpenExternalLinks(true);
@@ -99,7 +93,7 @@ void MainWindow::on_actionOpen_triggered()
                                   graphValidationDialog.isDirected());
                 try
                 {
-                    string path = selectedFiles[0].toStdString();
+                    std::string path = selectedFiles[0].toStdString();
 
                     if (this->weightedgraph)
                     {
@@ -186,7 +180,7 @@ void MainWindow::on_actionExportPowerLawDegreeDistribution_triggered()
     std::string ret;
     ui->textBrowser->append("Exporting power law distribution...");
     ret = this->getSavePath();
-    cout << ret << "\n";
+    std::cout << ret << "\n";
     int alfa;
     int n;
     if (!ret.empty())
@@ -201,10 +195,10 @@ void MainWindow::on_actionExportPowerLawDegreeDistribution_triggered()
             {
                 n = inputN.toInt();
                 double dmax = pow(n, 1.0 / alfa);
-                cout << "dmax: " << dmax << "\n";
+                std::cout << "dmax: " << dmax << "\n";
                 double c2 = (double)n / alfa;
-                cout << "c2: " << c2 << "\n";
-                ofstream myfile;
+                std::cout << "c2: " << c2 << "\n";
+                std::ofstream myfile;
                 myfile.open(ret.c_str());
                 for (int i = 1; i <= dmax; i++)
                 {
@@ -1186,7 +1180,6 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                                                     entry.Q3);
                     propertyMap.addProperty<double>("ClusteringCoefficientBPMax", to_string(0),
                                                     entry.max);
-                    // while(1);
                 }
                 else
                 {
@@ -1315,11 +1308,8 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
         {
             try
             {
-                // std::string key = vertexId.toStdString();
-                // if (this->digraph) {
-                //    key += directedPostfix;
-                //}
                 graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+
                 if (!propertyMap.containsProperty("KnnBPMean", to_string(0)))
                 {
                     this->computeDegreeDistribution();
@@ -1978,6 +1968,7 @@ void MainWindow::on_actionNewHiperbolic_triggered()
                 a = inputA.toFloat();
             if (!inputD.isEmpty())
                 deg = inputD.toFloat();
+
             QString text("Creating a network using a Papadopoulos hyperbolic graph algorithm...");
             text.append("\nexpected avg node deg: ");
             text.append(
@@ -2036,7 +2027,8 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
                 m = inputM.toInt();
             if (!inputN.isEmpty())
                 n = inputN.toInt();
-            m_0 = max(m_0, m);
+
+            m_0 = std::max(m_0, m);
 
             graph = *(GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n));
 
@@ -2165,7 +2157,7 @@ void MainWindow::on_actionNewMolloyReed_triggered()
                 buildGraphFactory(false, false);
 
                 selectedFiles = fileDialog.selectedFiles();
-                string path = selectedFiles[0].toStdString();
+                std::string path = selectedFiles[0].toStdString();
                 graph = *(GraphGenerator::getInstance()->generateMolloyReedGraph(path));
 
                 QString text("Network created using Molloy-Reed algorithm using the file: ");
@@ -2588,7 +2580,6 @@ MainWindow::computeTotalBpEntriesDegreeDistribution()
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
     std::vector<int> bCoefs;
-    //	IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
     double coefSums = 0.0;
     unsigned int count = 0;
 

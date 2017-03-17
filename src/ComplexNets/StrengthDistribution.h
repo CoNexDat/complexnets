@@ -1,8 +1,6 @@
 #ifndef STRENGTH_DISTRIBUTION_H
 #define STRENGTH_DISTRIBUTION_H
 
-#include <map>
-
 #include <stdio.h>
 #include "TraverserForward.h"
 #include "WeightedVertexAspect.h"

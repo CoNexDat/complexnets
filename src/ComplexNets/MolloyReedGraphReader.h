@@ -8,10 +8,6 @@
 #include <math.h>
 #include <fstream>
 #include <iostream>
-#include <map>
-#include <set>
-#include <string>
-#include <vector>
 #include "IGraphReader.h"
 
 namespace graphpp
@@ -24,33 +20,31 @@ struct pair_hash
     }
 };
 
-using namespace std;
-
 template <class Graph, class Vertex>
 class MolloyReedGraphReader : public IGraphReader<Graph, Vertex>
 {
 public:
-    vector<unsigned int> vertexesFutureDegrees;
+    std::vector<unsigned int> vertexesFutureDegrees;
 
-    typedef string FileName;
+    typedef std::string FileName;
     typedef unsigned int LineNumber;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
 
-    virtual void read(Graph& graph, string source)
+    virtual void read(Graph& graph, std::string source)
     {
-        map<unsigned int, unsigned int> k;
+        std::map<unsigned int, unsigned int> k;
         unsigned int degree, amount;
-        ifstream sourceFile;
-        sourceFile.open(source.c_str(), ios_base::in);
+        std::ifstream sourceFile;
+        sourceFile.open(source.c_str(), std::ios_base::in);
 
         if (!sourceFile)
             throw FileNotFoundException(source);
 
-        string line;
+        std::string line;
         currentLineNumber = 1;
         while (getline(sourceFile, line))
         {
-            string tree_str = line;
+            std::string tree_str = line;
             character = tree_str.c_str();
             if (!isEmptyLine())
             {
@@ -74,49 +68,49 @@ public:
     }
 
 private:
-    void Print(const vector<unsigned int>& v)
+    void Print(const std::vector<unsigned int>& v)
     {
         for (int i = 0; i < v.size(); i++)
         {
-            cout << v[i] << endl;
+            std::cout << v[i] << std::endl;
         }
     }
 
-    void printSet(const set<unsigned int>& s)
+    void printSet(const std::set<unsigned int>& s)
     {
-        set<unsigned int>::const_iterator it = s.begin();
+        std::set<unsigned int>::const_iterator it = s.begin();
         for (; it != s.end(); it++)
         {
-            cout << *it << endl;
+            std::cout << *it << std::endl;
         }
     }
 
-    void molloyReedAlgorithm(Graph& graph, map<unsigned int, unsigned int> k)
+    void molloyReedAlgorithm(Graph& graph, std::map<unsigned int, unsigned int> k)
     {
         int totalNodes = 0;
         int freeDegrees = 0;
         bool vertexesWithOneFreeDegreeFull = false;
-        set<unsigned int> nodesSet;
-        map<unsigned int, unsigned int> vertexesIdsDegrees;
-        map<unsigned int, set<unsigned int>> nodesNotConnectedTo;
-        vector<unsigned int> unconectedVertexesIds;
-        vector<unsigned int> unconectedVertexesOneDegreeIds;
-        vector<unsigned int> vertexesWithOneFreeDegree;
-        vector<unsigned int> vertexesWithFreeDegrees;
-        vector<unsigned int> vertexesWitNoFreeDegrees;
-        vector<unsigned int> vertexesInTheGraph;
+        std::set<unsigned int> nodesSet;
+        std::map<unsigned int, unsigned int> vertexesIdsDegrees;
+        std::map<unsigned int, std::set<unsigned int>> nodesNotConnectedTo;
+        std::vector<unsigned int> unconectedVertexesIds;
+        std::vector<unsigned int> unconectedVertexesOneDegreeIds;
+        std::vector<unsigned int> vertexesWithOneFreeDegree;
+        std::vector<unsigned int> vertexesWithFreeDegrees;
+        std::vector<unsigned int> vertexesWitNoFreeDegrees;
+        std::vector<unsigned int> vertexesInTheGraph;
         unsigned int id = 0;
         unsigned int maxDegreeId = 0;
         unsigned int maxDegreeQuant = 0;
 
-        map<unsigned int, unsigned int>::iterator it;
+        std::map<unsigned int, unsigned int>::iterator it;
 
         unsigned int maxIndex = 0;
         unsigned int maxIndexOneDegree = 0;
         unsigned int maxDegreeIndex = 0;
         for (it = k.begin(); it != k.end(); it++)
         {
-            cout << "key: " << it->first << " value: " << it->second << "\n";
+            std::cout << "key: " << it->first << " value: " << it->second << "\n";
             unsigned int quantityOfVertexes = it->second;
             unsigned int degrees = it->first;
             if (maxDegreeQuant < degrees)
@@ -152,11 +146,11 @@ private:
 
         for (int i = 0; i < id; i++)
         {
-            set<unsigned int> newNodeSet = nodesSet;
+            std::set<unsigned int> newNodeSet = nodesSet;
             newNodeSet.erase(i);
             nodesNotConnectedTo[i] = newNodeSet;
         }
-        cout << "maxDegreeQuant: " << maxDegreeQuant << "\n";
+        std::cout << "maxDegreeQuant: " << maxDegreeQuant << std::endl;
         totalNodes = id;
         freeDegrees = maxDegreeQuant;
         if (freeDegrees == 1)
@@ -170,21 +164,19 @@ private:
             vertexesWithFreeDegrees.push_back(maxDegreeId);
             unconectedVertexesIds.erase(unconectedVertexesIds.begin() + maxDegreeIndex);
         }
-        cout << "asd1"
-             << "\n";
         vertexesInTheGraph.push_back(maxDegreeId);
 
         Vertex* firstVertex = new Vertex(maxDegreeId);
         graph.addVertex(firstVertex);
 
-        cout << "maxDegreeId: " << maxDegreeId << "\n";
-        cout << "maxDegreeQuant: " << maxDegreeQuant << "\n";
-        cout << "unconectedVertexesIds: \n";
+        std::cout << "maxDegreeId: " << maxDegreeId << std::endl;
+        std::cout << "maxDegreeQuant: " << maxDegreeQuant << std::endl;
+        std::cout << "unconectedVertexesIds:" << std::endl;
         Print(unconectedVertexesIds);
-        cout << "unconectedVertexesOneDegreeIds: \n";
+        std::cout << "unconectedVertexesOneDegreeIds:" << std::endl;
         Print(unconectedVertexesOneDegreeIds);
 
-        cout << "StartAlgorithm: \n\n";
+        std::cout << "StartAlgorithm: \n\n";
 
         while (!unconectedVertexesIds.empty() || !unconectedVertexesOneDegreeIds.empty())
         {
@@ -216,11 +208,12 @@ private:
                                                      index_new);
             }
 
-            cout << "unconected is empty?: " << unconectedVertexesIds.empty() << "\n";
-            cout << "unconectedSize: " << unconectedSize << "\n";
-            cout << "nodeFromIndex: " << index_new << "\n";
-            cout << "nodeFromId: " << nextVertexId << "\n";
-            cout << "nodeFromDegree: " << nextVertexDegree << "\n";
+            std::cout << "unconected is empty?: " << unconectedVertexesIds.empty() << "\n";
+            std::cout << "unconectedSize: " << unconectedSize << "\n";
+            std::cout << "nodeFromIndex: " << index_new << "\n";
+            std::cout << "nodeFromId: " << nextVertexId << "\n";
+            std::cout << "nodeFromDegree: " << nextVertexDegree << "\n";
+
             if (nextVertexDegree != 0)
             {
                 vertexesIdsDegrees[nextVertexId] = nextVertexDegree - 1;
@@ -250,9 +243,10 @@ private:
                     index = rand() % size;
                     selectedId = vertexesWithFreeDegrees[index];
                 }
-                cout << "nodeToIndex: " << index << "\n";
-                cout << "nodeToId: " << selectedId << "\n";
-                cout << "nodeToDegree: " << vertexesIdsDegrees[selectedId] << "\n";
+
+                std::cout << "nodeToIndex: " << index << "\n";
+                std::cout << "nodeToId: " << selectedId << "\n";
+                std::cout << "nodeToDegree: " << vertexesIdsDegrees[selectedId] << "\n";
 
                 if (vertexesIdsDegrees[selectedId] == 0)
                 {
@@ -304,7 +298,7 @@ private:
             // printVertexVector(graph, vertexesInTheGraph);
         }
 
-        cout << "####################### Begin rewire! #######################: \n\n";
+        std::cout << "####################### Begin rewire! #######################: \n\n";
         while (!vertexesWithFreeDegrees.empty() || !vertexesWithOneFreeDegree.empty())
         {
             unsigned int index_new;
@@ -325,14 +319,14 @@ private:
                 selectedDegrees = vertexesIdsDegrees[selectedId];
                 fromFreeDegrees = false;
             }
-            cout << "fromFreeDegrees: " << fromFreeDegrees << "\n";
-            cout << "selectedId: " << selectedId << "\n";
-            cout << "selectedDegrees: " << selectedDegrees << "\n";
-            cout << "nodesNotConnectedTo: "
+            std::cout << "fromFreeDegrees: " << fromFreeDegrees << "\n";
+            std::cout << "selectedId: " << selectedId << "\n";
+            std::cout << "selectedDegrees: " << selectedDegrees << "\n";
+            std::cout << "nodesNotConnectedTo: "
                  << "\n";
 
-            set<unsigned int> unconectedVertexes = nodesNotConnectedTo[selectedId];
-            set<unsigned int>::const_iterator it(nodesNotConnectedTo[selectedId].begin());
+            std::set<unsigned int> unconectedVertexes = nodesNotConnectedTo[selectedId];
+            std::set<unsigned int>::const_iterator it(nodesNotConnectedTo[selectedId].begin());
 
             // printSet(unconectedVertexes);
             if (!unconectedVertexes.empty() && selectedDegrees != 0)
@@ -392,13 +386,13 @@ private:
     }
 
     // Given a vector with node ids, print for each one it's id, actual degree and free degrees.
-    void printVertexVector(Graph& graph, vector<unsigned int> vec)
+    void printVertexVector(Graph& graph, std::vector<unsigned int> vec)
     {
         Vertex* v;
         for (unsigned int i = 0; i < vec.size(); i++)
         {
             v = graph.getVertexById(vec[i]);
-            cout << "The vertex " << vec[i] << " has " << v->degree() << " neighbours\n";
+            std::cout << "The vertex " << vec[i] << " has " << v->degree() << " neighbours\n";
         }
     }
 

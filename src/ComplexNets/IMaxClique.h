@@ -1,9 +1,6 @@
 #ifndef IMAX_CLIQUE_H
 #define IMAX_CLIQUE_H
 
-#include <list>
-#include <map>
-
 #include "IntegerDistribution.h"
 #include "mili/mili.h"
 

@@ -75,16 +75,16 @@ int main(int argc, char* argv[])
             {
                 state->setDigraph(true);
                 state->setDirectedInOut(args_info->out_given, args_info->in_given);
-                cout << "Directed graph: out: " << (args_info->out_given ? "true" : "false")
-                     << ", in: " << (args_info->in_given ? "true" : "false") << endl;
+                std::cout << "Directed graph: out: " << (args_info->out_given ? "true" : "false")
+                     << ", in: " << (args_info->in_given ? "true" : "false") << std::endl;
             }
 
-            string path = args_info->input_file_arg;
+            std::string path = args_info->input_file_arg;
 
             try
             {
                 state->readGraphFromFile(path.c_str());
-                cout << "Succesfully read graph from file " + path + "\n";
+                std::cout << "Succesfully read graph from file " + path + "\n";
             }
             catch (const FileNotFoundException& e)
             {
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
             VALIDATE_P(p);
 
             state->setErdosRenyiGraph(n, p);
-            cout << "Succesfully created an Erdos-Renyi graph with " + to_string(n) + " nodes.\n";
+            std::cout << "Succesfully created an Erdos-Renyi graph with " + to_string(n) + " nodes.\n";
         }
         else if (args_info->barabasi_given)
         {
@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
             }
 
             state->setBarabasiAlbertGraph(m0, m, n);
-            cout << "Succesfully created a Barabasi-Albert graph with " + to_string(n) +
+            std::cout << "Succesfully created a Barabasi-Albert graph with " + to_string(n) +
                         " nodes.\n";
         }
         else if (args_info->hot_given)
@@ -227,7 +227,7 @@ int main(int argc, char* argv[])
             VALIDATE_POS(t);
 
             state->setExtendedHotGraph(m, n, xi, q, r, t);
-            cout << "Succesfully created an Extended Hot graph with " + to_string(n) + " nodes.\n";
+            std::cout << "Succesfully created an Extended Hot graph with " + to_string(n) + " nodes.\n";
         }
         else if (args_info->molloy_given)
         {
@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
                 ERROR_EXIT;
             }
 
-            string path = args_info->ks_arg;
+            std::string path = args_info->ks_arg;
             state->setMolloyReedGraph(path);
         }
         else if (args_info->hyperbolic_given)
@@ -280,12 +280,12 @@ int main(int argc, char* argv[])
             {
                 // cout << "Betweenness for vertex " + to_string(vertex_id) + " is: " +
                 // to_string(ret) + ".\n";
-                cout << "Min:" + to_string(entry.min) + ".\n";
-                cout << "Q1:" + to_string(entry.Q1) + ".\n";
-                cout << "Q2:" + to_string(entry.Q2) + ".\n";
-                cout << "Q3:" + to_string(entry.Q3) + ".\n";
-                cout << "Max:" + to_string(entry.max) + ".\n";
-                cout << "Mean:" + to_string(entry.mean) + ".\n";
+                std::cout << "Min:" + to_string(entry.min) + ".\n";
+                std::cout << "Q1:" + to_string(entry.Q1) + ".\n";
+                std::cout << "Q2:" + to_string(entry.Q2) + ".\n";
+                std::cout << "Q3:" + to_string(entry.Q3) + ".\n";
+                std::cout << "Max:" + to_string(entry.max) + ".\n";
+                std::cout << "Mean:" + to_string(entry.mean) + ".\n";
             }
             else
             {
@@ -305,16 +305,16 @@ int main(int argc, char* argv[])
                 {
                     // cout << "Degree distribution for degree " + to_string(degree) + " is: " +
                     // to_string(ret) + ".\n";
-                    cout << "Min:" + to_string(entry.min) + ".\n";
-                    cout << "Q1:" + to_string(entry.Q1) + ".\n";
-                    cout << "Q2:" + to_string(entry.Q2) + ".\n";
-                    cout << "Q3:" + to_string(entry.Q3) + ".\n";
-                    cout << "Max:" + to_string(entry.max) + ".\n";
-                    cout << "Mean:" + to_string(entry.mean) + ".\n";
+                    std::cout << "Min:" + to_string(entry.min) + ".\n";
+                    std::cout << "Q1:" + to_string(entry.Q1) + ".\n";
+                    std::cout << "Q2:" + to_string(entry.Q2) + ".\n";
+                    std::cout << "Q3:" + to_string(entry.Q3) + ".\n";
+                    std::cout << "Max:" + to_string(entry.max) + ".\n";
+                    std::cout << "Mean:" + to_string(entry.mean) + ".\n";
                 }
                 else
                 {
-                    cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+                    std::cout << "There are no vertices with degree " + to_string(degree) + ".\n";
                 }
             }
             else
@@ -323,21 +323,21 @@ int main(int argc, char* argv[])
                 double ret2 = state->outDegreeDistribution(degree);
                 if (ret1 != -1)
                 {
-                    cout << "In-Degree distribution for degree " + to_string(degree) + " is: " +
+                    std::cout << "In-Degree distribution for degree " + to_string(degree) + " is: " +
                                 to_string(ret1) + ".\n";
                 }
                 else
                 {
-                    cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+                    std::cout << "There are no vertices with degree " + to_string(degree) + ".\n";
                 }
                 if (ret2 != -1)
                 {
-                    cout << "Out-Degree distribution for degree " + to_string(degree) + " is: " +
+                    std::cout << "Out-Degree distribution for degree " + to_string(degree) + " is: " +
                                 to_string(ret2) + ".\n";
                 }
                 else
                 {
-                    cout << "There are no vertices with degree " + to_string(degree) + ".\n";
+                    std::cout << "There are no vertices with degree " + to_string(degree) + ".\n";
                 }
             }
         }
@@ -352,12 +352,12 @@ int main(int argc, char* argv[])
             {
                 // cout << "Clustering coefficient for vertex " + to_string(vertex_id) + " is: " +
                 // to_string(ret) + ".\n";
-                cout << "Min:" + to_string(entry.min) + ".\n";
-                cout << "Q1:" + to_string(entry.Q1) + ".\n";
-                cout << "Q2:" + to_string(entry.Q2) + ".\n";
-                cout << "Q3:" + to_string(entry.Q3) + ".\n";
-                cout << "Max:" + to_string(entry.max) + ".\n";
-                cout << "Mean:" + to_string(entry.mean) + ".\n";
+                std::cout << "Min:" + to_string(entry.min) + ".\n";
+                std::cout << "Q1:" + to_string(entry.Q1) + ".\n";
+                std::cout << "Q2:" + to_string(entry.Q2) + ".\n";
+                std::cout << "Q3:" + to_string(entry.Q3) + ".\n";
+                std::cout << "Max:" + to_string(entry.max) + ".\n";
+                std::cout << "Mean:" + to_string(entry.mean) + ".\n";
             }
             else
             {
@@ -375,12 +375,12 @@ int main(int argc, char* argv[])
             {
                 // cout << "Nearest neighbors degree for vertex " + to_string(vertex_id) + " is: " +
                 // to_string(ret) + ".\n";
-                cout << "Min:" + to_string(entry.min) + ".\n";
-                cout << "Q1:" + to_string(entry.Q1) + ".\n";
-                cout << "Q2:" + to_string(entry.Q2) + ".\n";
-                cout << "Q3:" + to_string(entry.Q3) + ".\n";
-                cout << "Max:" + to_string(entry.max) + ".\n";
-                cout << "Mean:" + to_string(entry.mean) + ".\n";
+                std::cout << "Min:" + to_string(entry.min) + ".\n";
+                std::cout << "Q1:" + to_string(entry.Q1) + ".\n";
+                std::cout << "Q2:" + to_string(entry.Q2) + ".\n";
+                std::cout << "Q3:" + to_string(entry.Q3) + ".\n";
+                std::cout << "Max:" + to_string(entry.max) + ".\n";
+                std::cout << "Mean:" + to_string(entry.mean) + ".\n";
             }
             else
             {
@@ -394,14 +394,14 @@ int main(int argc, char* argv[])
 
             if (!ret.empty())
             {
-                cout << "Max clique size is: " + to_string(ret.size()) + ".\n";
-                cout << "Max clique is: ";
+                std::cout << "Max clique size is: " + to_string(ret.size()) + ".\n";
+                std::cout << "Max clique is: ";
                 for (std::list<int>::iterator iterator = ret.begin(); iterator != ret.end();
                      iterator++)
                 {
-                    cout << to_string<int>(*iterator).c_str() << " ";
+                    std::cout << to_string<int>(*iterator).c_str() << " ";
                 }
-                cout << ".\n";
+                std::cout << ".\n";
             }
             else
             {
@@ -414,14 +414,14 @@ int main(int argc, char* argv[])
             std::list<int> ret = state->maxCliqueAprox();
             if (!ret.empty())
             {
-                cout << "Max clique size is: " + to_string(ret.size()) + ".\n";
-                cout << "Max clique is:";
+                std::cout << "Max clique size is: " + to_string(ret.size()) + ".\n";
+                std::cout << "Max clique is:";
                 for (std::list<int>::iterator iterator = ret.begin(); iterator != ret.end();
                      iterator++)
                 {
-                    cout << " " << to_string<int>(*iterator).c_str();
+                    std::cout << " " << to_string<int>(*iterator).c_str();
                 }
-                cout << ".\n";
+                std::cout << ".\n";
             }
             else
             {
@@ -439,12 +439,12 @@ int main(int argc, char* argv[])
             {
                 // cout << "Shell index for vertex " + to_string(vertex_id) + " is: " +
                 // to_string(ret) + ".\n";
-                cout << "Min:" + to_string(entry.min) + ".\n";
-                cout << "Q1:" + to_string(entry.Q1) + ".\n";
-                cout << "Q2:" + to_string(entry.Q2) + ".\n";
-                cout << "Q3:" + to_string(entry.Q3) + ".\n";
-                cout << "Max:" + to_string(entry.max) + ".\n";
-                cout << "Mean:" + to_string(entry.mean) + ".\n";
+                std::cout << "Min:" + to_string(entry.min) + ".\n";
+                std::cout << "Q1:" + to_string(entry.Q1) + ".\n";
+                std::cout << "Q2:" + to_string(entry.Q2) + ".\n";
+                std::cout << "Q3:" + to_string(entry.Q3) + ".\n";
+                std::cout << "Max:" + to_string(entry.max) + ".\n";
+                std::cout << "Mean:" + to_string(entry.mean) + ".\n";
             }
             else
             {
@@ -470,14 +470,14 @@ int main(int argc, char* argv[])
 
         if (args_info->output_file_given)
         {
-            string path = args_info->output_file_arg;
+            std::string path = args_info->output_file_arg;
 
             if (args_info->betweenness_output_given || args_info->ddist_output_given ||
                 args_info->clustering_output_given || args_info->maxCliqueExact_output_given ||
                 args_info->maxCliqueAprox_output_given || args_info->knn_output_given ||
                 args_info->shell_output_given)
             {
-                string functionMessage = "";
+                std::string functionMessage = "";
 
                 if (args_info->betweenness_output_given)
                 {
@@ -529,13 +529,13 @@ int main(int argc, char* argv[])
                     functionMessage = "max clique distribution aproximation";
                 }
 
-                cout << "Succesfully exported " + functionMessage + " in output file " + path +
+                std::cout << "Succesfully exported " + functionMessage + " in output file " + path +
                             ".\n";
             }
             else
             {
                 state->exportCurrentGraph(path);
-                cout << "Succesfully saved graph in file " + path + ".\n";
+                std::cout << "Succesfully saved graph in file " + path + ".\n";
             }
         }
     }

@@ -1,8 +1,6 @@
 #ifndef DIRECTED_DEGREE_DISTRIBUTION_H
 #define DIRECTED_DEGREE_DISTRIBUTION_H
 
-#include <map>
-
 #include <stdio.h>
 #include "DirectedVertexAspect.h"
 #include "IDegreeDistribution.h"

@@ -48,15 +48,15 @@ private:
     Ui::MainWindow* ui;
     graphpp::PropertyMap propertyMap;
 
-    graphpp::IGraphFactory<WeightedGraph, WeightedVertex>* weightedFactory;
-    graphpp::IGraphFactory<Graph, Vertex>* factory;
-    graphpp::IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory;
+    graphpp::IGraphFactory<WeightedGraph, WeightedVertex>* weightedFactory = nullptr;
+    graphpp::IGraphFactory<Graph, Vertex>* factory = nullptr;
+    graphpp::IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory = nullptr;
     Graph graph;
     WeightedGraph weightedGraph;
     DirectedGraph directedGraph;
 
-    bool directed_out;
-    bool directed_in;
+    bool directed_out = true;
+    bool directed_in = false;
 
     void computeDegreeDistribution();
     void computeClusteringCoefficient(QString vertexId);

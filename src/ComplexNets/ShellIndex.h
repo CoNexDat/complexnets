@@ -1,12 +1,9 @@
 #ifndef SHELL_INDEX_H
 #define SHELL_INDEX_H
 
-#include <fstream>
-#include <iostream>
-#include <list>
-#include <map>
 #include "DoublyLinkedList.h"
 #include "IShellIndex.h"
+
 namespace graphpp
 {
 template <class Graph, class Vertex>

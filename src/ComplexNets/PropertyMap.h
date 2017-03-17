@@ -1,8 +1,6 @@
 #ifndef PROPERTY_MAP_H
 #define PROPERTY_MAP_H
 
-#include <map>
-#include <string>
 #include "mili/mili.h"
 
 namespace graphpp

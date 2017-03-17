@@ -19,7 +19,6 @@
 #include "ComplexNetsGui/inc/GrapherUtils.h"
 #include "ComplexNetsGui/inc/LogBinningPolicy.h"
 
-using namespace std;
 using namespace graphpp;
 using namespace ComplexNetsGui;
 
@@ -63,7 +62,7 @@ Graph ProgramState::getGraph()
     return this->graph;
 }
 
-void ProgramState::readGraphFromFile(string path)
+void ProgramState::readGraphFromFile(std::string path)
 {
     if (isWeighted())
     {
@@ -100,7 +99,7 @@ void ProgramState::setExtendedHotGraph(
     this->graph = *GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r, t);
 }
 
-void ProgramState::setMolloyReedGraph(string path)
+void ProgramState::setMolloyReedGraph(std::string path)
 {
     setWeighted(false);
     this->graph = *GraphGenerator::getInstance()->generateMolloyReedGraph(path);
@@ -109,8 +108,8 @@ void ProgramState::setMolloyReedGraph(string path)
 void ProgramState::setHiperbolicGraph(unsigned int n, float a, float c)
 {
     setWeighted(false);
-    cout << "Generating hyperbolic graph. Expected avg degree: "
-         << GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, c) << endl;
+    std::cout << "Generating hyperbolic graph. Expected avg degree: "
+         << GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, c) << std::endl;
     this->graph = *GraphGenerator::getInstance()->generateHiperbolicGraph(n, a, c);
 }
 
@@ -808,7 +807,7 @@ bool ProgramState::computeMaxCliqueDistr(PropertyMap& propertyMap,
     return maxClique->finished();
 }
 
-bool ProgramState::exportMaxCliqueExact(string outputPath, unsigned int max_time)
+bool ProgramState::exportMaxCliqueExact(std::string outputPath, unsigned int max_time)
 {
     PropertyMap propertyMap;
     if (computeMaxCliqueDistr(propertyMap, true, max_time))
@@ -821,7 +820,7 @@ bool ProgramState::exportMaxCliqueExact(string outputPath, unsigned int max_time
     return false;
 }
 
-void ProgramState::exportMaxCliqueAprox(string outputPath)
+void ProgramState::exportMaxCliqueAprox(std::string outputPath)
 {
     PropertyMap propertyMap;
     computeMaxCliqueDistr(propertyMap, false, 0);
@@ -831,20 +830,20 @@ void ProgramState::exportMaxCliqueAprox(string outputPath)
 
 void ProgramState::printDegrees()
 {
-    cout << "Degrees:" << endl;
+    std::cout << "Degrees:" << std::endl;
     for (unsigned int i = 1; i <= graph.verticesCount(); ++i)
     {
         Vertex* cur = graph.getVertexById(i);
-        cout << cur->degree();
+        std::cout << cur->degree();
         if (i != graph.verticesCount())
         {
-            cout << " ";
+            std::cout << " ";
         }
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
-void ProgramState::exportBetweennessVsDegree(string outputPath)
+void ProgramState::exportBetweennessVsDegree(std::string outputPath)
 {
     PropertyMap propertyMap;
     computeBetweenness(propertyMap);
@@ -852,7 +851,7 @@ void ProgramState::exportBetweennessVsDegree(string outputPath)
     utils.exportPropertySet(propertyMap.getPropertySet("betweennessVsDegree"), outputPath);
 }
 
-void ProgramState::exportDegreeDistribution(string outputPath,
+void ProgramState::exportDegreeDistribution(std::string outputPath,
                                             unsigned int log_bin_given,
                                             unsigned int binsAmount)
 {
@@ -871,8 +870,8 @@ void ProgramState::exportDegreeDistribution(string outputPath,
         {
             VariantsSet& set = propertyMap.getPropertySet("inDistributionProbability");
             LogBinningPolicy policy;
-            string outputPath1 = outputPath;
-            string outputPath2 = outputPath;
+            std::string outputPath1 = outputPath;
+            std::string outputPath2 = outputPath;
             grapherUtils.exportPropertySet(policy.transform(set, binsAmount),
                                            outputPath1.append("_in_degree"));
 
@@ -891,8 +890,8 @@ void ProgramState::exportDegreeDistribution(string outputPath,
         }
         else
         {
-            string outputPath1 = outputPath;
-            string outputPath2 = outputPath;
+            std::string outputPath1 = outputPath;
+            std::string outputPath2 = outputPath;
             grapherUtils.exportPropertySet(
                 propertyMap.getPropertySet("inDegreeDistributionProbability"),
                 outputPath1.append("_in_degree"));
@@ -903,7 +902,7 @@ void ProgramState::exportDegreeDistribution(string outputPath,
     }
 }
 
-void ProgramState::exportClusteringVsDegree(string outputPath)
+void ProgramState::exportClusteringVsDegree(std::string outputPath)
 {
     PropertyMap propertyMap;
     computeClusteringCoefficient(propertyMap);
@@ -927,7 +926,7 @@ std::string ProgramState::getDirectedPostfix()
     return directedPostfix;
 }
 
-void ProgramState::exportNearestNeighborsDegreeVsDegree(string outputPath)
+void ProgramState::exportNearestNeighborsDegreeVsDegree(std::string outputPath)
 {
     PropertyMap propertyMap;
     computeNearestNeighborsDegree(propertyMap);
@@ -937,7 +936,7 @@ void ProgramState::exportNearestNeighborsDegreeVsDegree(string outputPath)
         outputPath);
 }
 
-void ProgramState::exportShellIndexVsDegree(string outputPath)
+void ProgramState::exportShellIndexVsDegree(std::string outputPath)
 {
     PropertyMap propertyMap;
     computeShellIndex(propertyMap);
@@ -986,7 +985,7 @@ void ProgramState::exportShellIndexVsDegree(string outputPath)
     grapherUtils.exportPropertySet(shellIndexVsDegree, outputPath);
 }
 
-void ProgramState::exportCurrentGraph(string outputPath)
+void ProgramState::exportCurrentGraph(std::string outputPath)
 {
     GraphWriter* graphWriter = new GraphWriter();
 
@@ -1006,7 +1005,7 @@ void ProgramState::exportCurrentGraph(string outputPath)
     delete graphWriter;
 }
 
-void ProgramState::exportCCBoxplot(string outputPath)
+void ProgramState::exportCCBoxplot(std::string outputPath)
 {
     PropertyMap propertyMap;
     computeNearestNeighborsDegree(propertyMap);

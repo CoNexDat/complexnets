@@ -1,7 +1,6 @@
 #ifndef DIRECTED_VERTEX_ASPECT_H
 #define DIRECTED_VERTEX_ASPECT_H
 
-#include <map>
 #include "AdjacencyListVertex.h"
 
 namespace graphpp

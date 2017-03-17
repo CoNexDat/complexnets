@@ -1,8 +1,6 @@
 #ifndef INTEGER_DISTRIBUTION_H
 #define INTEGER_DISTRIBUTION_H
 
-#include <map>
-
 #include <stdio.h>
 #include "TraverserForward.h"
 #include "mili/mili.h"

@@ -1,7 +1,6 @@
 #ifndef WEIGHTED_VERTEX_ASPECT_H
 #define WEIGHTED_VERTEX_ASPECT_H
 
-#include <map>
 #include "AdjacencyListVertex.h"
 
 namespace graphpp

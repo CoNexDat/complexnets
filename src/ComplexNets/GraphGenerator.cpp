@@ -4,8 +4,6 @@
 
 #include "GraphGenerator.h"
 #include <cmath>
-#include <map>
-#include <vector>
 #include "ComplexNets/ConexityVerifier.h"
 #include "ComplexNets/DirectedGraphFactory.h"
 #include "ComplexNets/GraphFactory.h"
@@ -22,7 +20,7 @@ typedef struct Position
 } Position;
 
 static const double PI = atan(1) * 4;
-vector<Position> vertexesPositions;
+std::vector<Position> vertexesPositions;
 
 GraphGenerator* GraphGenerator::instance = NULL;
 
@@ -38,7 +36,7 @@ GraphGenerator* GraphGenerator::getInstance()
     return instance;
 }
 
-Graph* GraphGenerator::generateGraphFromFile(string path, bool directed, bool multigraph)
+Graph* GraphGenerator::generateGraphFromFile(std::string path, bool directed, bool multigraph)
 {
     Graph* graph = new Graph(directed, multigraph);
 
@@ -52,7 +50,7 @@ Graph* GraphGenerator::generateGraphFromFile(string path, bool directed, bool mu
     return graph;
 }
 
-DirectedGraph* GraphGenerator::generateDirectedGraphFromFile(string path, bool multigraph)
+DirectedGraph* GraphGenerator::generateDirectedGraphFromFile(std::string path, bool multigraph)
 {
     DirectedGraph* graph = new DirectedGraph(multigraph);
 
@@ -67,7 +65,7 @@ DirectedGraph* GraphGenerator::generateDirectedGraphFromFile(string path, bool m
     return graph;
 }
 
-WeightedGraph* GraphGenerator::generateWeightedGraphFromFile(string path,
+WeightedGraph* GraphGenerator::generateWeightedGraphFromFile(std::string path,
                                                              bool directed,
                                                              bool multigraph)
 {
@@ -129,7 +127,7 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
     }
 
     // Fill the array with k apparitions of each vertex where k is the degree of the vertex
-    vector<unsigned int> vertexIndexes;
+    std::vector<unsigned int> vertexIndexes;
     for (unsigned int i = 1; i <= m_0; i++)
         for (unsigned int k = 0; k < m_0; k++) vertexIndexes.push_back(i);
 
@@ -185,7 +183,7 @@ Graph* GraphGenerator::generateHotExtendedGraph(
 
     // Every time an edge is added, two entries are added in vertexIndexes, the two indexes of the
     // nodes joined.
-    vector<unsigned int> vertexIndexes;
+    std::vector<unsigned int> vertexIndexes;
     unsigned int root = 1;
 
     vertexesPositions.clear();
@@ -233,10 +231,10 @@ void GraphGenerator::addFKPNode(unsigned int vertexIndex,
                                 Graph* graph,
                                 unsigned int root,
                                 float xi,
-                                vector<unsigned int>* vertexIndexes,
+                                std::vector<unsigned int>* vertexIndexes,
                                 unsigned int m)
 {
-    map<float, unsigned int> distance;
+    std::map<float, unsigned int> distance;
 
     // Creation of vertex
     Vertex* newVertex = new Vertex(vertexIndex);
@@ -273,7 +271,7 @@ void GraphGenerator::addExtendedEdges(unsigned int q,
                                       Graph* graph,
                                       unsigned int root,
                                       float r,
-                                      vector<unsigned int>* vertexIndexes)
+                                      std::vector<unsigned int>* vertexIndexes)
 {
     // We will go through this function q times, adding q edges
     for (unsigned int qfinal = 0; qfinal < q; qfinal++)
@@ -348,7 +346,7 @@ void GraphGenerator::addExtendedEdges(unsigned int q,
 int GraphGenerator::chooseNewRoot(unsigned int vertexIndex,
                                   unsigned int t,
                                   unsigned int root,
-                                  vector<unsigned int> vertexIndexes)
+                                  std::vector<unsigned int> vertexIndexes)
 {
     if ((vertexIndex - 1) % t == 0)
     {
@@ -359,9 +357,9 @@ int GraphGenerator::chooseNewRoot(unsigned int vertexIndex,
 
 void GraphGenerator::addEdges(Graph* graph,
                               Vertex* vertex,
-                              map<float, unsigned int> distance,
+                              std::map<float, unsigned int> distance,
                               unsigned int quant,
-                              vector<unsigned int>* vertexIndexes)
+                              std::vector<unsigned int>* vertexIndexes)
 {
     for (unsigned int k = 0; k < quant && !distance.empty();
          k++)  // Adding "q" new edges. The processes is similar to added vertex.
@@ -393,7 +391,7 @@ void GraphGenerator::addVertexPosition()
     vertexesPositions.back().y = (float)rand() / RAND_MAX;
 }
 
-Graph* GraphGenerator::generateMolloyReedGraph(string path)
+Graph* GraphGenerator::generateMolloyReedGraph(std::string path)
 {
     Graph* graph = new Graph(false, false);
 
@@ -457,7 +455,7 @@ double GraphGenerator::getExpectedAvgNodeDeg(unsigned int i, float fa, float fc)
 Graph* GraphGenerator::generateHiperbolicGraph(unsigned int n, float a, float c)
 {
     Graph* graph = new Graph(false, false);
-    vector<PolarPosition> vPolarPos;
+    std::vector<PolarPosition> vPolarPos;
     PolarPosition sentinel;
     vPolarPos.push_back(sentinel);
     for (unsigned int i = 1; i <= n; i++)

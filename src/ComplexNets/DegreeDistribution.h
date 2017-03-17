@@ -1,8 +1,6 @@
 #ifndef DEGREE_DISTRIBUTION_H
 #define DEGREE_DISTRIBUTION_H
 
-#include <map>
-
 #include <stdio.h>
 #include "IDegreeDistribution.h"
 #include "TraverserForward.h"

@@ -3,25 +3,23 @@
 // Last modification: December 19th, 2012.
 
 #include <fstream>
-#include <list>
 
 #include "AdjacencyListGraph.h"
 #include "GraphWriter.h"
 
-using namespace std;
 using namespace graphpp;
 
 bool GraphWriter::vertexWasVisited(unsigned int vertexId)
 {
-    list<unsigned int>::iterator it =
+    std::list<unsigned int>::iterator it =
         find(this->visitedVertexes.begin(), this->visitedVertexes.end(), vertexId);
     return it != this->visitedVertexes.end();
 }
 
-void GraphWriter::writeGraph(Graph *graph, string outputPath)
+void GraphWriter::writeGraph(Graph *graph, std::string outputPath)
 {
-    ofstream destinationFile;
-    destinationFile.open(outputPath.c_str(), ios_base::out);
+    std::ofstream destinationFile;
+    destinationFile.open(outputPath.c_str(), std::ios_base::out);
 
     this->visitedVertexes.clear();
 
@@ -55,10 +53,10 @@ void GraphWriter::writeGraph(Graph *graph, string outputPath)
 
 // FIXME This should not have to be a separate method. writeGraph should be able to write
 // DirectedGraphs. Currently not able to convert/cast DirectedGraph to Graph (DONT KNOW WHY :()
-void GraphWriter::writeDirectedGraph(DirectedGraph *graph, string outputPath)
+void GraphWriter::writeDirectedGraph(DirectedGraph *graph, std::string outputPath)
 {
-    ofstream destinationFile;
-    destinationFile.open(outputPath.c_str(), ios_base::out);
+    std::ofstream destinationFile;
+    destinationFile.open(outputPath.c_str(), std::ios_base::out);
 
     this->visitedVertexes.clear();
 
@@ -90,10 +88,10 @@ void GraphWriter::writeDirectedGraph(DirectedGraph *graph, string outputPath)
     destinationFile.close();
 }
 
-void GraphWriter::writeWeightedGraph(WeightedGraph *weightedGraph, string outputPath)
+void GraphWriter::writeWeightedGraph(WeightedGraph *weightedGraph, std::string outputPath)
 {
-    ofstream destinationFile;
-    destinationFile.open(outputPath.c_str(), ios_base::out);
+    std::ofstream destinationFile;
+    destinationFile.open(outputPath.c_str(), std::ios_base::out);
 
     WeightedGraph::VerticesIterator verticesIterator = weightedGraph->verticesIterator();
 

@@ -12,7 +12,6 @@
 #include "ComplexNets/AdjacencyListVertex.h"
 #include "ComplexNets/IGraphFactory.h"
 
-using namespace std;
 using namespace graphpp;
 
 class ProgramState
@@ -48,12 +47,12 @@ public:
     DirectedGraph getDirectedGraph();
     Graph getGraph();
 
-    void readGraphFromFile(string path);
+    void readGraphFromFile(std::string path);
     void setErdosRenyiGraph(unsigned int n, float p);
     void setBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n);
     void setExtendedHotGraph(
         unsigned int m, unsigned int n, float xi, unsigned int q, float r, unsigned int t);
-    void setMolloyReedGraph(string path);
+    void setMolloyReedGraph(std::string path);
     void setHiperbolicGraph(unsigned int n, float a, float c);
 
     double betweenness(unsigned int vertex_id);
@@ -71,17 +70,17 @@ public:
 
     void printDegrees();
 
-    bool exportMaxCliqueExact(string outputPath, unsigned int max_time);
-    void exportMaxCliqueAprox(string outputPath);
-    void exportCurrentGraph(string outputPath);
-    void exportBetweennessVsDegree(string outputPath);
-    void exportDegreeDistribution(string outputPath,
+    bool exportMaxCliqueExact(std::string outputPath, unsigned int max_time);
+    void exportMaxCliqueAprox(std::string outputPath);
+    void exportCurrentGraph(std::string outputPath);
+    void exportBetweennessVsDegree(std::string outputPath);
+    void exportDegreeDistribution(std::string outputPath,
                                   unsigned int log_bin_given = false,
                                   unsigned int binsAmount = -1);
-    void exportClusteringVsDegree(string outputPath);
-    void exportNearestNeighborsDegreeVsDegree(string outputPath);
-    void exportShellIndexVsDegree(string outputPath);
-    void exportCCBoxplot(string outputPath);
+    void exportClusteringVsDegree(std::string outputPath);
+    void exportNearestNeighborsDegreeVsDegree(std::string outputPath);
+    void exportShellIndexVsDegree(std::string outputPath);
+    void exportCCBoxplot(std::string outputPath);
 
     void setDirectedInOut(bool o, bool i);
 

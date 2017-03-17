@@ -7,17 +7,15 @@
 
 #include "typedefs.h"
 
-using namespace std;
-
 class GraphWriter
 {
 public:
-    void writeGraph(Graph *graph, string outputPath);
-    void writeWeightedGraph(WeightedGraph *WeightedGraph, string outputPath);
-    void writeDirectedGraph(DirectedGraph *graph, string outputPath);
+    void writeGraph(Graph *graph, std::string outputPath);
+    void writeWeightedGraph(WeightedGraph *WeightedGraph, std::string outputPath);
+    void writeDirectedGraph(DirectedGraph *graph, std::string outputPath);
 
 private:
-    list<unsigned int> visitedVertexes;
+    std::list<unsigned int> visitedVertexes;
     bool vertexWasVisited(unsigned int vertexId);
 };
 

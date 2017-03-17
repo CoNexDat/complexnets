@@ -1,9 +1,6 @@
 #ifndef MAX_CLIQUE_H
 #define MAX_CLIQUE_H
 
-#include <list>
-#include <map>
-
 #include <stdio.h>
 #include "IMaxClique.h"
 #include "TraverserOrdered.h"
