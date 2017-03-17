@@ -3,7 +3,7 @@
 # -------------------------------------------------
 TARGET = complexnetspp
 TEMPLATE = app
-DEFINES += NO_BITWISE_ENUMS
+DEFINES += NO_BITWISE_ENUMS NO_PROMOTION_DISABLE
 SOURCES += ComplexNetsGui/src/*.cpp \
     ComplexNets/*.cpp \
     ComplexNetsCmd/*.cpp \
