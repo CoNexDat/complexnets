@@ -123,7 +123,6 @@ double ProgramState::betweenness(unsigned int vertex_id)
     // IBetweenness<Graph, Vertex>::BetweennessIterator it;
     // IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator wit;
     double ret;
-    double wret;
 
     if (this->weighted)
     {
