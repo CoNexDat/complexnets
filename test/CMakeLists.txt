@@ -1,27 +1,36 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.2)
 
-set(test_src TestMain.cpp 
-         BetweennessTest.cpp
-         ClusteringCoefficientTest.cpp
-         NearestNeighborsDegreeTest.cpp
-         DegreeDistributionTest.cpp
-         TraverserForwardTest.cpp
-         AdjacencyListGraphTest.cpp
-         AdjacencyListVertexTest.cpp
-         ShellIndexTest.cpp
-         WeightedNearestNeighborsDegreeTest.cpp
-         WeightedClusteringCoefficientTest.cpp
-         TraverserBFSTest.cpp
-         TraverserOrderedTest.cpp
-         DirectedDegreeDistributionTest.cpp
-)       
+set(CMAKE_CXX_STANDARD 11)
 
+set(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS ${GCC_COVERAGE_COMPILE_FLAGS})
 
-INCLUDE_DIRECTORIES(../src)
+set(GTEST_ROOT "../vendor/googletest/googletest")
 
-add_executable(tests ${test_src})
+set(TEST_SRC
+    TestMain.cpp
+    BetweennessTest.cpp
+    ClusteringCoefficientTest.cpp
+    NearestNeighborsDegreeTest.cpp
+    DegreeDistributionTest.cpp
+    TraverserForwardTest.cpp
+    AdjacencyListGraphTest.cpp
+    AdjacencyListVertexTest.cpp
+    ShellIndexTest.cpp
+    WeightedNearestNeighborsDegreeTest.cpp
+    WeightedClusteringCoefficientTest.cpp
+    TraverserBFSTest.cpp
+    TraverserOrderedTest.cpp
+    DirectedDegreeDistributionTest.cpp
+)
 
-add_definitions(-fprofile-arcs -ftest-coverage)
+add_subdirectory(${GTEST_ROOT} gtest)
 
-target_link_libraries (tests gtest gtest_main pthread -fprofile-arcs)
+include_directories(../src)
+include_directories(${GTEST_ROOT}/include)
 
+add_executable(runUnitTests ${TEST_SRC})
+
+target_link_libraries(runUnitTests gtest gtest_main pthread)
+
+file(COPY TestTrees DESTINATION .)

@@ -1,4 +1,7 @@
+#include <fstream>
 #include <iostream>
+
+#include "typedefs.h"
 
 namespace graphpp
 {
