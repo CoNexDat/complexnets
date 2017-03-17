@@ -8,11 +8,11 @@ namespace ComplexNetsGui
 class LogBinningPolicy
 {
 public:
-    static const VariantsSet transform(const VariantsSet& set, unsigned int binsAmount = 25)
+    static VariantsSet transform(const VariantsSet& set, unsigned int binsAmount = 25)
     {
         return LogBin(set, binsAmount);
     }
-    static const void transform(
+    static void transform(
         std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
         unsigned int binsAmount = 25)
     {
@@ -20,7 +20,7 @@ public:
     }
 
 private:
-    static const VariantsSet LogBin(const VariantsSet& set, unsigned int binsAmount)
+    static VariantsSet LogBin(const VariantsSet& set, unsigned int binsAmount)
     {
         VariantsSet toPlot;
         std::list<double> xPoints;
@@ -120,7 +120,7 @@ private:
         return lowerLimit;
     }
 
-    static const void LogBin(
+    static void LogBin(
         std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
         unsigned int binsAmount)
     {
