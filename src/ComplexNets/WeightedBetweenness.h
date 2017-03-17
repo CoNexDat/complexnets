@@ -49,7 +49,6 @@ public:
 
     WeightedBetweenness(Graph& g)
     {
-        //:printf("INSIDE WEIGHTEDBETWEENNESS\n");
         initMap(g, 1, betweenness, 0.0, 0.0);
         calculateBetweenness(g);
     }
@@ -64,7 +63,6 @@ private:
 
     void calculateBetweenness(Graph& g)
     {
-        // printf("CALCULATING BETWEENNESS INSIDE WEIGHTEDBETWEENNESS\n");
         VerticesIterator iter = g.verticesIterator();
         int n = g.verticesCount();
         int i = 1;
@@ -94,7 +92,6 @@ private:
 
                 // iterate through v's neighbors
                 NeighbourIterator neighbourIter = v->neighborsIterator();
-                // printf("source %i \n",v->getVertexId());
 
                 while (!neighbourIter.end())
                 {

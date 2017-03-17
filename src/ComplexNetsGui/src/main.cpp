@@ -266,11 +266,6 @@ int main(int argc, char* argv[])
 
         if (args_info->betweenness_given)
         {
-            // if (state->isWeighted()) {
-            //	errorMessage("Betweenness for weighted graphs is not supported.");
-            //	ERROR_EXIT;
-            //}else{
-            printf("Weighted Betweenness");
             int vertex_id = args_info->betweenness_arg;
 
             graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
@@ -481,13 +476,8 @@ int main(int argc, char* argv[])
 
                 if (args_info->betweenness_output_given)
                 {
-                    // if (state->isWeighted()) {
-                    //	errorMessage("Betweenness for weighted graphs is not supported.");
-                    //	ERROR_EXIT;
-                    //} else {
                     state->exportBetweennessVsDegree(path);
                     functionMessage = "betweenness";
-                    //}
                 }
                 else if (args_info->ddist_output_given)
                 {

@@ -782,7 +782,6 @@ void MainWindow::computeBetweenness()
         {
             // ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
             // return;
-            printf("\nENTERING BETWEENNESS\n");
             IBetweenness<WeightedGraph, WeightedVertex>* betweenness =
                 weightedFactory->createBetweenness(weightedGraph);
             IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator it =
@@ -1637,8 +1636,6 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
         betweennessVsDegree.insert<double>(it->first, 0.0);
         unsigned int degree = from_string<unsigned int>(it->first);
         unsigned int cant = from_string<unsigned int>(it->second);
-        // TODO remove printf
-        printf("\n degree %i - n %i\n", degree, cant);
         ++it;
     }
 
@@ -1649,8 +1646,6 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
                                         : graph.getVertexById(vertedId);
         betweennessAuxAcum =
             betweennessVsDegree.get_element<double>(to_string<unsigned int>(v->degree()));
-        // TODO remove printf
-        // printf("vertex id: %i - betweenness: %f \n",vertedId, );
         betweennessVsDegree.insert<double>(
             to_string<unsigned int>(v->degree()),
             betweennessAuxAcum + from_string<double>(betwennessIt->second));
@@ -2333,7 +2328,7 @@ void MainWindow::on_actionBoxplotCC_triggered()
 
     if (this->weightedgraph)
     {  // Weighted
-        printf("Function not available for weighted graphs. \n");
+        ui->textBrowser->append("Function not available for weighted graphs.");
     }
     else
     {  // Unweighted
@@ -2793,7 +2788,7 @@ void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered()
 
     if (this->weightedgraph)
     {  // Weighted
-        printf("Function not available for weighted graphs. \n");
+        ui->textBrowser->append("Function not available for weighted graphs.");
     }
     else
     {  // Unweighted
