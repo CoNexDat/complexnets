@@ -7,8 +7,6 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <algorithm>
-#include <cstdlib>
-#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -1909,7 +1907,6 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
 {
     if (!this->graphLoaded)
     {
-        srand(time(NULL));
         QString inputN = inputId("n:");
         QString inputP = inputId("p:");
         QString ret;
@@ -1961,7 +1958,6 @@ void MainWindow::on_actionNewHiperbolic_triggered()
 {
     if (!this->graphLoaded)
     {
-        srand(time(NULL));
         QString inputN = inputId("n:");
         QString inputA = inputId("a:");
         QString inputD = inputId("deg:");
@@ -2020,7 +2016,6 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 {
     if (!this->graphLoaded)
     {
-        srand(time(NULL));
         QString inputM_0 = inputId("m_0:");
         QString inputM = inputId("m:");
         QString inputN = inputId("n:");
@@ -2079,7 +2074,6 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 {
     if (!this->graphLoaded)
     {
-        srand(time(NULL));
         QString inputN = inputId("n:");
         QString inputM = inputId("m:");
         QString inputXI = inputId("xi:");
@@ -2162,7 +2156,6 @@ void MainWindow::on_actionNewMolloyReed_triggered()
 
     if (!this->graphLoaded)
     {
-        srand(time(NULL));
         QString ret;
         if (fileDialog.exec())
         {

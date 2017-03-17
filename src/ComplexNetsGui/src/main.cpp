@@ -1,6 +1,9 @@
 // This toolbox is licensed under the Academic Free License 3.0.
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 16th, 2015.
+
+#include <cstdlib>
+#include <ctime>
 #include <QtWidgets/QApplication>
 
 #include "ComplexNetsCmd/ProgramState.h"
@@ -27,6 +30,8 @@
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
+
     if (argc == 1)
     {
         // We don't have arguments, we start the graphical interface.
