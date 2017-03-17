@@ -8,7 +8,7 @@ typedef struct Node
     int currentDegree;
     Node* next;
     Node* prev;
-};
+} Node;
 
 class Dllist
 {
