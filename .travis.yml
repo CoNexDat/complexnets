@@ -12,8 +12,9 @@ addons:
     sources: &sources
       - ubuntu-toolchain-r-test
       - sourceline: 'ppa:canonical-qt5-edgers/ubuntu1204-qt5'
-before_install: if [ "$TRAVIS_OS_NAME" == "linux"  ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6; fi
-install: 
+before_install:
+  - if [ "$TRAVIS_OS_NAME" == "linux"  ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6; fi
+install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
   # Install a recent CMake

@@ -3,5 +3,6 @@
 set -e
 
 cd src
-qmake -qt=5
+
+QT_SELECT=qt5 qmake
 exec make all
