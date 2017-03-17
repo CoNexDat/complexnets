@@ -142,7 +142,7 @@ private:
                 }
             }
 
-            printf("Progress: %.2f% \n", (double)i / (double)n * 100.0);
+            printf("Progress: %.2f%% \n", (double)i / (double)n * 100.0);
 
             ++iter;
             ++i;
