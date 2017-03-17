@@ -16,11 +16,7 @@ public:
     bool operator()(graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v1,
                     graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v2)
     {
-        if (v1->distance < v2->distance)
-        {
-            return true;
-        }
-        return false;
+        return v1->distance < v2->distance;
     }
 };
 
@@ -30,11 +26,7 @@ public:
     bool operator()(graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v1,
                     graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v2)
     {
-        if (v1->distance > v2->distance)
-        {
-            return true;
-        }
-        return false;
+        return v1->distance > v2->distance;
     }
 };
 
