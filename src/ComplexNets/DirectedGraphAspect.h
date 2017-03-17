@@ -12,11 +12,11 @@ public:
     DirectedGraphAspect(const bool isMultigraph = false) : T(true, isMultigraph){};
 
     /**
-* Method: removeVertex
-* -----------------
-* Description: Removes a vertex and all of its edge of the graph
-* @param v Vertex to be added
-*/
+     * Method: removeVertex
+     * -----------------
+     * Description: Removes a vertex and all of its edge of the graph
+     * @param v Vertex to be removed
+     */
     void removeVertex(Vertex* v)
     {
         T::template removeVertex<Vertex>(v);
