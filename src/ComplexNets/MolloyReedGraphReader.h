@@ -156,8 +156,8 @@ private:
         if (freeDegrees == 1)
         {
             vertexesWithOneFreeDegree.push_back(maxDegreeId);
-            unconectedVertexesOneDegreeIds.erase(unconectedVertexesOneDegreeIds.begin() +
-                                                 maxDegreeIndex);
+            unconectedVertexesOneDegreeIds.erase(
+                unconectedVertexesOneDegreeIds.begin() + maxDegreeIndex);
         }
         else
         {
@@ -204,8 +204,8 @@ private:
                 index_new = rand() % unconectedSize;
                 nextVertexId = unconectedVertexesOneDegreeIds[index_new];
                 nextVertexDegree = vertexesIdsDegrees[nextVertexId];
-                unconectedVertexesOneDegreeIds.erase(unconectedVertexesOneDegreeIds.begin() +
-                                                     index_new);
+                unconectedVertexesOneDegreeIds.erase(
+                    unconectedVertexesOneDegreeIds.begin() + index_new);
             }
 
             std::cout << "unconected is empty?: " << unconectedVertexesIds.empty() << "\n";
@@ -323,7 +323,7 @@ private:
             std::cout << "selectedId: " << selectedId << "\n";
             std::cout << "selectedDegrees: " << selectedDegrees << "\n";
             std::cout << "nodesNotConnectedTo: "
-                 << "\n";
+                      << "\n";
 
             std::set<unsigned int> unconectedVertexes = nodesNotConnectedTo[selectedId];
             std::set<unsigned int>::const_iterator it(nodesNotConnectedTo[selectedId].begin());
@@ -343,8 +343,8 @@ private:
                     }
                     else
                     {
-                        vertexesWithOneFreeDegree.erase(vertexesWithOneFreeDegree.begin() +
-                                                        index_new);
+                        vertexesWithOneFreeDegree.erase(
+                            vertexesWithOneFreeDegree.begin() + index_new);
                     }
 
                     if (selectedDegrees - 1 == 1)

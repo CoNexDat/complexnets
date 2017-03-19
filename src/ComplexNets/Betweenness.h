@@ -108,11 +108,12 @@ private:
         }
     }
 
-    void initMap(Graph& g,
-                 unsigned int vertexId,
-                 std::map<typename Vertex::VertexId, double>& m,
-                 double commonValue,
-                 double distinguishedValue)
+    void initMap(
+        Graph& g,
+        unsigned int vertexId,
+        std::map<typename Vertex::VertexId, double>& m,
+        double commonValue,
+        double distinguishedValue)
     {
         VerticesIterator it = g.verticesIterator();
 

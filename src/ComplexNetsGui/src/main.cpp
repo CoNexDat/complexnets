@@ -2,9 +2,9 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 16th, 2015.
 
+#include <QtWidgets/QApplication>
 #include <cstdlib>
 #include <ctime>
-#include <QtWidgets/QApplication>
 
 #include "ComplexNetsCmd/ProgramState.h"
 #include "ComplexNetsCmd/cmdline.h"
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
                 state->setDigraph(true);
                 state->setDirectedInOut(args_info->out_given, args_info->in_given);
                 std::cout << "Directed graph: out: " << (args_info->out_given ? "true" : "false")
-                     << ", in: " << (args_info->in_given ? "true" : "false") << std::endl;
+                          << ", in: " << (args_info->in_given ? "true" : "false") << std::endl;
             }
 
             std::string path = args_info->input_file_arg;
@@ -122,7 +122,8 @@ int main(int argc, char* argv[])
             VALIDATE_P(p);
 
             state->setErdosRenyiGraph(n, p);
-            std::cout << "Succesfully created an Erdos-Renyi graph with " + to_string(n) + " nodes.\n";
+            std::cout << "Succesfully created an Erdos-Renyi graph with " + to_string(n) +
+                             " nodes.\n";
         }
         else if (args_info->barabasi_given)
         {
@@ -164,7 +165,7 @@ int main(int argc, char* argv[])
 
             state->setBarabasiAlbertGraph(m0, m, n);
             std::cout << "Succesfully created a Barabasi-Albert graph with " + to_string(n) +
-                        " nodes.\n";
+                             " nodes.\n";
         }
         else if (args_info->hot_given)
         {
@@ -208,8 +209,9 @@ int main(int argc, char* argv[])
 
             // Variable 't_given' no longer exists after using gengetopt on cmdline.ggo
             //			if (!args_info->t_given) {
-            //				usageErrorMessage("Extended Hot graph generation requires the parameter user
-            //select between how many loops the core is recalculated.");
+            //				usageErrorMessage("Extended Hot graph generation requires the parameter
+            //user
+            // select between how many loops the core is recalculated.");
             //				ERROR_EXIT;
             //			}
 
@@ -227,7 +229,8 @@ int main(int argc, char* argv[])
             VALIDATE_POS(t);
 
             state->setExtendedHotGraph(m, n, xi, q, r, t);
-            std::cout << "Succesfully created an Extended Hot graph with " + to_string(n) + " nodes.\n";
+            std::cout << "Succesfully created an Extended Hot graph with " + to_string(n) +
+                             " nodes.\n";
         }
         else if (args_info->molloy_given)
         {
@@ -323,8 +326,8 @@ int main(int argc, char* argv[])
                 double ret2 = state->outDegreeDistribution(degree);
                 if (ret1 != -1)
                 {
-                    std::cout << "In-Degree distribution for degree " + to_string(degree) + " is: " +
-                                to_string(ret1) + ".\n";
+                    std::cout << "In-Degree distribution for degree " + to_string(degree) +
+                                     " is: " + to_string(ret1) + ".\n";
                 }
                 else
                 {
@@ -332,8 +335,8 @@ int main(int argc, char* argv[])
                 }
                 if (ret2 != -1)
                 {
-                    std::cout << "Out-Degree distribution for degree " + to_string(degree) + " is: " +
-                                to_string(ret2) + ".\n";
+                    std::cout << "Out-Degree distribution for degree " + to_string(degree) +
+                                     " is: " + to_string(ret2) + ".\n";
                 }
                 else
                 {
@@ -486,8 +489,8 @@ int main(int argc, char* argv[])
                 }
                 else if (args_info->ddist_output_given)
                 {
-                    state->exportDegreeDistribution(path, args_info->log_bin_given,
-                                                    args_info->log_bin_arg);
+                    state->exportDegreeDistribution(
+                        path, args_info->log_bin_given, args_info->log_bin_arg);
                     functionMessage = "degreeDistribution";
                 }
                 else if (args_info->clustering_output_given)
@@ -530,7 +533,7 @@ int main(int argc, char* argv[])
                 }
 
                 std::cout << "Succesfully exported " + functionMessage + " in output file " + path +
-                            ".\n";
+                                 ".\n";
             }
             else
             {

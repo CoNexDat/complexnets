@@ -22,11 +22,12 @@ private:
     static GraphGenerator* instance;
     float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id);
     void addVertexPosition();
-    void addEdges(Graph* graph,
-                  Vertex* vertex,
-                  std::map<float, unsigned int> distance,
-                  unsigned int quant,
-                  std::vector<unsigned int>* vertexIndexes);
+    void addEdges(
+        Graph* graph,
+        Vertex* vertex,
+        std::map<float, unsigned int> distance,
+        unsigned int quant,
+        std::vector<unsigned int>* vertexIndexes);
     inline double hiperbolicDistance(PolarPosition p1, PolarPosition p2);
     inline double getMaxRadius(int i, float a, float c);
     inline PolarPosition getRandomHyperbolicCoordinates(float a, double maxr);
@@ -34,22 +35,25 @@ private:
 public:
     static GraphGenerator* getInstance();
     void addOriginalVertex(Graph* graph);
-    void addFKPNode(unsigned int vertexIndex,
-                    Graph* graph,
-                    unsigned int root,
-                    float xi,
-                    std::vector<unsigned int>* vertexIndexes,
-                    unsigned int m);
-    void addExtendedEdges(unsigned int q,
-                          unsigned int vertexIndex,
-                          Graph* graph,
-                          unsigned int root,
-                          float r,
-                          std::vector<unsigned int>* vertexIndexes);
-    int chooseNewRoot(unsigned int vertexIndex,
-                      unsigned int t,
-                      unsigned int root,
-                      std::vector<unsigned int> vertexIndexes);
+    void addFKPNode(
+        unsigned int vertexIndex,
+        Graph* graph,
+        unsigned int root,
+        float xi,
+        std::vector<unsigned int>* vertexIndexes,
+        unsigned int m);
+    void addExtendedEdges(
+        unsigned int q,
+        unsigned int vertexIndex,
+        Graph* graph,
+        unsigned int root,
+        float r,
+        std::vector<unsigned int>* vertexIndexes);
+    int chooseNewRoot(
+        unsigned int vertexIndex,
+        unsigned int t,
+        unsigned int root,
+        std::vector<unsigned int> vertexIndexes);
 
     Graph* generateGraphFromFile(std::string path, bool directed, bool multigraph);
     DirectedGraph* generateDirectedGraphFromFile(std::string path, bool multigraph);

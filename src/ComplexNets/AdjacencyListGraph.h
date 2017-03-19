@@ -70,8 +70,8 @@ template <class Vertex>
 class VertexFinder<Vertex, std::set<Vertex*, VertexComparator<Vertex>>>
 {
 public:
-    static Vertex* find(typename Vertex::VertexId id,
-                        const std::set<Vertex*, VertexComparator<Vertex>>& c)
+    static Vertex* find(
+        typename Vertex::VertexId id, const std::set<Vertex*, VertexComparator<Vertex>>& c)
     {
         Vertex* ret = NULL;
         Vertex* prototype = new Vertex(id);

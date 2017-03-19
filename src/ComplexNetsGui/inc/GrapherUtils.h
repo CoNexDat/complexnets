@@ -30,8 +30,8 @@ public:
          */
         while (it != set.end())
         {
-            sortedMap.insert(std::pair<double, double>(from_string<double>(it->first),
-                                                       from_string<double>(it->second)));
+            sortedMap.insert(std::pair<double, double>(
+                from_string<double>(it->first), from_string<double>(it->second)));
             ++it;
         }
 
@@ -45,9 +45,8 @@ public:
         destinationFile.close();
     }
 
-    static void exportVectors(const std::vector<double> x,
-                              const std::vector<double> y,
-                              const FilePath& data_path)
+    static void exportVectors(
+        const std::vector<double> x, const std::vector<double> y, const FilePath& data_path)
     {
         std::ofstream destinationFile;
         std::map<double, double> sortedMap;
@@ -72,10 +71,11 @@ public:
         destinationFile.close();
     }
 
-    static void exportThreeVectors(const std::vector<double> x,
-                                   const std::vector<double> y,
-                                   const std::vector<unsigned int> z,
-                                   const FilePath& data_path)
+    static void exportThreeVectors(
+        const std::vector<double> x,
+        const std::vector<double> y,
+        const std::vector<unsigned int> z,
+        const FilePath& data_path)
     {
         std::ofstream destinationFile;
         destinationFile.open(data_path.c_str(), std::ios_base::out);
@@ -95,11 +95,12 @@ public:
         destinationFile.close();
     }
 
-    static void exportFourVectors(const std::vector<double> w,
-                                  const std::vector<double> x,
-                                  const std::vector<double> y,
-                                  const std::vector<double> z,
-                                  const FilePath& data_path)
+    static void exportFourVectors(
+        const std::vector<double> w,
+        const std::vector<double> x,
+        const std::vector<double> y,
+        const std::vector<double> z,
+        const FilePath& data_path)
     {
         std::ofstream destinationFile;
         destinationFile.open(data_path.c_str(), std::ios_base::out);

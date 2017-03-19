@@ -53,10 +53,8 @@ GnuplotConsole::~GnuplotConsole()
 }
 
 // TODO should be const
-bool GnuplotConsole::plotPropertySet(const VariantsSet& set,
-                                     const std::string& propertyName,
-                                     const bool logBin,
-                                     unsigned int bins)
+bool GnuplotConsole::plotPropertySet(
+    const VariantsSet& set, const std::string& propertyName, const bool logBin, unsigned int bins)
 {
     GrapherUtils utils;
     if (pipe == NULL)

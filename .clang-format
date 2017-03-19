@@ -2,6 +2,7 @@
 Language:        Cpp
 BasedOnStyle:  Google
 AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
 BinPackParameters: false

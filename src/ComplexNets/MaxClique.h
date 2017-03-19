@@ -523,8 +523,8 @@ private:
     void calculateMaxClique(Graph& graph)
     {
         MaxCliqueExactVisitor<Graph, Vertex> visitor(*this);
-        TraverserOrdered<Graph, Vertex, MaxCliqueExactVisitor<Graph, Vertex>,
-                         DegreeCompare>::traverse(graph, visitor, DegreeCompare());
+        TraverserOrdered<Graph, Vertex, MaxCliqueExactVisitor<Graph, Vertex>, DegreeCompare>::
+            traverse(graph, visitor, DegreeCompare());
 
         if (!timeouted)
         {

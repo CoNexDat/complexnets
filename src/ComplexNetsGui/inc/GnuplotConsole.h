@@ -27,17 +27,19 @@ class GnuplotConsole : public QDialog
 public:
     GnuplotConsole(QWidget* parent = 0);
     ~GnuplotConsole();
-    bool plotPropertySet(const VariantsSet& set,
-                         const std::string& propertyName,
-                         const bool logBin = false,
-                         unsigned int bins = 25);
+    bool plotPropertySet(
+        const VariantsSet& set,
+        const std::string& propertyName,
+        const bool logBin = false,
+        unsigned int bins = 25);
     void writeCommand(const std::string& command);
     bool boxplotCC(
         std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries,
         const bool logBin = false,
         unsigned int bins = 25);
-    bool addLogBins(std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
-                    unsigned int binsAmount);
+    bool addLogBins(
+        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
+        unsigned int binsAmount);
     unsigned int findBin(const std::vector<double>& bins, const unsigned int value);
 
     // void closeDialog();

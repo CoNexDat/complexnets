@@ -65,9 +65,8 @@ DirectedGraph* GraphGenerator::generateDirectedGraphFromFile(std::string path, b
     return graph;
 }
 
-WeightedGraph* GraphGenerator::generateWeightedGraphFromFile(std::string path,
-                                                             bool directed,
-                                                             bool multigraph)
+WeightedGraph* GraphGenerator::generateWeightedGraphFromFile(
+    std::string path, bool directed, bool multigraph)
 {
     WeightedGraph* graph = new WeightedGraph(directed, multigraph);
 
@@ -227,12 +226,13 @@ void GraphGenerator::addOriginalVertex(Graph* graph)
 
         TODO: Optimize this function using Voronoi Diagrams
 */
-void GraphGenerator::addFKPNode(unsigned int vertexIndex,
-                                Graph* graph,
-                                unsigned int root,
-                                float xi,
-                                std::vector<unsigned int>* vertexIndexes,
-                                unsigned int m)
+void GraphGenerator::addFKPNode(
+    unsigned int vertexIndex,
+    Graph* graph,
+    unsigned int root,
+    float xi,
+    std::vector<unsigned int>* vertexIndexes,
+    unsigned int m)
 {
     std::map<float, unsigned int> distance;
 
@@ -256,8 +256,9 @@ void GraphGenerator::addFKPNode(unsigned int vertexIndex,
         float w = euclidianDistance + xi * HopsDistance;
         distance[w] = j;  // stores 'w' as key of a map
     }
-    addEdges(graph, newVertex, distance, m,
-             vertexIndexes);  // m edges are added acording to the minimum distances
+    addEdges(
+        graph, newVertex, distance, m,
+        vertexIndexes);  // m edges are added acording to the minimum distances
     distance.clear();
 }
 
@@ -266,12 +267,13 @@ void GraphGenerator::addFKPNode(unsigned int vertexIndex,
 
         TODO: Optimize the complexity of the algorithm using Voronoi diagrams.
 */
-void GraphGenerator::addExtendedEdges(unsigned int q,
-                                      unsigned int vertexIndex,
-                                      Graph* graph,
-                                      unsigned int root,
-                                      float r,
-                                      std::vector<unsigned int>* vertexIndexes)
+void GraphGenerator::addExtendedEdges(
+    unsigned int q,
+    unsigned int vertexIndex,
+    Graph* graph,
+    unsigned int root,
+    float r,
+    std::vector<unsigned int>* vertexIndexes)
 {
     // We will go through this function q times, adding q edges
     for (unsigned int qfinal = 0; qfinal < q; qfinal++)
@@ -343,10 +345,11 @@ void GraphGenerator::addExtendedEdges(unsigned int q,
 /**
         A new root is choosen according to the parameter t and the indexes distribution
 */
-int GraphGenerator::chooseNewRoot(unsigned int vertexIndex,
-                                  unsigned int t,
-                                  unsigned int root,
-                                  std::vector<unsigned int> vertexIndexes)
+int GraphGenerator::chooseNewRoot(
+    unsigned int vertexIndex,
+    unsigned int t,
+    unsigned int root,
+    std::vector<unsigned int> vertexIndexes)
 {
     if ((vertexIndex - 1) % t == 0)
     {
@@ -355,11 +358,12 @@ int GraphGenerator::chooseNewRoot(unsigned int vertexIndex,
     return root;
 }
 
-void GraphGenerator::addEdges(Graph* graph,
-                              Vertex* vertex,
-                              std::map<float, unsigned int> distance,
-                              unsigned int quant,
-                              std::vector<unsigned int>* vertexIndexes)
+void GraphGenerator::addEdges(
+    Graph* graph,
+    Vertex* vertex,
+    std::map<float, unsigned int> distance,
+    unsigned int quant,
+    std::vector<unsigned int>* vertexIndexes)
 {
     for (unsigned int k = 0; k < quant && !distance.empty();
          k++)  // Adding "q" new edges. The processes is similar to added vertex.
@@ -380,8 +384,9 @@ void GraphGenerator::addEdges(Graph* graph,
 
 float GraphGenerator::distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id)
 {
-    return sqrt(pow(vertexesPositions[vertex1Id - 1].x - vertexesPositions[vertex2Id - 1].x, 2) +
-                pow(vertexesPositions[vertex1Id - 1].y - vertexesPositions[vertex2Id - 1].y, 2));
+    return sqrt(
+        pow(vertexesPositions[vertex1Id - 1].x - vertexesPositions[vertex2Id - 1].x, 2) +
+        pow(vertexesPositions[vertex1Id - 1].y - vertexesPositions[vertex2Id - 1].y, 2));
 }
 
 void GraphGenerator::addVertexPosition()
@@ -409,15 +414,16 @@ Graph* GraphGenerator::generateMolloyReedGraph(std::string path)
 
 inline double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition p2)
 {
-    return acosh(cosh(p1.r) * cosh(p2.r) -
-                 sinh(p1.r) * sinh(p2.r) * cos(fmod(abs(p1.theta - p2.theta), PI)));
+    return acosh(
+        cosh(p1.r) * cosh(p2.r) -
+        sinh(p1.r) * sinh(p2.r) * cos(fmod(abs(p1.theta - p2.theta), PI)));
 }
 
 /*
  * Computes random polar hyperbolic coordinates
  */
-inline GraphGenerator::PolarPosition GraphGenerator::getRandomHyperbolicCoordinates(float a,
-                                                                                    double maxr)
+inline GraphGenerator::PolarPosition GraphGenerator::getRandomHyperbolicCoordinates(
+    float a, double maxr)
 {
     PolarPosition pos;
     // generate theta in [0, 2pi]

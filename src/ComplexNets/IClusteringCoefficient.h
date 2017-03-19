@@ -5,7 +5,6 @@
 
 namespace graphpp
 {
-
 template <class Graph, class Vertex>
 class IClusteringCoefficient
 {

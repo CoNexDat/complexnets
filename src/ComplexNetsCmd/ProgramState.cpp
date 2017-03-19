@@ -109,7 +109,7 @@ void ProgramState::setHiperbolicGraph(unsigned int n, float a, float c)
 {
     setWeighted(false);
     std::cout << "Generating hyperbolic graph. Expected avg degree: "
-         << GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, c) << std::endl;
+              << GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, c) << std::endl;
     this->graph = *GraphGenerator::getInstance()->generateHiperbolicGraph(n, a, c);
 }
 
@@ -219,8 +219,8 @@ double ProgramState::clustering(unsigned int vertex_id)
                 new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
             IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient =
                 factory->createClusteringCoefficient();
-            ret = clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_out,
-                                                                     directed_in);
+            ret = clusteringCoefficient->vertexClusteringCoefficient(
+                vertex, directed_out, directed_in);
             delete clusteringCoefficient;
         }
     }
@@ -415,9 +415,9 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
             wbetweenness->iterator();
         while (!betweennessIterator.end())
         {
-            propertyMap.addProperty<double>("betweenness",
-                                            to_string<unsigned int>(betweennessIterator->first),
-                                            betweennessIterator->second);
+            propertyMap.addProperty<double>(
+                "betweenness", to_string<unsigned int>(betweennessIterator->first),
+                betweennessIterator->second);
             ++betweennessIterator;
         }
         delete wbetweenness;
@@ -430,9 +430,9 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
             betweenness->iterator();
         while (!betweennessIterator.end())
         {
-            propertyMap.addProperty<double>("betweenness",
-                                            to_string<unsigned int>(betweennessIterator->first),
-                                            betweennessIterator->second);
+            propertyMap.addProperty<double>(
+                "betweenness", to_string<unsigned int>(betweennessIterator->first),
+                betweennessIterator->second);
             ++betweennessIterator;
         }
         delete betweenness;
@@ -446,12 +446,12 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
             wdegreeDistribution->iterator();
         while (!degreeIterator.end())
         {
-            propertyMap.addProperty<double>("degreeDistribution",
-                                            to_string<unsigned int>(degreeIterator->first),
-                                            degreeIterator->second);
-            propertyMap.addProperty<double>("degreeDistributionProbability",
-                                            to_string<unsigned int>(degreeIterator->first),
-                                            degreeIterator->second / (double)graph.verticesCount());
+            propertyMap.addProperty<double>(
+                "degreeDistribution", to_string<unsigned int>(degreeIterator->first),
+                degreeIterator->second);
+            propertyMap.addProperty<double>(
+                "degreeDistributionProbability", to_string<unsigned int>(degreeIterator->first),
+                degreeIterator->second / (double)graph.verticesCount());
             ++degreeIterator;
         }
         delete degreeDistribution;
@@ -463,12 +463,12 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
             degreeDistribution->iterator();
         while (!degreeIterator.end())
         {
-            propertyMap.addProperty<double>("degreeDistribution",
-                                            to_string<unsigned int>(degreeIterator->first),
-                                            degreeIterator->second);
-            propertyMap.addProperty<double>("degreeDistributionProbability",
-                                            to_string<unsigned int>(degreeIterator->first),
-                                            degreeIterator->second / (double)graph.verticesCount());
+            propertyMap.addProperty<double>(
+                "degreeDistribution", to_string<unsigned int>(degreeIterator->first),
+                degreeIterator->second);
+            propertyMap.addProperty<double>(
+                "degreeDistributionProbability", to_string<unsigned int>(degreeIterator->first),
+                degreeIterator->second / (double)graph.verticesCount());
             ++degreeIterator;
         }
         delete degreeDistribution;
@@ -509,8 +509,8 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
         betweennessAuxAcum = from_string<double>(betweennessVsDegreeIt->second);
         degreeAmount = degreeDistributionSet.get_element<unsigned int>(degree);
 
-        propertyMap.addProperty<double>("betweennessVsDegree", degree,
-                                        betweennessAuxAcum / (double)degreeAmount);
+        propertyMap.addProperty<double>(
+            "betweennessVsDegree", degree, betweennessAuxAcum / (double)degreeAmount);
         ++betweennessVsDegreeIt;
     }
 }
@@ -530,8 +530,8 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
 
         while (!it.end())
         {
-            propertyMap.addProperty<double>("degreeDistribution",
-                                            to_string<unsigned int>(it->first), it->second);
+            propertyMap.addProperty<double>(
+                "degreeDistribution", to_string<unsigned int>(it->first), it->second);
             propertyMap.addProperty<double>(
                 "degreeDistributionProbability", to_string<unsigned int>(it->first),
                 it->second / (double)this->weightedGraph.verticesCount());
@@ -558,17 +558,17 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
         {
             if (!it.end())
             {
-                propertyMap.addProperty<double>("inDegreeDistribution",
-                                                to_string<unsigned int>(it->first), it->second);
-                propertyMap.addProperty<double>("inDegreeDistributionProbability",
-                                                to_string<unsigned int>(it->first),
-                                                it->second / (double)directedGraph.verticesCount());
+                propertyMap.addProperty<double>(
+                    "inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
+                propertyMap.addProperty<double>(
+                    "inDegreeDistributionProbability", to_string<unsigned int>(it->first),
+                    it->second / (double)directedGraph.verticesCount());
                 ++it;
             }
             if (!it2.end())
             {
-                propertyMap.addProperty<double>("outDegreeDistribution",
-                                                to_string<unsigned int>(it2->first), it2->second);
+                propertyMap.addProperty<double>(
+                    "outDegreeDistribution", to_string<unsigned int>(it2->first), it2->second);
                 propertyMap.addProperty<double>(
                     "outDegreeDistributionProbability", to_string<unsigned int>(it2->first),
                     it2->second / (double)directedGraph.verticesCount());
@@ -576,8 +576,8 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
             }
             if (!it3.end())
             {
-                propertyMap.addProperty<double>("inOutDegreeDistribution",
-                                                to_string<unsigned int>(it3->first), it3->second);
+                propertyMap.addProperty<double>(
+                    "inOutDegreeDistribution", to_string<unsigned int>(it3->first), it3->second);
                 propertyMap.addProperty<double>(
                     "inOutDegreeDistributionProbability", to_string<unsigned int>(it3->first),
                     it3->second / (double)directedGraph.verticesCount());
@@ -596,11 +596,11 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
 
         while (!it.end())
         {
-            propertyMap.addProperty<double>("degreeDistribution",
-                                            to_string<unsigned int>(it->first), it->second);
-            propertyMap.addProperty<double>("degreeDistributionProbability",
-                                            to_string<unsigned int>(it->first),
-                                            it->second / (double)this->graph.verticesCount());
+            propertyMap.addProperty<double>(
+                "degreeDistribution", to_string<unsigned int>(it->first), it->second);
+            propertyMap.addProperty<double>(
+                "degreeDistributionProbability", to_string<unsigned int>(it->first),
+                it->second / (double)this->graph.verticesCount());
             ++it;
         }
 
@@ -645,8 +645,8 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
             weightedFactory->createClusteringCoefficient();
         while (it != degrees.end())
         {
-            cc = clusteringCoefficient->clusteringCoefficient(weightedGraph,
-                                                              from_string<unsigned int>(it->first));
+            cc = clusteringCoefficient->clusteringCoefficient(
+                weightedGraph, from_string<unsigned int>(it->first));
             propertyMap.addProperty<double>("clusteringCoeficientForDegree", it->first, cc);
             ++it;
         }
@@ -663,8 +663,8 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
         {
             cc = clusteringCoefficient->clusteringCoefficient(
                 directedGraph, from_string<unsigned int>(it->first), directed_out, directed_in);
-            propertyMap.addProperty<double>("clusteringCoeficientForDegree" + getDirectedPostfix(),
-                                            it->first, cc);
+            propertyMap.addProperty<double>(
+                "clusteringCoeficientForDegree" + getDirectedPostfix(), it->first, cc);
             ++it;
         }
 
@@ -677,8 +677,8 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
             factory->createClusteringCoefficient();
         while (it != degrees.end())
         {
-            cc = clusteringCoefficient->clusteringCoefficient(graph,
-                                                              from_string<unsigned int>(it->first));
+            cc = clusteringCoefficient->clusteringCoefficient(
+                graph, from_string<unsigned int>(it->first));
             propertyMap.addProperty<double>("clusteringCoeficientForDegree", it->first, cc);
             ++it;
         }
@@ -725,8 +725,8 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
 
         while (it != degrees.end())
         {
-            knn = nearestNeighborDegree->meanDegree(weightedGraph,
-                                                    from_string<unsigned int>(it->first));
+            knn = nearestNeighborDegree->meanDegree(
+                weightedGraph, from_string<unsigned int>(it->first));
             propertyMap.addProperty<double>("nearestNeighborDegreeForDegree", it->first, knn);
             ++it;
         }
@@ -744,8 +744,8 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
         {
             knn = nearestNeighborDegree->meanDegree(
                 directedGraph, from_string<unsigned int>(it->first), directed_out, directed_in);
-            propertyMap.addProperty<double>("nearestNeighborDegreeForDegree" + getDirectedPostfix(),
-                                            it->first, knn);
+            propertyMap.addProperty<double>(
+                "nearestNeighborDegreeForDegree" + getDirectedPostfix(), it->first, knn);
             ++it;
         }
 
@@ -776,17 +776,16 @@ void ProgramState::computeShellIndex(PropertyMap& propertyMap)
 
     while (!it.end())
     {
-        propertyMap.addProperty<unsigned int>("shellIndex", to_string<unsigned int>(it->first),
-                                              it->second);
+        propertyMap.addProperty<unsigned int>(
+            "shellIndex", to_string<unsigned int>(it->first), it->second);
         ++it;
     }
 
     delete shellIndex;
 }
 
-bool ProgramState::computeMaxCliqueDistr(PropertyMap& propertyMap,
-                                         bool exact,
-                                         unsigned int max_time)
+bool ProgramState::computeMaxCliqueDistr(
+    PropertyMap& propertyMap, bool exact, unsigned int max_time)
 {
     IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
     IMaxClique<Graph, Vertex>* maxClique =
@@ -813,8 +812,8 @@ bool ProgramState::exportMaxCliqueExact(std::string outputPath, unsigned int max
     if (computeMaxCliqueDistr(propertyMap, true, max_time))
     {
         GrapherUtils utils;
-        utils.exportPropertySet(propertyMap.getPropertySet("maxCliqueExactDistribution"),
-                                outputPath);
+        utils.exportPropertySet(
+            propertyMap.getPropertySet("maxCliqueExactDistribution"), outputPath);
         return true;
     }
     return false;
@@ -851,9 +850,8 @@ void ProgramState::exportBetweennessVsDegree(std::string outputPath)
     utils.exportPropertySet(propertyMap.getPropertySet("betweennessVsDegree"), outputPath);
 }
 
-void ProgramState::exportDegreeDistribution(std::string outputPath,
-                                            unsigned int log_bin_given,
-                                            unsigned int binsAmount)
+void ProgramState::exportDegreeDistribution(
+    std::string outputPath, unsigned int log_bin_given, unsigned int binsAmount)
 {
     PropertyMap propertyMap;
     computeDegreeDistribution(propertyMap);
@@ -872,12 +870,12 @@ void ProgramState::exportDegreeDistribution(std::string outputPath,
             LogBinningPolicy policy;
             std::string outputPath1 = outputPath;
             std::string outputPath2 = outputPath;
-            grapherUtils.exportPropertySet(policy.transform(set, binsAmount),
-                                           outputPath1.append("_in_degree"));
+            grapherUtils.exportPropertySet(
+                policy.transform(set, binsAmount), outputPath1.append("_in_degree"));
 
             VariantsSet& set2 = propertyMap.getPropertySet("outDistributionProbability");
-            grapherUtils.exportPropertySet(policy.transform(set2, binsAmount),
-                                           outputPath2.append("_out_degree"));
+            grapherUtils.exportPropertySet(
+                policy.transform(set2, binsAmount), outputPath2.append("_out_degree"));
         }
         return;
     }
@@ -1010,8 +1008,8 @@ void ProgramState::exportCCBoxplot(std::string outputPath)
     PropertyMap propertyMap;
     computeNearestNeighborsDegree(propertyMap);
     GrapherUtils grapherUtils;
-    grapherUtils.exportPropertySet(propertyMap.getPropertySet("nearestNeighborDegreeForDegree"),
-                                   outputPath);
+    grapherUtils.exportPropertySet(
+        propertyMap.getPropertySet("nearestNeighborDegreeForDegree"), outputPath);
 }
 
 void ProgramState::setDirectedInOut(bool o, bool i)
@@ -1120,8 +1118,8 @@ ProgramState::computeTotalBpEntriesBetweenness()
     while (!vit.end())
     {
         Vertex* v = *vit;
-        double c = propertyMap.getProperty<double>("betweenness",
-                                                   to_string<unsigned int>(v->getVertexId()));
+        double c = propertyMap.getProperty<double>(
+            "betweenness", to_string<unsigned int>(v->getVertexId()));
         bCoefs.push_back(c);
         coefSums += c;
         ++vit;
@@ -1169,26 +1167,26 @@ ProgramState::computeTotalBpEntriesKnn()
     while (!vit.end())
     {
         Vertex* v = *vit;
-        if (!propertyMap.containsProperty("nearestNeighborDegreeForDegreeO",
-                                          to_string<unsigned int>(v->degree())))
+        if (!propertyMap.containsProperty(
+                "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree())))
         {
             oldCoef = 0;
         }
         else
         {
-            oldCoef = propertyMap.getProperty<double>("nearestNeighborDegreeForDegreeO",
-                                                      to_string<unsigned int>(v->degree()));
+            oldCoef = propertyMap.getProperty<double>(
+                "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()));
         }
         graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c =
             nearestNeighborDegree->meanDegreeForVertex(v);
-        propertyMap.addProperty<double>("nearestNeighborDegreeForVertex",
-                                        to_string<unsigned int>(v->getVertexId()), c);
+        propertyMap.addProperty<double>(
+            "nearestNeighborDegreeForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()),
                 oldCoef + (c /
-                           propertyMap.getProperty<double>("degreeDistribution",
-                                                           to_string<unsigned int>(v->degree()))));
+                           propertyMap.getProperty<double>(
+                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
         nnCoefs.push_back(c);
         coefSums += c;
         ++vit;
@@ -1234,26 +1232,26 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
     while (!vit.end())
     {
         Vertex* v = *vit;
-        if (!propertyMap.containsProperty("clusteringCoeficientForDegreeO",
-                                          to_string<unsigned int>(v->degree())))
+        if (!propertyMap.containsProperty(
+                "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree())))
         {
             oldCoef = 0;
         }
         else
         {
-            oldCoef = propertyMap.getProperty<double>("clusteringCoeficientForDegreeO",
-                                                      to_string<unsigned int>(v->degree()));
+            oldCoef = propertyMap.getProperty<double>(
+                "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()));
         }
         graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c =
             clusteringCoefficient->vertexClusteringCoefficient(v);
-        propertyMap.addProperty<double>("clusteringCoeficientForVertex",
-                                        to_string<unsigned int>(v->getVertexId()), c);
+        propertyMap.addProperty<double>(
+            "clusteringCoeficientForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()),
                 oldCoef + (c /
-                           propertyMap.getProperty<double>("degreeDistribution",
-                                                           to_string<unsigned int>(v->degree()))));
+                           propertyMap.getProperty<double>(
+                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
         clusteringCoefs.push_back(c);
         coefSums += c;
         ++vit;

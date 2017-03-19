@@ -13,8 +13,9 @@ namespace graphpp
 class BrandesNodeComparatorLargerFirst
 {
 public:
-    bool operator()(graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v1,
-                    graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v2)
+    bool operator()(
+        graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v1,
+        graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v2)
     {
         return v1->distance < v2->distance;
     }
@@ -23,8 +24,9 @@ public:
 class BrandesNodeComparatorSmallerFirst
 {
 public:
-    bool operator()(graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v1,
-                    graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v2)
+    bool operator()(
+        graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v1,
+        graphpp::WeightedVertexAspect<graphpp::AdjacencyListVertex>* v2)
     {
         return v1->distance > v2->distance;
     }
@@ -95,12 +97,14 @@ private:
                     {
                         w->distance = alt;
                         // refreshing ordering of priority queues
-                        std::make_heap(const_cast<Vertex**>(&Q.top()),
-                                       const_cast<Vertex**>(&Q.top()) + Q.size(),
-                                       BrandesNodeComparatorSmallerFirst());
-                        std::make_heap(const_cast<Vertex**>(&S.top()),
-                                       const_cast<Vertex**>(&S.top()) + S.size(),
-                                       BrandesNodeComparatorLargerFirst());
+                        std::make_heap(
+                            const_cast<Vertex**>(&Q.top()),
+                            const_cast<Vertex**>(&Q.top()) + Q.size(),
+                            BrandesNodeComparatorSmallerFirst());
+                        std::make_heap(
+                            const_cast<Vertex**>(&S.top()),
+                            const_cast<Vertex**>(&S.top()) + S.size(),
+                            BrandesNodeComparatorLargerFirst());
                         if (wValue == inf)
                         {
                             Q.push(w);
@@ -149,11 +153,12 @@ private:
         }
     }
 
-    void initMap(Graph& g,
-                 unsigned int vertexId,
-                 std::map<typename Vertex::VertexId, double>& m,
-                 double commonValue,
-                 double distinguishedValue)
+    void initMap(
+        Graph& g,
+        unsigned int vertexId,
+        std::map<typename Vertex::VertexId, double>& m,
+        double commonValue,
+        double distinguishedValue)
     {
         VerticesIterator it = g.verticesIterator();
 

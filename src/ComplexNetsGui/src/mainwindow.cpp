@@ -86,11 +86,11 @@ void MainWindow::on_actionOpen_triggered()
                 bool isDirected = graphValidationDialog.isDirected();
                 bool isMultigraph = graphValidationDialog.isMultigraph();
                 selectedFiles = fileDialog.selectedFiles();
-                this->onNetworkLoad(graphValidationDialog.isWeigthed(),
-                                    graphValidationDialog.isDirected(),
-                                    graphValidationDialog.isMultigraph());
-                buildGraphFactory(graphValidationDialog.isWeigthed(),
-                                  graphValidationDialog.isDirected());
+                this->onNetworkLoad(
+                    graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(),
+                    graphValidationDialog.isMultigraph());
+                buildGraphFactory(
+                    graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected());
                 try
                 {
                     std::string path = selectedFiles[0].toStdString();
@@ -227,8 +227,9 @@ void MainWindow::on_actionExportPowerLawDegreeDistribution_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-    QMessageBox msg(QMessageBox::Question, "Quit", "Are you sure you want to quit?",
-                    QMessageBox::Ok | QMessageBox::Cancel, this);
+    QMessageBox msg(
+        QMessageBox::Question, "Quit", "Are you sure you want to quit?",
+        QMessageBox::Ok | QMessageBox::Cancel, this);
     ui->textBrowser->append("About to quit ComplexNets++...");
     if (msg.exec() == QMessageBox::Ok)
     {
@@ -243,9 +244,10 @@ void MainWindow::on_actionQuit_triggered()
 void MainWindow::on_actionClose_current_network_triggered()
 {
     ui->textBrowser->append("About to close the current network...");
-    QMessageBox msg(QMessageBox::Question, "Close current network",
-                    "Are you sure you want to close the current network?",
-                    QMessageBox::Ok | QMessageBox::Cancel, this);
+    QMessageBox msg(
+        QMessageBox::Question, "Close current network",
+        "Are you sure you want to close the current network?",
+        QMessageBox::Ok | QMessageBox::Cancel, this);
     if (msg.exec() == QMessageBox::Ok)
     {
         graph = Graph();
@@ -443,12 +445,12 @@ void MainWindow::on_actionExportMaxClique_distribution_generic_triggered(bool ex
     ret = this->getSavePath();
     if (!ret.empty())
     {
-        if (propertyMap.containsPropertySet(exact ? "maxCliqueExactDistribution"
-                                                  : "maxCliqueAproxDistribution"))
+        if (propertyMap.containsPropertySet(
+                exact ? "maxCliqueExactDistribution" : "maxCliqueAproxDistribution"))
         {
             grapherUtils.exportPropertySet(
-                propertyMap.getPropertySet(exact ? "maxCliqueExactDistribution"
-                                                 : "maxCliqueAproxDistribution"),
+                propertyMap.getPropertySet(
+                    exact ? "maxCliqueExactDistribution" : "maxCliqueAproxDistribution"),
                 ret);
             ui->textBrowser->append("Done.");
         }
@@ -489,8 +491,8 @@ void MainWindow::on_action_maxClique_plotting_generic_triggered(bool exact)
         }
     }
     ret = this->console->plotPropertySet(
-        propertyMap.getPropertySet(exact ? "maxCliqueExactDistribution"
-                                         : "maxCliqueAproxDistribution"),
+        propertyMap.getPropertySet(
+            exact ? "maxCliqueExactDistribution" : "maxCliqueAproxDistribution"),
         "maxCliqueDistribution", logBin, bins);
     this->console->show();
     this->activateWindow();
@@ -743,10 +745,10 @@ void MainWindow::computeMaxClique(bool exact)
             if (maxClique->finished())
             {
                 id_list ids = maxClique->getMaxCliqueList();
-                propertyMap.addProperty<int>(exact ? "maxCliqueExact" : "maxCliqueAprox", "size",
-                                             ids.size());
-                propertyMap.addProperty<id_list>(exact ? "maxCliqueExact" : "maxCliqueAprox",
-                                                 "list", ids);
+                propertyMap.addProperty<int>(
+                    exact ? "maxCliqueExact" : "maxCliqueAprox", "size", ids.size());
+                propertyMap.addProperty<id_list>(
+                    exact ? "maxCliqueExact" : "maxCliqueAprox", "list", ids);
 
                 DistributionIterator it = maxClique->distIterator();
                 while (!it.end())
@@ -780,8 +782,8 @@ void MainWindow::computeBetweenness()
                 betweenness->iterator();
             while (!it.end())
             {
-                propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first),
-                                                it->second);
+                propertyMap.addProperty<double>(
+                    "betweenness", to_string<unsigned int>(it->first), it->second);
                 ++it;
             }
             delete betweenness;
@@ -792,8 +794,8 @@ void MainWindow::computeBetweenness()
             IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
             while (!it.end())
             {
-                propertyMap.addProperty<double>("betweenness", to_string<unsigned int>(it->first),
-                                                it->second);
+                propertyMap.addProperty<double>(
+                    "betweenness", to_string<unsigned int>(it->first), it->second);
                 ++it;
             }
             delete betweenness;
@@ -813,11 +815,11 @@ void MainWindow::computeDegreeDistribution()
                 degreeDistribution->iterator();
             while (!it.end())
             {
-                propertyMap.addProperty<double>("degreeDistribution", to_string<double>(it->first),
-                                                it->second);
-                propertyMap.addProperty<double>("degreeDistributionProbability",
-                                                to_string<double>(it->first),
-                                                it->second / (double)weightedGraph.verticesCount());
+                propertyMap.addProperty<double>(
+                    "degreeDistribution", to_string<double>(it->first), it->second);
+                propertyMap.addProperty<double>(
+                    "degreeDistributionProbability", to_string<double>(it->first),
+                    it->second / (double)weightedGraph.verticesCount());
                 ++it;
             }
             delete degreeDistribution;
@@ -838,8 +840,8 @@ void MainWindow::computeDegreeDistribution()
             {
                 if (!it.end())
                 {
-                    propertyMap.addProperty<double>("inDegreeDistribution",
-                                                    to_string<unsigned int>(it->first), it->second);
+                    propertyMap.addProperty<double>(
+                        "inDegreeDistribution", to_string<unsigned int>(it->first), it->second);
                     propertyMap.addProperty<double>(
                         "inDegreeDistributionProbability", to_string<unsigned int>(it->first),
                         it->second / (double)directedGraph.verticesCount());
@@ -856,9 +858,9 @@ void MainWindow::computeDegreeDistribution()
                 }
                 if (!it3.end())
                 {
-                    propertyMap.addProperty<double>("inOutDegreeDistribution",
-                                                    to_string<unsigned int>(it3->first),
-                                                    it3->second);
+                    propertyMap.addProperty<double>(
+                        "inOutDegreeDistribution", to_string<unsigned int>(it3->first),
+                        it3->second);
                     propertyMap.addProperty<double>(
                         "inOutDegreeDistributionProbability", to_string<unsigned int>(it3->first),
                         it3->second / (double)directedGraph.verticesCount());
@@ -875,11 +877,11 @@ void MainWindow::computeDegreeDistribution()
                 degreeDistribution->iterator();
             while (!it.end())
             {
-                propertyMap.addProperty<double>("degreeDistribution",
-                                                to_string<unsigned int>(it->first), it->second);
-                propertyMap.addProperty<double>("degreeDistributionProbability",
-                                                to_string<unsigned int>(it->first),
-                                                it->second / (double)graph.verticesCount());
+                propertyMap.addProperty<double>(
+                    "degreeDistribution", to_string<unsigned int>(it->first), it->second);
+                propertyMap.addProperty<double>(
+                    "degreeDistributionProbability", to_string<unsigned int>(it->first),
+                    it->second / (double)graph.verticesCount());
                 ++it;
             }
             delete degreeDistribution;
@@ -923,8 +925,8 @@ void MainWindow::on_actionDegree_distribution_triggered()
             if (!propertyMap.containsProperty("degreeDistributionBPMean", to_string(0)))
             {
                 entry = this->computeTotalBpEntriesDegreeDistribution();
-                propertyMap.addProperty<double>("degreeDistributionBPMean", to_string(0),
-                                                entry.mean);
+                propertyMap.addProperty<double>(
+                    "degreeDistributionBPMean", to_string(0), entry.mean);
                 propertyMap.addProperty<double>("degreeDistributionBPMin", to_string(0), entry.min);
                 propertyMap.addProperty<double>("degreeDistributionBPQ1", to_string(0), entry.Q1);
                 propertyMap.addProperty<double>("degreeDistributionBPQ2", to_string(0), entry.Q2);
@@ -1030,8 +1032,9 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
     {
         if (logBin)
         {
-            ret = this->console->plotPropertySet(propertyMap.getPropertySet("degreeDistribution"),
-                                                 "degreeDistribution", logBin, bins);
+            ret = this->console->plotPropertySet(
+                propertyMap.getPropertySet("degreeDistribution"), "degreeDistribution", logBin,
+                bins);
         }
         else
         {
@@ -1066,8 +1069,8 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
         }
         else
         {
-            ret = this->console->plotPropertySet(propertyMap.getPropertySet(key + "Probability"),
-                                                 key, logBin, bins);
+            ret = this->console->plotPropertySet(
+                propertyMap.getPropertySet(key + "Probability"), key, logBin, bins);
             this->console->show();
             this->activateWindow();
         }
@@ -1131,8 +1134,8 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                     propertyMap.addProperty<double>(
                         "clusteringCoeficientForVertex",
                         to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
-                        clusteringCoefficient->vertexClusteringCoefficient(vertex, directed_out,
-                                                                           directed_in));
+                        clusteringCoefficient->vertexClusteringCoefficient(
+                            vertex, directed_out, directed_in));
                     delete clusteringCoefficient;
                 }
             }
@@ -1168,24 +1171,24 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                 {
                     this->computeDegreeDistribution();
                     entry = this->computeTotalBpEntries();
-                    propertyMap.addProperty<double>("ClusteringCoefficientBPMean", to_string(0),
-                                                    entry.mean);
-                    propertyMap.addProperty<double>("ClusteringCoefficientBPMin", to_string(0),
-                                                    entry.min);
-                    propertyMap.addProperty<double>("ClusteringCoefficientBPQ1", to_string(0),
-                                                    entry.Q1);
-                    propertyMap.addProperty<double>("ClusteringCoefficientBPQ2", to_string(0),
-                                                    entry.Q2);
-                    propertyMap.addProperty<double>("ClusteringCoefficientBPQ3", to_string(0),
-                                                    entry.Q3);
-                    propertyMap.addProperty<double>("ClusteringCoefficientBPMax", to_string(0),
-                                                    entry.max);
+                    propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPMean", to_string(0), entry.mean);
+                    propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPMin", to_string(0), entry.min);
+                    propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPQ1", to_string(0), entry.Q1);
+                    propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPQ2", to_string(0), entry.Q2);
+                    propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPQ3", to_string(0), entry.Q3);
+                    propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPMax", to_string(0), entry.max);
                 }
                 else
                 {
                     ret.append("Data already calculated. \n");
-                    entry.mean = propertyMap.getProperty<double>("ClusteringCoefficientBPMean",
-                                                                 to_string(0));
+                    entry.mean = propertyMap.getProperty<double>(
+                        "ClusteringCoefficientBPMean", to_string(0));
                     entry.min =
                         propertyMap.getProperty<double>("ClusteringCoefficientBPMin", to_string(0));
                     entry.Q1 =
@@ -1280,8 +1283,8 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                     propertyMap.addProperty<double>(
                         "nearestNeighborsDegreeForVertex",
                         to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
-                        nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_out,
-                                                                    directed_in));
+                        nearestNeighborsDegree->meanDegreeForVertex(
+                            vertex, directed_out, directed_in));
                     delete nearestNeighborsDegree;
                 }
             }
@@ -1500,8 +1503,8 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
                 weightedFactory->createNearestNeighborsDegree();
             while (it != degrees.end())
             {
-                knn = nearestNeighborDegree->meanDegree(weightedGraph,
-                                                        from_string<unsigned int>(it->first));
+                knn = nearestNeighborDegree->meanDegree(
+                    weightedGraph, from_string<unsigned int>(it->first));
                 propertyMap.addProperty<double>(nnKey, it->first, knn);
                 ++it;
             }
@@ -1593,8 +1596,9 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered()
     shellVsDegreeIt = shellIndexVsDegree.begin();
     while (shellVsDegreeIt != shellIndexVsDegree.end())
     {
-        propertyMap.addProperty<double>("shellIndexVsDegree", shellVsDegreeIt->first,
-                                        from_string<double>(shellVsDegreeIt->second));
+        propertyMap.addProperty<double>(
+            "shellIndexVsDegree", shellVsDegreeIt->first,
+            from_string<double>(shellVsDegreeIt->second));
         ++shellVsDegreeIt;
     }
 
@@ -1655,8 +1659,9 @@ void MainWindow::on_actionBetweenness_vs_Degree_triggered()
     betweennessVsDegreeIt = betweennessVsDegree.begin();
     while (betweennessVsDegreeIt != betweennessVsDegree.end())
     {
-        propertyMap.addProperty<double>("betweennessVsDegree", betweennessVsDegreeIt->first,
-                                        from_string<double>(betweennessVsDegreeIt->second));
+        propertyMap.addProperty<double>(
+            "betweennessVsDegree", betweennessVsDegreeIt->first,
+            from_string<double>(betweennessVsDegreeIt->second));
         ++betweennessVsDegreeIt;
     }
 
@@ -1878,8 +1883,8 @@ int MainWindow::LogBinningDialog()
 {
     QString title("Logarithmic Binning");
     QString text("Would you like to log-bin the data before plotting?");
-    QMessageBox msgBox(QMessageBox::Question, title, text, QMessageBox::Yes | QMessageBox::No,
-                       this);
+    QMessageBox msgBox(
+        QMessageBox::Question, title, text, QMessageBox::Yes | QMessageBox::No, this);
     msgBox.setDefaultButton(QMessageBox::Yes);
     return msgBox.exec();
 }
@@ -2238,10 +2243,11 @@ void MainWindow::computeCumulativeDegreeDistribution()
     while (it != myMap.end())
     {
         cumulate += it->second;
-        propertyMap.addProperty<double>("cumulativeDegreeDistribution",
-                                        to_string<unsigned int>(it->first), cumulate);
-        propertyMap.addProperty<double>("cumulativeDegreeDistributionProbability",
-                                        to_string<unsigned int>(it->first), cumulate / total);
+        propertyMap.addProperty<double>(
+            "cumulativeDegreeDistribution", to_string<unsigned int>(it->first), cumulate);
+        propertyMap.addProperty<double>(
+            "cumulativeDegreeDistributionProbability", to_string<unsigned int>(it->first),
+            cumulate / total);
 
         ++it;
     }
@@ -2351,8 +2357,8 @@ MainWindow::computeBpentries()
     while (it != degrees.end())
     {
         // this calculates the Mean CC for a degree. I think it's unnecesary..
-        cc = clusteringCoefficient->clusteringCoefficient(graph,
-                                                          from_string<unsigned int>(it->first));
+        cc = clusteringCoefficient->clusteringCoefficient(
+            graph, from_string<unsigned int>(it->first));
 
         // Starting here: instead of calling a function at ClusteringCoefficient.h, I've put
         // everything here because the other way was not working.
@@ -2422,26 +2428,26 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
     while (!vit.end())
     {
         Vertex* v = *vit;
-        if (!propertyMap.containsProperty("clusteringCoeficientForDegreeO",
-                                          to_string<unsigned int>(v->degree())))
+        if (!propertyMap.containsProperty(
+                "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree())))
         {
             oldCoef = 0;
         }
         else
         {
-            oldCoef = propertyMap.getProperty<double>("clusteringCoeficientForDegreeO",
-                                                      to_string<unsigned int>(v->degree()));
+            oldCoef = propertyMap.getProperty<double>(
+                "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()));
         }
         graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c =
             clusteringCoefficient->vertexClusteringCoefficient(v);
-        propertyMap.addProperty<double>("clusteringCoeficientForVertex",
-                                        to_string<unsigned int>(v->getVertexId()), c);
+        propertyMap.addProperty<double>(
+            "clusteringCoeficientForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()),
                 oldCoef + (c /
-                           propertyMap.getProperty<double>("degreeDistribution",
-                                                           to_string<unsigned int>(v->degree()))));
+                           propertyMap.getProperty<double>(
+                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
         clusteringCoefs.push_back(c);
         coefSums += c;
         ++vit;
@@ -2485,26 +2491,26 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
     while (!vit.end())
     {
         Vertex* v = *vit;
-        if (!propertyMap.containsProperty("nearestNeighborDegreeForDegreeO",
-                                          to_string<unsigned int>(v->degree())))
+        if (!propertyMap.containsProperty(
+                "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree())))
         {
             oldCoef = 0;
         }
         else
         {
-            oldCoef = propertyMap.getProperty<double>("nearestNeighborDegreeForDegreeO",
-                                                      to_string<unsigned int>(v->degree()));
+            oldCoef = propertyMap.getProperty<double>(
+                "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()));
         }
         graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c =
             nearestNeighborDegree->meanDegreeForVertex(v);
-        propertyMap.addProperty<double>("nearestNeighborDegreeForVertex",
-                                        to_string<unsigned int>(v->getVertexId()), c);
+        propertyMap.addProperty<double>(
+            "nearestNeighborDegreeForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()),
                 oldCoef + (c /
-                           propertyMap.getProperty<double>("degreeDistribution",
-                                                           to_string<unsigned int>(v->degree()))));
+                           propertyMap.getProperty<double>(
+                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
         nnCoefs.push_back(c);
         coefSums += c;
         ++vit;
@@ -2545,8 +2551,8 @@ MainWindow::computeTotalBpEntriesBetweenness()
     while (!vit.end())
     {
         Vertex* v = *vit;
-        double c = propertyMap.getProperty<double>("betweenness",
-                                                   to_string<unsigned int>(v->getVertexId()));
+        double c = propertyMap.getProperty<double>(
+            "betweenness", to_string<unsigned int>(v->getVertexId()));
         bCoefs.push_back(c);
         coefSums += c;
         ++vit;
@@ -2964,8 +2970,8 @@ void MainWindow::configureDirectedDirection()
     items << p << n << pn;
     bool ok;
 
-    QString item = QInputDialog::getItem(this, "Directed Degree direction", "Direction:", items, 0,
-                                         false, &ok);
+    QString item = QInputDialog::getItem(
+        this, "Directed Degree direction", "Direction:", items, 0, false, &ok);
     if (ok && !item.isEmpty())
     {
         if (item == pn)

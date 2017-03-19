@@ -74,9 +74,8 @@ public:
     void exportMaxCliqueAprox(std::string outputPath);
     void exportCurrentGraph(std::string outputPath);
     void exportBetweennessVsDegree(std::string outputPath);
-    void exportDegreeDistribution(std::string outputPath,
-                                  unsigned int log_bin_given = false,
-                                  unsigned int binsAmount = -1);
+    void exportDegreeDistribution(
+        std::string outputPath, unsigned int log_bin_given = false, unsigned int binsAmount = -1);
     void exportClusteringVsDegree(std::string outputPath);
     void exportNearestNeighborsDegreeVsDegree(std::string outputPath);
     void exportShellIndexVsDegree(std::string outputPath);
