@@ -35,7 +35,7 @@ class WeightedGraphFactory : public IGraphFactory<Graph, Vertex>
     virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph&)
     {
         // return new WeightedShellIndex<Graph,Vertex>();
-        return NULL;
+        return nullptr;
     }
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {
@@ -49,12 +49,12 @@ class WeightedGraphFactory : public IGraphFactory<Graph, Vertex>
 
     virtual MaxClique<Graph, Vertex>* createMaxClique(Graph&)
     {
-        return NULL;
+        return nullptr;
     }
 
     virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph&, int)
     {
-        return NULL;
+        return nullptr;
     }
 };
 }

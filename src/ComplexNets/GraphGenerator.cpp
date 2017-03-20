@@ -22,13 +22,13 @@ typedef struct Position
 static const double PI = atan(1) * 4;
 std::vector<Position> vertexesPositions;
 
-GraphGenerator* GraphGenerator::instance = NULL;
+GraphGenerator* GraphGenerator::instance = nullptr;
 
 GraphGenerator::GraphGenerator(){};
 
 GraphGenerator* GraphGenerator::getInstance()
 {
-    if (instance == NULL)
+    if (instance == nullptr)
     {
         instance = new GraphGenerator();
     }

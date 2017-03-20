@@ -200,7 +200,7 @@ double ProgramState::clustering(unsigned int vertex_id)
     if (this->isWeighted())
     {
         WeightedVertex* vertex;
-        if ((vertex = weightedGraph.getVertexById(vertex_id)) != NULL)
+        if ((vertex = weightedGraph.getVertexById(vertex_id)) != nullptr)
         {
             IGraphFactory<WeightedGraph, WeightedVertex>* factory =
                 new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
@@ -213,7 +213,7 @@ double ProgramState::clustering(unsigned int vertex_id)
     else if (this->isDigraph())
     {
         DirectedVertex* vertex;
-        if ((vertex = directedGraph.getVertexById(vertex_id)) != NULL)
+        if ((vertex = directedGraph.getVertexById(vertex_id)) != nullptr)
         {
             IGraphFactory<DirectedGraph, DirectedVertex>* factory =
                 new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
@@ -227,7 +227,7 @@ double ProgramState::clustering(unsigned int vertex_id)
     else
     {
         Vertex* vertex;
-        if ((vertex = graph.getVertexById(vertex_id)) != NULL)
+        if ((vertex = graph.getVertexById(vertex_id)) != nullptr)
         {
             IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
             IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
@@ -246,7 +246,7 @@ double ProgramState::knn(unsigned int vertex_id)
     if (this->isWeighted())
     {
         WeightedVertex* vertex;
-        if ((vertex = weightedGraph.getVertexById(vertex_id)) != NULL)
+        if ((vertex = weightedGraph.getVertexById(vertex_id)) != nullptr)
         {
             IGraphFactory<WeightedGraph, WeightedVertex>* factory =
                 new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
@@ -259,7 +259,7 @@ double ProgramState::knn(unsigned int vertex_id)
     else if (this->isDigraph())
     {
         DirectedVertex* vertex;
-        if ((vertex = directedGraph.getVertexById(vertex_id)) != NULL)
+        if ((vertex = directedGraph.getVertexById(vertex_id)) != nullptr)
         {
             IGraphFactory<DirectedGraph, DirectedVertex>* factory =
                 new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
@@ -272,7 +272,7 @@ double ProgramState::knn(unsigned int vertex_id)
     else
     {
         Vertex* vertex;
-        if ((vertex = graph.getVertexById(vertex_id)) != NULL)
+        if ((vertex = graph.getVertexById(vertex_id)) != nullptr)
         {
             IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
             INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree =

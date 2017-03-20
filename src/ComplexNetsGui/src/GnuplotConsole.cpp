@@ -9,7 +9,7 @@ GnuplotConsole::GnuplotConsole(QWidget* parent) : QDialog(parent)
 {
     if (this->objectName().isEmpty())
         this->setObjectName(QString::fromUtf8("Dialog"));
-    pipe = NULL;
+    pipe = nullptr;
     this->resize(706, 326);
     this->setModal(false);
     groupBox = new QGroupBox(this);
@@ -36,7 +36,7 @@ GnuplotConsole::GnuplotConsole(QWidget* parent) : QDialog(parent)
 GnuplotConsole::~GnuplotConsole()
 {
     std::string exitCommand = "quit\n";
-    if (pipe != NULL)
+    if (pipe != nullptr)
     {
         writeCommand(exitCommand);
         pclose(pipe);
@@ -57,11 +57,11 @@ bool GnuplotConsole::plotPropertySet(
     const VariantsSet& set, const std::string& propertyName, const bool logBin, unsigned int bins)
 {
     GrapherUtils utils;
-    if (pipe == NULL)
+    if (pipe == nullptr)
     {
         pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
     }
-    if (pipe == NULL)
+    if (pipe == nullptr)
         return false;
 
     writeCommand("set logscale x");
@@ -172,11 +172,11 @@ bool GnuplotConsole::boxplotCC(
     }
 
     GrapherUtils utils;
-    if (pipe == NULL)
+    if (pipe == nullptr)
     {
         pipe = popen("gnuplot -persist > /tmp/complexnets_gnuplot_output.txt 2>&1", "w");
     }
-    if (pipe == NULL)
+    if (pipe == nullptr)
         return false;
 
     if (logBin)

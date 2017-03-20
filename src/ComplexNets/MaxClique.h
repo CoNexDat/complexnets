@@ -103,7 +103,7 @@ public:
                     {
                         L_type* L = new L_type();
 
-                        if (as[x] == NULL || (*as[x])[i] == NULL)
+                        if (as[x] == nullptr || (*as[x])[i] == nullptr)
                         {
                             L->push_back(x);
                             L->push_back(v);
@@ -126,15 +126,15 @@ public:
                             }
                             L->push_back(v);
                         }
-                        if (as[v] == NULL)
+                        if (as[v] == nullptr)
                         {
                             as[v] = new a_type();
                         }
-                        if (as[x] == NULL)
+                        if (as[x] == nullptr)
                         {
                             as[x] = new a_type();
                         }
-                        if ((*as[x])[v] == NULL)
+                        if ((*as[x])[v] == nullptr)
                         {
                             (*as[x])[v] = L;
                             (*as[v])[x] = L;
@@ -185,7 +185,7 @@ public:
     virtual std::list<int> getMaxCliqueList()
     {
         unsigned int max_size = 0;
-        std::list<int>* ids = NULL;
+        std::list<int>* ids = nullptr;
         for (MaxCliqueIterator iterator1 = MaxCliqueIterator(container); !iterator1.end();
              iterator1++)
         {
@@ -339,7 +339,7 @@ public:
             Vertex* x = *it1;
             if (x->getVisited())
             {
-                if (as[x] == NULL)
+                if (as[x] == nullptr)
                 {
                     as[x] = new a_type();
                     bool _new = false;
@@ -348,7 +348,7 @@ public:
                     L->push_back(x);
                     L->push_back(v);
 
-                    if (as[v] == NULL)
+                    if (as[v] == nullptr)
                     {
                         as[v] = new a_type();
                         _new = true;
@@ -410,7 +410,7 @@ public:
                         }
                         L->push_back(v);
 
-                        if (as[v] == NULL)
+                        if (as[v] == nullptr)
                         {
                             as[v] = new a_type();
                             _new = true;
@@ -480,7 +480,7 @@ public:
     virtual std::list<int> getMaxCliqueList()
     {
         unsigned int max_size = 0;
-        std::list<int>* ids = NULL;
+        std::list<int>* ids = nullptr;
         for (MaxCliqueIterator iterator1 = MaxCliqueIterator(container); !iterator1.end();
              iterator1++)
         {

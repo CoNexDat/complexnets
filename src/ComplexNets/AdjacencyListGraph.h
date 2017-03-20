@@ -44,7 +44,7 @@ public:
     static Vertex* find(typename Vertex::VertexId id, const Container& c)
     {
         CAutonomousIterator<Container> it = CAutonomousIterator<Container>(c);
-        Vertex* ret = NULL;
+        Vertex* ret = nullptr;
         bool quit = false;
         while (!it.end() && !quit)
         {
@@ -73,7 +73,7 @@ public:
     static Vertex* find(
         typename Vertex::VertexId id, const std::set<Vertex*, VertexComparator<Vertex>>& c)
     {
-        Vertex* ret = NULL;
+        Vertex* ret = nullptr;
         Vertex* prototype = new Vertex(id);
 
         typename std::set<Vertex*, VertexComparator<Vertex>>::iterator it = c.find(prototype);
@@ -194,7 +194,7 @@ public:
     * ---------------------
     * Description: informs the number of vertices currently in the graph
     * @param id the vertex id
-    * @returns the vertex with the specified id or NULL if no vertex has the specified id
+    * @returns the vertex with the specified id or nullptr if no vertex has the specified id
     */
     Vertex* getVertexById(VertexId id) const
     {

@@ -23,8 +23,8 @@ private:
 public:
     Dllist()
     {
-        head = NULL;
-        last = NULL;
+        head = nullptr;
+        last = nullptr;
     }
     Node* getHead()
     {
@@ -32,13 +32,13 @@ public:
     }
     bool empty()
     {
-        return head == NULL;
+        return head == nullptr;
     }
     int Size()
     {
         int i = 0;
         Node* curr = head;
-        while (curr != NULL)
+        while (curr != nullptr)
         {
             curr = curr->next;
             i++;
@@ -56,7 +56,7 @@ public:
             outfile << "Inserting: " << newNode->vertex->getVertexId() << "("
                     << newNode->currentDegree << ") \n";
             Node* it = head;
-            while (it != NULL)
+            while (it != nullptr)
             {
                 outfile << it->vertex->getVertexId() << "(" << it->currentDegree << ") ";
                 it = it->next;
@@ -69,13 +69,13 @@ public:
         {
             head = newNode;
             last = newNode;
-            newNode->prev = NULL;
-            newNode->next = NULL;
+            newNode->prev = nullptr;
+            newNode->next = nullptr;
             return;
         }
 
         // Inserting at the beggining
-        newNode->prev = NULL;
+        newNode->prev = nullptr;
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
@@ -97,7 +97,7 @@ public:
             outfile << "Removing: " << n->vertex->getVertexId() << "(" << n->currentDegree
                     << ") \n";
             Node* it = head;
-            while (it != NULL)
+            while (it != nullptr)
             {
                 outfile << it->vertex->getVertexId() << "(" << it->currentDegree << ") ";
                 it = it->next;
@@ -105,7 +105,7 @@ public:
             outfile << "\n";
         }
 
-        if (n->prev != NULL)
+        if (n->prev != nullptr)
         {
             n->prev->next = n->next;
         }
@@ -113,7 +113,7 @@ public:
         {
             head = n->next;
         }
-        if (n->next != NULL)
+        if (n->next != nullptr)
         {
             n->next->prev = n->prev;
         }

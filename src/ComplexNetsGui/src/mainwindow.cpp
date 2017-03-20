@@ -397,20 +397,20 @@ void MainWindow::buildGraphFactory(const bool isWeighted, const bool isDirected)
 
 void MainWindow::deleteGraphFactory()
 {
-    if (weightedFactory != NULL)
+    if (weightedFactory != nullptr)
     {
         delete weightedFactory;
-        weightedFactory = NULL;
+        weightedFactory = nullptr;
     }
-    else if (directedFactory != NULL)
+    else if (directedFactory != nullptr)
     {
         delete directedFactory;
-        directedFactory = NULL;
+        directedFactory = nullptr;
     }
-    else if (factory != NULL)
+    else if (factory != nullptr)
     {
         delete factory;
-        factory = NULL;
+        factory = nullptr;
     }
 }
 
@@ -1112,7 +1112,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
             {
                 WeightedVertex* vertex;
                 if ((vertex = weightedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
                     IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient =
                         weightedFactory->createClusteringCoefficient();
@@ -1127,7 +1127,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
             {
                 DirectedVertex* vertex;
                 if ((vertex = directedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
                     IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient =
                         directedFactory->createClusteringCoefficient();
@@ -1143,7 +1143,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
             {
                 Vertex* vertex;
                 if ((vertex = graph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
                     // IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
                     // factory->createClusteringCoefficient();
@@ -1155,10 +1155,10 @@ void MainWindow::on_actionClustering_coefficient_triggered()
             }
         }
 
-        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL ||
+        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != nullptr ||
             (this->digraph &&
              directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) !=
-                 NULL))
+                 nullptr))
         {
             try
             {
@@ -1261,7 +1261,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             {
                 WeightedVertex* vertex;
                 if ((vertex = weightedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
                     INearestNeighborsDegree<WeightedGraph, WeightedVertex>* nearestNeighborsDegree =
                         weightedFactory->createNearestNeighborsDegree();
@@ -1276,7 +1276,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             {
                 DirectedVertex* vertex;
                 if ((vertex = directedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
                     INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborsDegree =
                         directedFactory->createNearestNeighborsDegree();
@@ -1292,7 +1292,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             {
                 Vertex* vertex;
                 if ((vertex = graph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
                     // INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree =
                     // factory->createNearestNeighborsDegree();
@@ -1304,10 +1304,10 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             }
         }
 
-        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != NULL ||
+        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != nullptr ||
             (this->digraph &&
              directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) !=
-                 NULL))
+                 nullptr))
         {
             try
             {
@@ -2668,7 +2668,7 @@ void MainWindow::computeClusteringCoefficient(QString vertexId)
     {
         WeightedVertex* vertex;
         if ((vertex = weightedGraph.getVertexById(
-                 from_string<unsigned int>(vertexId.toStdString()))) != NULL)
+                 from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
         {
             IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient =
                 weightedFactory->createClusteringCoefficient();
@@ -2682,7 +2682,7 @@ void MainWindow::computeClusteringCoefficient(QString vertexId)
     {
         Vertex* vertex;
         if ((vertex = graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) !=
-            NULL)
+            nullptr)
         {
             IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
                 factory->createClusteringCoefficient();

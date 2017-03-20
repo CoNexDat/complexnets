@@ -51,7 +51,7 @@ public:
 
     virtual StrengthDistribution<Graph, Vertex>* createStrengthDistribution(Graph& g)
     {
-        return NULL;
+        return nullptr;
     }
 };
 }

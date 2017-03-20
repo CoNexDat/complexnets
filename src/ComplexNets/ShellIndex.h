@@ -35,7 +35,7 @@ private:
         {
             outfile << i << " -> ";
             Node* it = nodesByCurrentDegree[i].getHead();
-            while (it != NULL)
+            while (it != nullptr)
             {
                 outfile << it->vertex->getVertexId() << "(" << it->currentDegree << ") ";
                 it = it->next;
@@ -54,7 +54,7 @@ private:
                 return nodesByCurrentDegree[i].getHead();
             }
         }
-        return NULL;
+        return nullptr;
     }
 
     void calculateShellIndex()
@@ -70,7 +70,7 @@ private:
         int k = 0;
         // While there are remaining vertices in the graph
         // Select the vertex with the lowest current degree
-        while (getNextNode() != NULL)
+        while (getNextNode() != nullptr)
         {
             Node* nextVertex = getNextNode();
             Vertex* v = nextVertex->vertex;

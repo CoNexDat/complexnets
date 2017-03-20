@@ -76,7 +76,7 @@ private:
     {
         Vertex* vertex = new Vertex(readUnsignedInt());
         Vertex* vertexAux = vertex;
-        if ((vertex = g.getVertexById(vertex->getVertexId())) != NULL)
+        if ((vertex = g.getVertexById(vertex->getVertexId())) != nullptr)
             delete vertexAux;
         else
         {

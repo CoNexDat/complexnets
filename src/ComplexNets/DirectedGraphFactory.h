@@ -20,7 +20,7 @@ class DirectedGraphFactory : public IGraphFactory<Graph, Vertex>
     {
         // TODO Implement this
         // return new DirectedBetweenness<Graph,Vertex>();
-        return NULL;
+        return nullptr;
     }
     virtual IClusteringCoefficient<Graph, Vertex>* createClusteringCoefficient()
     {
@@ -34,7 +34,7 @@ class DirectedGraphFactory : public IGraphFactory<Graph, Vertex>
     {
         // TODO Implement this
         // return new DirectedShellIndex<Graph,Vertex>();
-        return NULL;
+        return nullptr;
     }
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {
@@ -43,17 +43,17 @@ class DirectedGraphFactory : public IGraphFactory<Graph, Vertex>
 
     virtual MaxClique<Graph, Vertex>* createMaxClique(Graph&)
     {
-        return NULL;
+        return nullptr;
     }
 
     virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph&, int)
     {
-        return NULL;
+        return nullptr;
     }
 
     virtual StrengthDistribution<Graph, Vertex>* createStrengthDistribution(Graph& g)
     {
-        return NULL;
+        return nullptr;
     }
 };
 }
