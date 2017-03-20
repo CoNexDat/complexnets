@@ -1047,18 +1047,13 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
     {
         configureDirectedDirection();
         std::string key = "degreeDistribution";
+
         if (directed_in && directed_out)
-        {
             key = "inOutDegreeDistribution";
-        }
         else if (directed_in)
-        {
             key = "inDegreeDistribution";
-        }
         else if (directed_out)
-        {
             key = "outDegreeDistribution";
-        }
 
         if (logBin)
         {
@@ -1089,13 +1084,9 @@ void MainWindow::on_actionClustering_coefficient_triggered()
 
     std::string directedPostfix = "d";
     if (directed_out)
-    {
         directedPostfix += "p";
-    }
     if (directed_in)
-    {
         directedPostfix += "n";
-    }
 
     if (!vertexId.isEmpty())
     {
@@ -1237,13 +1228,9 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
 
     std::string directedPostfix = "d";
     if (directed_out)
-    {
         directedPostfix += "p";
-    }
     if (directed_in)
-    {
         directedPostfix += "n";
-    }
 
     if (!vertexId.isEmpty())
     {
@@ -1371,13 +1358,9 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
 
     std::string directedPostfix;
     if (directed_out)
-    {
         directedPostfix += "O";
-    }
     if (directed_in)
-    {
         directedPostfix += "I";
-    }
 
     std::string ccKey = "clusteringCoeficientForDegree" + directedPostfix;
 
@@ -1390,17 +1373,11 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
         if (this->digraph)
         {
             if (directed_in && directed_out)
-            {
                 key = "inOutDegreeDistribution";
-            }
             else if (directed_in)
-            {
                 key = "inDegreeDistribution";
-            }
             else if (directed_out)
-            {
                 key = "outDegreeDistribution";
-            }
         }
 
         VariantsSet& degrees = propertyMap.getPropertySet(key);
@@ -1463,13 +1440,9 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
 
     std::string directedPostfix;
     if (directed_out)
-    {
         directedPostfix += "O";
-    }
     if (directed_in)
-    {
         directedPostfix += "I";
-    }
 
     std::string nnKey = "nearestNeighborDegreeForDegree" + directedPostfix;
 
@@ -1683,13 +1656,9 @@ void MainWindow::on_actionExportNearest_Neighbors_Degree_vs_Degree_triggered()
     {
         std::string directedPostfix;
         if (directed_out)
-        {
             directedPostfix += "O";
-        }
         if (directed_in)
-        {
             directedPostfix += "I";
-        }
 
         std::string nnKey = "nearestNeighborDegreeForDegree" + directedPostfix;
 
@@ -1739,13 +1708,9 @@ void MainWindow::on_actionExportClustering_Coefficient_vs_Degree_triggered()
     {
         std::string directedPostfix;
         if (directed_out)
-        {
             directedPostfix += "O";
-        }
         if (directed_in)
-        {
             directedPostfix += "I";
-        }
 
         std::string ccKey = "clusteringCoeficientForDegree" + directedPostfix;
 
@@ -2212,17 +2177,11 @@ void MainWindow::computeCumulativeDegreeDistribution()
     if (this->digraph)
     {
         if (directed_in && directed_out)
-        {
             key = "inOutDegreeDistribution";
-        }
         else if (directed_in)
-        {
             key = "inDegreeDistribution";
-        }
         else if (directed_out)
-        {
             key = "outDegreeDistribution";
-        }
     }
 
     VariantsSet& degrees = propertyMap.getPropertySet(key);
@@ -2957,9 +2916,7 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::configureDirectedDirection()
 {
     if (!this->digraph)
-    {
         return;
-    }
 
     QStringList items;
 
