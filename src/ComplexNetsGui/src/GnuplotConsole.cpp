@@ -147,7 +147,7 @@ bool GnuplotConsole::boxplotCC(
 
     for (auto& entry: bpentries)
     {
-        printf("[Degree %d] Size: %d, Mean: %f\n", entry.degree, entry.values.size(), entry.mean);
+        printf("[Degree %d] Size: %lu, Mean: %f\n", entry.degree, entry.values.size(), entry.mean);
         printf("   Min: %f - Max: %f\n", entry.min, entry.max);
         printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);
 
