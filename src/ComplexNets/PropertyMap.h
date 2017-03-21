@@ -15,7 +15,9 @@ public:
     template <typename PropertyType>
     void addProperty(const PropertyName& name, Id id, PropertyType value)
     {
-        if (properties.count(name) == 0)
+        auto search = properties.find(name);
+
+        if (search == properties.end())
         {
             VariantsSet set;
             set.insert<PropertyType>(id, value);
@@ -24,7 +26,7 @@ public:
         }
         else
         {
-            properties.find(name)->second.insert<PropertyType>(id, value);
+            search->second.insert<PropertyType>(id, value);
         }
     }
 
@@ -50,7 +52,10 @@ public:
     // TODO method should be const
     bool containsProperty(const PropertyName& name, const Id id)
     {
-        return containsPropertySet(name) && getPropertySet(name).contains(id);
+        auto search = properties.find(name);
+        if (search == properties.end())
+            return false;
+        return search->second.contains(id);
     }
 
     void clear()
