@@ -531,10 +531,9 @@ void MainWindow::on_actionMaxClique_generic_triggered(bool exact)
     }
     try
     {
-        int maxCliqueSize =
-            propertyMap.getProperty<int>(exact ? "maxCliqueExact" : "maxCliqueAprox", "size");
-        id_list list =
-            propertyMap.getProperty<id_list>(exact ? "maxCliqueExact" : "maxCliqueAprox", "list");
+        std::string key = exact ? "maxCliqueExact" : "maxCliqueAprox";
+        int maxCliqueSize = propertyMap.getProperty<int>(key, "size");
+        id_list list = propertyMap.getProperty<id_list>(key, "list");
         ui->textBrowser->append(exact ? "Exact Max clique" : "Aprox Max clique");
         ret.append(" size is: ").append(to_string<int>(maxCliqueSize).c_str()).append(".\n");
         ret.append("clique is: ");
