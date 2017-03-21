@@ -2356,10 +2356,8 @@ MainWindow::computeBpentries()
             entry.Q1 = clusteringCoefs.at(Q1);
             entry.Q2 = clusteringCoefs.at(Q2);
             entry.Q3 = clusteringCoefs.at(Q3);
-            for (int t = 0; t < clusteringCoefs.size(); t++)
-            {
-                entry.values.push_back(clusteringCoefs[t]);
-            }
+            for (auto& coef: clusteringCoefs)
+                entry.values.push_back(coef);
         }
 
         bpentries.push_back(entry);
@@ -2425,10 +2423,8 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
         entry.Q1 = clusteringCoefs.at(Q1);
         entry.Q2 = clusteringCoefs.at(Q2);
         entry.Q3 = clusteringCoefs.at(Q3);
-        for (int t = 0; t < clusteringCoefs.size(); t++)
-        {
-            entry.values.push_back(clusteringCoefs[t]);
-        }
+        for (auto& coef: clusteringCoefs)
+            entry.values.push_back(coef);
     }
     clusteringCoefs.clear();
     return entry;
@@ -2488,10 +2484,8 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
         entry.Q1 = nnCoefs.at(Q1);
         entry.Q2 = nnCoefs.at(Q2);
         entry.Q3 = nnCoefs.at(Q3);
-        for (int t = 0; t < nnCoefs.size(); t++)
-        {
-            entry.values.push_back(nnCoefs[t]);
-        }
+        for (auto& coef: nnCoefs)
+            entry.values.push_back(coef);
     }
     nnCoefs.clear();
     return entry;
@@ -2530,10 +2524,8 @@ MainWindow::computeTotalBpEntriesBetweenness()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (int t = 0; t < bCoefs.size(); t++)
-        {
-            entry.values.push_back(bCoefs[t]);
-        }
+        for (auto& coef: bCoefs)
+            entry.values.push_back(coef);
     }
     bCoefs.clear();
     return entry;
@@ -2570,10 +2562,8 @@ MainWindow::computeTotalBpEntriesDegreeDistribution()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (int t = 0; t < bCoefs.size(); t++)
-        {
-            entry.values.push_back(bCoefs[t]);
-        }
+        for (auto& coef: bCoefs)
+            entry.values.push_back(coef);
     }
     bCoefs.clear();
     return entry;
@@ -2612,10 +2602,8 @@ MainWindow::computeTotalBpEntriesShellIndex()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (int t = 0; t < bCoefs.size(); t++)
-        {
-            entry.values.push_back(bCoefs[t]);
-        }
+        for (auto& coef: bCoefs)
+            entry.values.push_back(coef);
     }
     bCoefs.clear();
     return entry;
@@ -2683,10 +2671,8 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
             policy.transform(bpentries, bins);
             std::vector<double> d, m;
             std::vector<unsigned int> bin;
-            for (unsigned int i = 0; i < bpentries.size(); ++i)
+            for (auto& entry: bpentries)
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
-                    bpentries.at(i);
                 for (unsigned int w = 0; w < entry.values.size(); w++)
                 {
                     d.push_back(entry.degree);
@@ -2700,10 +2686,8 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
         else
         {
             std::vector<double> d, q1, q2, q3;
-            for (unsigned int i = 0; i < bpentries.size(); ++i)
+            for (auto& entry: bpentries)
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
-                    bpentries.at(i);
                 d.push_back(entry.degree);
                 q1.push_back(entry.Q1);
                 q2.push_back(entry.Q2);
@@ -2816,10 +2800,8 @@ MainWindow::computeBpentriesKnn()
             entry.Q1 = nnCoefs.at(Q1);
             entry.Q2 = nnCoefs.at(Q2);
             entry.Q3 = nnCoefs.at(Q3);
-            for (int t = 0; t < nnCoefs.size(); t++)
-            {
-                entry.values.push_back(nnCoefs[t]);
-            }
+            for (auto& coef: nnCoefs)
+                entry.values.push_back(coef);
         }
 
         bpentries.push_back(entry);
@@ -2862,14 +2844,12 @@ void MainWindow::on_actionExportKnnBoxplot_triggered()
             policy.transform(bpentries, bins);
             std::vector<double> d, m;
             std::vector<unsigned int> bin;
-            for (int i = 0; i < bpentries.size(); ++i)
+            for (auto& entry: bpentries)
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
-                    bpentries.at(i);
-                for (int w = 0; w < entry.values.size(); w++)
+                for (auto& value: entry.values)
                 {
                     d.push_back(entry.degree);
-                    m.push_back(entry.values[w]);
+                    m.push_back(value);
                     bin.push_back(entry.bin);
                 }
             }
@@ -2879,10 +2859,8 @@ void MainWindow::on_actionExportKnnBoxplot_triggered()
         else
         {
             std::vector<double> d, q1, q2, q3;
-            for (int i = 0; i < bpentries.size(); ++i)
+            for (auto& entry: bpentries)
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
-                    bpentries.at(i);
                 d.push_back(entry.degree);
                 q1.push_back(entry.Q1);
                 q2.push_back(entry.Q2);

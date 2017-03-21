@@ -68,21 +68,16 @@ public:
     }
 
 private:
-    void Print(const std::vector<unsigned int>& v)
+    void Print(const std::vector<unsigned int>& vec)
     {
-        for (int i = 0; i < v.size(); i++)
-        {
-            std::cout << v[i] << std::endl;
-        }
+        for (auto& v: vec)
+            std::cout << v << std::endl;
     }
 
-    void printSet(const std::set<unsigned int>& s)
+    void printSet(const std::set<unsigned int>& set)
     {
-        std::set<unsigned int>::const_iterator it = s.begin();
-        for (; it != s.end(); it++)
-        {
-            std::cout << *it << std::endl;
-        }
+        for (auto& v: set)
+            std::cout << v << std::endl;
     }
 
     void molloyReedAlgorithm(Graph& graph, std::map<unsigned int, unsigned int> k)

@@ -1050,10 +1050,8 @@ ProgramState::computeTotalBpEntriesDegreeDistribution()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (int t = 0; t < bCoefs.size(); t++)
-        {
-            entry.values.push_back(bCoefs[t]);
-        }
+        for (auto& coef: bCoefs)
+            entry.values.push_back(coef);
     }
     bCoefs.clear();
     return entry;
@@ -1094,10 +1092,8 @@ ProgramState::computeTotalBpEntriesShellIndex()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (int t = 0; t < bCoefs.size(); t++)
-        {
-            entry.values.push_back(bCoefs[t]);
-        }
+        for (auto& coef: bCoefs)
+            entry.values.push_back(coef);
     }
     bCoefs.clear();
     return entry;
@@ -1138,10 +1134,8 @@ ProgramState::computeTotalBpEntriesBetweenness()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (int t = 0; t < bCoefs.size(); t++)
-        {
-            entry.values.push_back(bCoefs[t]);
-        }
+        for (auto& coef: bCoefs)
+            entry.values.push_back(coef);
     }
     bCoefs.clear();
     return entry;
@@ -1205,10 +1199,8 @@ ProgramState::computeTotalBpEntriesKnn()
         entry.Q1 = nnCoefs.at(Q1);
         entry.Q2 = nnCoefs.at(Q2);
         entry.Q3 = nnCoefs.at(Q3);
-        for (int t = 0; t < nnCoefs.size(); t++)
-        {
-            entry.values.push_back(nnCoefs[t]);
-        }
+        for (auto& coef: nnCoefs)
+            entry.values.push_back(coef);
     }
     nnCoefs.clear();
     return entry;
@@ -1270,10 +1262,8 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
         entry.Q1 = clusteringCoefs.at(Q1);
         entry.Q2 = clusteringCoefs.at(Q2);
         entry.Q3 = clusteringCoefs.at(Q3);
-        for (int t = 0; t < clusteringCoefs.size(); t++)
-        {
-            entry.values.push_back(clusteringCoefs[t]);
-        }
+        for (auto& coef: clusteringCoefs)
+            entry.values.push_back(coef);
     }
     clusteringCoefs.clear();
     return entry;

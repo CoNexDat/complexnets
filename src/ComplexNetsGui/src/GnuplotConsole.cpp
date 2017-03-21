@@ -145,19 +145,18 @@ bool GnuplotConsole::boxplotCC(
         policy.transform(bpentries, bins);
     }
 
-    for (int i = 0; i < bpentries.size(); ++i)
+    for (auto& entry: bpentries)
     {
-        graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry = bpentries.at(i);
         printf("[Degree %d] Size: %d, Mean: %f\n", entry.degree, entry.values.size(), entry.mean);
         printf("   Min: %f - Max: %f\n", entry.min, entry.max);
         printf("   Q1: %f \t Q2: %f \t Q3: %f\n", entry.Q1, entry.Q2, entry.Q3);
 
         if (logBin)
         {
-            for (int w = 0; w < entry.values.size(); w++)
+            for (auto& value: entry.values)
             {
                 d.push_back(entry.degree);
-                m.push_back(entry.values[w]);
+                m.push_back(value);
                 bin.push_back(entry.bin);
             }
         }
