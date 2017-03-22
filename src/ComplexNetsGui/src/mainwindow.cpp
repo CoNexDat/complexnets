@@ -2478,7 +2478,11 @@ MainWindow::computeTotalBpEntriesBetweenness()
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
     std::vector<double> bCoefs;
+
     auto betweenness = factory->createBetweenness(g);
+    // TODO: replace with smart pointer
+    delete betweenness;
+
     double coefSums = 0.0;
     unsigned int count = 0;
 
