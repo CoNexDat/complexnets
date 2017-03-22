@@ -44,17 +44,17 @@ public:
 
     // void closeDialog();
 
-    QGroupBox* groupBox;
-    QTextBrowser* textBrowser;
-    QGroupBox* groupBox_2;
-    QLineEdit* lineEdit;
-
 private slots:
     void commandEntered();
 
 private:
     std::ifstream outputFile;
     FILE* pipe;
+
+    QGroupBox* groupBox;
+    QTextBrowser* textBrowser;
+    QGroupBox* groupBox_2;
+    QLineEdit* lineEdit;
 };
 }
 
