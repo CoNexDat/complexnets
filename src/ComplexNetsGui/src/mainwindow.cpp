@@ -556,11 +556,6 @@ void MainWindow::on_actionMaxClique_generic_triggered(bool exact)
 
 void MainWindow::on_actionBetweenness_triggered()
 {
-    // if (this->weightedgraph)
-    //{
-    //    ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
-    //    return;
-    //}
     QString vertexId = "2";
     QString ret;
     double vertexBetweenness;
@@ -774,8 +769,6 @@ void MainWindow::computeBetweenness()
 
         if (this->weightedgraph)
         {
-            // ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
-            // return;
             auto betweenness = weightedFactory->createBetweenness(weightedGraph);
             auto it = betweenness->iterator();
 
