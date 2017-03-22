@@ -99,12 +99,12 @@ public:
     }
 
     /**
-    * Method: visitVertex
-    * -------------------
-    * Description: Action invoked by Traverser when a node is reached. The goal of
-    * the visitVertex method is to notify the ConexityVerifier class about the vertex/
-    * @returns true if iterator should keep traversing
-    */
+     * Method: visitVertex
+     * -------------------
+     * Description: Action invoked by Traverser when a node is reached. The goal of
+     * the visitVertex method is to notify the ConexityVerifier class about the vertex/
+     * @returns true if iterator should keep traversing
+     */
     bool visitVertex(Vertex* vertex)
     {
         conexityVerifierObserver->visited(vertex->getVertexId());

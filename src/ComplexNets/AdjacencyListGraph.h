@@ -15,10 +15,10 @@
 namespace graphpp
 {
 /**
-* Class: VertexComparator
-* ------------
-* Functor to provide custom vertex comparation in containers
-*/
+ * Class: VertexComparator
+ * ------------
+ * Functor to provide custom vertex comparation in containers
+ */
 template <class T>
 class VertexComparator
 {
@@ -85,16 +85,16 @@ public:
 };
 
 /**
-* Class: Graph
-* ------------
-* Description: Principal graph class. Allows to add vertices and edges, and provides
-* iterators to work with them.
-* Template Argument Vertex: Type of the vertex. Vertex should have an addEdge method that
-* receives another Vertex
-* Template Argument VertexContainer: Container that will hold the vertices. May be
-* std::list<Vertex>, std::vector<Vertex> or std::set<Vertex>, depending on the user's
-* preferences
-*/
+ * Class: Graph
+ * ------------
+ * Description: Principal graph class. Allows to add vertices and edges, and provides
+ * iterators to work with them.
+ * Template Argument Vertex: Type of the vertex. Vertex should have an addEdge method that
+ * receives another Vertex
+ * Template Argument VertexContainer: Container that will hold the vertices. May be
+ * std::list<Vertex>, std::vector<Vertex> or std::set<Vertex>, depending on the user's
+ * preferences
+ */
 template <class Vertex, class VertexContainer = std::set<Vertex*, VertexComparator<Vertex>>>
 class AdjacencyListGraph
 {
@@ -121,11 +121,11 @@ public:
     }
 
     /**
-    * Method: addVertex
-    * -----------------
-    * Description: Adds a vertex to the graph
-    * @param v Vertex to be added
-    */
+     * Method: addVertex
+     * -----------------
+     * Description: Adds a vertex to the graph
+     * @param v Vertex to be added
+     */
     void addVertex(Vertex* v)
     {
         // insert the vertex in the vertices container
@@ -133,11 +133,11 @@ public:
     }
 
     /**
-    * Method: removeVertex
-    * -----------------
-    * Description: Removes a vertex and all of its edge of the graph
-    * @param v Vertex to be added
-    */
+     * Method: removeVertex
+     * -----------------
+     * Description: Removes a vertex and all of its edge of the graph
+     * @param v Vertex to be added
+     */
     void removeVertex(Vertex* v)
     {
         NeighborsIterator it = v->neighborsIterator();
@@ -153,12 +153,12 @@ public:
     }
 
     /**
-    * Method: addEdge
-    * ---------------
-    * Description: Adds an edge, connecting vertices s and d together
-    * @param s a vertex to connect
-    * @param d a vertex to connect
-    */
+     * Method: addEdge
+     * ---------------
+     * Description: Adds an edge, connecting vertices s and d together
+     * @param s a vertex to connect
+     * @param d a vertex to connect
+     */
     void addEdge(Vertex* s, Vertex* d)
     {
         if (!this->isMultigraph() && s->isNeighbourOf(d))
@@ -174,12 +174,12 @@ public:
     }
 
     /**
-    * Method: removeEdge
-    * ---------------
-    * Description: Remove an edge
-    * @param s a vertex
-    * @param d a vertex
-    */
+     * Method: removeEdge
+     * ---------------
+     * Description: Remove an edge
+     * @param s a vertex
+     * @param d a vertex
+     */
     void removeEdge(Vertex* s, Vertex* d)
     {
         if (!s->isNeighbourOf(d))
@@ -190,45 +190,45 @@ public:
     }
 
     /**
-    * Method: getVertexById
-    * ---------------------
-    * Description: informs the number of vertices currently in the graph
-    * @param id the vertex id
-    * @returns the vertex with the specified id or nullptr if no vertex has the specified id
-    */
+     * Method: getVertexById
+     * ---------------------
+     * Description: informs the number of vertices currently in the graph
+     * @param id the vertex id
+     * @returns the vertex with the specified id or nullptr if no vertex has the specified id
+     */
     Vertex* getVertexById(VertexId id) const
     {
         return VertexFinder<Vertex, VertexContainer>::find(id, vertices);
     }
 
     /**
-    * Method: VerticesConstIterator
-    * -----------------------------
-    * Description: Provides constant forward iterator to the vertices of the graph
-    * @returns a constant iterator abstraction to iterate through the vertices of the graph`
-    */
+     * Method: VerticesConstIterator
+     * -----------------------------
+     * Description: Provides constant forward iterator to the vertices of the graph
+     * @returns a constant iterator abstraction to iterate through the vertices of the graph`
+     */
     VerticesConstIterator verticesConstIterator() const
     {
         return VerticesConstIterator(vertices);
     }
 
     /**
-    * Method: VerticesIterator
-    * ------------------------
-    * Description: Provides forward iterator to the vertices of the graph
-    * @returns a iterator abstraction to iterate through the vertices of the graph`
-    */
+     * Method: VerticesIterator
+     * ------------------------
+     * Description: Provides forward iterator to the vertices of the graph
+     * @returns a iterator abstraction to iterate through the vertices of the graph`
+     */
     VerticesIterator verticesIterator()
     {
         return VerticesIterator(vertices);
     }
 
     /**
-    * Method: verticesCount
-    * ---------------------
-    * Description: informs the number of vertices currently in the graph
-    * @returns number of vertices in the graph
-    */
+     * Method: verticesCount
+     * ---------------------
+     * Description: informs the number of vertices currently in the graph
+     * @returns number of vertices in the graph
+     */
     unsigned int verticesCount() const
     {
         return vertices.size();

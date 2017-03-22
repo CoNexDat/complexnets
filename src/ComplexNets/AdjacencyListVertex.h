@@ -11,10 +11,10 @@
 namespace graphpp
 {
 /**
-* Class: AdjacencyListVertex
-* --------------------------
-* Description: Principal Vertex class for adjacency list unweighted and undirected graphs
-*/
+ * Class: AdjacencyListVertex
+ * --------------------------
+ * Description: Principal Vertex class for adjacency list unweighted and undirected graphs
+ */
 class AdjacencyListVertex
 {
 public:
@@ -30,12 +30,12 @@ public:
     }
 
     /**
-    * Method: addEdge
-    * --------------------------
-    * Description: Adds an edge, particularly a vertex to the list of
-    * the vertex's neighbors
-    * @param v Vertex neighbour to be added
-    */
+     * Method: addEdge
+     * --------------------------
+     * Description: Adds an edge, particularly a vertex to the list of
+     * the vertex's neighbors
+     * @param v Vertex neighbour to be added
+     */
     template <class T>
     void addEdge(T* v)
     {
@@ -44,12 +44,12 @@ public:
     }
 
     /**
-    * Method: removeEdge
-    * --------------------------
-    * Description: Remove an edge, particularly a vertex from the list of
-    * the vertex's neighbors
-    * @param v Vertex neighbour to be added
-    */
+     * Method: removeEdge
+     * --------------------------
+     * Description: Remove an edge, particularly a vertex from the list of
+     * the vertex's neighbors
+     * @param v Vertex neighbour to be added
+     */
     template <class T>
     void removeEdge(T* v)
     {
@@ -58,60 +58,60 @@ public:
     }
 
     /**
-    * Method: neighborsConstIterator
-    * ------------------------------
-    * Description: Provides a container independent constant iterator
-    * to the collection of neighbors
-    * @returns CAutonomousIterator for iterating neighbors
-    */
+     * Method: neighborsConstIterator
+     * ------------------------------
+     * Description: Provides a container independent constant iterator
+     * to the collection of neighbors
+     * @returns CAutonomousIterator for iterating neighbors
+     */
     VerticesConstIterator neighborsConstIterator() const
     {
         return VerticesConstIterator(neighbors);
     }
 
     /**
-    * Method: neighborsIterator
-    * -------------------------
-    * Description: Provides a container-independent mutable iterator to the
-    * collection of neighbors
-    * @returns AutonomousIterator for iterating neighbors
-    */
+     * Method: neighborsIterator
+     * -------------------------
+     * Description: Provides a container-independent mutable iterator to the
+     * collection of neighbors
+     * @returns AutonomousIterator for iterating neighbors
+     */
     VerticesIterator neighborsIterator()
     {
         return VerticesIterator(neighbors);
     }
 
     /**
-    * Method: isNeighbourOf
-    * ----------------------
-    * Description: Indicates whether the other vertex is a known neighbor
-    * @param other Vertex that we want to test if is a neighbour
-    * @returns True if the vertex is a neighbour, and false otherwise
-    */
+     * Method: isNeighbourOf
+     * ----------------------
+     * Description: Indicates whether the other vertex is a known neighbor
+     * @param other Vertex that we want to test if is a neighbour
+     * @returns True if the vertex is a neighbour, and false otherwise
+     */
     bool isNeighbourOf(AdjacencyListVertex* other) const
     {
         return contains(neighbors, other);
     }
 
     /**
-    * Method: degree
-    * --------------
-    * Description: returns the degree of the Vertex, measured as the number of
-    * neighbours it has
-    * @returns The degree of the vertex
-    */
+     * Method: degree
+     * --------------
+     * Description: returns the degree of the Vertex, measured as the number of
+     * neighbours it has
+     * @returns The degree of the vertex
+     */
     Degree degree() const
     {
         return neighbors.size();
     }
 
     /**
-    * Method: getVertexId
-    * -------------------
-    * Description: returns the Id of the current vertex. The id of a vertex acts
-    * as a unique identifier
-    * @returns vertex's id
-    */
+     * Method: getVertexId
+     * -------------------
+     * Description: returns the Id of the current vertex. The id of a vertex acts
+     * as a unique identifier
+     * @returns vertex's id
+     */
     VertexId getVertexId() const
     {
         return vertexId;

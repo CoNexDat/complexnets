@@ -9,20 +9,20 @@
 namespace graphpp
 {
 /**
-* Forward declaration of DegreeDistribution class
-* @see DegreeDistribution below
-*/
+ * Forward declaration of DegreeDistribution class
+ * @see DegreeDistribution below
+ */
 template <class Graph, class Vertex>
 class DegreeDistribution;
 
 /**
-* Class: DegreeDistributionVisitor
-* --------------------------------
-* Description: Visitor used to traverse the vertices, which collects de degrees and notifies
-* the DegreeDistribution class the data it gathers
-* Template Argument Graph: Graph type
-* Template Argument Vertex: Vertex type
-*/
+ * Class: DegreeDistributionVisitor
+ * --------------------------------
+ * Description: Visitor used to traverse the vertices, which collects de degrees and notifies
+ * the DegreeDistribution class the data it gathers
+ * Template Argument Graph: Graph type
+ * Template Argument Vertex: Vertex type
+ */
 template <class Graph, class Vertex>
 class DegreeDistributionVisitor
 {
@@ -33,12 +33,12 @@ public:
     }
 
     /**
-    * Method: visitVertex
-    * -------------------
-    * Description: Action invoked by Traverser when a node is reached. The goal of
-    * the visitVertex method is to notify the DegreeDistribution class about degrees/
-    * @returns true if iterator should keep traversing
-    */
+     * Method: visitVertex
+     * -------------------
+     * Description: Action invoked by Traverser when a node is reached. The goal of
+     * the visitVertex method is to notify the DegreeDistribution class about degrees/
+     * @returns true if iterator should keep traversing
+     */
     bool visitVertex(Vertex* vertex)
     {
         degreeDistributionObserver.notifyDegree(vertex->degree());

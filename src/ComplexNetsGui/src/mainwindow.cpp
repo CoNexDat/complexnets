@@ -1148,9 +1148,8 @@ void MainWindow::on_actionClustering_coefficient_triggered()
         }
 
         if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != nullptr ||
-            (this->digraph &&
-             directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) !=
-                 nullptr))
+            (this->digraph && directedGraph.getVertexById(
+                                  from_string<unsigned int>(vertexId.toStdString())) != nullptr))
         {
             try
             {
@@ -1293,9 +1292,8 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
         }
 
         if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != nullptr ||
-            (this->digraph &&
-             directedGraph.getVertexById(from_string<unsigned int>(vertexId.toStdString())) !=
-                 nullptr))
+            (this->digraph && directedGraph.getVertexById(
+                                  from_string<unsigned int>(vertexId.toStdString())) != nullptr))
         {
             try
             {
@@ -2403,9 +2401,8 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()),
-                oldCoef + (c /
-                           propertyMap.getProperty<double>(
-                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
+                oldCoef + (c / propertyMap.getProperty<double>(
+                                   "degreeDistribution", to_string<unsigned int>(v->degree()))));
         clusteringCoefs.push_back(c);
         coefSums += c;
         ++vit;
@@ -2464,9 +2461,8 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()),
-                oldCoef + (c /
-                           propertyMap.getProperty<double>(
-                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
+                oldCoef + (c / propertyMap.getProperty<double>(
+                                   "degreeDistribution", to_string<unsigned int>(v->degree()))));
         nnCoefs.push_back(c);
         coefSums += c;
         ++vit;

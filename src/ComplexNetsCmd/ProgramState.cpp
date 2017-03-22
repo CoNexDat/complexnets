@@ -331,7 +331,8 @@ double ProgramState::inDegreeDistribution(unsigned int vertex_id)
     if (this->isDigraph())
     {
         auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+        auto degreeDistribution =
+            static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                 directedFactory->createDegreeDistribution(directedGraph));
         auto it = degreeDistribution->inDegreeIterator();
 
@@ -355,7 +356,8 @@ double ProgramState::outDegreeDistribution(unsigned int vertex_id)
     if (this->isDigraph())
     {
         auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+        auto degreeDistribution =
+            static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                 directedFactory->createDegreeDistribution(directedGraph));
         auto it = degreeDistribution->outDegreeIterator();
 
@@ -505,7 +507,8 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
     else if (isDigraph())
     {
         auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+        auto degreeDistribution =
+            static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                 directedFactory->createDegreeDistribution(directedGraph));
         auto it = degreeDistribution->inDegreeIterator();
         auto it2 = degreeDistribution->outDegreeIterator();
@@ -737,9 +740,9 @@ bool ProgramState::computeMaxCliqueDistr(
     PropertyMap& propertyMap, bool exact, unsigned int max_time)
 {
     auto factory = new GraphFactory<Graph, Vertex>();
-    auto maxClique =  exact
-        ? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(this->graph, max_time)
-        : (IMaxClique<Graph, Vertex>*)factory->createMaxClique(this->graph);
+    auto maxClique =
+        exact ? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(this->graph, max_time)
+              : (IMaxClique<Graph, Vertex>*)factory->createMaxClique(this->graph);
 
     if (maxClique->finished())
     {
@@ -1127,9 +1130,8 @@ ProgramState::computeTotalBpEntriesKnn()
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()),
-                oldCoef + (c /
-                           propertyMap.getProperty<double>(
-                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
+                oldCoef + (c / propertyMap.getProperty<double>(
+                                   "degreeDistribution", to_string<unsigned int>(v->degree()))));
         nnCoefs.push_back(c);
         coefSums += c;
         ++vit;
@@ -1191,9 +1193,8 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
         if (degree_exists == 0)
             propertyMap.addProperty<double>(
                 "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()),
-                oldCoef + (c /
-                           propertyMap.getProperty<double>(
-                               "degreeDistribution", to_string<unsigned int>(v->degree()))));
+                oldCoef + (c / propertyMap.getProperty<double>(
+                                   "degreeDistribution", to_string<unsigned int>(v->degree()))));
         clusteringCoefs.push_back(c);
         coefSums += c;
         ++vit;

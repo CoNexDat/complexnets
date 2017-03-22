@@ -9,20 +9,20 @@
 namespace graphpp
 {
 /**
-* Forward declaration of StrengthDistribution class
-* @see StrengthDistribution below
-*/
+ * Forward declaration of StrengthDistribution class
+ * @see StrengthDistribution below
+ */
 template <class Graph, class Vertex>
 class StrengthDistribution;
 
 /**
-* Class: StrengthDistributionVisitor
-* --------------------------------
-* Description: Visitor used to traverse the vertices, which collects de degrees and notifies
-* the StrengthDistribution class the data it gathers
-* Template Argument Graph: Graph type
-* Template Argument Vertex: Vertex type
-*/
+ * Class: StrengthDistributionVisitor
+ * --------------------------------
+ * Description: Visitor used to traverse the vertices, which collects de degrees and notifies
+ * the StrengthDistribution class the data it gathers
+ * Template Argument Graph: Graph type
+ * Template Argument Vertex: Vertex type
+ */
 template <class Graph, class Vertex>
 class StrengthDistributionVisitor
 {
@@ -33,12 +33,12 @@ public:
     }
 
     /**
-    * Method: visitVertex
-    * -------------------
-    * Description: Action invoked by Traverser when a node is reached. The goal of
-    * the visitVertex method is to notify the StrengthDistribution class about degrees/
-    * @returns true if iterator should keep traversing
-    */
+     * Method: visitVertex
+     * -------------------
+     * Description: Action invoked by Traverser when a node is reached. The goal of
+     * the visitVertex method is to notify the StrengthDistribution class about degrees/
+     * @returns true if iterator should keep traversing
+     */
     bool visitVertex(Vertex* vertex)
     {
         strengthDistributionObserver.notifyDegree(vertex->strength());
