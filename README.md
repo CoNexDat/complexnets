@@ -138,3 +138,4 @@ Developers:
   - Jose Ignacio Galindo              2-2014
   - Jaime Alexander Campos Iannacone  2-2015
   - Juan Pablo Dantur                 2-2016
+  - Federico Bond                     1-2017
