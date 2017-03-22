@@ -68,13 +68,13 @@ public:
     }
 
 private:
-    void Print(const std::vector<unsigned int>& vec)
+    void debug(const std::vector<unsigned int>& vec)
     {
         for (auto& v : vec)
             std::cout << v << std::endl;
     }
 
-    void printSet(const std::set<unsigned int>& set)
+    void debug(const std::set<unsigned int>& set)
     {
         for (auto& v : set)
             std::cout << v << std::endl;
@@ -167,18 +167,18 @@ private:
         std::cout << "maxDegreeId: " << maxDegreeId << std::endl;
         std::cout << "maxDegreeQuant: " << maxDegreeQuant << std::endl;
         std::cout << "unconectedVertexesIds:" << std::endl;
-        Print(unconectedVertexesIds);
+        debug(unconectedVertexesIds);
         std::cout << "unconectedVertexesOneDegreeIds:" << std::endl;
-        Print(unconectedVertexesOneDegreeIds);
+        debug(unconectedVertexesOneDegreeIds);
 
         std::cout << "StartAlgorithm: \n\n";
 
         while (!unconectedVertexesIds.empty() || !unconectedVertexesOneDegreeIds.empty())
         {
             // cout << "unconectedVertexesIds: \n";
-            // Print(unconectedVertexesIds);
+            // debug(unconectedVertexesIds);
             // cout << "unconectedVertexesOneDegreeIds: \n";
-            // Print(unconectedVertexesOneDegreeIds);
+            // debug(unconectedVertexesOneDegreeIds);
 
             int unconectedSize;
             unsigned int nextVertexId;
@@ -263,9 +263,9 @@ private:
                         vertexesWitNoFreeDegrees.push_back(selectedId);
                     }
                     // cout << "vertexesWithFreeDegrees: \n";
-                    // Print(vertexesWithFreeDegrees);
+                    // debug(vertexesWithFreeDegrees);
                     // cout << "vertexesWithOneFreeDegree: \n";
-                    // Print(vertexesWithOneFreeDegree);
+                    // debug(vertexesWithOneFreeDegree);
                     Vertex* existentVertex = graph.getVertexById(selectedId);
                     Vertex* newVertex = new Vertex(nextVertexId);
                     graph.addVertex(newVertex);
@@ -323,7 +323,7 @@ private:
             std::set<unsigned int> unconectedVertexes = nodesNotConnectedTo[selectedId];
             std::set<unsigned int>::const_iterator it(nodesNotConnectedTo[selectedId].begin());
 
-            // printSet(unconectedVertexes);
+            // debug(unconectedVertexes);
             if (!unconectedVertexes.empty() && selectedDegrees != 0)
             {
                 unsigned int willConnectIndex = rand() % unconectedVertexes.size();
