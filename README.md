@@ -89,32 +89,6 @@ $ make all
 $ ./tests
 ```
 
-Running with Vagrant
-====================
-
-It should be simple:
-
-- Install vagrant from vagrantup.com
-
-- Add the base box "lucid32"
-
-  ```vagrant box add lucid32 http://files.vagrantup.com/lucid32.box```
-
-- Start the VM
-
-  ```vagrant init```
-
-- Boot up with X loaded to open Complexnets
-
-  ```vagrant ssh -- -X```
-
-- Move to /vagrant directory
-
-  ```cd /vagrant```
-
-- It shares the same folder as the project in a linux enviroment
-
-
 License
 =============================================
 
