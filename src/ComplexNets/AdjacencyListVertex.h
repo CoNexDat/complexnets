@@ -117,9 +117,9 @@ public:
         return vertexId;
     }
 
-    bool operator<(AdjacencyListVertex* other) const
+    bool operator<(const AdjacencyListVertex& other) const
     {
-        return getVertexId() < other->getVertexId();
+        return getVertexId() < other.getVertexId();
     }
 
     // These two methods shall be removed, and changed for a map in algorithms,
