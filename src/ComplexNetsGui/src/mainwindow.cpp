@@ -771,16 +771,14 @@ void MainWindow::computeBetweenness()
     if (!propertyMap.containsPropertySet("betweenness"))
     {
         ui->textBrowser->append("Betweenness has not been previously computed. Computing now.");
-        IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
 
         if (this->weightedgraph)
         {
             // ui->textBrowser->append("Betweenness for weighted graphs is not supported.");
             // return;
-            IBetweenness<WeightedGraph, WeightedVertex>* betweenness =
-                weightedFactory->createBetweenness(weightedGraph);
-            IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator it =
-                betweenness->iterator();
+            auto betweenness = weightedFactory->createBetweenness(weightedGraph);
+            auto it = betweenness->iterator();
+
             while (!it.end())
             {
                 propertyMap.addProperty<double>(
@@ -791,8 +789,9 @@ void MainWindow::computeBetweenness()
         }
         else
         {
-            IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(graph);
-            IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
+            auto betweenness = factory->createBetweenness(graph);
+            auto it = betweenness->iterator();
+
             while (!it.end())
             {
                 propertyMap.addProperty<double>(
@@ -810,10 +809,9 @@ void MainWindow::computeDegreeDistribution()
     {
         if (this->weightedgraph)
         {
-            StrengthDistribution<WeightedGraph, WeightedVertex>* degreeDistribution =
-                weightedFactory->createStrengthDistribution(weightedGraph);
-            StrengthDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it =
-                degreeDistribution->iterator();
+            auto degreeDistribution = weightedFactory->createStrengthDistribution(weightedGraph);
+            auto it = degreeDistribution->iterator();
+
             while (!it.end())
             {
                 propertyMap.addProperty<double>(
@@ -827,15 +825,11 @@ void MainWindow::computeDegreeDistribution()
         }
         else if (this->digraph)
         {
-            DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution =
-                static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+            auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                     directedFactory->createDegreeDistribution(directedGraph));
-            DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it =
-                degreeDistribution->inDegreeIterator();
-            DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it2 =
-                degreeDistribution->outDegreeIterator();
-            DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it3 =
-                degreeDistribution->inOutDegreeIterator();
+            auto it = degreeDistribution->inDegreeIterator();
+            auto it2 = degreeDistribution->outDegreeIterator();
+            auto it3 = degreeDistribution->inOutDegreeIterator();
 
             while (!it.end() || !it2.end() || !it3.end())
             {
@@ -872,10 +866,9 @@ void MainWindow::computeDegreeDistribution()
         }
         else
         {
-            IDegreeDistribution<Graph, Vertex>* degreeDistribution =
-                factory->createDegreeDistribution(graph);
-            DegreeDistribution<Graph, Vertex>::DistributionIterator it =
-                degreeDistribution->iterator();
+            auto degreeDistribution = factory->createDegreeDistribution(graph);
+            auto it = degreeDistribution->iterator();
+
             while (!it.end())
             {
                 propertyMap.addProperty<double>(
@@ -1106,8 +1099,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                 if ((vertex = weightedGraph.getVertexById(
                          from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
-                    IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient =
-                        weightedFactory->createClusteringCoefficient();
+                    auto clusteringCoefficient = weightedFactory->createClusteringCoefficient();
                     propertyMap.addProperty<double>(
                         "clusteringCoeficientForVertex",
                         to_string<unsigned int>(vertex->getVertexId()),
@@ -1121,8 +1113,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                 if ((vertex = directedGraph.getVertexById(
                          from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
-                    IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient =
-                        directedFactory->createClusteringCoefficient();
+                    auto clusteringCoefficient = directedFactory->createClusteringCoefficient();
                     propertyMap.addProperty<double>(
                         "clusteringCoeficientForVertex",
                         to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
@@ -2494,7 +2485,7 @@ MainWindow::computeTotalBpEntriesBetweenness()
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
     std::vector<double> bCoefs;
-    IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(g);
+    auto betweenness = factory->createBetweenness(g);
     double coefSums = 0.0;
     unsigned int count = 0;
 
@@ -2572,7 +2563,8 @@ MainWindow::computeTotalBpEntriesShellIndex()
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
     std::vector<double> bCoefs;
-    IShellIndex<Graph, Vertex>* betweenness = factory->createShellIndex(g);
+    // TODO: is this needed?
+    auto betweenness = factory->createShellIndex(g);
     double coefSums = 0.0;
     unsigned int count = 0;
 
