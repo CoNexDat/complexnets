@@ -8,7 +8,6 @@ addons:
       - gcc-6
       - g++-6
       - qt5-default
-      - cmake
     sources: &sources
       - ubuntu-toolchain-r-test
       - sourceline: 'ppa:canonical-qt5-edgers/ubuntu1204-qt5'
