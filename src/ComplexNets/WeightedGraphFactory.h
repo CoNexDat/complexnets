@@ -16,6 +16,7 @@ namespace graphpp
 template <class Graph, class Vertex>
 class WeightedGraphFactory : public IGraphFactory<Graph, Vertex>
 {
+public:
     virtual IGraphReader<Graph, Vertex>* createGraphReader()
     {
         return new WeightedGraphReader<Graph, Vertex>();

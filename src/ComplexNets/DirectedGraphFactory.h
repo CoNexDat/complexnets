@@ -12,6 +12,7 @@ namespace graphpp
 template <class Graph, class Vertex>
 class DirectedGraphFactory : public IGraphFactory<Graph, Vertex>
 {
+public:
     virtual IGraphReader<Graph, Vertex>* createGraphReader()
     {
         return new GraphReader<Graph, Vertex>();

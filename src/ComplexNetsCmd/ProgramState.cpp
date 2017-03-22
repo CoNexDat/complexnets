@@ -117,11 +117,10 @@ double ProgramState::betweenness(unsigned int vertex_id)
 {
     if (this->weighted)
     {
-        IGraphFactory<WeightedGraph, WeightedVertex>* wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness = wfactory->createBetweenness(this->weightedGraph);
+        auto wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        auto wbetweenness = wfactory->createBetweenness(this->weightedGraph);
+        auto wit = wbetweenness->iterator();
 
-        IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator wit =
-            wbetweenness->iterator();
         double ret = -1;
         while (!wit.end())
         {
@@ -137,10 +136,10 @@ double ProgramState::betweenness(unsigned int vertex_id)
     }
     else
     {
-        IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-        IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
+        auto factory = new GraphFactory<Graph, Vertex>();
+        auto betweenness = factory->createBetweenness(this->graph);
+        auto it = betweenness->iterator();
 
-        IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
         double ret = -1;
         while (!it.end())
         {
@@ -158,9 +157,8 @@ double ProgramState::betweenness(unsigned int vertex_id)
 
 std::list<int> ProgramState::maxCliqueAprox()
 {
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    IMaxClique<Graph, Vertex>* maxClique =
-        (IMaxClique<Graph, Vertex>*)factory->createMaxClique(this->graph);
+    auto factory = new GraphFactory<Graph, Vertex>();
+    auto maxClique = factory->createMaxClique(this->graph);
 
     std::list<int> ret;
     if (maxClique->finished())
@@ -174,9 +172,8 @@ std::list<int> ProgramState::maxCliqueAprox()
 
 std::list<int> ProgramState::maxCliqueExact(unsigned int max_time)
 {
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    IMaxClique<Graph, Vertex>* maxClique =
-        (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(this->graph, max_time);
+    auto factory = new GraphFactory<Graph, Vertex>();
+    auto maxClique = factory->createExactMaxClique(this->graph, max_time);
 
     std::list<int> ret;
     if (maxClique->finished())
@@ -196,10 +193,8 @@ double ProgramState::clustering(unsigned int vertex_id)
         WeightedVertex* vertex;
         if ((vertex = weightedGraph.getVertexById(vertex_id)) != nullptr)
         {
-            IGraphFactory<WeightedGraph, WeightedVertex>* factory =
-                new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-            IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient =
-                factory->createClusteringCoefficient();
+            auto factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+            auto clusteringCoefficient = factory->createClusteringCoefficient();
             ret = clusteringCoefficient->vertexClusteringCoefficient(vertex);
             delete clusteringCoefficient;
         }
@@ -209,10 +204,8 @@ double ProgramState::clustering(unsigned int vertex_id)
         DirectedVertex* vertex;
         if ((vertex = directedGraph.getVertexById(vertex_id)) != nullptr)
         {
-            IGraphFactory<DirectedGraph, DirectedVertex>* factory =
-                new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-            IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient =
-                factory->createClusteringCoefficient();
+            auto factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+            auto clusteringCoefficient = factory->createClusteringCoefficient();
             ret = clusteringCoefficient->vertexClusteringCoefficient(
                 vertex, directed_out, directed_in);
             delete clusteringCoefficient;
@@ -223,9 +216,8 @@ double ProgramState::clustering(unsigned int vertex_id)
         Vertex* vertex;
         if ((vertex = graph.getVertexById(vertex_id)) != nullptr)
         {
-            IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-            IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-                factory->createClusteringCoefficient();
+            auto factory = new GraphFactory<Graph, Vertex>();
+            auto clusteringCoefficient = factory->createClusteringCoefficient();
             ret = clusteringCoefficient->vertexClusteringCoefficient(vertex);
             delete clusteringCoefficient;
         }
@@ -242,10 +234,8 @@ double ProgramState::knn(unsigned int vertex_id)
         WeightedVertex* vertex;
         if ((vertex = weightedGraph.getVertexById(vertex_id)) != nullptr)
         {
-            IGraphFactory<WeightedGraph, WeightedVertex>* factory =
-                new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-            INearestNeighborsDegree<WeightedGraph, WeightedVertex>* nearestNeighborsDegree =
-                factory->createNearestNeighborsDegree();
+            auto factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+            auto nearestNeighborsDegree = factory->createNearestNeighborsDegree();
             ret = nearestNeighborsDegree->meanDegreeForVertex(vertex);
             delete nearestNeighborsDegree;
         }
@@ -255,10 +245,8 @@ double ProgramState::knn(unsigned int vertex_id)
         DirectedVertex* vertex;
         if ((vertex = directedGraph.getVertexById(vertex_id)) != nullptr)
         {
-            IGraphFactory<DirectedGraph, DirectedVertex>* factory =
-                new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-            INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborsDegree =
-                factory->createNearestNeighborsDegree();
+            auto factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+            auto nearestNeighborsDegree = factory->createNearestNeighborsDegree();
             ret = nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_out, directed_in);
             delete nearestNeighborsDegree;
         }
@@ -268,9 +256,8 @@ double ProgramState::knn(unsigned int vertex_id)
         Vertex* vertex;
         if ((vertex = graph.getVertexById(vertex_id)) != nullptr)
         {
-            IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-            INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree =
-                factory->createNearestNeighborsDegree();
+            auto factory = new GraphFactory<Graph, Vertex>();
+            auto nearestNeighborsDegree = factory->createNearestNeighborsDegree();
             ret = nearestNeighborsDegree->meanDegreeForVertex(vertex);
             delete nearestNeighborsDegree;
         }
@@ -281,9 +268,10 @@ double ProgramState::knn(unsigned int vertex_id)
 double ProgramState::shellIndex(unsigned int vertex_id)
 {
     double ret = -1;
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    IShellIndex<Graph, Vertex>* shellIndex = factory->createShellIndex(graph);
-    IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
+    auto factory = new GraphFactory<Graph, Vertex>();
+    auto shellIndex = factory->createShellIndex(graph);
+    auto it = shellIndex->iterator();
+
     while (!it.end())
     {
         if (it->first == vertex_id)
@@ -302,12 +290,10 @@ double ProgramState::degreeDistribution(unsigned int vertex_id)
     double ret = -1;
     if (this->isWeighted())
     {
-        IGraphFactory<WeightedGraph, WeightedVertex>* factory =
-            new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        IDegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution =
-            factory->createDegreeDistribution(this->weightedGraph);
-        DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it =
-            degreeDistribution->iterator();
+        auto factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        auto degreeDistribution = factory->createDegreeDistribution(this->weightedGraph);
+        auto it = degreeDistribution->iterator();
+
         while (!it.end())
         {
             if (it->first == vertex_id)
@@ -321,10 +307,10 @@ double ProgramState::degreeDistribution(unsigned int vertex_id)
     }
     else
     {
-        IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-        IDegreeDistribution<Graph, Vertex>* degreeDistribution =
-            factory->createDegreeDistribution(this->graph);
-        DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
+        auto factory = new GraphFactory<Graph, Vertex>();
+        auto degreeDistribution = factory->createDegreeDistribution(this->graph);
+        auto it = degreeDistribution->iterator();
+
         while (!it.end())
         {
             if (it->first == vertex_id)
@@ -344,13 +330,11 @@ double ProgramState::inDegreeDistribution(unsigned int vertex_id)
     double ret = -1;
     if (this->isDigraph())
     {
-        IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory =
-            new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution =
-            static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+        auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                 directedFactory->createDegreeDistribution(directedGraph));
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it =
-            degreeDistribution->inDegreeIterator();
+        auto it = degreeDistribution->inDegreeIterator();
+
         while (!it.end())
         {
             if (it->first == vertex_id)
@@ -370,13 +354,11 @@ double ProgramState::outDegreeDistribution(unsigned int vertex_id)
     double ret = -1;
     if (this->isDigraph())
     {
-        IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory =
-            new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution =
-            static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+        auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                 directedFactory->createDegreeDistribution(directedGraph));
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it =
-            degreeDistribution->outDegreeIterator();
+        auto it = degreeDistribution->outDegreeIterator();
+
         while (!it.end())
         {
             if (it->first == vertex_id)
@@ -396,12 +378,10 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
     // Calculate betweenness.
     if (this->weighted)
     {
-        IGraphFactory<WeightedGraph, WeightedVertex>* wfactory;
-        IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
-        wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        wbetweenness = wfactory->createBetweenness(this->weightedGraph);
-        IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator betweennessIterator =
-            wbetweenness->iterator();
+        auto wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        auto wbetweenness = wfactory->createBetweenness(this->weightedGraph);
+        auto betweennessIterator = wbetweenness->iterator();
+
         while (!betweennessIterator.end())
         {
             propertyMap.addProperty<double>(
@@ -411,11 +391,9 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
         }
         delete wbetweenness;
 
-        IDegreeDistribution<WeightedGraph, WeightedVertex>* wdegreeDistribution;
+        auto wdegreeDistribution = wfactory->createDegreeDistribution(this->weightedGraph);
+        auto degreeIterator = wdegreeDistribution->iterator();
 
-        wdegreeDistribution = wfactory->createDegreeDistribution(this->weightedGraph);
-        DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator degreeIterator =
-            wdegreeDistribution->iterator();
         while (!degreeIterator.end())
         {
             propertyMap.addProperty<double>(
@@ -430,12 +408,10 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
     }
     else
     {
-        IGraphFactory<Graph, Vertex>* factory;
-        IBetweenness<Graph, Vertex>* betweenness;
-        factory = new GraphFactory<Graph, Vertex>();
-        betweenness = factory->createBetweenness(this->graph);
-        IBetweenness<Graph, Vertex>::BetweennessIterator betweennessIterator =
-            betweenness->iterator();
+        auto factory = new GraphFactory<Graph, Vertex>();
+        auto betweenness = factory->createBetweenness(this->graph);
+        auto betweennessIterator = betweenness->iterator();
+
         while (!betweennessIterator.end())
         {
             propertyMap.addProperty<double>(
@@ -510,12 +486,9 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
     // of digraph DegreeDistribution
     if (isWeighted())
     {
-        IGraphFactory<WeightedGraph, WeightedVertex>* weightedFactory =
-            new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        IDegreeDistribution<WeightedGraph, WeightedVertex>* degreeDistribution =
-            weightedFactory->createDegreeDistribution(this->weightedGraph);
-        DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator it =
-            degreeDistribution->iterator();
+        auto weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        auto degreeDistribution = weightedFactory->createDegreeDistribution(this->weightedGraph);
+        auto it = degreeDistribution->iterator();
 
         while (!it.end())
         {
@@ -531,17 +504,12 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
     }
     else if (isDigraph())
     {
-        IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory =
-            new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>* degreeDistribution =
-            static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+        auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                 directedFactory->createDegreeDistribution(directedGraph));
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it =
-            degreeDistribution->inDegreeIterator();
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it2 =
-            degreeDistribution->outDegreeIterator();
-        DirectedDegreeDistribution<DirectedGraph, DirectedVertex>::DistributionIterator it3 =
-            degreeDistribution->inOutDegreeIterator();
+        auto it = degreeDistribution->inDegreeIterator();
+        auto it2 = degreeDistribution->outDegreeIterator();
+        auto it3 = degreeDistribution->inOutDegreeIterator();
 
         while (!it.end() || !it2.end())
         {
@@ -578,10 +546,9 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
     }
     else
     {
-        IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-        IDegreeDistribution<Graph, Vertex>* degreeDistribution =
-            factory->createDegreeDistribution(this->graph);
-        DegreeDistribution<Graph, Vertex>::DistributionIterator it = degreeDistribution->iterator();
+        auto factory = new GraphFactory<Graph, Vertex>();
+        auto degreeDistribution = factory->createDegreeDistribution(this->graph);
+        auto it = degreeDistribution->iterator();
 
         while (!it.end())
         {
@@ -628,10 +595,9 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
 
     if (isWeighted())
     {
-        IGraphFactory<WeightedGraph, WeightedVertex>* weightedFactory =
-            new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient =
-            weightedFactory->createClusteringCoefficient();
+        auto weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        auto clusteringCoefficient = weightedFactory->createClusteringCoefficient();
+
         while (it != degrees.end())
         {
             cc = clusteringCoefficient->clusteringCoefficient(
@@ -644,10 +610,9 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
     }
     else if (isDigraph())
     {
-        IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory =
-            new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient =
-            directedFactory->createClusteringCoefficient();
+        auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        auto clusteringCoefficient = directedFactory->createClusteringCoefficient();
+
         while (it != degrees.end())
         {
             cc = clusteringCoefficient->clusteringCoefficient(
@@ -661,9 +626,9 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
     }
     else
     {
-        IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-        IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-            factory->createClusteringCoefficient();
+        auto factory = new GraphFactory<Graph, Vertex>();
+        auto clusteringCoefficient = factory->createClusteringCoefficient();
+
         while (it != degrees.end())
         {
             cc = clusteringCoefficient->clusteringCoefficient(
@@ -707,10 +672,8 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
 
     if (isWeighted())
     {
-        IGraphFactory<WeightedGraph, WeightedVertex>* weightedFactory =
-            new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        INearestNeighborsDegree<WeightedGraph, WeightedVertex>* nearestNeighborDegree =
-            weightedFactory->createNearestNeighborsDegree();
+        auto weightedFactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        auto nearestNeighborDegree = weightedFactory->createNearestNeighborsDegree();
 
         while (it != degrees.end())
         {
@@ -724,10 +687,8 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
     }
     else if (isDigraph())
     {
-        IGraphFactory<DirectedGraph, DirectedVertex>* directedFactory =
-            new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-        INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborDegree =
-            directedFactory->createNearestNeighborsDegree();
+        auto directedFactory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+        auto nearestNeighborDegree = directedFactory->createNearestNeighborsDegree();
 
         while (it != degrees.end())
         {
@@ -742,9 +703,8 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
     }
     else
     {
-        IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-        INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree =
-            factory->createNearestNeighborsDegree();
+        auto factory = new GraphFactory<Graph, Vertex>();
+        auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
 
         while (it != degrees.end())
         {
@@ -759,9 +719,9 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
 
 void ProgramState::computeShellIndex(PropertyMap& propertyMap)
 {
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    IShellIndex<Graph, Vertex>* shellIndex = factory->createShellIndex(graph);
-    IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
+    auto factory = new GraphFactory<Graph, Vertex>();
+    auto shellIndex = factory->createShellIndex(graph);
+    auto it = shellIndex->iterator();
 
     while (!it.end())
     {
@@ -776,10 +736,10 @@ void ProgramState::computeShellIndex(PropertyMap& propertyMap)
 bool ProgramState::computeMaxCliqueDistr(
     PropertyMap& propertyMap, bool exact, unsigned int max_time)
 {
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    IMaxClique<Graph, Vertex>* maxClique =
-        exact ? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(this->graph, max_time)
-              : (IMaxClique<Graph, Vertex>*)factory->createMaxClique(this->graph);
+    auto factory = new GraphFactory<Graph, Vertex>();
+    auto maxClique =  exact
+        ? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(this->graph, max_time)
+        : (IMaxClique<Graph, Vertex>*)factory->createMaxClique(this->graph);
 
     if (maxClique->finished())
     {
@@ -1202,9 +1162,10 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
     std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
     PropertyMap propertyMap;
     computeDegreeDistribution(propertyMap);
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-        factory->createClusteringCoefficient();
+
+    auto factory = new GraphFactory<Graph, Vertex>();
+    auto clusteringCoefficient = factory->createClusteringCoefficient();
+
     double coefSums = 0.0;
     unsigned int count = 0;
     double oldCoef;
