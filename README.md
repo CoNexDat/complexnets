@@ -32,7 +32,7 @@ Building the main project
 
 First, install the project dependencies (tested on Ubuntu/Debian):
 
-`sudo apt-get install qt4-qmake libqt4-dev make build-essential`
+    sudo apt-get install build-essential qt5-default
 
 Then, at the project root directory, run the following commands:
 
@@ -48,7 +48,7 @@ Building in Mac OS
 =========================
 Since there is no default package manager in Mac OS X, you can use [Homebrew](http://brew.sh/) to install the required packages.
 
-`$ brew install cmake qt`
+    brew install cmake qt
 
 If your compiler is not `gcc`, you can also download it using Homebrew (`brew install gcc`).
 
@@ -56,18 +56,14 @@ If the downloaded version is different than **gcc-6**, you'll have to change the
 
 It is also recommended to download *gnuplot* from Homebrew:
 
-`$ brew install gnuplot --with-qt`
-
-If you had previously installed one of these dependencies with Macports or Fisk, you can move them in order to have the ones downloaded from Homebrew take precedence:
-
-`$ mv /opt/local ~/macports`
+    brew install gnuplot --with-qt`
 
 Running the tests
 =================
 
 Adding to the previously mentioned requirements, install the following dependencies:
 
-``` sudo apt-get install cmake unzip ```
+    sudo apt-get install cmake
 
 Then, install the Gtest library:
 
@@ -79,8 +75,8 @@ $ ./configure
 $ make
 $ sudo cp -a include/gtest /usr/include
 $ sudo cp -a lib/.libs/* /usr/lib/
-
 ```
+
 And finally:
 
 ```
@@ -93,23 +89,24 @@ License
 =============================================
 
 This toolbox is licensed under the Academic Free License 3.0, and it was developed
-in the Instituto Tecnológico de Buenos Aires (http://itba.edu.ar).
+at the [Instituto Tecnológico de Buenos Aires](https://www.itba.edu.ar).
+
 The first version was released in 2012.
 
 Project manager: José Ignacio Alvarez-Hamelin
 =============================================
 
-Developers:
-                               (semester-year)
-  - Carlos Castro                     1-2012
-  - Nicolás Bombau                    1-2012
-  - Ezequiel Scaruli                  2-2012
-  - Pablo Andres Ballesty             2-2012
-  - Alejandro Magnorsky               2-2012
-  - Alan Fabian Idesis                2-2012
-  - Fernando Dávila                   2-2012
-  - Luciana Reznik                    2-2014
-  - Jose Ignacio Galindo              2-2014
-  - Jaime Alexander Campos Iannacone  2-2015
-  - Juan Pablo Dantur                 2-2016
-  - Federico Bond                     1-2017
+| Developer                        | (semester-year) |
+|----------------------------------|-----------------|
+| Carlos Castro                    | 1-2012          |
+| Nicolás Bombau                   | 1-2012          |
+| Ezequiel Scaruli                 | 2-2012          |
+| Pablo Andres Ballesty            | 2-2012          |
+| Alejandro Magnorsky              | 2-2012          |
+| Alan Fabian Idesis               | 2-2012          |
+| Fernando Dávila                  | 2-2012          |
+| Luciana Reznik                   | 2-2014          |
+| Jose Ignacio Galindo             | 2-2014          |
+| Jaime Alexander Campos Iannacone | 2-2015          |
+| Juan Pablo Dantur                | 2-2016          |
+| Federico Bond                    | 1-2017          |
