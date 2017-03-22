@@ -699,8 +699,9 @@ void MainWindow::computeShellIndex()
         }
         else
         {
-            IShellIndex<Graph, Vertex>* shellIndex = factory->createShellIndex(graph);
-            IShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex->iterator();
+            auto shellIndex = factory->createShellIndex(graph);
+            auto it = shellIndex->iterator();
+
             while (!it.end())
             {
                 propertyMap.addProperty<unsigned int>(
@@ -818,7 +819,8 @@ void MainWindow::computeDegreeDistribution()
         }
         else if (this->digraph)
         {
-            auto degreeDistribution = static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
+            auto degreeDistribution =
+                static_cast<DirectedDegreeDistribution<DirectedGraph, DirectedVertex>*>(
                     directedFactory->createDegreeDistribution(directedGraph));
             auto it = degreeDistribution->inDegreeIterator();
             auto it2 = degreeDistribution->outDegreeIterator();
@@ -1234,8 +1236,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 if ((vertex = weightedGraph.getVertexById(
                          from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
-                    INearestNeighborsDegree<WeightedGraph, WeightedVertex>* nearestNeighborsDegree =
-                        weightedFactory->createNearestNeighborsDegree();
+                    auto nearestNeighborsDegree = weightedFactory->createNearestNeighborsDegree();
                     propertyMap.addProperty<double>(
                         "nearestNeighborsDegreeForVertex",
                         to_string<unsigned int>(vertex->getVertexId()),
@@ -1249,8 +1250,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 if ((vertex = directedGraph.getVertexById(
                          from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
                 {
-                    INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborsDegree =
-                        directedFactory->createNearestNeighborsDegree();
+                    auto nearestNeighborsDegree = directedFactory->createNearestNeighborsDegree();
                     propertyMap.addProperty<double>(
                         "nearestNeighborsDegreeForVertex",
                         to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
@@ -1368,8 +1368,7 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
 
         if (this->weightedgraph)
         {
-            IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient =
-                weightedFactory->createClusteringCoefficient();
+            auto clusteringCoefficient = weightedFactory->createClusteringCoefficient();
             while (it != degrees.end())
             {
                 cc = clusteringCoefficient->clusteringCoefficient(
@@ -1381,8 +1380,7 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
         }
         else if (this->digraph)
         {
-            IClusteringCoefficient<DirectedGraph, DirectedVertex>* clusteringCoefficient =
-                directedFactory->createClusteringCoefficient();
+            auto clusteringCoefficient = directedFactory->createClusteringCoefficient();
             while (it != degrees.end())
             {
                 cc = clusteringCoefficient->clusteringCoefficient(
@@ -1394,8 +1392,7 @@ void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
         }
         else
         {
-            IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-                factory->createClusteringCoefficient();
+            auto clusteringCoefficient = factory->createClusteringCoefficient();
             while (it != degrees.end())
             {
                 cc = clusteringCoefficient->clusteringCoefficient(
@@ -1455,8 +1452,7 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
 
         if (this->weightedgraph)
         {
-            INearestNeighborsDegree<WeightedGraph, WeightedVertex>* nearestNeighborDegree =
-                weightedFactory->createNearestNeighborsDegree();
+            auto nearestNeighborDegree = weightedFactory->createNearestNeighborsDegree();
             while (it != degrees.end())
             {
                 knn = nearestNeighborDegree->meanDegree(
@@ -1468,8 +1464,7 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
         }
         else if (this->digraph)
         {
-            INearestNeighborsDegree<DirectedGraph, DirectedVertex>* nearestNeighborDegree =
-                directedFactory->createNearestNeighborsDegree();
+            auto nearestNeighborDegree = directedFactory->createNearestNeighborsDegree();
             while (it != degrees.end())
             {
                 knn = nearestNeighborDegree->meanDegree(
@@ -1481,8 +1476,7 @@ void MainWindow::on_actionNearest_Neighbors_Degree_vs_Degree_triggered()
         }
         else
         {
-            INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree =
-                factory->createNearestNeighborsDegree();
+            auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
             while (it != degrees.end())
             {
                 knn =
@@ -2292,8 +2286,7 @@ MainWindow::computeBpentries()
 {
     VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
     VariantsSet::const_iterator it = degrees.begin();
-    IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-        factory->createClusteringCoefficient();
+    auto clusteringCoefficient = factory->createClusteringCoefficient();
     double cc = 0;
     std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries;
     while (it != degrees.end())
@@ -2358,8 +2351,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
     std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
-    IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-        factory->createClusteringCoefficient();
+    auto clusteringCoefficient = factory->createClusteringCoefficient();
     double coefSums = 0.0;
     unsigned int count = 0;
     double oldCoef;
@@ -2417,8 +2409,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
     std::vector<graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree> nnCoefs;
-    INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree =
-        factory->createNearestNeighborsDegree();
+    auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
     double coefSums = 0.0;
     unsigned int count = 0;
 
@@ -2603,8 +2594,7 @@ void MainWindow::computeClusteringCoefficient(QString vertexId)
         if ((vertex = weightedGraph.getVertexById(
                  from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
         {
-            IClusteringCoefficient<WeightedGraph, WeightedVertex>* clusteringCoefficient =
-                weightedFactory->createClusteringCoefficient();
+            auto clusteringCoefficient = weightedFactory->createClusteringCoefficient();
             propertyMap.addProperty<double>(
                 "clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()),
                 clusteringCoefficient->vertexClusteringCoefficient(vertex));
@@ -2617,8 +2607,7 @@ void MainWindow::computeClusteringCoefficient(QString vertexId)
         if ((vertex = graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) !=
             nullptr)
         {
-            IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-                factory->createClusteringCoefficient();
+            auto clusteringCoefficient = factory->createClusteringCoefficient();
             propertyMap.addProperty<double>(
                 "clusteringCoeficientForVertex", to_string<unsigned int>(vertex->getVertexId()),
                 clusteringCoefficient->vertexClusteringCoefficient(vertex));
@@ -2738,8 +2727,7 @@ MainWindow::computeBpentriesKnn()
 {
     VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
     VariantsSet::const_iterator it = degrees.begin();
-    INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree =
-        factory->createNearestNeighborsDegree();
+    auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
     double nnd = 0;
     std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries;
     while (it != degrees.end())
