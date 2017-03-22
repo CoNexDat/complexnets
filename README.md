@@ -36,9 +36,7 @@ First, install the project dependencies (tested on Ubuntu/Debian):
 
 Then, at the project root directory, run the following commands:
 
-```
-./scripts/build.shs
-```
+    ./scripts/build.sh
 
 Version 6.3.0 (or greater) of g++ is required.
 
@@ -55,7 +53,7 @@ If the downloaded version is different than **gcc-6**, you'll have to change the
 
 It is also recommended to download *gnuplot* from Homebrew:
 
-    brew install gnuplot --with-qt`
+    brew install gnuplot --with-qt
 
 Running the tests
 =================
