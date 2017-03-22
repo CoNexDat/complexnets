@@ -19,6 +19,8 @@ UI_DIR = ComplexNetsGui/inc/
 CONFIG += release
 QMAKE_CXXFLAGS += -Wextra \
     -std=c++11 \
+    -Wno-unused-variable \
+    -Wno-unused-parameter \
     -Wno-long-long \
     -I.
 QMAKE_CXXFLAGS_DEBUG += -ggdb3

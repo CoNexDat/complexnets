@@ -212,7 +212,7 @@ private:
             if (nextVertexDegree != 0)
             {
                 vertexesIdsDegrees[nextVertexId] = nextVertexDegree - 1;
-                int noFreeAndOneFreeSize =
+                size_t noFreeAndOneFreeSize =
                     vertexesWithOneFreeDegree.size() + vertexesWitNoFreeDegrees.size();
                 if (noFreeAndOneFreeSize == vertexesInTheGraph.size())
                 {

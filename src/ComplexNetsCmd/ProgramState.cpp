@@ -115,21 +115,14 @@ void ProgramState::setHiperbolicGraph(unsigned int n, float a, float c)
 
 double ProgramState::betweenness(unsigned int vertex_id)
 {
-    IGraphFactory<Graph, Vertex>* factory;
-    IBetweenness<Graph, Vertex>* betweenness;
-    IGraphFactory<WeightedGraph, WeightedVertex>* wfactory;
-    IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
-    // IBetweenness<Graph, Vertex>::BetweennessIterator it;
-    // IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator wit;
-    double ret;
-
     if (this->weighted)
     {
-        wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-        wbetweenness = wfactory->createBetweenness(this->weightedGraph);
+        IGraphFactory<WeightedGraph, WeightedVertex>* wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+        IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness = wfactory->createBetweenness(this->weightedGraph);
+
         IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator wit =
             wbetweenness->iterator();
-        ret = -1;
+        double ret = -1;
         while (!wit.end())
         {
             if (wit->first == vertex_id)
@@ -140,13 +133,15 @@ double ProgramState::betweenness(unsigned int vertex_id)
             ++wit;
         }
         delete wbetweenness;
+        return ret;
     }
     else
     {
-        factory = new GraphFactory<Graph, Vertex>();
-        betweenness = factory->createBetweenness(this->graph);
+        IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
+        IBetweenness<Graph, Vertex>* betweenness = factory->createBetweenness(this->graph);
+
         IBetweenness<Graph, Vertex>::BetweennessIterator it = betweenness->iterator();
-        ret = -1;
+        double ret = -1;
         while (!it.end())
         {
             if (it->first == vertex_id)
@@ -157,9 +152,8 @@ double ProgramState::betweenness(unsigned int vertex_id)
             ++it;
         }
         delete betweenness;
+        return ret;
     }
-
-    return ret;
 }
 
 std::list<int> ProgramState::maxCliqueAprox()
@@ -399,16 +393,11 @@ double ProgramState::outDegreeDistribution(unsigned int vertex_id)
 
 void ProgramState::computeBetweenness(PropertyMap& propertyMap)
 {
-    IGraphFactory<Graph, Vertex>* factory;
-    IBetweenness<Graph, Vertex>* betweenness;
-    IGraphFactory<WeightedGraph, WeightedVertex>* wfactory;
-    IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
-    IDegreeDistribution<WeightedGraph, WeightedVertex>* wdegreeDistribution;
-    IDegreeDistribution<Graph, Vertex>* degreeDistribution;
-
     // Calculate betweenness.
     if (this->weighted)
     {
+        IGraphFactory<WeightedGraph, WeightedVertex>* wfactory;
+        IBetweenness<WeightedGraph, WeightedVertex>* wbetweenness;
         wfactory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
         wbetweenness = wfactory->createBetweenness(this->weightedGraph);
         IBetweenness<WeightedGraph, WeightedVertex>::BetweennessIterator betweennessIterator =
@@ -421,26 +410,9 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
             ++betweennessIterator;
         }
         delete wbetweenness;
-    }
-    else
-    {
-        factory = new GraphFactory<Graph, Vertex>();
-        betweenness = factory->createBetweenness(this->graph);
-        IBetweenness<Graph, Vertex>::BetweennessIterator betweennessIterator =
-            betweenness->iterator();
-        while (!betweennessIterator.end())
-        {
-            propertyMap.addProperty<double>(
-                "betweenness", to_string<unsigned int>(betweennessIterator->first),
-                betweennessIterator->second);
-            ++betweennessIterator;
-        }
-        delete betweenness;
-    }
 
-    // Calculate degree distribution.
-    if (this->weighted)
-    {
+        IDegreeDistribution<WeightedGraph, WeightedVertex>* wdegreeDistribution;
+
         wdegreeDistribution = wfactory->createDegreeDistribution(this->weightedGraph);
         DegreeDistribution<WeightedGraph, WeightedVertex>::DistributionIterator degreeIterator =
             wdegreeDistribution->iterator();
@@ -454,10 +426,27 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
                 degreeIterator->second / (double)graph.verticesCount());
             ++degreeIterator;
         }
-        delete degreeDistribution;
+        delete wdegreeDistribution;
     }
     else
     {
+        IGraphFactory<Graph, Vertex>* factory;
+        IBetweenness<Graph, Vertex>* betweenness;
+        factory = new GraphFactory<Graph, Vertex>();
+        betweenness = factory->createBetweenness(this->graph);
+        IBetweenness<Graph, Vertex>::BetweennessIterator betweennessIterator =
+            betweenness->iterator();
+        while (!betweennessIterator.end())
+        {
+            propertyMap.addProperty<double>(
+                "betweenness", to_string<unsigned int>(betweennessIterator->first),
+                betweennessIterator->second);
+            ++betweennessIterator;
+        }
+        delete betweenness;
+
+        IDegreeDistribution<Graph, Vertex>* degreeDistribution;
+
         degreeDistribution = factory->createDegreeDistribution(graph);
         DegreeDistribution<Graph, Vertex>::DistributionIterator degreeIterator =
             degreeDistribution->iterator();
