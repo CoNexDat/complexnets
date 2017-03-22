@@ -25,7 +25,7 @@ class GnuplotConsole : public QDialog
 {
     Q_OBJECT
 public:
-    GnuplotConsole(QWidget* parent = 0);
+    GnuplotConsole(QWidget* parent = nullptr);
     ~GnuplotConsole();
     bool plotPropertySet(
         const VariantsSet& set,
