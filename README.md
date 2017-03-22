@@ -1,6 +1,8 @@
 ComplexNets++
 =============
 
+[![Build Status](https://travis-ci.org/ihameli/complexnets.svg?branch=master)](https://travis-ci.org/ihameli/complexnets)
+
 This toolbox provides different tools to analyze complex networks, i.e.,
 networks issues from complex systems or any graph in general. 
 We provide:
