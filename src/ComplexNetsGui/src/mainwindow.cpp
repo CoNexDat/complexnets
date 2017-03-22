@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     this->onNetworkUnload();
-    this->console = new GnuplotConsole();
+    this->console = new GnuplotConsole(this);
     ui->textBrowser->setOpenExternalLinks(true);
     ui->textBrowser->append(
         "Welcome to ComplexNets++!!\nIf you are a developer feel free to visit our GitHub page:");
