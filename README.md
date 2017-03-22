@@ -37,16 +37,15 @@ First, install the project dependencies (tested on Ubuntu/Debian):
 Then, at the project root directory, run the following commands:
 
 ```
-$ cd src
-$ qmake
-$ make all
+./scripts/build.shs
 ```
 
-Version 4.8 (or greater) of g++ is required.
+Version 6.3.0 (or greater) of g++ is required.
 
-Building in Mac OS
-=========================
-Since there is no default package manager in Mac OS X, you can use [Homebrew](http://brew.sh/) to install the required packages.
+Building in macOS
+=================
+
+Since there is no default package manager in macOS, you can use [Homebrew](https://brew.sh/) to install the required packages.
 
     brew install cmake qt
 
@@ -61,29 +60,18 @@ It is also recommended to download *gnuplot* from Homebrew:
 Running the tests
 =================
 
-Adding to the previously mentioned requirements, install the following dependencies:
+Make sure you have cloned the vendored googletest by doing:
+
+    git submodule update --init
+
+If you haven't installed CMake before, you should do so now:
 
     sudo apt-get install cmake
+    # brew install cmake (if you are running macOS)
 
-Then, install the Gtest library:
+Then, compile and run the tests with the following command:
 
-``` 
-$ wget http://googletest.googlecode.com/files/gtest-1.7.0.zip
-$ unzip gtest-1.7.0.zip
-$ cd gtest-1.7.0
-$ ./configure
-$ make
-$ sudo cp -a include/gtest /usr/include
-$ sudo cp -a lib/.libs/* /usr/lib/
-```
-
-And finally:
-
-```
-$ cmake CMakeLists.txt
-$ make all
-$ ./tests
-```
+    ./scripts/tests.sh
 
 License
 =============================================
