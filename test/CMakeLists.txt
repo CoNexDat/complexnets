@@ -9,19 +9,20 @@ set(GTEST_ROOT "../vendor/googletest/googletest")
 
 set(TEST_SRC
     TestMain.cpp
-    BetweennessTest.cpp
-    ClusteringCoefficientTest.cpp
-    NearestNeighborsDegreeTest.cpp
-    DegreeDistributionTest.cpp
-    TraverserForwardTest.cpp
     AdjacencyListGraphTest.cpp
     AdjacencyListVertexTest.cpp
-    ShellIndexTest.cpp
-    WeightedNearestNeighborsDegreeTest.cpp
-    WeightedClusteringCoefficientTest.cpp
-    TraverserBFSTest.cpp
-    TraverserOrderedTest.cpp
+    BetweennessTest.cpp
+    ClusteringCoefficientTest.cpp
+    DegreeDistributionTest.cpp
     DirectedDegreeDistributionTest.cpp
+    NearestNeighborsDegreeTest.cpp
+    PropertyMapTest.cpp
+    ShellIndexTest.cpp
+    TraverserBFSTest.cpp
+    TraverserForwardTest.cpp
+    TraverserOrderedTest.cpp
+    WeightedClusteringCoefficientTest.cpp
+    WeightedNearestNeighborsDegreeTest.cpp
 )
 
 add_subdirectory(${GTEST_ROOT} gtest)
