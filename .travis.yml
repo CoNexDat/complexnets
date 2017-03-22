@@ -7,7 +7,7 @@ addons:
     packages:
       - gcc-6
       - g++-6
-      - qtdeclarative5-dev
+      - qt5-default
       - cmake
     sources: &sources
       - ubuntu-toolchain-r-test
@@ -20,14 +20,15 @@ install:
   # Install a recent CMake
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      if [[ -z "${DEPS_DIR}/cmake/bin" ]]; then
+      # if [[ -z "${DEPS_DIR}/cmake/bin" ]]; then
         CMAKE_URL="https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz"
         mkdir -p cmake && travis_retry wget --no-check-certificate --quiet -O - "${CMAKE_URL}" | tar --strip-components=1 -xz -C cmake
-      fi
+      # fi
       export PATH="${DEPS_DIR}/cmake/bin:${PATH}"
     else
       if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
     fi
+    cmake --version
 before_script:
   - cd "${TRAVIS_BUILD_DIR}"
   - ./scripts/build.sh
