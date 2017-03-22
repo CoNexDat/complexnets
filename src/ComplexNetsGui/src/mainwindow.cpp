@@ -335,6 +335,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
     // Enabled actions for all graph types
     ui->actionDegree_distribution->setEnabled(true);
     ui->actionDegree_distribution_plotting->setEnabled(true);
+    ui->actionExport_current_network->setEnabled(true);
     ui->actionExportDegree_distribution->setEnabled(true);
     ui->actionClose_current_network->setEnabled(true);
     ui->actionCumulativeDegree_distribution_plotting->setEnabled(true);
@@ -375,6 +376,7 @@ void MainWindow::disableActions()
     ui->actionExportNearest_Neighbors_Degree_vs_Degree->setEnabled(false);
     ui->actionExportMaxClique_distribution->setEnabled(false);
     ui->actionExportMaxCliqueExact_distribution->setEnabled(false);
+    ui->actionExport_current_network->setEnabled(false);
     ui->actionBoxplotCC->setEnabled(false);
     ui->actionExportKnnBoxplot->setEnabled(false);
     ui->actionExportPowerLawDegreeDistribution->setEnabled(false);
