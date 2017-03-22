@@ -16,9 +16,8 @@ FORMS += ComplexNetsGui/forms/mainwindow.ui
 #OBJECTS_DIR = .obj/release-shared
 QT += widgets
 UI_DIR = ComplexNetsGui/inc/
-CONFIG += release
+CONFIG += c++14 release
 QMAKE_CXXFLAGS += -Wextra \
-    -std=c++14 \
     -Wno-unused-variable \
     -Wno-unused-parameter \
     -Wno-long-long \
