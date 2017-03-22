@@ -119,7 +119,8 @@ private:
 
     void consume_whitespace()
     {
-        while (*character == ' ' || *character == '\t') ++character;
+        while (*character == ' ' || *character == '\t')
+            ++character;
     }
 
     double consume_weigth()

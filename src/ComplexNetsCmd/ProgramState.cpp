@@ -1050,7 +1050,7 @@ ProgramState::computeTotalBpEntriesDegreeDistribution()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (auto& coef: bCoefs)
+        for (auto& coef : bCoefs)
             entry.values.push_back(coef);
     }
     bCoefs.clear();
@@ -1092,7 +1092,7 @@ ProgramState::computeTotalBpEntriesShellIndex()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (auto& coef: bCoefs)
+        for (auto& coef : bCoefs)
             entry.values.push_back(coef);
     }
     bCoefs.clear();
@@ -1134,7 +1134,7 @@ ProgramState::computeTotalBpEntriesBetweenness()
         entry.Q1 = bCoefs.at(Q1);
         entry.Q2 = bCoefs.at(Q2);
         entry.Q3 = bCoefs.at(Q3);
-        for (auto& coef: bCoefs)
+        for (auto& coef : bCoefs)
             entry.values.push_back(coef);
     }
     bCoefs.clear();
@@ -1199,7 +1199,7 @@ ProgramState::computeTotalBpEntriesKnn()
         entry.Q1 = nnCoefs.at(Q1);
         entry.Q2 = nnCoefs.at(Q2);
         entry.Q3 = nnCoefs.at(Q3);
-        for (auto& coef: nnCoefs)
+        for (auto& coef : nnCoefs)
             entry.values.push_back(coef);
     }
     nnCoefs.clear();
@@ -1262,7 +1262,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
         entry.Q1 = clusteringCoefs.at(Q1);
         entry.Q2 = clusteringCoefs.at(Q2);
         entry.Q3 = clusteringCoefs.at(Q3);
-        for (auto& coef: clusteringCoefs)
+        for (auto& coef : clusteringCoefs)
             entry.values.push_back(coef);
     }
     clusteringCoefs.clear();

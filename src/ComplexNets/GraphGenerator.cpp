@@ -114,7 +114,8 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
 {
     Graph* graph = new Graph(false, false);
     // Create a K_M_0 graph
-    for (unsigned int i = 1; i <= m_0; i++) graph->addVertex(new Vertex(i));
+    for (unsigned int i = 1; i <= m_0; i++)
+        graph->addVertex(new Vertex(i));
     for (unsigned int i = 1; i < m_0; i++)
     {
         Vertex* srcVertex = graph->getVertexById(i);
@@ -128,7 +129,8 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
     // Fill the array with k apparitions of each vertex where k is the degree of the vertex
     std::vector<unsigned int> vertexIndexes;
     for (unsigned int i = 1; i <= m_0; i++)
-        for (unsigned int k = 0; k < m_0; k++) vertexIndexes.push_back(i);
+        for (unsigned int k = 0; k < m_0; k++)
+            vertexIndexes.push_back(i);
 
     for (unsigned int i = m_0 + 1; i <= n; i++)
     {

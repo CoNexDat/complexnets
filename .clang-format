@@ -5,6 +5,7 @@ AccessModifierOffset: -4
 AlignAfterOpenBracket: AlwaysBreak
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
 BinPackParameters: false
 BreakBeforeBraces: Allman
 IndentWidth: 4

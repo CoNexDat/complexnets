@@ -207,13 +207,13 @@ int main(int argc, char* argv[])
                 ERROR_EXIT;
             }
 
-            // Variable 't_given' no longer exists after using gengetopt on cmdline.ggo
-            //			if (!args_info->t_given) {
-            //				usageErrorMessage("Extended Hot graph generation requires the parameter
-            //user
-            // select between how many loops the core is recalculated.");
-            //				ERROR_EXIT;
-            //			}
+            // if (!args_info->t_given)
+            // {
+            //     usageErrorMessage(
+            //         "Extended Hot graph generation requires the parameter user select between "
+            //         "how many loops the core is recalculated.");
+            //     ERROR_EXIT;
+            // }
 
             int n = args_info->n_arg;
             int m = args_info->m_arg;

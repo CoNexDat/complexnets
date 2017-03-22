@@ -145,7 +145,7 @@ bool GnuplotConsole::boxplotCC(
         policy.transform(bpentries, bins);
     }
 
-    for (auto& entry: bpentries)
+    for (auto& entry : bpentries)
     {
         printf("[Degree %d] Size: %lu, Mean: %f\n", entry.degree, entry.values.size(), entry.mean);
         printf("   Min: %f - Max: %f\n", entry.min, entry.max);
@@ -153,7 +153,7 @@ bool GnuplotConsole::boxplotCC(
 
         if (logBin)
         {
-            for (auto& value: entry.values)
+            for (auto& value : entry.values)
             {
                 d.push_back(entry.degree);
                 m.push_back(value);

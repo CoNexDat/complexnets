@@ -70,13 +70,13 @@ public:
 private:
     void Print(const std::vector<unsigned int>& vec)
     {
-        for (auto& v: vec)
+        for (auto& v : vec)
             std::cout << v << std::endl;
     }
 
     void printSet(const std::set<unsigned int>& set)
     {
-        for (auto& v: set)
+        for (auto& v : set)
             std::cout << v << std::endl;
     }
 
@@ -434,7 +434,8 @@ private:
 
     void consume_whitespace()
     {
-        while (*character == ' ' || *character == '\t') ++character;
+        while (*character == ' ' || *character == '\t')
+            ++character;
     }
 
     LineNumber currentLineNumber;
