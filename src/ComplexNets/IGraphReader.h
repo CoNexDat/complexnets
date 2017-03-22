@@ -37,6 +37,10 @@ public:
     typedef std::string FileName;
     typedef unsigned int LineNumber;
     virtual void read(Graph& g, std::string source) = 0;
+
+    virtual ~IGraphReader()
+    {
+    }
 };
 }
 

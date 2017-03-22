@@ -74,6 +74,10 @@ public:
             distribution[d] = 1;
     }
 
+    virtual ~StrengthDistribution()
+    {
+    }
+
 private:
     void calculateDistribution(Graph& graph)
     {

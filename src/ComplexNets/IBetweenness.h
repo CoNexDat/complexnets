@@ -17,6 +17,10 @@ public:
     typedef std::map<typename Vertex::VertexId, double> BetweennessContainer;
     typedef AutonomousIterator<BetweennessContainer> BetweennessIterator;
     virtual BetweennessIterator iterator() = 0;
+
+    virtual ~IBetweenness()
+    {
+    }
 };
 }
 

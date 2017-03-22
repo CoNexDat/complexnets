@@ -32,6 +32,10 @@ public:
     virtual MaxClique<Graph, Vertex>* createMaxClique(Graph& g) = 0;
 
     virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph& g, int max_time) = 0;
+
+    virtual ~IGraphFactory()
+    {
+    }
 };
 }
 

@@ -13,6 +13,10 @@ public:
     typedef CAutonomousIterator<DistributionContainer> DistributionIterator;
 
     virtual DistributionIterator iterator() = 0;
+
+    virtual ~IDegreeDistribution()
+    {
+    }
 };
 }
 

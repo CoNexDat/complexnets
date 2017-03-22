@@ -43,6 +43,10 @@ public:
     {
         return clusteringCoefficient(g, d);
     }
+
+    virtual ~IClusteringCoefficient()
+    {
+    }
 };
 }
 #endif

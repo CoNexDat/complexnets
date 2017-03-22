@@ -13,6 +13,10 @@ public:
     virtual DistributionIterator distIterator() = 0;
     virtual std::list<int> getMaxCliqueList() = 0;
     virtual bool finished() = 0;
+
+    virtual ~IMaxClique()
+    {
+    }
 };
 }
 

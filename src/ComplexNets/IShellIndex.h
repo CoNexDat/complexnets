@@ -11,6 +11,10 @@ public:
     typedef AutonomousIterator<ShellIndexContainer> ShellIndexIterator;
 
     virtual ShellIndexIterator iterator() = 0;
+
+    virtual ~IShellIndex()
+    {
+    }
 };
 }
 

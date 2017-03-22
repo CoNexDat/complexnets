@@ -21,6 +21,10 @@ public:
     {
         return meanDegreeForVertex(vertex);
     }
+
+    virtual ~INearestNeighborsDegree()
+    {
+    }
 };
 }
 
