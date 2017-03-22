@@ -18,7 +18,7 @@ QT += widgets
 UI_DIR = ComplexNetsGui/inc/
 CONFIG += release
 QMAKE_CXXFLAGS += -Wextra \
-    -std=c++11 \
+    -std=c++14 \
     -Wno-unused-variable \
     -Wno-unused-parameter \
     -Wno-long-long \
