@@ -9,8 +9,8 @@ template <class Graph, class Vertex>
 class ShellIndex : public IShellIndex<Graph, Vertex>
 {
 public:
-    typedef typename graphpp::IShellIndex<Graph, Vertex>::ShellIndexContainer ShellIndexContainer;
-    typedef typename graphpp::IShellIndex<Graph, Vertex>::ShellIndexIterator ShellIndexIterator;
+    typedef typename IShellIndex<Graph, Vertex>::ShellIndexContainer ShellIndexContainer;
+    typedef typename IShellIndex<Graph, Vertex>::ShellIndexIterator ShellIndexIterator;
 
     ShellIndex(Graph& g)
     {

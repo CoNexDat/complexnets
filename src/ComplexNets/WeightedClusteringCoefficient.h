@@ -8,7 +8,7 @@ template <class Graph, class Vertex>
 class WeightedClusteringCoefficient : public IClusteringCoefficient<Graph, Vertex>
 {
 public:
-    typedef typename graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient Coefficient;
+    typedef typename IClusteringCoefficient<Graph, Vertex>::Coefficient Coefficient;
     typedef typename Graph::VerticesIterator VerticesIterator;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
