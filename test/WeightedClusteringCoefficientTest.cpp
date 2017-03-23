@@ -76,7 +76,6 @@ TEST_F(WeightedClusterCoefficientTest, GeneralTest)
 
     Coef epsilon = 0.001;
 
-    std::cout << "ACa:   " << c << std::endl;
     ASSERT_TRUE(fabs(c - 0.25) <  epsilon);
 
     Coef c2 = clustering.clusteringCoefficient(g, Vertex::Degree(4));
