@@ -1,5 +1,4 @@
-#ifndef WEIGHTED_GRAPH_ASPECT_H
-#define WEIGHTED_GRAPH_ASPECT_H
+#pragma once
 
 namespace graphpp
 {
@@ -24,5 +23,3 @@ public:
     }
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef PROPERTY_MAP_H
-#define PROPERTY_MAP_H
+#pragma once
 
 #include "mili/mili.h"
 
@@ -67,5 +66,3 @@ private:
     Properties properties;
 };
 }
-
-#endif

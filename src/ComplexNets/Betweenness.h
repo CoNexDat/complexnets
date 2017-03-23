@@ -1,5 +1,5 @@
-#ifndef BETWEENNESS_H
-#define BETWEENNESS_H
+#pragma once
+
 #include <list>
 #include <queue>
 #include <stack>
@@ -131,5 +131,3 @@ private:
     BetweennessContainer betweenness;
 };
 }
-
-#endif

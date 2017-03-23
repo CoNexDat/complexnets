@@ -1,5 +1,4 @@
-#ifndef LOGBINNINGPOLICY_H
-#define LOGBINNINGPOLICY_H
+#pragma once
 
 #include "ComplexNets/mili/mili.h"
 
@@ -191,5 +190,3 @@ private:
     }
 };
 }
-
-#endif  // LOGBINNINGPOLICY_H

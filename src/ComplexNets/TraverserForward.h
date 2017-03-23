@@ -1,5 +1,4 @@
-#ifndef TRAVERSER_FORWARD_H
-#define TRAVERSER_FORWARD_H
+#pragma once
 
 namespace graphpp
 {
@@ -25,5 +24,3 @@ public:
     }
 };
 }
-
-#endif

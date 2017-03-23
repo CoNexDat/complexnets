@@ -1,5 +1,4 @@
-#ifndef DIRECTED_GRAPH_FACTORY_H
-#define DIRECTED_GRAPH_FACTORY_H
+#pragma once
 
 #include "DirectedClusteringCoefficient.h"
 #include "DirectedDegreeDistribution.h"
@@ -58,5 +57,3 @@ public:
     }
 };
 }
-
-#endif

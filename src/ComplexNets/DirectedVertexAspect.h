@@ -1,5 +1,4 @@
-#ifndef DIRECTED_VERTEX_ASPECT_H
-#define DIRECTED_VERTEX_ASPECT_H
+#pragma once
 
 #include "AdjacencyListVertex.h"
 
@@ -84,5 +83,3 @@ private:
     VertexContainer outNeighbors;
 };
 }
-
-#endif

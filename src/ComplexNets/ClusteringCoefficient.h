@@ -1,5 +1,4 @@
-#ifndef CLUSTERING_COEFFICIENT_H
-#define CLUSTERING_COEFFICIENT_H
+#pragma once
 
 #include "IClusteringCoefficient.h"
 
@@ -73,5 +72,3 @@ public:
     }
 };
 }
-
-#endif

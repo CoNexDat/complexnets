@@ -1,5 +1,4 @@
-#ifndef MAX_CLIQUE_H
-#define MAX_CLIQUE_H
+#pragma once
 
 #include <stdio.h>
 #include "IMaxClique.h"
@@ -547,5 +546,3 @@ public:
         linea de commandos
         tiempo para exacto
 */
-
-#endif

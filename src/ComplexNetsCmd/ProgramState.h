@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef PROGRAM_STATE_H
-#define PROGRAM_STATE_H
+#pragma once
 
 #include "ComplexNets/PropertyMap.h"
 #include "ComplexNets/typedefs.h"
@@ -94,5 +93,3 @@ public:
 
     graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
 };
-
-#endif

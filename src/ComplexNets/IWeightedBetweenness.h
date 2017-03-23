@@ -1,5 +1,4 @@
-#ifndef I_WEIGHTED_BETWEENNESS_H
-#define I_WEIGHTED_BETWEENNESS_H
+#pragma once
 
 #include <list>
 #include <queue>
@@ -19,5 +18,3 @@ public:
     virtual BetweennessIterator iterator() = 0;
 };
 }
-
-#endif

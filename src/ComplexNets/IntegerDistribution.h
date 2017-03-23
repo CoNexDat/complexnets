@@ -1,5 +1,4 @@
-#ifndef INTEGER_DISTRIBUTION_H
-#define INTEGER_DISTRIBUTION_H
+#pragma once
 
 #include <stdio.h>
 #include "TraverserForward.h"
@@ -64,5 +63,3 @@ private:
     DistributionContainer distribution;
 };
 }
-
-#endif

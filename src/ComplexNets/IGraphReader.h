@@ -1,5 +1,4 @@
-#ifndef IGRAPH_READER_H
-#define IGRAPH_READER_H
+#pragma once
 
 #include "mili/mili.h"
 
@@ -43,5 +42,3 @@ public:
     }
 };
 }
-
-#endif

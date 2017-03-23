@@ -1,5 +1,4 @@
-#ifndef STRENGTH_DISTRIBUTION_H
-#define STRENGTH_DISTRIBUTION_H
+#pragma once
 
 #include <stdio.h>
 #include "TraverserForward.h"
@@ -89,5 +88,3 @@ private:
     DistributionContainer distribution;
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef WEIGHTED_VERTEX_ASPECT_H
-#define WEIGHTED_VERTEX_ASPECT_H
+#pragma once
 
 #include "AdjacencyListVertex.h"
 
@@ -57,5 +56,3 @@ private:
     NeighborsWeights weights;
 };
 }
-
-#endif

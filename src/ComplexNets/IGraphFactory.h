@@ -1,5 +1,4 @@
-#ifndef IGRAPHFACTORY_H
-#define IGRAPHFACTORY_H
+#pragma once
 
 #include "IBetweenness.h"
 #include "IClusteringCoefficient.h"
@@ -9,6 +8,7 @@
 #include "IShellIndex.h"
 #include "MaxClique.h"
 #include "StrengthDistribution.h"
+
 namespace graphpp
 {
 template <class Graph, class Vertex>
@@ -38,5 +38,3 @@ public:
     }
 };
 }
-
-#endif

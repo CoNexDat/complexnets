@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef GRAPH_WRITER_H
-#define GRAPH_WRITER_H
+#pragma once
 
 #include "typedefs.h"
 
@@ -18,5 +17,3 @@ private:
     std::list<unsigned int> visitedVertexes;
     bool vertexWasVisited(unsigned int vertexId);
 };
-
-#endif

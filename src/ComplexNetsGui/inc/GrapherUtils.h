@@ -1,5 +1,4 @@
-#ifndef GRAPHERUTILS_H
-#define GRAPHERUTILS_H
+#pragma once
 
 #include <cmath>
 #include <cstdio>
@@ -123,5 +122,3 @@ public:
     }
 };
 }
-
-#endif

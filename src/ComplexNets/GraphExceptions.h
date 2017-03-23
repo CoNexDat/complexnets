@@ -1,5 +1,4 @@
-#ifndef GRAPH_EXCEPTIONS_H
-#define GRAPH_EXCEPTIONS_H
+#pragma once
 
 #include "ComplexNets/mili/mili.h"
 
@@ -16,5 +15,3 @@ typedef GenericException<GraphExceptionHierarchy> GraphException;
  */
 DEFINE_SPECIFIC_EXCEPTION_TEXT(
     DuplicateEdge, GraphExceptionHierarchy, "Graph doesn't allow duplicate edges");
-
-#endif

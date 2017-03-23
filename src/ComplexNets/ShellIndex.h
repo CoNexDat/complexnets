@@ -1,5 +1,4 @@
-#ifndef SHELL_INDEX_H
-#define SHELL_INDEX_H
+#pragma once
 
 #include "DoublyLinkedList.h"
 #include "IShellIndex.h"
@@ -209,5 +208,3 @@ private:
     bool debug = false;
 };
 }
-
-#endif

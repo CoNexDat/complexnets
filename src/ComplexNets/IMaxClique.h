@@ -1,5 +1,4 @@
-#ifndef IMAX_CLIQUE_H
-#define IMAX_CLIQUE_H
+#pragma once
 
 #include "IntegerDistribution.h"
 #include "mili/mili.h"
@@ -19,5 +18,3 @@ public:
     }
 };
 }
-
-#endif

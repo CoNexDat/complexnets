@@ -1,5 +1,4 @@
-#ifndef GNUPLOTCONSOLE_H
-#define GNUPLOTCONSOLE_H
+#pragma once
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -57,5 +56,3 @@ private:
     QLineEdit* lineEdit;
 };
 }
-
-#endif

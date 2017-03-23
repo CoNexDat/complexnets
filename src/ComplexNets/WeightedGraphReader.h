@@ -1,5 +1,4 @@
-#ifndef WEIGHTEDGRAPHREADER_H
-#define WEIGHTEDGRAPHREADER_H
+#pragma once
 
 #include <fstream>
 #include <iostream>
@@ -168,5 +167,3 @@ private:
     const char* character;
 };
 }
-
-#endif

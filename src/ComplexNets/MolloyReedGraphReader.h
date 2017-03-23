@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 16th, 2015.
 
-#ifndef MOLLOYREEDGRAPHREADER_H
-#define MOLLOYREEDGRAPHREADER_H
+#pragma once
 
 #include <math.h>
 #include <fstream>
@@ -442,5 +441,3 @@ private:
     const char* character;
 };
 }
-
-#endif

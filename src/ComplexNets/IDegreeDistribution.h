@@ -1,5 +1,4 @@
-#ifndef IDEGREE_DISTRIBUTION_H
-#define IDEGREE_DISTRIBUTION_H
+#pragma once
 
 #include "ComplexNets/mili/mili.h"
 
@@ -19,5 +18,3 @@ public:
     }
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef WEIGHTEDCLUSTERINGCOEFFICIENT_H
-#define WEIGHTEDCLUSTERINGCOEFFICIENT_H
+#pragma once
 
 #include "IClusteringCoefficient.h"
 
@@ -70,5 +69,3 @@ public:
     }
 };
 }
-
-#endif

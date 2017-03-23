@@ -1,5 +1,4 @@
-#ifndef ICLUSTERING_COEFFICIENT_H
-#define ICLUSTERING_COEFFICIENT_H
+#pragma once
 
 #include <vector>
 
@@ -49,4 +48,3 @@ public:
     }
 };
 }
-#endif

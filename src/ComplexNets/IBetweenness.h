@@ -1,5 +1,4 @@
-#ifndef IBETWEENNESS_H
-#define IBETWEENNESS_H
+#pragma once
 
 #include <list>
 #include <queue>
@@ -23,5 +22,3 @@ public:
     }
 };
 }
-
-#endif

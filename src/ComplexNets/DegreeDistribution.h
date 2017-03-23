@@ -1,5 +1,4 @@
-#ifndef DEGREE_DISTRIBUTION_H
-#define DEGREE_DISTRIBUTION_H
+#pragma once
 
 #include <stdio.h>
 #include "IDegreeDistribution.h"
@@ -85,5 +84,3 @@ private:
     DistributionContainer distribution;
 };
 }
-
-#endif

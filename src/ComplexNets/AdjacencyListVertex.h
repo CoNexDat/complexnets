@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef ADJACENCY_LIST_VERTEX_H
-#define ADJACENCY_LIST_VERTEX_H
+#pragma once
 
 #include <set>
 #include "mili/mili.h"
@@ -140,5 +139,3 @@ private:
     bool visited;
 };
 }
-
-#endif

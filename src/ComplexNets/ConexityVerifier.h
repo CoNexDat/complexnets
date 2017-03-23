@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef CONEXITYVERIFIER_H
-#define CONEXITYVERIFIER_H
+#pragma once
 
 #include <math.h>
 #include <vector>
@@ -115,5 +114,3 @@ private:
     ConexityVerifier<Graph, Vertex>* conexityVerifierObserver;
 };
 }
-
-#endif

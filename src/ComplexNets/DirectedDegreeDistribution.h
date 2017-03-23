@@ -1,5 +1,4 @@
-#ifndef DIRECTED_DEGREE_DISTRIBUTION_H
-#define DIRECTED_DEGREE_DISTRIBUTION_H
+#pragma once
 
 #include <stdio.h>
 #include "DirectedVertexAspect.h"
@@ -121,5 +120,3 @@ private:
     DistributionContainer inOutDegreeDistribution;
 };
 }
-
-#endif

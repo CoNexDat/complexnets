@@ -1,5 +1,4 @@
-#ifndef GRAPHLOADINGVALIDATIONDIALOG_H
-#define GRAPHLOADINGVALIDATIONDIALOG_H
+#pragma once
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -49,5 +48,3 @@ private:
     QRadioButton* radioButton_2;
 };
 }
-
-#endif

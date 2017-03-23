@@ -2,10 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef ADJACENCY_LIST_GRAPH_H
-#define ADJACENCY_LIST_GRAPH_H
-
-#define NO_RANKER
+#pragma once
 
 #include <iostream>
 #include <new>
@@ -282,5 +279,3 @@ private:
     VertexContainer vertices;
 };
 }
-
-#endif

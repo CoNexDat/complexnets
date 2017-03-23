@@ -1,5 +1,4 @@
-#ifndef DIRECTED_GRAPH_ASPECT_H
-#define DIRECTED_GRAPH_ASPECT_H
+#pragma once
 
 namespace graphpp
 {
@@ -41,5 +40,3 @@ public:
     }
 };
 }
-
-#endif

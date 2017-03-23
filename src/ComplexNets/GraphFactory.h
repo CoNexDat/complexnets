@@ -1,5 +1,4 @@
-#ifndef GRAPHFACTORY_H
-#define GRAPHFACTORY_H
+#pragma once
 
 #include "Betweenness.h"
 #include "ClusteringCoefficient.h"
@@ -55,5 +54,3 @@ public:
     }
 };
 }
-
-#endif

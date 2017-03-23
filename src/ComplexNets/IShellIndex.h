@@ -1,5 +1,4 @@
-#ifndef ISHELL_INDEX_H
-#define ISHELL_INDEX_H
+#pragma once
 
 namespace graphpp
 {
@@ -17,5 +16,3 @@ public:
     }
 };
 }
-
-#endif

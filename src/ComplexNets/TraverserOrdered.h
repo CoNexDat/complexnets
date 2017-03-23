@@ -1,5 +1,4 @@
-#ifndef TRAVERSER_ORDERED_H
-#define TRAVERSER_ORDERED_H
+#pragma once
 
 #include <list>
 #include "ComplexNets/mili/mili.h"
@@ -53,5 +52,3 @@ public:
     }
 };
 }
-
-#endif

@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef GRAPH_GENERATOR_H
-#define GRAPH_GENERATOR_H
+#pragma once
 
 #include "ComplexNets/MolloyReedGraphReader.h"
 #include "ComplexNets/typedefs.h"
@@ -66,5 +65,3 @@ public:
     Graph* generateHiperbolicGraph(unsigned int n, float a, float c);
     double getExpectedAvgNodeDeg(unsigned int n, float a, float c);
 };
-
-#endif

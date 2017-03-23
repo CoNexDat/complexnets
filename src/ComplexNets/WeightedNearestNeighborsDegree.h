@@ -1,5 +1,4 @@
-#ifndef WEIGHTED_NEAREST_NEIGHBORS_DEGREE_H
-#define WEIGHTED_NEAREST_NEIGHBORS_DEGREE_H
+#pragma once
 
 #include "INearestNeighborsDegree.h"
 
@@ -53,5 +52,3 @@ public:
     }
 };
 }
-
-#endif

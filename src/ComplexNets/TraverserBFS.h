@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef TRAVERSER_H
-#define TRAVERSER_H
+#pragma once
 
 #include <iostream>
 #include <queue>
@@ -66,5 +65,3 @@ public:
     }
 };
 }
-
-#endif

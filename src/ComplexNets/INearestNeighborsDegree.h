@@ -1,5 +1,4 @@
-#ifndef INEAREST_NEIGHBORS_DEGREE_H
-#define INEAREST_NEIGHBORS_DEGREE_H
+#pragma once
 
 namespace graphpp
 {
@@ -27,5 +26,3 @@ public:
     }
 };
 }
-
-#endif

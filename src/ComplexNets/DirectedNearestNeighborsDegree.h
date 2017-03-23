@@ -1,5 +1,4 @@
-#ifndef DIRECTED_NEAREST_NEIGHBORS_DEGREE_H
-#define DIRECTED_NEAREST_NEIGHBORS_DEGREE_H
+#pragma once
 
 #include "INearestNeighborsDegree.h"
 
@@ -117,5 +116,3 @@ public:
     }
 };
 }
-
-#endif

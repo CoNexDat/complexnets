@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 19th, 2012.
 
-#ifndef TYPEDEFS_H
-#define TYPEDEFS_H
+#pragma once
 
 #include "ComplexNets/AdjacencyListGraph.h"
 #include "ComplexNets/DirectedGraphAspect.h"
@@ -19,4 +18,3 @@ typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph
 typedef graphpp::DirectedVertexAspect<Vertex> DirectedVertex;
 typedef graphpp::DirectedGraphAspect<DirectedVertex, graphpp::AdjacencyListGraph<DirectedVertex>>
     DirectedGraph;
-#endif

@@ -1,5 +1,4 @@
-#ifndef GRAPHREADER_H
-#define GRAPHREADER_H
+#pragma once
 
 #include <fstream>
 #include <iostream>
@@ -131,5 +130,3 @@ private:
     const char* character;
 };
 }
-
-#endif

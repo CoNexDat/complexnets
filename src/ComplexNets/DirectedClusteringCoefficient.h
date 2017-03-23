@@ -1,5 +1,4 @@
-#ifndef DIRECTED_CLUSTERING_COEFFICIENT_H
-#define DIRECTED_CLUSTERING_COEFFICIENT_H
+#pragma once
 
 #include "IClusteringCoefficient.h"
 #include "typedefs.h"
@@ -159,5 +158,3 @@ public:
     }
 };
 }
-
-#endif

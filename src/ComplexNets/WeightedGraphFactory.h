@@ -1,5 +1,4 @@
-#ifndef WEIGHTEDGRAPHFACTORY_H
-#define WEIGHTEDGRAPHFACTORY_H
+#pragma once
 
 #include "IGraphFactory.h"
 #include "WeightedBetweenness.h"
@@ -59,5 +58,3 @@ public:
     }
 };
 }
-
-#endif

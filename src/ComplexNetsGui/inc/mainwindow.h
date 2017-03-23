@@ -2,8 +2,7 @@
 // Instituto Tecnológico de Buenos Aires (ITBA).
 // Last modification: December 16th, 2015.
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
@@ -129,5 +128,3 @@ private slots:
     void on_actionExportKnnBoxplot_triggered();
 };
 }
-
-#endif

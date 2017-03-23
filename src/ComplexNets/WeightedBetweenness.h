@@ -1,5 +1,5 @@
-#ifndef WEIGHTEDBETWEENNESS_H
-#define WEIGHTEDBETWEENNESS_H
+#pragma once
+
 #include <list>
 #include <queue>
 #include <stack>
@@ -235,5 +235,3 @@ private:
     BetweennessContainer betweenness;
 };
 }
-
-#endif
