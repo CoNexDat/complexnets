@@ -12,7 +12,6 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
-#include <stdio.h>
 #include <cstdlib>
 #include <iostream>
 #include "ComplexNetsGui/inc/mainwindow.h"

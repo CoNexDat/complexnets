@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdio.h>
 #include "DirectedVertexAspect.h"
 #include "IDegreeDistribution.h"
 #include "TraverserForward.h"

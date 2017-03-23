@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdio.h>
 #include "TraverserForward.h"
 #include "WeightedVertexAspect.h"
 #include "mili/mili.h"

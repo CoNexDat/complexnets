@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdio.h>
 #include "TraverserForward.h"
 #include "mili/mili.h"
 

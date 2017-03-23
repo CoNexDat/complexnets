@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdio.h>
 #include "IMaxClique.h"
 #include "TraverserOrdered.h"
 #include "mili/mili.h"
