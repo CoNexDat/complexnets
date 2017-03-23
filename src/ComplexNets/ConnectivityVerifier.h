@@ -12,17 +12,17 @@
 namespace graphpp
 {
 template <class Graph, class Vertex>
-class ConexityVisitor;
+class ConnectivityVisitor;
 
 template <class Graph, class Vertex>
-class ConexityVerifier
+class ConnectivityVerifier
 {
 public:
     std::vector<unsigned int> vertexesLeft;
     std::vector<unsigned int> vertexesInComponent;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
 
-    ConexityVerifier()
+    ConnectivityVerifier()
     {
     }
 
@@ -50,13 +50,13 @@ public:
             ++it;
         }
 
-        ConexityVisitor<Graph, Vertex> visitor(this);
+        ConnectivityVisitor<Graph, Vertex> visitor(this);
         do
         {
             vertexesInComponent.clear();
             Vertex* source = graph->getVertexById(vertexesLeft.back());
             vertexesLeft.pop_back();
-            TraverserBFS<Graph, Vertex, ConexityVisitor<Graph, Vertex>>::traverse(source, visitor);
+            TraverserBFS<Graph, Vertex, ConnectivityVisitor<Graph, Vertex>>::traverse(source, visitor);
         } while (!vertexesLeft.empty() && vertexesInComponent.size() < graph->verticesCount() / 2);
 
         // if(vertexesInComponent.size() >= graph->verticesCount()/2)
@@ -89,10 +89,10 @@ public:
 };
 
 template <class Graph, class Vertex>
-class ConexityVisitor
+class ConnectivityVisitor
 {
 public:
-    ConexityVisitor(ConexityVerifier<Graph, Vertex>* conexityVerifierObserver)
+    ConnectivityVisitor(ConnectivityVerifier<Graph, Vertex>* conexityVerifierObserver)
     {
         this->conexityVerifierObserver = conexityVerifierObserver;
     }
@@ -101,7 +101,7 @@ public:
      * Method: visitVertex
      * -------------------
      * Description: Action invoked by Traverser when a node is reached. The goal of
-     * the visitVertex method is to notify the ConexityVerifier class about the vertex/
+     * the visitVertex method is to notify the ConnectivityVerifier class about the vertex/
      * @returns true if iterator should keep traversing
      */
     bool visitVertex(Vertex* vertex)
@@ -111,6 +111,6 @@ public:
     }
 
 private:
-    ConexityVerifier<Graph, Vertex>* conexityVerifierObserver;
+    ConnectivityVerifier<Graph, Vertex>* conexityVerifierObserver;
 };
 }

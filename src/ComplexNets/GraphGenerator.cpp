@@ -4,7 +4,7 @@
 
 #include "GraphGenerator.h"
 #include <cmath>
-#include "ComplexNets/ConexityVerifier.h"
+#include "ComplexNets/ConnectivityVerifier.h"
 #include "ComplexNets/DirectedGraphFactory.h"
 #include "ComplexNets/GraphFactory.h"
 #include "ComplexNets/IGraphReader.h"
@@ -104,8 +104,8 @@ Graph* GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p)
     }
 
     // Keep only the biggest component (at least n/2 vertexes)
-    ConexityVerifier<Graph, Vertex> conexityVerifier;
-    conexityVerifier.getBiggestComponent(graph);
+    ConnectivityVerifier<Graph, Vertex> connectivityVerifier;
+    connectivityVerifier.getBiggestComponent(graph);
 
     return graph;
 }
