@@ -66,10 +66,7 @@ public:
 
     void notifyDegree(typename Vertex::Degree d)
     {
-        if (distribution.count(d) != 0)
-            distribution[d]++;
-        else
-            distribution[d] = 1;
+        distribution[d]++;
     }
 
 private:
