@@ -100,6 +100,7 @@ Graph* GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p)
             {
                 Vertex* destVertex = graph->getVertexById(j);
                 graph->addEdge(srcVertex, destVertex);
+            }
         }
     }
 
