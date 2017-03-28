@@ -96,9 +96,9 @@ Graph* GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p)
 
         for (unsigned int j = i + 1; j <= n; j++)
         {
-            Vertex* destVertex = graph->getVertexById(j);
-
             if ((float)rand() / RAND_MAX <= p)
+            {
+                Vertex* destVertex = graph->getVertexById(j);
                 graph->addEdge(srcVertex, destVertex);
         }
     }
