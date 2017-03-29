@@ -9,5 +9,5 @@ fi
 mkdir build
 cd build
 
-CC=gcc-6 CXX=g++-6 cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
+CC=gcc-6 CXX=g++-6 cmake ..
 make

@@ -29,7 +29,7 @@
 #include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
 #include "ComplexNetsGui/inc/LogBinningPolicy.h"
 #include "ComplexNetsGui/inc/mainwindow.h"
-#include "ComplexNetsGui/inc/ui_mainwindow.h"
+#include "ComplexNetsGui/src/ui_mainwindow.h"
 
 using namespace ComplexNetsGui;
 using namespace graphpp;

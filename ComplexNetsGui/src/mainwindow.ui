@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ComplexNets++</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTextBrowser" name="textBrowser"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionNewErdosRenyi"/>
+    <addaction name="actionNewBarabasiAlbert"/>
+    <addaction name="actionNewExtendedHOT"/>
+    <addaction name="actionNewMolloyReed"/>
+    <addaction name="actionNewHiperbolic"/>
+    <addaction name="separator"/>
+    <addaction name="actionExport_current_network"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose_current_network"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuNode">
+    <property name="title">
+     <string>&amp;Analysis</string>
+    </property>
+    <addaction name="actionMaxClique"/>
+    <addaction name="actionMaxCliqueExact"/>
+    <addaction name="actionBetweenness"/>
+    <addaction name="actionDegree_distribution"/>
+    <addaction name="actionClustering_coefficient"/>
+    <addaction name="actionNearest_neighbors_degree"/>
+    <addaction name="actionShell_index"/>
+   </widget>
+   <widget class="QMenu" name="menuPlot">
+    <property name="title">
+     <string>&amp;Plot</string>
+    </property>
+    <addaction name="actionBetweenness_vs_Degree"/>
+    <addaction name="actionDegree_distribution_plotting"/>
+    <addaction name="actionCumulativeDegree_distribution_plotting"/>
+    <addaction name="action_maxClique_plotting"/>
+    <addaction name="action_maxCliqueExact_plotting"/>
+    <addaction name="actionClustering_Coefficient_vs_Degree"/>
+    <addaction name="actionNearest_Neighbors_Degree_vs_Degree"/>
+    <addaction name="actionShell_Index_vs_Degree"/>
+    <addaction name="actionBoxplotCC"/>
+    <addaction name="actionBoxplotNearestNeighborsDegree"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menu_Export">
+    <property name="title">
+     <string>&amp;Export</string>
+    </property>
+    <addaction name="actionExportBetweenness_vs_Degree"/>
+    <addaction name="actionExportDegree_distribution"/>
+    <addaction name="actionExportCumulativeDegree_distribution"/>
+    <addaction name="actionExportMaxClique_distribution"/>
+    <addaction name="actionExportMaxCliqueExact_distribution"/>
+    <addaction name="actionExportClustering_Coefficient_vs_Degree"/>
+    <addaction name="actionExportNearest_Neighbors_Degree_vs_Degree"/>
+    <addaction name="actionExportShell_Index_vs_Degree"/>
+    <addaction name="actionExportCCBoxplot"/>
+    <addaction name="actionExportKnnBoxplot"/>
+    <addaction name="actionExportPowerLawDegreeDistribution"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuNode"/>
+   <addaction name="menuPlot"/>
+   <addaction name="menu_Export"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open new network...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionNewErdosRenyi">
+   <property name="text">
+    <string>New Erdos-Renyi graph...</string>
+   </property>
+  </action>
+  <action name="actionNewBarabasiAlbert">
+   <property name="text">
+    <string>New Barabasi-Albert graph...</string>
+   </property>
+  </action>
+  <action name="actionNewExtendedHOT">
+   <property name="text">
+    <string>New Extended HOT graph...</string>
+   </property>
+  </action>
+  <action name="actionNewMolloyReed">
+   <property name="text">
+    <string>New Molloy-Reed graph...</string>
+   </property>
+  </action>
+  <action name="actionNewHiperbolic">
+   <property name="text">
+    <string>New Hyperbolic graph...</string>
+   </property>
+  </action>
+  <action name="actionExport_current_network">
+   <property name="text">
+    <string>Export current network...</string>
+   </property>
+  </action>
+  <action name="actionClose_current_network">
+   <property name="text">
+    <string>Close current network...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_maxClique_plotting">
+   <property name="text">
+    <string>maxClique distribution</string>
+   </property>
+  </action>
+  <action name="action_maxCliqueExact_plotting">
+   <property name="text">
+    <string>maxCliqueExact distribution</string>
+   </property>
+  </action>
+  <action name="actionDegree_distribution_plotting">
+   <property name="text">
+    <string>Degree distribution</string>
+   </property>
+  </action>
+  <action name="actionCumulativeDegree_distribution_plotting">
+   <property name="text">
+    <string>Cumulative Degree distribution</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About...</string>
+   </property>
+  </action>
+  <action name="actionMaxClique">
+   <property name="text">
+    <string>Max Clique Aprox...</string>
+   </property>
+  </action>
+  <action name="actionMaxCliqueExact">
+   <property name="text">
+    <string>Max Clique Exact...</string>
+   </property>
+  </action>
+  <action name="actionBetweenness">
+   <property name="text">
+    <string>Betweenness...</string>
+   </property>
+  </action>
+  <action name="actionClustering_coefficient">
+   <property name="text">
+    <string>Clustering coefficient...</string>
+   </property>
+  </action>
+  <action name="actionNearest_neighbors_degree">
+   <property name="text">
+    <string>Nearest neighbors degree...</string>
+   </property>
+  </action>
+  <action name="actionShell_index">
+   <property name="text">
+    <string>Shell index...</string>
+   </property>
+  </action>
+  <action name="actionDegree_distribution">
+   <property name="text">
+    <string>Degree distribution...</string>
+   </property>
+  </action>
+  <action name="actionClustering_Coefficient_vs_Degree">
+   <property name="text">
+    <string>Clustering Coefficient vs Degree</string>
+   </property>
+  </action>
+  <action name="actionNearest_Neighbors_Degree_vs_Degree">
+   <property name="text">
+    <string>Nearest Neighbors Degree vs Degree</string>
+   </property>
+  </action>
+  <action name="actionShell_Index_vs_Degree">
+   <property name="text">
+    <string>Shell Index vs Degree</string>
+   </property>
+  </action>
+  <action name="actionBetweenness_vs_Degree">
+   <property name="text">
+    <string>Betweenness vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportBetweenness_vs_Degree">
+   <property name="text">
+    <string>Betweenness vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportMaxClique_distribution">
+   <property name="text">
+    <string>maxClique distribution</string>
+   </property>
+  </action>
+  <action name="actionExportMaxCliqueExact_distribution">
+   <property name="text">
+    <string>maxCliqueExact distribution</string>
+   </property>
+  </action>
+  <action name="actionExportDegree_distribution">
+   <property name="text">
+    <string>Degree distribution</string>
+   </property>
+  </action>
+  <action name="actionExportCumulativeDegree_distribution">
+   <property name="text">
+    <string>Cumulative Degree distribution</string>
+   </property>
+  </action>
+  <action name="actionExportClustering_Coefficient_vs_Degree">
+   <property name="text">
+    <string>Clustering Coefficient vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportShell_Index_vs_Degree">
+   <property name="text">
+    <string>Shell Index vs Degree</string>
+   </property>
+  </action>
+  <action name="actionExportCCBoxplot">
+   <property name="text">
+    <string>Boxplot Clustering Coeficient</string>
+   </property>
+  </action>
+  <action name="actionExportKnnBoxplot">
+   <property name="text">
+    <string>Boxplot Nearest Neighbors Degree</string>
+   </property>
+  </action>
+  <action name="actionExportPowerLawDegreeDistribution">
+   <property name="text">
+    <string>Power Law Degree Distribution</string>
+   </property>
+  </action>
+  <action name="actionExportNearest_Neighbors_Degree_vs_Degree">
+   <property name="text">
+    <string>Nearest Neighbors Degree vs Degree</string>
+   </property>
+  </action>
+  <action name="actionBoxplotCC">
+   <property name="text">
+    <string>Boxplot Clustering Coeficient</string>
+   </property>
+  </action>
+  <action name="actionBoxplotNearestNeighborsDegree">
+   <property name="text">
+    <string>Boxplot Nearest Neighbor Degree</string>
+   </property>
+  </action> 
+  <action name="actionConfigure_Directed_Degree_sign">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Configure Directed Degree direction...</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

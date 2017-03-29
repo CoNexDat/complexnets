@@ -27,7 +27,7 @@ set(TEST_SRC
 
 add_subdirectory(${GTEST_ROOT} gtest)
 
-include_directories(../src)
+include_directories(..)
 include_directories(${GTEST_ROOT}/include)
 
 add_executable(runUnitTests ${TEST_SRC})
