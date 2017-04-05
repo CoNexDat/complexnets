@@ -18,7 +18,6 @@ class Dllist
 private:
     Node* head;
     Node* last;
-    bool debug = false;
 
 public:
     Dllist()
@@ -49,21 +48,6 @@ public:
     // Inserts at the beginning with O(1)
     void Insert(Node* newNode)
     {
-        std::ofstream outfile;
-        if (debug)
-        {
-            outfile.open("log.txt", std::ios_base::app);
-            outfile << "Inserting: " << newNode->vertex->getVertexId() << "("
-                    << newNode->currentDegree << ") \n";
-            Node* it = head;
-            while (it != nullptr)
-            {
-                outfile << it->vertex->getVertexId() << "(" << it->currentDegree << ") ";
-                it = it->next;
-            }
-            outfile << "\n";
-        }
-
         // Insertion into an Empty List.
         if (empty())
         {
@@ -79,32 +63,13 @@ public:
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
-        if (debug)
-        {
-            outfile.flush();
-            outfile.close();
-        }
+
         return;
     }
 
     // Removes a node with O(1)
     void Remove(Node* n)
     {
-        std::ofstream outfile;
-        if (debug)
-        {
-            outfile.open("log.txt", std::ios_base::app);
-            outfile << "Removing: " << n->vertex->getVertexId() << "(" << n->currentDegree
-                    << ") \n";
-            Node* it = head;
-            while (it != nullptr)
-            {
-                outfile << it->vertex->getVertexId() << "(" << it->currentDegree << ") ";
-                it = it->next;
-            }
-            outfile << "\n";
-        }
-
         if (n->prev != nullptr)
         {
             n->prev->next = n->next;
@@ -120,11 +85,6 @@ public:
         else
         {
             last = n->prev;
-        }
-        if (debug)
-        {
-            outfile.flush();
-            outfile.close();
         }
     }
 };
