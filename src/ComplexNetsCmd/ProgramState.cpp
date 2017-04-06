@@ -781,7 +781,7 @@ void ProgramState::exportMaxCliqueAprox(std::string outputPath)
 
 void ProgramState::printDegrees()
 {
-    std::cout << "Degrees:" << std::endl;
+    std::cout << "Degrees:\n";
     for (unsigned int i = 1; i <= graph.verticesCount(); ++i)
     {
         Vertex* cur = graph.getVertexById(i);

@@ -23,8 +23,7 @@ public:
         if (!in && !out)
         {
             std::cout << "Warning: DirectedClusteringCoefficient::clusteringCoefficient no "
-                         "direction given."
-                      << std::endl;
+                         "direction given.\n";
         }
 
         while (!it.end())
