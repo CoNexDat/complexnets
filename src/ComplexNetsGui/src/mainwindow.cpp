@@ -103,8 +103,7 @@ void MainWindow::on_actionOpen_triggered()
     this->onNetworkLoad(
         graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected(),
         graphValidationDialog.isMultigraph());
-    buildGraphFactory(
-        graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected());
+    buildGraphFactory(graphValidationDialog.isWeigthed(), graphValidationDialog.isDirected());
     try
     {
         std::string path = selectedFiles[0].toStdString();
@@ -112,16 +111,14 @@ void MainWindow::on_actionOpen_triggered()
         if (this->weightedgraph)
         {
             graph = Graph(isDirected, isMultigraph);
-            weightedGraph =
-                *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(
-                    path, isDirected, isMultigraph));
+            weightedGraph = *(GraphGenerator::getInstance()->generateWeightedGraphFromFile(
+                path, isDirected, isMultigraph));
         }
         else if (isDirected)
         {
             graph = Graph(isDirected, isMultigraph);
             directedGraph =
-                *(GraphGenerator::getInstance()->generateDirectedGraphFromFile(
-                    path, isMultigraph));
+                *(GraphGenerator::getInstance()->generateDirectedGraphFromFile(path, isMultigraph));
         }
         else
         {
@@ -169,9 +166,8 @@ void MainWindow::on_actionOpen_triggered()
     text.append(selectedFiles[0]);
     text.append("\nAmount of vertices in the graph: ");
     unsigned int verticesCount =
-        this->weightedgraph
-            ? weightedGraph.verticesCount()
-            : this->digraph ? directedGraph.verticesCount() : graph.verticesCount();
+        this->weightedgraph ? weightedGraph.verticesCount()
+                            : this->digraph ? directedGraph.verticesCount() : graph.verticesCount();
     text.append(QString("%1").arg(verticesCount));
     text.append(".\n");
     ui->textBrowser->append(text);
@@ -829,8 +825,7 @@ void MainWindow::computeDegreeDistribution()
             if (!it3.end())
             {
                 propertyMap.addProperty<double>(
-                    "inOutDegreeDistribution", to_string<unsigned int>(it3->first),
-                    it3->second);
+                    "inOutDegreeDistribution", to_string<unsigned int>(it3->first), it3->second);
                 propertyMap.addProperty<double>(
                     "inOutDegreeDistributionProbability", to_string<unsigned int>(it3->first),
                     it3->second / (double)directedGraph.verticesCount());

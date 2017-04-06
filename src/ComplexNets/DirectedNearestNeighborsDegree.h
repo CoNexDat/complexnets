@@ -16,7 +16,8 @@ public:
 
         if (!in && !out)
         {
-            std::cout << "Warning: DirectedNearestNeighborsDegree::meanDegree no direction given.\n";
+            std::cout
+                << "Warning: DirectedNearestNeighborsDegree::meanDegree no direction given.\n";
         }
 
         while (!it.end())

@@ -184,8 +184,7 @@ public:
     {
         unsigned int max_size = 0;
         std::list<int>* ids = nullptr;
-        for (auto iterator1 = MaxCliqueIterator(container); !iterator1.end();
-             iterator1++)
+        for (auto iterator1 = MaxCliqueIterator(container); !iterator1.end(); iterator1++)
         {
             if (iterator1->second->size() > max_size)
             {
