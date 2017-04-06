@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "mili/mili.h"
+
 namespace graphpp
 {
 template <class Graph, class Vertex>
@@ -30,6 +32,20 @@ public:
         bool operator<(const Boxplotentry& other) const
         {
             return degree < other.degree;
+        }
+
+        std::string str() const
+        {
+            std::stringstream ss;
+
+            ss << "Mean: " << mean << std::endl;
+            ss << "Min: " << min << std::endl;
+            ss << "Q1: " << Q1 << std::endl;
+            ss << "Q2: " << Q2 << std::endl;
+            ss << "Q3: " << Q3 << std::endl;
+            ss << "Max: " << max << std::endl;
+
+            return ss.str();
         }
     };
 

@@ -587,14 +587,7 @@ void MainWindow::on_actionBetweenness_triggered()
         entry.max = propertyMap.getProperty<double>("BetweennessBPMax", to_string(0));
     }
 
-    ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
-    ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
-    ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
-    ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
-    ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
-    ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
-
-    ui->textBrowser->append(ret);
+    ui->textBrowser->append(entry.str().c_str());
 }
 
 void MainWindow::on_actionShell_index_triggered()
@@ -658,14 +651,8 @@ void MainWindow::on_actionShell_index_triggered()
                     entry.Q3 = propertyMap.getProperty<double>("ShellIndexBPQ3", to_string(0));
                     entry.max = propertyMap.getProperty<double>("ShellIndexBPMax", to_string(0));
                 }
-                ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
-                ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
-                ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
-                ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
-                ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
-                ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
 
-                ui->textBrowser->append(ret);
+                ui->textBrowser->append(entry.str().c_str());
             }
             catch (const BadElementName& ex)
             {
@@ -927,16 +914,8 @@ void MainWindow::on_actionDegree_distribution_triggered()
                 entry.max =
                     propertyMap.getProperty<double>("degreeDistributionBPMax", to_string(0));
             }
-            ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
-            ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
-            ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
-            ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
-            ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
-            ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
-            // coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex", key);
-            // ret.append("Clustering coefficient for vertex ").append(vertexId);
-            // ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
-            ui->textBrowser->append(ret);
+
+            ui->textBrowser->append(entry.str().c_str());
         }
         catch (const BadElementName& ex)
         {
@@ -1169,20 +1148,8 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                     entry.max =
                         propertyMap.getProperty<double>("ClusteringCoefficientBPMax", to_string(0));
                 }
-                // graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
-                // this->computeTotalBpEntries();
-                // while(1);
-                ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
-                ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
-                ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
-                ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
-                ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
-                ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
-                // coefficient = propertyMap.getProperty<double>("clusteringCoeficientForVertex",
-                // key);
-                // ret.append("Clustering coefficient for vertex ").append(vertexId);
-                // ret.append(" is: ").append(to_string<double>(coefficient).c_str()).append(".\n");
-                ui->textBrowser->append(ret);
+
+                ui->textBrowser->append(entry.str().c_str());
             }
             catch (const BadElementName& ex)
             {
@@ -1296,18 +1263,8 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                     entry.Q3 = propertyMap.getProperty<double>("KnnBPQ3", to_string(0));
                     entry.max = propertyMap.getProperty<double>("KnnBPMax", to_string(0));
                 }
-                ret.append("Mean: ").append(to_string<double>(entry.mean).c_str()).append("\n");
-                ret.append("Min: ").append(to_string<double>(entry.min).c_str()).append("\n");
-                ret.append("Q1: ").append(to_string<double>(entry.Q1).c_str()).append("\n");
-                ret.append("Q2: ").append(to_string<double>(entry.Q2).c_str()).append("\n");
-                ret.append("Q3: ").append(to_string<double>(entry.Q3).c_str()).append("\n");
-                ret.append("Max: ").append(to_string<double>(entry.max).c_str()).append("\n");
-                // neighborsDegree =
-                // propertyMap.getProperty<double>("nearestNeighborsDegreeForVertex", key);
-                // ret.append("Nearest neighbors degree for vertex ").append(vertexId);
-                // ret.append(" is:
-                // ").append(to_string<double>(neighborsDegree).c_str()).append(".\n");
-                ui->textBrowser->append(ret);
+
+                ui->textBrowser->append(entry.str().c_str());
             }
             catch (const BadElementName& ex)
             {
