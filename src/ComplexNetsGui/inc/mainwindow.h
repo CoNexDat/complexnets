@@ -85,7 +85,7 @@ private:
     void onNetworkUnload();
     bool closeCurrentGraph();
     std::string getSavePath() const;
-    QString inputId(const std::string label);
+    QString inputId(std::string const& label);
 
 private slots:
     void on_actionExportPowerLawDegreeDistribution_triggered();
