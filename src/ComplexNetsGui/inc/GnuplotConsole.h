@@ -48,7 +48,7 @@ private slots:
 
 private:
     std::ifstream outputFile;
-    FILE* pipe;
+    FILE* pipe = nullptr;
 
     QGroupBox* groupBox;
     QTextBrowser* textBrowser;

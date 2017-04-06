@@ -9,7 +9,7 @@ GnuplotConsole::GnuplotConsole(QWidget* parent) : QDialog(parent)
 {
     if (this->objectName().isEmpty())
         this->setObjectName(QString::fromUtf8("Dialog"));
-    pipe = nullptr;
+
     this->resize(706, 326);
     this->setModal(false);
     groupBox = new QGroupBox(this);
