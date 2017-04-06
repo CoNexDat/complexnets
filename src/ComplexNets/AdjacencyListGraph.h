@@ -109,7 +109,7 @@ public:
 
     ~AdjacencyListGraph()
     {
-        VerticesConstIterator it = verticesConstIterator();
+        auto it = verticesConstIterator();
         while (!it.end())
         {
             delete *it;
@@ -137,7 +137,7 @@ public:
      */
     void removeVertex(Vertex* v)
     {
-        NeighborsIterator it = v->neighborsIterator();
+        auto it = v->neighborsIterator();
 
         while (!it.end())
         {
@@ -245,7 +245,7 @@ public:
             queue.pop();
             hops++;
 
-            NeighborsIterator it = vertex->neighborsIterator();
+            auto it = vertex->neighborsIterator();
 
             while (!it.end() && keepTraversing)
             {

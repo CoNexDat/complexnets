@@ -69,7 +69,7 @@ TEST_F(DegreeDistributionTest, DegreeDistributionIndexed)
 
     DegreeDistribution<IndexedGraph, Vertex> distribution(ig);
 
-    DegreeDistribution<IndexedGraph, Vertex>::DistributionIterator it = distribution.iterator();
+    auto it = distribution.iterator();
 
     //there it should be 1 vertex of degree 1
     ASSERT_EQ(it->first, 1);
@@ -111,7 +111,7 @@ TEST_F(DegreeDistributionTest, DegreeDistributionList)
 
     DegreeDistribution<ListGraph, Vertex> distribution(ig);
 
-    DegreeDistribution<ListGraph, Vertex>::DistributionIterator it = distribution.iterator();
+    auto it = distribution.iterator();
 
     //there it should be 1 vertex of degree 1
     ASSERT_EQ(it->first, 1);
@@ -153,7 +153,7 @@ TEST_F(DegreeDistributionTest, DegreeDistributionVector)
 
     DegreeDistribution<VectorGraph, Vertex> distribution(ig);
 
-    DegreeDistribution<VectorGraph, Vertex>::DistributionIterator it = distribution.iterator();
+    auto it = distribution.iterator();
 
     //there it should be 1 vertex of degree 1
     ASSERT_EQ(it->first, 1);
@@ -182,9 +182,7 @@ TEST_F(DegreeDistributionTest, DegreeDistributionRealWorldTest)
 
     DegreeDistribution<VectorGraph, Vertex> distribution(*g);
 
-    DegreeDistribution<VectorGraph, Vertex>::DistributionIterator it = distribution.iterator();
-    DegreeDistribution<VectorGraph, Vertex>::DistributionIterator iterator = it;
-
+    auto it = distribution.iterator();
 
     // Check for the same structure as the AS_CAIDA_2008 file
 

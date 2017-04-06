@@ -69,9 +69,8 @@ TEST_F(ClusteringCoefficientTest , VertexGeneralTest)
     ig.addEdge(v1, v2);
     ig.addEdge(x, v4);
 
-    typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
+    ClusteringCoefficient<ListGraph, Vertex> clustering;
     typedef Clustering::Coefficient Coef;
-    Clustering clustering;
 
     Coef c = clustering.vertexClusteringCoefficient(x);
 
@@ -106,9 +105,8 @@ TEST_F(ClusteringCoefficientTest, FullGraphTest)
     ig.addEdge(v1, v3);
     ig.addEdge(v3, v2);
 
-    typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
+    ClusteringCoefficient<ListGraph, Vertex> clustering;
     typedef Clustering::Coefficient Coef;
-    Clustering clustering;
 
     Coef c = clustering.vertexClusteringCoefficient(x);
 
@@ -142,9 +140,8 @@ TEST_F(ClusteringCoefficientTest, AcyclicGraphTest)
     ig.addEdge(x, v3);
     ig.addEdge(v4, x);;
 
-    typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
+    ClusteringCoefficient<ListGraph, Vertex> clustering;
     typedef Clustering::Coefficient Coef;
-    Clustering clustering;
 
     Coef c = clustering.vertexClusteringCoefficient(x);
 
@@ -163,9 +160,9 @@ TEST_F(ClusteringCoefficientTest, RealWorldTest)
 
     graphReader.read(*g, "TestTrees/AS_CAIDA_2008.txt");
 
-    typedef ClusteringCoefficient<ListGraph, Vertex> Clustering;
+    ClusteringCoefficient<ListGraph, Vertex> clustering;
     typedef Clustering::Coefficient Coef;
-    Clustering clustering;
+
     Coef epsilon = 0.001;
 
     Vertex * x = g->getVertexById(3);

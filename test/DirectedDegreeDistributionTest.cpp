@@ -82,8 +82,8 @@ TEST_F(DirectedDegreeDistributionTest, DirectedDegreeDistributionIndexed)
 
     
     DirectedDegreeDistribution<IndexedGraph, DirectedVertex> distribution(ig);
-    DirectedDegreeDistribution<IndexedGraph, DirectedVertex>::DistributionIterator itIn = distribution.inDegreeIterator();
-    DirectedDegreeDistribution<IndexedGraph, DirectedVertex>::DistributionIterator itOut = distribution.outDegreeIterator();
+    auto itIn = distribution.inDegreeIterator();
+    auto itOut = distribution.outDegreeIterator();
 
 
     //there it should be 1 vertex of In degree 0
@@ -149,8 +149,8 @@ TEST_F(DirectedDegreeDistributionTest, DirectedDegreeDistributionList)
 
     
     DirectedDegreeDistribution<ListGraph, DirectedVertex> distribution(ig);
-    DirectedDegreeDistribution<ListGraph, DirectedVertex>::DistributionIterator itIn = distribution.inDegreeIterator();
-    DirectedDegreeDistribution<ListGraph, DirectedVertex>::DistributionIterator itOut = distribution.outDegreeIterator();
+    auto itIn = distribution.inDegreeIterator();
+    auto itOut = distribution.outDegreeIterator();
 
 
     //there it should be 1 vertex of In degree 0
@@ -214,8 +214,8 @@ TEST_F(DirectedDegreeDistributionTest, DirectedDegreeDistributionVector)
 
     
     DirectedDegreeDistribution<VectorGraph, DirectedVertex> distribution(ig);
-    DirectedDegreeDistribution<VectorGraph, DirectedVertex>::DistributionIterator itIn = distribution.inDegreeIterator();
-    DirectedDegreeDistribution<VectorGraph, DirectedVertex>::DistributionIterator itOut = distribution.outDegreeIterator();
+    auto itIn = distribution.inDegreeIterator();
+    auto itOut = distribution.outDegreeIterator();
 
 
     //there it should be 1 vertex of In degree 0
@@ -263,8 +263,8 @@ TEST_F(DirectedDegreeDistributionTest, DirectedDegreeDistributionRealWorldTest)
     graphReader.read(*g, "TestTrees/DirectedTree.txt");
 
     DirectedDegreeDistribution<VectorGraph, DirectedVertex> distribution(*g);
-    DirectedDegreeDistribution<VectorGraph, DirectedVertex>::DistributionIterator itIn = distribution.inDegreeIterator();
-    DirectedDegreeDistribution<VectorGraph, DirectedVertex>::DistributionIterator itOut = distribution.outDegreeIterator();
+    auto itIn = distribution.inDegreeIterator();
+    auto itOut = distribution.outDegreeIterator();
 
 
     ASSERT_EQ(itOut->first,1);

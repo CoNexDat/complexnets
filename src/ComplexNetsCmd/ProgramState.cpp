@@ -1098,12 +1098,11 @@ ProgramState::computeTotalBpEntriesKnn()
 {
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
-    std::vector<graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree> nnCoefs;
+    std::vector<double> nnCoefs;
     PropertyMap propertyMap;
     computeDegreeDistribution(propertyMap);
     IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    INearestNeighborsDegree<Graph, Vertex>* nearestNeighborDegree =
-        factory->createNearestNeighborsDegree();
+    auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
     double coefSums = 0.0;
     unsigned int count = 0;
 
@@ -1123,8 +1122,7 @@ ProgramState::computeTotalBpEntriesKnn()
             oldCoef = propertyMap.getProperty<double>(
                 "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()));
         }
-        graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c =
-            nearestNeighborDegree->meanDegreeForVertex(v);
+        double c = nearestNeighborDegree->meanDegreeForVertex(v);
         propertyMap.addProperty<double>(
             "nearestNeighborDegreeForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)

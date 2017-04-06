@@ -16,8 +16,6 @@ class Betweenness : public IBetweenness<Graph, Vertex>
 public:
     typedef typename IBetweenness<Graph, Vertex>::BetweennessContainer BetweennessContainer;
     typedef typename IBetweenness<Graph, Vertex>::BetweennessIterator BetweennessIterator;
-    typedef typename Graph::VerticesIterator VerticesIterator;
-    typedef typename Vertex::VerticesIterator NeighbourIterator;
 
     Betweenness(Graph& g)
     {
@@ -33,7 +31,7 @@ public:
 private:
     void calculateBetweenness(Graph& g)
     {
-        VerticesIterator iter = g.verticesIterator();
+        auto iter = g.verticesIterator();
 
         while (!iter.end())
         {
@@ -58,7 +56,7 @@ private:
                 stack.push(v);
 
                 // iterate through v's neighbors
-                NeighbourIterator neighbourIter = v->neighborsIterator();
+                auto neighbourIter = v->neighborsIterator();
 
                 while (!neighbourIter.end())
                 {
@@ -115,7 +113,7 @@ private:
         double commonValue,
         double distinguishedValue)
     {
-        VerticesIterator it = g.verticesIterator();
+        auto it = g.verticesIterator();
 
         // initialize all elements in zero, except for the current vertex
         while (!it.end())

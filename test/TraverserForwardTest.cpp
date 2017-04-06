@@ -100,7 +100,7 @@ TEST_F(TraverserForwardTest, TraverseForwardIndexedIteratorTest)
 
     KeepTrackVisitor visitor;
     //this time, traverse from the iterator to the second element
-    IndexedGraph::VerticesIterator it = ig.verticesIterator();
+    auto it = ig.verticesIterator();
     Vertex::VertexId excluded = (*it)->getVertexId();
     ++it;
 

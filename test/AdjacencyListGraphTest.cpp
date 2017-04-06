@@ -60,7 +60,8 @@ TEST_F(AdjacencyListGraphTest, IndexedAddVertexIterationTest)
     vector<bool> found(4, false);
 
     //iterate through the neighbors, verifying they are the added
-    IndexedGraph::VerticesIterator it = g.verticesIterator();
+    auto it = g.verticesIterator();
+
     int i = 1;
     while (!it.end())
     {
@@ -193,7 +194,8 @@ TEST_F(AdjacencyListGraphTest, ListAddVertexIterationTest)
 
 
     //iterate through the neighbors, verifying they are the added
-    ListGraph::VerticesIterator it = g.verticesIterator();
+    auto it = g.verticesIterator();
+
     int i = 1;
     while (!it.end())
     {
@@ -300,7 +302,8 @@ TEST_F(AdjacencyListGraphTest, VectorAddVertexIterationTest)
 
 
     //iterate through the neighbors, verifying they are the added
-    VectorGraph::VerticesIterator it = g.verticesIterator();
+    auto it = g.verticesIterator();
+
     int i = 1;
     while (!it.end())
     {

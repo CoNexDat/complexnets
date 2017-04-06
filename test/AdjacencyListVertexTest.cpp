@@ -57,7 +57,7 @@ TEST_F(AdjacencyListVertexTest, AddIterationTest)
     v->addEdge(n3);
 
     //iterate through the neighbors, verifying they are the added
-    Vertex::VerticesIterator it = v->neighborsIterator();
+    auto it = v->neighborsIterator();
     int i = 2;
     while (!it.end())
     {

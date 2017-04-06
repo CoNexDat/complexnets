@@ -8,15 +8,11 @@ template <class Graph, class Vertex>
 class NearestNeighborsDegree : public INearestNeighborsDegree<Graph, Vertex>
 {
 public:
-    typedef typename graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree MeanDegree;
-    typedef typename Vertex::VerticesIterator NeighborsIterator;
-    typedef typename Graph::VerticesIterator VerticesIterator;
-
-    virtual MeanDegree meanDegree(Graph& g, typename Vertex::Degree d)
+    virtual double meanDegree(Graph& g, typename Vertex::Degree d)
     {
-        VerticesIterator it = g.verticesIterator();
+        auto it = g.verticesIterator();
         unsigned int count = 0;
-        MeanDegree meanDegreeSums = 0.0;
+        double meanDegreeSums = 0.0;
 
         while (!it.end())
         {
@@ -34,9 +30,9 @@ public:
         return count == 0 ? 0 : meanDegreeSums / count;
     }
 
-    virtual MeanDegree meanDegreeForVertex(Vertex* v)
+    virtual double meanDegreeForVertex(Vertex* v)
     {
-        NeighborsIterator it = v->neighborsIterator();
+        auto it = v->neighborsIterator();
         typename Vertex::Degree degreeSum = 0;
 
         while (!it.end())
@@ -48,7 +44,7 @@ public:
             ++it;
         }
 
-        return v->degree() == 0 ? 0 : MeanDegree(degreeSum) / MeanDegree(v->degree());
+        return v->degree() == 0 ? 0 : double(degreeSum) / v->degree();
     }
 };
 }

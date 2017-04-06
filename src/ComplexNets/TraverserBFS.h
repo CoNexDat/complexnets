@@ -16,11 +16,10 @@ class TraverserBFS
 {
 public:
     typedef typename Graph::VerticesConstIterator VertexForwardIterator;
-    typedef typename Vertex::VerticesIterator NeighborsIterator;
 
     static void traverse(Graph& graph, Visitor& v)
     {
-        VertexForwardIterator iter = graph.verticesIterator();
+        auto iter = graph.verticesIterator();
 
         if (iter.end())
             return;
@@ -48,7 +47,7 @@ public:
 
             if (keepTraversing)
             {
-                NeighborsIterator it = vertex->neighborsIterator();
+                auto it = vertex->neighborsIterator();
 
                 while (!it.end())
                 {

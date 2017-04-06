@@ -23,13 +23,13 @@ void GraphWriter::writeGraph(Graph *graph, std::string outputPath)
 
     this->visitedVertexes.clear();
 
-    Graph::VerticesIterator verticesIterator = graph->verticesIterator();
+    auto verticesIterator = graph->verticesIterator();
 
     while (!verticesIterator.end())
     {
         Vertex *vertex = *verticesIterator;
 
-        Vertex::VerticesIterator neighborsIterator = vertex->neighborsIterator();
+        auto neighborsIterator = vertex->neighborsIterator();
 
         while (!neighborsIterator.end())
         {
@@ -60,13 +60,13 @@ void GraphWriter::writeDirectedGraph(DirectedGraph *graph, std::string outputPat
 
     this->visitedVertexes.clear();
 
-    DirectedGraph::VerticesIterator verticesIterator = graph->verticesIterator();
+    auto verticesIterator = graph->verticesIterator();
 
     while (!verticesIterator.end())
     {
         Vertex *vertex = *verticesIterator;
 
-        Vertex::VerticesIterator neighborsIterator = vertex->neighborsIterator();
+        auto neighborsIterator = vertex->neighborsIterator();
 
         while (!neighborsIterator.end())
         {
@@ -93,13 +93,13 @@ void GraphWriter::writeWeightedGraph(WeightedGraph *weightedGraph, std::string o
     std::ofstream destinationFile;
     destinationFile.open(outputPath.c_str(), std::ios_base::out);
 
-    WeightedGraph::VerticesIterator verticesIterator = weightedGraph->verticesIterator();
+    auto verticesIterator = weightedGraph->verticesIterator();
 
     while (!verticesIterator.end())
     {
         WeightedVertex *vertex = *verticesIterator;
 
-        WeightedVertex::WeightsIterator weightsIterator = vertex->weightsIterator();
+        auto weightsIterator = vertex->weightsIterator();
 
         while (!weightsIterator.end())
         {

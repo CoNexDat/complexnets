@@ -38,8 +38,6 @@ class WeightedBetweenness : public IBetweenness<Graph, Vertex>
 public:
     typedef typename IBetweenness<Graph, Vertex>::BetweennessContainer BetweennessContainer;
     typedef typename IBetweenness<Graph, Vertex>::BetweennessIterator BetweennessIterator;
-    typedef typename Graph::VerticesIterator VerticesIterator;
-    typedef typename Vertex::VerticesIterator NeighbourIterator;
 
     WeightedBetweenness(Graph& g)
     {
@@ -57,7 +55,7 @@ private:
 
     void calculateBetweenness(Graph& g)
     {
-        VerticesIterator iter = g.verticesIterator();
+        auto iter = g.verticesIterator();
         int n = g.verticesCount();
         int i = 1;
         while (!iter.end())
@@ -85,7 +83,7 @@ private:
                 S.push(v);
 
                 // iterate through v's neighbors
-                NeighbourIterator neighbourIter = v->neighborsIterator();
+                auto neighbourIter = v->neighborsIterator();
 
                 while (!neighbourIter.end())
                 {
@@ -160,7 +158,7 @@ private:
         double commonValue,
         double distinguishedValue)
     {
-        VerticesIterator it = g.verticesIterator();
+        auto it = g.verticesIterator();
 
         // initialize all elements in zero, except for the current vertex
         while (!it.end())
@@ -175,7 +173,7 @@ private:
 
     void initDistances(Graph& g, double commonValue)
     {
-        VerticesIterator it = g.verticesIterator();
+        auto it = g.verticesIterator();
         while (!it.end())
         {
             Vertex* v = *it;

@@ -2236,7 +2236,7 @@ MainWindow::computeBpentries()
 
         Graph& g = graph;
         IClusteringCoefficient<Graph, Vertex>::Degree d = from_string<unsigned int>(it->first);
-        Graph::VerticesIterator vit = g.verticesIterator();
+        auto vit = g.verticesIterator();
         std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
 
         while (!vit.end())
@@ -2254,7 +2254,7 @@ MainWindow::computeBpentries()
         }
         // to here
 
-        std::sort(clusteringCoefs.begin(), clusteringCoefs.end());
+        std::sort(begin(clusteringCoefs), end(clusteringCoefs));
         graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
         if (clusteringCoefs.size() > 0)
         {
@@ -2278,14 +2278,14 @@ MainWindow::computeBpentries()
         ++it;
     }
 
-    std::sort(bpentries.begin(), bpentries.end());
+    std::sort(begin(bpentries), end(bpentries));
     return bpentries;
 }
 
 graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntries()
 {
     Graph& g = graph;
-    Graph::VerticesIterator vit = g.verticesIterator();
+    auto vit = g.verticesIterator();
     std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
     auto clusteringCoefficient = factory->createClusteringCoefficient();
     double coefSums = 0.0;
@@ -2343,8 +2343,8 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
 graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntriesKnn()
 {
     Graph& g = graph;
-    Graph::VerticesIterator vit = g.verticesIterator();
-    std::vector<graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree> nnCoefs;
+    auto vit = g.verticesIterator();
+    std::vector<double> nnCoefs;
     auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
     double coefSums = 0.0;
     unsigned int count = 0;
@@ -2365,8 +2365,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
             oldCoef = propertyMap.getProperty<double>(
                 "nearestNeighborDegreeForDegreeO", to_string<unsigned int>(v->degree()));
         }
-        graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c =
-            nearestNeighborDegree->meanDegreeForVertex(v);
+        auto c = nearestNeighborDegree->meanDegreeForVertex(v);
         propertyMap.addProperty<double>(
             "nearestNeighborDegreeForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)
@@ -2403,7 +2402,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
 MainWindow::computeTotalBpEntriesBetweenness()
 {
     Graph& g = graph;
-    Graph::VerticesIterator vit = g.verticesIterator();
+    auto vit = g.verticesIterator();
     std::vector<double> bCoefs;
 
     auto betweenness = factory->createBetweenness(g);
@@ -2447,7 +2446,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
 MainWindow::computeTotalBpEntriesDegreeDistribution()
 {
     Graph& g = graph;
-    Graph::VerticesIterator vit = g.verticesIterator();
+    auto vit = g.verticesIterator();
     std::vector<int> bCoefs;
     double coefSums = 0.0;
     unsigned int count = 0;
@@ -2485,7 +2484,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
 MainWindow::computeTotalBpEntriesShellIndex()
 {
     Graph& g = graph;
-    Graph::VerticesIterator vit = g.verticesIterator();
+    auto vit = g.verticesIterator();
     std::vector<double> bCoefs;
     // TODO: is this needed?
     auto betweenness = factory->createShellIndex(g);
@@ -2676,8 +2675,8 @@ MainWindow::computeBpentriesKnn()
 
         Graph& g = graph;
         INearestNeighborsDegree<Graph, Vertex>::Degree d = from_string<unsigned int>(it->first);
-        Graph::VerticesIterator vit = g.verticesIterator();
-        std::vector<graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree> nnCoefs;
+        auto vit = g.verticesIterator();
+        std::vector<double> nnCoefs;
 
         while (!vit.end())
         {
@@ -2685,8 +2684,7 @@ MainWindow::computeBpentriesKnn()
 
             if (v->degree() == d)
             {
-                graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree c =
-                    nearestNeighborDegree->meanDegreeForVertex(v);
+                auto c = nearestNeighborDegree->meanDegreeForVertex(v);
                 nnCoefs.push_back(c);
             }
 

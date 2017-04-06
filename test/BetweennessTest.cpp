@@ -68,10 +68,9 @@ TEST_F(BetweennessTest , BetweennessTest)
     ig.addEdge(v1, v2);
     ig.addEdge(x, v4);
 
-    typedef Betweenness<IndexedGraph, Vertex> BetweennessCentrality;
-    BetweennessCentrality betweenness(ig);
+    Betweenness<IndexedGraph, Vertex> betweenness {ig};
 
-    BetweennessCentrality::BetweennessIterator it = betweenness.iterator();
+    auto it = betweenness.iterator();
 
     while (!it.end())
     {

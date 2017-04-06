@@ -70,21 +70,20 @@ TEST_F(NearestNeighborsDegreeTest , VertexGeneralTest)
     ig.addEdge(x, v4);
 
     typedef NearestNeighborsDegree<ListGraph, Vertex> Knn;
-    typedef Knn::MeanDegree MeanDegree;
     Knn knn;
 
-    MeanDegree dx = knn.meanDegreeForVertex(x);
-    MeanDegree dv1 = knn.meanDegreeForVertex(v1);
-    MeanDegree dv4 = knn.meanDegreeForVertex(v4);
+    double dx = knn.meanDegreeForVertex(x);
+    double dv1 = knn.meanDegreeForVertex(v1);
+    double dv4 = knn.meanDegreeForVertex(v4);
 
 
-    MeanDegree epsilon = 0.001;
+    double epsilon = 0.001;
 
     ASSERT_TRUE(fabs(dx - 1.5) <  epsilon);
     ASSERT_TRUE(fabs(dv1 - 3) <  epsilon);
     ASSERT_TRUE(fabs(dv4 - 4) <  epsilon);
 
-    MeanDegree meanDegree2 = knn.meanDegree(ig, Vertex::Degree(2));
+    double meanDegree2 = knn.meanDegree(ig, Vertex::Degree(2));
     ASSERT_TRUE(fabs(meanDegree2 - 3.0) <  epsilon);
 }
 
@@ -98,12 +97,11 @@ TEST_F(NearestNeighborsDegreeTest, RealWorldTest)
     Vertex * x = g->getVertexById(3);
 
     typedef NearestNeighborsDegree<ListGraph, Vertex> Knn;
-    typedef Knn::MeanDegree MeanDegree;
     Knn knn;
 
-    MeanDegree epsilon = 0.0001;
+    double epsilon = 0.0001;
 
-    MeanDegree dx = knn.meanDegreeForVertex(x);
+    double dx = knn.meanDegreeForVertex(x);
     ASSERT_TRUE(fabs(dx - 651.25) <  epsilon);
 
     dx = knn.meanDegreeForVertex(g->getVertexById(701));

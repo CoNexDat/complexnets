@@ -20,7 +20,6 @@ class ConnectivityVerifier
 public:
     std::vector<unsigned int> vertexesLeft;
     std::vector<unsigned int> vertexesInComponent;
-    typedef typename Vertex::VerticesIterator NeighborsIterator;
 
     ConnectivityVerifier()
     {
@@ -42,8 +41,7 @@ public:
 
     void getBiggestComponent(Graph* graph)
     {
-        AdjacencyListGraph<AdjacencyListVertex>::VerticesConstIterator it =
-            graph->verticesConstIterator();
+        auto it = graph->verticesConstIterator();
         while (!it.end())
         {
             vertexesLeft.push_back((*it)->getVertexId());
@@ -63,8 +61,7 @@ public:
         // if(vertexesInComponent.size() >= graph->verticesCount()/2)
         // cout << "Component found\n";
 
-        AdjacencyListGraph<AdjacencyListVertex>::VerticesConstIterator it2 =
-            graph->verticesConstIterator();
+        auto it2 = graph->verticesConstIterator();
         while (!it2.end())
         {
             bool found = false;

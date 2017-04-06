@@ -87,7 +87,7 @@ TEST_F(TraverserBFSTest, TraverseBFSIndexedTest)
 
     KeepTrackVisitor visitor;
     
-    VertexForwardIterator iter = ig.verticesConstIterator();
+    auto iter = ig.verticesConstIterator();
     
     Vertex* source = *iter;
 
@@ -130,7 +130,7 @@ TEST_F(TraverserBFSTest, TraverseBFSIndexedSourceTest)
     KeepTrackVisitor visitor;
     //this time, traverse from the iterator to the second element
 
-    VertexForwardIterator iter = ig.verticesConstIterator();
+    auto iter = ig.verticesConstIterator();
     ++iter;
     Vertex* source = *iter;
 
@@ -211,7 +211,7 @@ TEST_F(TraverserBFSTest, TraverseBFSListSourceTest)
     //this time, traverse from the iterator to the second element
 
 
-    ListGraph::VerticesIterator it = ig.verticesIterator();
+    auto it = ig.verticesIterator();
     Vertex::VertexId excluded = (*it)->getVertexId();
     ++it;
     Vertex* source = *it;
@@ -290,7 +290,7 @@ TEST_F(TraverserBFSTest, TraverseBFSVectorSourceTest)
     KeepTrackVisitor visitor;
 
     //this time, traverse from the iterator to the second element
-    VectorGraph::VerticesIterator it = ig.verticesIterator();
+    auto it = ig.verticesIterator();
     Vertex::VertexId excluded = (*it)->getVertexId();
     ++it;
     Vertex* source = *it;

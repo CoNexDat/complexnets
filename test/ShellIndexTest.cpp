@@ -64,7 +64,7 @@ TEST_F(ShellIndexTest , ShellIndexTest)
     g2.addEdge(v3, v5);
     ShellIndex<Graph, Vertex> shellIndex(g2);
 
-    ShellIndex<Graph, Vertex>::ShellIndexIterator it = shellIndex.iterator();
+    auto it = shellIndex.iterator();
     while (!it.end())
     {
         if (it->first == 0)

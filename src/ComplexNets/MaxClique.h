@@ -86,7 +86,7 @@ public:
 
     void visit(Vertex* v)
     {
-        NeighborsIterator it1 = v->neighborsIterator();
+        auto it1 = v->neighborsIterator();
 
         while (!it1.end())
         {
@@ -184,7 +184,7 @@ public:
     {
         unsigned int max_size = 0;
         std::list<int>* ids = nullptr;
-        for (MaxCliqueIterator iterator1 = MaxCliqueIterator(container); !iterator1.end();
+        for (auto iterator1 = MaxCliqueIterator(container); !iterator1.end();
              iterator1++)
         {
             if (iterator1->second->size() > max_size)
@@ -327,7 +327,7 @@ public:
 
     void visit(Vertex* v)
     {
-        for (NeighborsIterator it1 = v->neighborsIterator(); !it1.end(); it1++)
+        for (auto it1 = v->neighborsIterator(); !it1.end(); it1++)
         {
             if ((time(NULL) - start) > maxTime)
             {

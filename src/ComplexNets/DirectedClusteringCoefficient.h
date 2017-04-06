@@ -10,13 +10,11 @@ class DirectedClusteringCoefficient : public IClusteringCoefficient<Graph, Verte
 {
 public:
     typedef typename graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient Coefficient;
-    typedef typename Graph::VerticesIterator VerticesIterator;
-    typedef typename Vertex::VerticesIterator NeighborsIterator;
     typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
 
     virtual Coefficient clusteringCoefficient(Graph& g, Degree d, bool out, bool in)
     {
-        VerticesIterator it = g.verticesIterator();
+        auto it = g.verticesIterator();
         unsigned int count = 0;
         Coefficient clusteringCoefSums = 0.0;
 
@@ -62,11 +60,12 @@ public:
 
         if (in)
         {
-            NeighborsIterator outer = directedVertex->inNeighborsIterator();
+            auto outer = directedVertex->inNeighborsIterator();
             while (!outer.end())
             {
                 DirectedVertex* j = static_cast<DirectedVertex*>(*outer);
-                NeighborsIterator inner = directedVertex->inNeighborsIterator();
+
+                auto inner = directedVertex->inNeighborsIterator();
                 while (!inner.end())
                 {
                     DirectedVertex* h = static_cast<DirectedVertex*>(*inner);
@@ -85,11 +84,12 @@ public:
 
         if (out)
         {
-            NeighborsIterator outer = directedVertex->outNeighborsIterator();
+            auto outer = directedVertex->outNeighborsIterator();
             while (!outer.end())
             {
                 DirectedVertex* j = static_cast<DirectedVertex*>(*outer);
-                NeighborsIterator inner = directedVertex->outNeighborsIterator();
+
+                auto inner = directedVertex->outNeighborsIterator();
                 while (!inner.end())
                 {
                     DirectedVertex* h = static_cast<DirectedVertex*>(*inner);
@@ -136,7 +136,7 @@ public:
     // true if a --> b
     static bool isDirectedAdjacent(DirectedVertex* a, DirectedVertex* b)
     {
-        NeighborsIterator it = a->outNeighborsIterator();
+        auto it = a->outNeighborsIterator();
         while (!it.end())
         {
             DirectedVertex* v = static_cast<DirectedVertex*>(*it);

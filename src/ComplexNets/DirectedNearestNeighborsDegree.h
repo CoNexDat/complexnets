@@ -8,15 +8,11 @@ template <class Graph, class Vertex>
 class DirectedNearestNeighborsDegree : public INearestNeighborsDegree<Graph, Vertex>
 {
 public:
-    typedef typename graphpp::INearestNeighborsDegree<Graph, Vertex>::MeanDegree MeanDegree;
-    typedef typename Vertex::VerticesIterator NeighborsIterator;
-    typedef typename Graph::VerticesIterator VerticesIterator;
-
-    virtual MeanDegree meanDegree(Graph& g, typename Vertex::Degree d, bool out, bool in)
+    virtual double meanDegree(Graph& g, typename Vertex::Degree d, bool out, bool in)
     {
-        VerticesIterator it = g.verticesIterator();
+        auto it = g.verticesIterator();
         unsigned int count = 0;
-        MeanDegree meanDegreeSums = 0.0;
+        double meanDegreeSums = 0.0;
 
         if (!in && !out)
         {
@@ -40,12 +36,12 @@ public:
     }
 
     // TODO check if this method is implemented correctly
-    virtual MeanDegree meanDegree(Graph& g, typename Vertex::Degree d)
+    virtual double meanDegree(Graph& g, typename Vertex::Degree d)
     {
         return meanDegree(g, d, false, false);
     }
 
-    virtual MeanDegree meanDegreeForVertex(Vertex* v, bool out, bool in)
+    virtual double meanDegreeForVertex(Vertex* v, bool out, bool in)
     {
         DirectedVertex* directedVertex = static_cast<DirectedVertex*>(v);
 
@@ -55,12 +51,12 @@ public:
             out = true;
         }
 
-        MeanDegree outLinks = 0.0;
-        MeanDegree inLinks = 0.0;
+        double outLinks = 0.0;
+        double inLinks = 0.0;
 
         if (in)
         {
-            NeighborsIterator it = directedVertex->inNeighborsIterator();
+            auto it = directedVertex->inNeighborsIterator();
             while (!it.end())
             {
                 DirectedVertex* vertex = static_cast<DirectedVertex*>(*it);
@@ -72,7 +68,7 @@ public:
 
         if (out)
         {
-            NeighborsIterator it = directedVertex->outNeighborsIterator();
+            auto it = directedVertex->outNeighborsIterator();
             while (!it.end())
             {
                 DirectedVertex* vertex = static_cast<DirectedVertex*>(*it);
@@ -82,8 +78,8 @@ public:
             }
         }
 
-        MeanDegree degree = 0.0;
-        MeanDegree links = 0.0;
+        double degree = 0.0;
+        double links = 0.0;
 
         if (out && in)
         {
@@ -109,7 +105,7 @@ public:
         return 0.0;
     }
 
-    virtual MeanDegree meanDegreeForVertex(Vertex* v)
+    virtual double meanDegreeForVertex(Vertex* v)
     {
         return meanDegreeForVertex(v, false, false);
     }

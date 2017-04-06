@@ -6,8 +6,6 @@ template <class Vertex, class T>
 class DirectedGraphAspect : public T
 {
 public:
-    typedef typename Vertex::VerticesIterator NeighborsIterator;
-
     DirectedGraphAspect(const bool isMultigraph = false) : T(true, isMultigraph){};
 
     /**
@@ -20,7 +18,7 @@ public:
     {
         T::template removeVertex<Vertex>(v);
 
-        NeighborsIterator it = v->inNeighborsIterator();
+        auto it = v->inNeighborsIterator();
 
         while (!it.end())
         {
