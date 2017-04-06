@@ -56,7 +56,8 @@ public:
             vertexesInComponent.clear();
             Vertex* source = graph->getVertexById(vertexesLeft.back());
             vertexesLeft.pop_back();
-            TraverserBFS<Graph, Vertex, ConnectivityVisitor<Graph, Vertex>>::traverse(source, visitor);
+            TraverserBFS<Graph, Vertex, ConnectivityVisitor<Graph, Vertex>>::traverse(
+                source, visitor);
         } while (!vertexesLeft.empty() && vertexesInComponent.size() < graph->verticesCount() / 2);
 
         // if(vertexesInComponent.size() >= graph->verticesCount()/2)
