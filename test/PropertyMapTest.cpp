@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../src/ComplexNets/PropertyMap.h"
+#include "ComplexNets/PropertyMap.h"
 
 namespace propertyMapTest
 {

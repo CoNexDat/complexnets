@@ -7,11 +7,11 @@
 #include <vector>
 #include <list>
 
-#include "../src/ComplexNets/AdjacencyListVertex.h"
-#include "../src/ComplexNets/AdjacencyListGraph.h"
-#include "../src/ComplexNets/GraphExceptions.h"
-#include "../src/ComplexNets/typedefs.h"
-#include "../src/ComplexNets/TraverserBFS.h"
+#include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/GraphExceptions.h"
+#include "ComplexNets/typedefs.h"
+#include "ComplexNets/TraverserBFS.h"
 
 namespace traverserBFSTest
 {

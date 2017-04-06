@@ -3,12 +3,12 @@
 #include <vector>
 #include <list>
 
-#include "../src/ComplexNets/AdjacencyListVertex.h"
-#include "../src/ComplexNets/AdjacencyListGraph.h"
-#include "../src/ComplexNets/GraphExceptions.h"
-#include "../src/ComplexNets/WeightedGraphAspect.h"
-#include "../src/ComplexNets/WeightedVertexAspect.h"
-#include "../src/ComplexNets/WeightedClusteringCoefficient.h"
+#include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/GraphExceptions.h"
+#include "ComplexNets/WeightedGraphAspect.h"
+#include "ComplexNets/WeightedVertexAspect.h"
+#include "ComplexNets/WeightedClusteringCoefficient.h"
 
 namespace weightedClusterCoefficientTest
 {

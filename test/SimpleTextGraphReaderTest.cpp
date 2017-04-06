@@ -3,9 +3,9 @@
 #include <vector>
 #include <list>
 
-#include "../src/ComplexNets/AdjacencyListVertex.h"
-#include "../src/ComplexNets/AdjacencyListGraph.h"
-#include "../src/ComplexNets/SimpleTextGraphReader.h"
+#include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/AdjacencyListGraph.h"
+#include "ComplexNets/SimpleTextGraphReader.h"
 
 namespace simpleTextGraphReaderTest
 {
