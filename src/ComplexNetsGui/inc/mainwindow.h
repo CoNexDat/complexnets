@@ -83,6 +83,7 @@ private:
     void deleteGraphFactory();
     void onNetworkLoad(const bool weightedgraph, const bool digraph, const bool multigraph);
     void onNetworkUnload();
+    bool closeCurrentGraph();
     std::string getSavePath() const;
     QString inputId(const std::string label);
 

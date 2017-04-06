@@ -1840,309 +1840,299 @@ int MainWindow::ChooseDigraphDegreeDialog()
     return msgBox.exec();
 }
 
-void MainWindow::on_actionNewErdosRenyi_triggered()
+bool MainWindow::closeCurrentGraph()
 {
     if (!this->graphLoaded)
+        return true;
+
+    QString title = "Close graph";
+    QString text = "Are you sure you want to close the current graph?";
+
+    QMessageBox msgBox(
+        QMessageBox::Question, title, text, QMessageBox::Yes | QMessageBox::No, this);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+
+    return msgBox.exec() == QMessageBox::Yes;
+}
+
+void MainWindow::on_actionNewErdosRenyi_triggered()
+{
+    if (!closeCurrentGraph())
+        return;
+
+    QString inputN = inputId("n:");
+    QString inputP = inputId("p:");
+    QString ret;
+
+    unsigned int n = 1000;
+    float p = 0.1;
+
+    try
     {
-        QString inputN = inputId("n:");
-        QString inputP = inputId("p:");
-        QString ret;
+        this->onNetworkLoad(false, false, false);
+        buildGraphFactory(false, false);
 
-        unsigned int n = 1000;
-        float p = 0.1;
+        if (!inputN.isEmpty())
+            n = inputN.toInt();
+        if (!inputP.isEmpty())
+            p = inputP.toFloat();
 
-        try
-        {
-            this->onNetworkLoad(false, false, false);
-            buildGraphFactory(false, false);
+        graph = *(GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p));
 
-            if (!inputN.isEmpty())
-                n = inputN.toInt();
-            if (!inputP.isEmpty())
-                p = inputP.toFloat();
-
-            graph = *(GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p));
-
-            QString text("Network created using Erdos-Renyi algorithm");
-            text.append(
-                "\nReference: P. Erdos y A. Renyi. On random graphs I. Publ. Math. (Debrecen), "
-                "6:290-297, 1959");
-            text.append("\nn: ");
-            text.append(QString("%1").arg(n));
-            text.append("\np: ");
-            text.append(QString("%1").arg(p));
-            text.append("\nAmount of vertices in the graph: ");
-            unsigned int verticesCount = graph.verticesCount();
-            text.append(QString("%1").arg(verticesCount));
-            text.append(".\n");
-            text.append("Done.\n");
-            ui->textBrowser->append(text);
-        }
-        catch (const BadElementName& ex)
-        {
-            ret.append("Error ").append(".\n");
-            ui->textBrowser->append(ret);
-        }
+        QString text("Network created using Erdos-Renyi algorithm");
+        text.append(
+            "\nReference: P. Erdos y A. Renyi. On random graphs I. Publ. Math. (Debrecen), "
+            "6:290-297, 1959");
+        text.append("\nn: ");
+        text.append(QString("%1").arg(n));
+        text.append("\np: ");
+        text.append(QString("%1").arg(p));
+        text.append("\nAmount of vertices in the graph: ");
+        unsigned int verticesCount = graph.verticesCount();
+        text.append(QString("%1").arg(verticesCount));
+        text.append(".\n");
+        text.append("Done.\n");
+        ui->textBrowser->append(text);
     }
-    else
+    catch (const BadElementName& ex)
     {
-        ui->textBrowser->append(
-            "Action canceled: Only one network can be loaded at any given time.\n");
+        ret.append("Error ").append(".\n");
+        ui->textBrowser->append(ret);
     }
 }
 
 void MainWindow::on_actionNewHiperbolic_triggered()
 {
-    if (!this->graphLoaded)
+    if (!closeCurrentGraph())
+        return;
+
+    QString inputN = inputId("n:");
+    QString inputA = inputId("a:");
+    QString inputD = inputId("deg:");
+    QString ret;
+
+    unsigned int n = 10000;
+    float a = 0.75;
+    float deg = 0.0014;
+
+    try
     {
-        QString inputN = inputId("n:");
-        QString inputA = inputId("a:");
-        QString inputD = inputId("deg:");
-        QString ret;
+        this->onNetworkLoad(false, false, false);
+        buildGraphFactory(false, false);
 
-        unsigned int n = 10000;
-        float a = 0.75;
-        float deg = 0.0014;
+        if (!inputN.isEmpty())
+            n = inputN.toInt();
+        if (!inputA.isEmpty())
+            a = inputA.toFloat();
+        if (!inputD.isEmpty())
+            deg = inputD.toFloat();
 
-        try
-        {
-            this->onNetworkLoad(false, false, false);
-            buildGraphFactory(false, false);
+        QString text("Creating a network using a Papadopoulos hyperbolic graph algorithm...");
+        text.append("\nexpected avg node deg: ");
+        text.append(
+            QString("%1").arg(GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, deg)));
 
-            if (!inputN.isEmpty())
-                n = inputN.toInt();
-            if (!inputA.isEmpty())
-                a = inputA.toFloat();
-            if (!inputD.isEmpty())
-                deg = inputD.toFloat();
+        graph = *(GraphGenerator::getInstance()->generateHiperbolicGraph(n, a, deg));
 
-            QString text("Creating a network using a Papadopoulos hyperbolic graph algorithm...");
-            text.append("\nexpected avg node deg: ");
-            text.append(
-                QString("%1").arg(GraphGenerator::getInstance()->getExpectedAvgNodeDeg(n, a, deg)));
+        text.append("\nn: ");
+        text.append(QString("%1").arg(n));
+        text.append("\na: ");
+        text.append(QString("%1").arg(a));
+        text.append("\ndeg: ");
+        text.append(QString("%1").arg(deg));
 
-            graph = *(GraphGenerator::getInstance()->generateHiperbolicGraph(n, a, deg));
-
-            text.append("\nn: ");
-            text.append(QString("%1").arg(n));
-            text.append("\na: ");
-            text.append(QString("%1").arg(a));
-            text.append("\ndeg: ");
-            text.append(QString("%1").arg(deg));
-
-            text.append("\nAmount of vertices in the graph: ");
-            unsigned int verticesCount = graph.verticesCount();
-            text.append(QString("%1").arg(verticesCount));
-            text.append(".\n");
-            text.append("Done.\n");
-            ui->textBrowser->append(text);
-        }
-        catch (const BadElementName& ex)
-        {
-            ret.append("Error ").append(".\n");
-            ui->textBrowser->append(ret);
-        }
+        text.append("\nAmount of vertices in the graph: ");
+        unsigned int verticesCount = graph.verticesCount();
+        text.append(QString("%1").arg(verticesCount));
+        text.append(".\n");
+        text.append("Done.\n");
+        ui->textBrowser->append(text);
     }
-    else
+    catch (const BadElementName& ex)
     {
-        ui->textBrowser->append(
-            "Action canceled: Only one network can be loaded at any given time.\n");
+        ret.append("Error ").append(".\n");
+        ui->textBrowser->append(ret);
     }
 }
 
 void MainWindow::on_actionNewBarabasiAlbert_triggered()
 {
-    if (!this->graphLoaded)
+    if (!closeCurrentGraph())
+        return;
+
+    QString inputM_0 = inputId("m_0:");
+    QString inputM = inputId("m:");
+    QString inputN = inputId("n:");
+    QString ret;
+
+    unsigned int m_0 = 4;
+    unsigned int m = 2;
+    unsigned int n = 1000;
+
+    try
     {
-        QString inputM_0 = inputId("m_0:");
-        QString inputM = inputId("m:");
-        QString inputN = inputId("n:");
-        QString ret;
+        this->onNetworkLoad(false, false, false);
+        buildGraphFactory(false, false);
 
-        unsigned int m_0 = 4;
-        unsigned int m = 2;
-        unsigned int n = 1000;
+        if (!inputM_0.isEmpty())
+            m_0 = inputM_0.toInt();
+        if (!inputM.isEmpty())
+            m = inputM.toInt();
+        if (!inputN.isEmpty())
+            n = inputN.toInt();
 
-        try
-        {
-            this->onNetworkLoad(false, false, false);
-            buildGraphFactory(false, false);
+        m_0 = std::max(m_0, m);
 
-            if (!inputM_0.isEmpty())
-                m_0 = inputM_0.toInt();
-            if (!inputM.isEmpty())
-                m = inputM.toInt();
-            if (!inputN.isEmpty())
-                n = inputN.toInt();
+        graph = *(GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n));
 
-            m_0 = std::max(m_0, m);
-
-            graph = *(GraphGenerator::getInstance()->generateBarabasiAlbertGraph(m_0, m, n));
-
-            QString text("Network created using Barabasi-Albert algorithm");
-            text.append(
-                "\nReference: L. Barabasi y R. Albert. Emergence of scaling in random networks. "
-                "Science, 286:509-512,1999.");
-            text.append("\nm_0: ");
-            text.append(QString("%1").arg(m_0));
-            text.append("\nm: ");
-            text.append(QString("%1").arg(m));
-            text.append("\nn: ");
-            text.append(QString("%1").arg(n));
-            text.append("\nAmount of vertices in the graph: ");
-            unsigned int verticesCount = graph.verticesCount();
-            text.append(QString("%1").arg(verticesCount));
-            text.append(".\n");
-            text.append("Done.\n");
-            ui->textBrowser->append(text);
-        }
-        catch (const BadElementName& ex)
-        {
-            ret.append("Error ").append(".\n");
-            ui->textBrowser->append(ret);
-        }
+        QString text("Network created using Barabasi-Albert algorithm");
+        text.append(
+            "\nReference: L. Barabasi y R. Albert. Emergence of scaling in random networks. "
+            "Science, 286:509-512,1999.");
+        text.append("\nm_0: ");
+        text.append(QString("%1").arg(m_0));
+        text.append("\nm: ");
+        text.append(QString("%1").arg(m));
+        text.append("\nn: ");
+        text.append(QString("%1").arg(n));
+        text.append("\nAmount of vertices in the graph: ");
+        unsigned int verticesCount = graph.verticesCount();
+        text.append(QString("%1").arg(verticesCount));
+        text.append(".\n");
+        text.append("Done.\n");
+        ui->textBrowser->append(text);
     }
-    else
+    catch (const BadElementName& ex)
     {
-        ui->textBrowser->append(
-            "Action canceled: Only one network can be loaded at any given time.\n");
+        ret.append("Error ").append(".\n");
+        ui->textBrowser->append(ret);
     }
 }
 
 void MainWindow::on_actionNewExtendedHOT_triggered()
 {
-    if (!this->graphLoaded)
+    if (!closeCurrentGraph())
+        return;
+
+    QString inputN = inputId("n:");
+    QString inputM = inputId("m:");
+    QString inputXI = inputId("xi:");
+    QString inputQ = inputId("q:");
+    QString inputT = inputId("T:");
+    QString ret;
+
+    // The default parameters are taken from the paper
+    // (http://cnet.fi.uba.ar/ignacio.alvarez-hamelin/pdf/model_internet_jiah_ns.pdf)
+
+    unsigned int m = 1;
+    unsigned int n = 50;
+    unsigned int q = 1;
+    float xi = 0.03;
+    float r = xi;
+    unsigned int t = 1;
+
+    try
     {
-        QString inputN = inputId("n:");
-        QString inputM = inputId("m:");
-        QString inputXI = inputId("xi:");
-        QString inputQ = inputId("q:");
-        QString inputT = inputId("T:");
-        QString ret;
+        this->onNetworkLoad(false, false, false);
+        buildGraphFactory(false, false);
 
-        // The default parameters are taken from the paper
-        // (http://cnet.fi.uba.ar/ignacio.alvarez-hamelin/pdf/model_internet_jiah_ns.pdf)
+        if (!inputN.isEmpty())
+            n = inputN.toInt();
+        if (!inputM.isEmpty())
+            m = inputM.toInt();
+        if (!inputXI.isEmpty())
+            xi = inputXI.toInt();
+        if (!inputQ.isEmpty())
+            q = inputQ.toInt();
+        if (!inputT.isEmpty())
+            t = inputT.toInt();
 
-        unsigned int m = 1;
-        unsigned int n = 50;
-        unsigned int q = 1;
-        float xi = 0.03;
-        float r = xi;
-        unsigned int t = 1;
+        graph = *(GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r, t));
 
-        try
-        {
-            this->onNetworkLoad(false, false, false);
-            buildGraphFactory(false, false);
-
-            if (!inputN.isEmpty())
-                n = inputN.toInt();
-            if (!inputM.isEmpty())
-                m = inputM.toInt();
-            if (!inputXI.isEmpty())
-                xi = inputXI.toInt();
-            if (!inputQ.isEmpty())
-                q = inputQ.toInt();
-            if (!inputT.isEmpty())
-                t = inputT.toInt();
-
-            graph = *(GraphGenerator::getInstance()->generateHotExtendedGraph(m, n, xi, q, r, t));
-
-            QString text("Network created using HOT extended Algorithm");
-            text.append(
-                "\nReference: J. I. Alvarez-Hamelin y N. Schabanel. An Internet Graph Model Based "
-                "on Trade-Off Optimization.Eur. Phys.J.B, special issue on 'Applications of "
-                "networks', 38(2):231-237, march II2004.");
-            text.append("\nn: ");
-            text.append(QString("%1").arg(n));
-            text.append("\nm: ");
-            text.append(QString("%1").arg(m));
-            text.append("\nxi: ");
-            text.append(QString("%1").arg(xi));
-            text.append("\nr: ");
-            text.append(QString("%1").arg(r));
-            text.append("\nq: ");
-            text.append(QString("%1").arg(q));
-            text.append("\nT: ");
-            text.append(QString("%1").arg(t));
-            text.append("\nVertex count:");
-            unsigned int verticesCount = graph.verticesCount();
-            text.append(QString("%1").arg(verticesCount));
-            text.append(".\n");
-            text.append("Done.\n");
-            ui->textBrowser->append(text);
-        }
-        catch (const BadElementName& ex)
-        {
-            ret.append("Error ").append(".\n");
-            ui->textBrowser->append(ret);
-        }
+        QString text("Network created using HOT extended Algorithm");
+        text.append(
+            "\nReference: J. I. Alvarez-Hamelin y N. Schabanel. An Internet Graph Model Based "
+            "on Trade-Off Optimization.Eur. Phys.J.B, special issue on 'Applications of "
+            "networks', 38(2):231-237, march II2004.");
+        text.append("\nn: ");
+        text.append(QString("%1").arg(n));
+        text.append("\nm: ");
+        text.append(QString("%1").arg(m));
+        text.append("\nxi: ");
+        text.append(QString("%1").arg(xi));
+        text.append("\nr: ");
+        text.append(QString("%1").arg(r));
+        text.append("\nq: ");
+        text.append(QString("%1").arg(q));
+        text.append("\nT: ");
+        text.append(QString("%1").arg(t));
+        text.append("\nVertex count:");
+        unsigned int verticesCount = graph.verticesCount();
+        text.append(QString("%1").arg(verticesCount));
+        text.append(".\n");
+        text.append("Done.\n");
+        ui->textBrowser->append(text);
     }
-    else
+    catch (const BadElementName& ex)
     {
-        ui->textBrowser->append(
-            "Action canceled: Only one network can be loaded at any given time.\n");
+        ret.append("Error ").append(".\n");
+        ui->textBrowser->append(ret);
     }
 }
 
 void MainWindow::on_actionNewMolloyReed_triggered()
 {
+    if (!closeCurrentGraph())
+        return;
+
     QFileDialog fileDialog(this);
     fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
     fileDialog.setFileMode(QFileDialog::ExistingFile);
     fileDialog.setDirectory(QDir::homePath());
     QStringList selectedFiles;
 
-    if (!this->graphLoaded)
+    QString ret;
+    if (fileDialog.exec())
     {
-        QString ret;
-        if (fileDialog.exec())
+        try
         {
-            try
-            {
-                this->onNetworkLoad(false, false, false);
-                buildGraphFactory(false, false);
+            this->onNetworkLoad(false, false, false);
+            buildGraphFactory(false, false);
 
-                selectedFiles = fileDialog.selectedFiles();
-                std::string path = selectedFiles[0].toStdString();
-                graph = *(GraphGenerator::getInstance()->generateMolloyReedGraph(path));
+            selectedFiles = fileDialog.selectedFiles();
+            std::string path = selectedFiles[0].toStdString();
+            graph = *(GraphGenerator::getInstance()->generateMolloyReedGraph(path));
 
-                QString text("Network created using Molloy-Reed algorithm using the file: ");
-                text.append(selectedFiles[0]);
-                text.append(
-                    "\nReference: M. Molloy and B. Reed, A critical point for random graphs with a "
-                    "given degree sequence,Random Struct. Algorithms, 6 (1995), 161-179.");
-                text.append(
-                    "\nReference: M. Molloy and B. Reed, The size of the giant component of a "
-                    "random graph with a given degree distribution, Combinatorics, Probab. "
-                    "Comput., 7factory (1998), 295-305.");
-                text.append("\nAmount of vertices in the graph: ");
-                unsigned int verticesCount = graph.verticesCount();
-                text.append(QString("%1").arg(verticesCount));
-                text.append(".\n");
-                text.append("Done.\n");
-                ui->textBrowser->append(text);
-            }
-            catch (const FileNotFoundException& ex)
-            {
-                ui->textBrowser->append("Error while loading graph.");
-                ui->textBrowser->append(ex.what());
-                onNetworkUnload();
-                return;
-            }
-            catch (const UnsignedIntegerMalformedException& ex)
-            {
-                ui->textBrowser->append("Error while loading graph.");
-                ui->textBrowser->append(ex.what());
-                onNetworkUnload();
-                return;
-            }
+            QString text("Network created using Molloy-Reed algorithm using the file: ");
+            text.append(selectedFiles[0]);
+            text.append(
+                "\nReference: M. Molloy and B. Reed, A critical point for random graphs with a "
+                "given degree sequence,Random Struct. Algorithms, 6 (1995), 161-179.");
+            text.append(
+                "\nReference: M. Molloy and B. Reed, The size of the giant component of a "
+                "random graph with a given degree distribution, Combinatorics, Probab. "
+                "Comput., 7factory (1998), 295-305.");
+            text.append("\nAmount of vertices in the graph: ");
+            unsigned int verticesCount = graph.verticesCount();
+            text.append(QString("%1").arg(verticesCount));
+            text.append(".\n");
+            text.append("Done.\n");
+            ui->textBrowser->append(text);
         }
-    }
-    else
-    {
-        ui->textBrowser->append(
-            "Action canceled: Only one network can be loaded at any given time.\n");
+        catch (const FileNotFoundException& ex)
+        {
+            ui->textBrowser->append("Error while loading graph.");
+            ui->textBrowser->append(ex.what());
+            onNetworkUnload();
+            return;
+        }
+        catch (const UnsignedIntegerMalformedException& ex)
+        {
+            ui->textBrowser->append("Error while loading graph.");
+            ui->textBrowser->append(ex.what());
+            onNetworkUnload();
+            return;
+        }
     }
 }
 void MainWindow::computeCumulativeDegreeDistribution()
