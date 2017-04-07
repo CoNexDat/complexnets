@@ -37,20 +37,12 @@ class VertexFinder
 public:
     static Vertex* find(typename Vertex::VertexId id, const Container& c)
     {
-        CAutonomousIterator<Container> it = CAutonomousIterator<Container>(c);
-        Vertex* ret = nullptr;
-        bool quit = false;
-        while (!it.end() && !quit)
-        {
-            if ((*it)->getVertexId() == id)
-            {
-                ret = *it;
-                quit = true;
-            }
-            ++it;
-        }
+        auto v = std::find_if(begin(c), end(c), [id](auto v) { return v->getVertexId() == id; });
 
-        return ret;
+        if (v != end(c))
+            return *v;
+
+        return nullptr;
     }
 };
 
