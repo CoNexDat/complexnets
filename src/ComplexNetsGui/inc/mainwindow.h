@@ -82,6 +82,7 @@ private:
     void deleteGraphFactory();
     void onNetworkLoad(const bool weightedgraph, const bool digraph, const bool multigraph);
     void onNetworkUnload();
+    void configureDirectedDirection();
     bool closeCurrentGraph();
     std::string getSavePath() const;
     QString inputId(std::string const& label);
@@ -118,7 +119,6 @@ private slots:
     void on_actionNewExtendedHOT_triggered();
     void on_actionNewMolloyReed_triggered();
     void on_actionExport_current_network_triggered();
-    void configureDirectedDirection();
     void on_actionAbout_triggered();
     void on_actionCumulativeDegree_distribution_plotting_triggered();
     void on_actionExportCumulativeDegree_distribution_triggered();
