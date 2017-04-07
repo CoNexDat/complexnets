@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include <algorithm>
 #include <iostream>
-#include <new>
+#include <memory>
 #include "GraphExceptions.h"
 #include "mili/mili.h"
 
@@ -59,14 +60,13 @@ public:
     static Vertex* find(
         typename Vertex::VertexId id, const std::set<Vertex*, VertexComparator<Vertex>>& c)
     {
-        Vertex* ret = nullptr;
-        Vertex* prototype = new Vertex(id);
+        auto prototype = std::make_unique<Vertex>(id);
+        auto v = c.find(prototype.get());
 
-        typename std::set<Vertex*, VertexComparator<Vertex>>::iterator it = c.find(prototype);
-        if (it != c.end())
-            ret = *it;
+        if (v != end(c))
+            return *v;
 
-        return ret;
+        return nullptr;
     }
 };
 
