@@ -254,6 +254,7 @@ public:
         actionNewMolloyReed->setText(QApplication::translate("MainWindow", "New Molloy-Reed graph...", Q_NULLPTR));
         actionNewHiperbolic->setText(QApplication::translate("MainWindow", "New Hyperbolic graph...", Q_NULLPTR));
         actionExport_current_network->setText(QApplication::translate("MainWindow", "Export current network...", Q_NULLPTR));
+        actionExport_current_network->setShortcut(QApplication::translate("MainWindow", "Ctrl+E", Q_NULLPTR));
         actionClose_current_network->setText(QApplication::translate("MainWindow", "Close current network...", Q_NULLPTR));
         actionClose_current_network->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", Q_NULLPTR));
         actionQuit->setText(QApplication::translate("MainWindow", "Quit", Q_NULLPTR));
