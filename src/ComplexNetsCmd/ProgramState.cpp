@@ -970,7 +970,7 @@ void ProgramState::setDirectedInOut(bool o, bool i)
     directed_in = i;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+graphpp::Boxplotentry
 ProgramState::computeTotalBpEntriesDegreeDistribution()
 {
     Graph& g = graph;
@@ -990,7 +990,7 @@ ProgramState::computeTotalBpEntriesDegreeDistribution()
         count++;
     }
     std::sort(bCoefs.begin(), bCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -1009,7 +1009,7 @@ ProgramState::computeTotalBpEntriesDegreeDistribution()
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+graphpp::Boxplotentry
 ProgramState::computeTotalBpEntriesShellIndex()
 {
     Graph& g = graph;
@@ -1032,7 +1032,7 @@ ProgramState::computeTotalBpEntriesShellIndex()
         count++;
     }
     std::sort(bCoefs.begin(), bCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -1051,7 +1051,7 @@ ProgramState::computeTotalBpEntriesShellIndex()
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+graphpp::Boxplotentry
 ProgramState::computeTotalBpEntriesBetweenness()
 {
     Graph& g = graph;
@@ -1074,7 +1074,7 @@ ProgramState::computeTotalBpEntriesBetweenness()
         count++;
     }
     std::sort(bCoefs.begin(), bCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -1093,7 +1093,7 @@ ProgramState::computeTotalBpEntriesBetweenness()
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+graphpp::Boxplotentry
 ProgramState::computeTotalBpEntriesKnn()
 {
     Graph& g = graph;
@@ -1136,7 +1136,7 @@ ProgramState::computeTotalBpEntriesKnn()
         count++;
     }
     std::sort(nnCoefs.begin(), nnCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (nnCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -1155,7 +1155,7 @@ ProgramState::computeTotalBpEntriesKnn()
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::computeTotalBpEntries()
+graphpp::Boxplotentry ProgramState::computeTotalBpEntries()
 {
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
@@ -1198,7 +1198,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
         count++;
     }
     std::sort(clusteringCoefs.begin(), clusteringCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (clusteringCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;

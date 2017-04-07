@@ -133,7 +133,7 @@ void GnuplotConsole::writeCommand(const std::string& command)
 }
 
 bool GnuplotConsole::boxplotCC(
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries,
+    std::vector<graphpp::Boxplotentry> bpentries,
     const bool logBin,
     unsigned int bins)
 {
@@ -226,7 +226,7 @@ unsigned int GnuplotConsole::findBin(const std::vector<double>& bins, const unsi
 }
 
 bool GnuplotConsole::addLogBins(
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
+    std::vector<graphpp::Boxplotentry>& vec,
     unsigned int binsAmount)
 {
     std::vector<double> toPlot;
@@ -260,8 +260,7 @@ bool GnuplotConsole::addLogBins(
         pointsInBin[i++] = 0;
     }
 
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>::iterator it =
-        vec.begin();
+    auto it = vec.begin();
     while (it != vec.end())
     {
         unsigned int binNum = findBin(bins, it->degree);

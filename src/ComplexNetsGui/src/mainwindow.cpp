@@ -561,7 +561,7 @@ void MainWindow::on_actionBetweenness_triggered()
 
     this->computeBetweenness();
 
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (!propertyMap.containsProperty("BetweennessBPMean", to_string(0)))
     {
         entry = this->computeTotalBpEntriesBetweenness();
@@ -626,7 +626,7 @@ void MainWindow::on_actionShell_index_triggered()
         {
             try
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+                graphpp::Boxplotentry entry;
                 if (!propertyMap.containsProperty("ShellIndexBPMean", to_string(0)))
                 {
                     entry = this->computeTotalBpEntriesShellIndex();
@@ -884,7 +884,7 @@ void MainWindow::on_actionDegree_distribution_triggered()
             // ret.append(" is: ").append(to_string<unsigned
             // int>(degreeAmount).c_str()).append(".\n");
             // ui->textBrowser->append(ret);
-            graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+            graphpp::Boxplotentry entry;
             if (!propertyMap.containsProperty("degreeDistributionBPMean", to_string(0)))
             {
                 entry = this->computeTotalBpEntriesDegreeDistribution();
@@ -1109,7 +1109,7 @@ void MainWindow::on_actionClustering_coefficient_triggered()
                 // if (this->digraph) {
                 //    key += directedPostfix;
                 //}
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+                graphpp::Boxplotentry entry;
                 if (!propertyMap.containsProperty("ClusteringCoefficientBPMean", to_string(0)))
                 {
                     this->computeDegreeDistribution();
@@ -1235,7 +1235,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
         {
             try
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+                graphpp::Boxplotentry entry;
 
                 if (!propertyMap.containsProperty("KnnBPMean", to_string(0)))
                 {
@@ -2191,7 +2191,7 @@ void MainWindow::on_actionBoxplotCC_triggered()
     else
     {  // Unweighted
 
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries =
+        std::vector<graphpp::Boxplotentry> bpentries =
             this->computeBpentries();
 
         if (LogBinningDialog() == QMessageBox::Yes)
@@ -2212,14 +2212,14 @@ void MainWindow::on_actionBoxplotCC_triggered()
     ui->textBrowser->append("Done\n");
 }
 
-std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>
+std::vector<graphpp::Boxplotentry>
 MainWindow::computeBpentries()
 {
     VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
     VariantsSet::const_iterator it = degrees.begin();
     auto clusteringCoefficient = factory->createClusteringCoefficient();
     double cc = 0;
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries;
+    std::vector<graphpp::Boxplotentry> bpentries;
     while (it != degrees.end())
     {
         // this calculates the Mean CC for a degree. I think it's unnecesary..
@@ -2249,7 +2249,7 @@ MainWindow::computeBpentries()
         // to here
 
         std::sort(begin(clusteringCoefs), end(clusteringCoefs));
-        graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+        graphpp::Boxplotentry entry;
         if (clusteringCoefs.size() > 0)
         {
             entry.degree = d;
@@ -2276,7 +2276,7 @@ MainWindow::computeBpentries()
     return bpentries;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntries()
+graphpp::Boxplotentry MainWindow::computeTotalBpEntries()
 {
     Graph& g = graph;
     auto vit = g.verticesIterator();
@@ -2314,7 +2314,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
         count++;
     }
     std::sort(clusteringCoefs.begin(), clusteringCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (clusteringCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -2333,7 +2333,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::computeTotalBpEntriesKnn()
+graphpp::Boxplotentry MainWindow::computeTotalBpEntriesKnn()
 {
     Graph& g = graph;
     auto vit = g.verticesIterator();
@@ -2372,7 +2372,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
         count++;
     }
     std::sort(nnCoefs.begin(), nnCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (nnCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -2391,7 +2391,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+graphpp::Boxplotentry
 MainWindow::computeTotalBpEntriesBetweenness()
 {
     Graph& g = graph;
@@ -2416,7 +2416,7 @@ MainWindow::computeTotalBpEntriesBetweenness()
         count++;
     }
     std::sort(bCoefs.begin(), bCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -2435,7 +2435,7 @@ MainWindow::computeTotalBpEntriesBetweenness()
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+graphpp::Boxplotentry
 MainWindow::computeTotalBpEntriesDegreeDistribution()
 {
     Graph& g = graph;
@@ -2454,7 +2454,7 @@ MainWindow::computeTotalBpEntriesDegreeDistribution()
         count++;
     }
     std::sort(bCoefs.begin(), bCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -2473,7 +2473,7 @@ MainWindow::computeTotalBpEntriesDegreeDistribution()
     return entry;
 }
 
-graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+graphpp::Boxplotentry
 MainWindow::computeTotalBpEntriesShellIndex()
 {
     Graph& g = graph;
@@ -2495,7 +2495,7 @@ MainWindow::computeTotalBpEntriesShellIndex()
         count++;
     }
     std::sort(bCoefs.begin(), bCoefs.end());
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+    graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
     {
         entry.mean = count == 0 ? 0 : coefSums / count;
@@ -2561,7 +2561,7 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
         }
 
         GrapherUtils utils;
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries =
+        std::vector<graphpp::Boxplotentry> bpentries =
             this->computeBpentries();
         if (LogBinningDialog() == QMessageBox::Yes)
         {
@@ -2629,7 +2629,7 @@ void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered()
     else
     {  // Unweighted
 
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries =
+        std::vector<graphpp::Boxplotentry> bpentries =
             this->computeBpentriesKnn();
 
         if (LogBinningDialog() == QMessageBox::Yes)
@@ -2650,14 +2650,14 @@ void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered()
     ui->textBrowser->append("Done\n");
 }
 
-std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>
+std::vector<graphpp::Boxplotentry>
 MainWindow::computeBpentriesKnn()
 {
     VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
     VariantsSet::const_iterator it = degrees.begin();
     auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
     double nnd = 0;
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries;
+    std::vector<graphpp::Boxplotentry> bpentries;
     while (it != degrees.end())
     {
         // this calculates the Mean Knn for a degree. I think it's unnecesary..
@@ -2688,7 +2688,7 @@ MainWindow::computeBpentriesKnn()
         std::sort(nnCoefs.begin(), nnCoefs.end());
         // Ok, we are using 'Boxplotentry' from clustering coefficient,
         // but it's a common class.. We should put it in a common location.
-        graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry;
+        graphpp::Boxplotentry entry;
         if (nnCoefs.size() > 0)
         {
             entry.degree = d;
@@ -2732,7 +2732,7 @@ void MainWindow::on_actionExportKnnBoxplot_triggered()
         }
 
         GrapherUtils utils;
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries =
+        std::vector<graphpp::Boxplotentry> bpentries =
             this->computeBpentriesKnn();
         if (LogBinningDialog() == QMessageBox::Yes)
         {

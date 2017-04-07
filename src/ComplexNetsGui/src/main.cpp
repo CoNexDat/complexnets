@@ -276,7 +276,7 @@ int main(int argc, char* argv[])
         {
             int vertex_id = args_info->betweenness_arg;
 
-            graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
+            graphpp::Boxplotentry entry =
                 state->computeTotalBpEntriesBetweenness();
             // double ret = state->betweenness((unsigned int)args_info->betweenness_arg);
             if (1 == 1)
@@ -301,8 +301,7 @@ int main(int argc, char* argv[])
             int degree = args_info->ddist_arg;
             if (!state->isDigraph())
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
-                    state->computeTotalBpEntriesDegreeDistribution();
+                graphpp::Boxplotentry entry = state->computeTotalBpEntriesDegreeDistribution();
                 // double ret = state->degreeDistribution(degree);
                 if (1 == 1)
                 {
@@ -348,7 +347,7 @@ int main(int argc, char* argv[])
         {
             int vertex_id = args_info->clustering_arg;
 
-            graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
+            graphpp::Boxplotentry entry =
                 state->computeTotalBpEntries();
             // double ret = state->clustering(vertex_id);
             if (1 == 1)
@@ -371,7 +370,7 @@ int main(int argc, char* argv[])
         {
             int vertex_id = args_info->knn_arg;
 
-            graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
+            graphpp::Boxplotentry entry =
                 state->computeTotalBpEntriesKnn();
             // double ret = state->knn(vertex_id);
             if (1 == 1)
@@ -436,7 +435,7 @@ int main(int argc, char* argv[])
             int vertex_id = args_info->shell_arg;
             double ret = state->shellIndex(vertex_id);
 
-            graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry entry =
+            graphpp::Boxplotentry entry =
                 state->computeTotalBpEntriesShellIndex();
             if (1 == 1)
             {

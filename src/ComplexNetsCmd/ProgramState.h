@@ -82,14 +82,13 @@ public:
 
     void setDirectedInOut(bool o, bool i);
 
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
-    computeTotalBpEntriesDegreeDistribution();
+    graphpp::Boxplotentry computeTotalBpEntriesDegreeDistribution();
 
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
+    graphpp::Boxplotentry computeTotalBpEntriesShellIndex();
 
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesBetweenness();
+    graphpp::Boxplotentry computeTotalBpEntriesBetweenness();
 
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesKnn();
+    graphpp::Boxplotentry computeTotalBpEntriesKnn();
 
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
+    graphpp::Boxplotentry computeTotalBpEntries();
 };

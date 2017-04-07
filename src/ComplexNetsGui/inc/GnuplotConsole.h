@@ -14,6 +14,7 @@
 #include <iostream>
 #include "ComplexNets/AdjacencyListGraph.h"
 #include "ComplexNets/AdjacencyListVertex.h"
+#include "ComplexNets/Boxplotentry.h"
 #include "ComplexNets/IClusteringCoefficient.h"
 #include "ComplexNets/mili/mili.h"
 #include "ComplexNets/typedefs.h"
@@ -33,11 +34,11 @@ public:
         unsigned int bins = 25);
     void writeCommand(const std::string& command);
     bool boxplotCC(
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> bpentries,
+        std::vector<graphpp::Boxplotentry> bpentries,
         const bool logBin = false,
         unsigned int bins = 25);
     bool addLogBins(
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
+        std::vector<graphpp::Boxplotentry>& vec,
         unsigned int binsAmount);
     unsigned int findBin(const std::vector<double>& bins, const unsigned int value);
 

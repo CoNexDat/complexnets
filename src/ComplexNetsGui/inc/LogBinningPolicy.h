@@ -12,7 +12,7 @@ public:
         return LogBin(set, binsAmount);
     }
     static void transform(
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
+        std::vector<graphpp::Boxplotentry>& vec,
         unsigned int binsAmount = 25)
     {
         return LogBin(vec, binsAmount);
@@ -120,7 +120,7 @@ private:
     }
 
     static void LogBin(
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>& vec,
+        std::vector<graphpp::Boxplotentry>& vec,
         unsigned int binsAmount)
     {
         std::vector<double> toPlot;
@@ -154,7 +154,7 @@ private:
             pointsInBin[i++] = 0;
         }
 
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry>::iterator it =
+        std::vector<graphpp::Boxplotentry>::iterator it =
             vec.begin();
         while (it != vec.end())
         {

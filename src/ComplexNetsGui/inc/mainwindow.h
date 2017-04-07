@@ -65,14 +65,14 @@ private:
     void on_actionMaxClique_generic_triggered(bool);
     void on_action_maxClique_plotting_generic_triggered(bool exact);
     void on_actionExportMaxClique_distribution_generic_triggered(bool exact);
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> computeBpentries();
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry> computeBpentriesKnn();
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntries();
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesKnn();
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesBetweenness();
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry
+    std::vector<graphpp::Boxplotentry> computeBpentries();
+    std::vector<graphpp::Boxplotentry> computeBpentriesKnn();
+    graphpp::Boxplotentry computeTotalBpEntries();
+    graphpp::Boxplotentry computeTotalBpEntriesKnn();
+    graphpp::Boxplotentry computeTotalBpEntriesBetweenness();
+    graphpp::Boxplotentry
     computeTotalBpEntriesDegreeDistribution();
-    graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry computeTotalBpEntriesShellIndex();
+    graphpp::Boxplotentry computeTotalBpEntriesShellIndex();
 
     //    void computeMaxCliqueExact();
     void computeBetweenness();
