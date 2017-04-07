@@ -40,8 +40,8 @@ Graph* GraphGenerator::generateGraphFromFile(std::string path, bool directed, bo
 {
     Graph* graph = new Graph(directed, multigraph);
 
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
-    IGraphReader<Graph, Vertex>* reader = factory->createGraphReader();
+    auto factory = new GraphFactory<Graph, Vertex>();
+    auto reader = factory->createGraphReader();
     reader->read(*graph, path);
 
     delete reader;
@@ -52,11 +52,11 @@ Graph* GraphGenerator::generateGraphFromFile(std::string path, bool directed, bo
 
 DirectedGraph* GraphGenerator::generateDirectedGraphFromFile(std::string path, bool multigraph)
 {
-    DirectedGraph* graph = new DirectedGraph(multigraph);
+    auto graph = new DirectedGraph(multigraph);
 
-    IGraphFactory<DirectedGraph, DirectedVertex>* factory =
-        new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
-    IGraphReader<DirectedGraph, DirectedVertex>* reader = factory->createGraphReader();
+    auto factory = new DirectedGraphFactory<DirectedGraph, DirectedVertex>();
+    auto reader = factory->createGraphReader();
+
     reader->read(*graph, path);
 
     delete reader;
@@ -68,11 +68,11 @@ DirectedGraph* GraphGenerator::generateDirectedGraphFromFile(std::string path, b
 WeightedGraph* GraphGenerator::generateWeightedGraphFromFile(
     std::string path, bool directed, bool multigraph)
 {
-    WeightedGraph* graph = new WeightedGraph(directed, multigraph);
+    auto graph = new WeightedGraph(directed, multigraph);
 
-    IGraphFactory<WeightedGraph, WeightedVertex>* factory =
-        new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
-    IGraphReader<WeightedGraph, WeightedVertex>* reader = factory->createGraphReader();
+    auto factory = new WeightedGraphFactory<WeightedGraph, WeightedVertex>();
+    auto reader = factory->createGraphReader();
+
     reader->read(*graph, path);
 
     delete reader;
@@ -83,7 +83,7 @@ WeightedGraph* GraphGenerator::generateWeightedGraphFromFile(
 
 Graph* GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p)
 {
-    Graph* graph = new Graph(false, false);
+    auto graph = new Graph();
 
     for (unsigned int i = 1; i <= n; i++)
     {
@@ -113,7 +113,7 @@ Graph* GraphGenerator::generateErdosRenyiGraph(unsigned int n, float p)
 
 Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned int m, unsigned int n)
 {
-    Graph* graph = new Graph(false, false);
+    auto graph = new Graph();
     // Create a K_M_0 graph
     for (unsigned int i = 1; i <= m_0; i++)
         graph->addVertex(new Vertex(i));
@@ -181,7 +181,7 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
 Graph* GraphGenerator::generateHotExtendedGraph(
     unsigned int m, unsigned int n, float xi, unsigned int q, float r, unsigned int t)
 {
-    Graph* graph = new Graph(false, false);
+    auto graph = new Graph();
 
     // Every time an edge is added, two entries are added in vertexIndexes, the two indexes of the
     // nodes joined.
@@ -403,7 +403,7 @@ Graph* GraphGenerator::generateMolloyReedGraph(std::string path)
 {
     Graph* graph = new Graph(false, false);
 
-    IGraphReader<Graph, Vertex>* reader = new MolloyReedGraphReader<Graph, Vertex>();
+    auto reader = new MolloyReedGraphReader<Graph, Vertex>();
     reader->read(*graph, path);
 
     delete reader;
