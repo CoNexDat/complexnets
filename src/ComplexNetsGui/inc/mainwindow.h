@@ -70,8 +70,7 @@ private:
     graphpp::Boxplotentry computeTotalBpEntries();
     graphpp::Boxplotentry computeTotalBpEntriesKnn();
     graphpp::Boxplotentry computeTotalBpEntriesBetweenness();
-    graphpp::Boxplotentry
-    computeTotalBpEntriesDegreeDistribution();
+    graphpp::Boxplotentry computeTotalBpEntriesDegreeDistribution();
     graphpp::Boxplotentry computeTotalBpEntriesShellIndex();
 
     //    void computeMaxCliqueExact();

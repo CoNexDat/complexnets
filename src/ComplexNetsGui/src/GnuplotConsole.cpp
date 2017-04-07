@@ -133,9 +133,7 @@ void GnuplotConsole::writeCommand(const std::string& command)
 }
 
 bool GnuplotConsole::boxplotCC(
-    std::vector<graphpp::Boxplotentry> bpentries,
-    const bool logBin,
-    unsigned int bins)
+    std::vector<graphpp::Boxplotentry> bpentries, const bool logBin, unsigned int bins)
 {
     std::vector<double> Q1, Q2, Q3, d, m;
     std::vector<unsigned int> bin;
@@ -225,9 +223,7 @@ unsigned int GnuplotConsole::findBin(const std::vector<double>& bins, const unsi
     return lowerLimit;
 }
 
-bool GnuplotConsole::addLogBins(
-    std::vector<graphpp::Boxplotentry>& vec,
-    unsigned int binsAmount)
+bool GnuplotConsole::addLogBins(std::vector<graphpp::Boxplotentry>& vec, unsigned int binsAmount)
 {
     std::vector<double> toPlot;
     std::list<double> xPoints;

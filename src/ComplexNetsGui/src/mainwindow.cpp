@@ -2191,8 +2191,7 @@ void MainWindow::on_actionBoxplotCC_triggered()
     else
     {  // Unweighted
 
-        std::vector<graphpp::Boxplotentry> bpentries =
-            this->computeBpentries();
+        std::vector<graphpp::Boxplotentry> bpentries = this->computeBpentries();
 
         if (LogBinningDialog() == QMessageBox::Yes)
         {
@@ -2212,8 +2211,7 @@ void MainWindow::on_actionBoxplotCC_triggered()
     ui->textBrowser->append("Done\n");
 }
 
-std::vector<graphpp::Boxplotentry>
-MainWindow::computeBpentries()
+std::vector<graphpp::Boxplotentry> MainWindow::computeBpentries()
 {
     VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
     VariantsSet::const_iterator it = degrees.begin();
@@ -2391,8 +2389,7 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesKnn()
     return entry;
 }
 
-graphpp::Boxplotentry
-MainWindow::computeTotalBpEntriesBetweenness()
+graphpp::Boxplotentry MainWindow::computeTotalBpEntriesBetweenness()
 {
     Graph& g = graph;
     auto vit = g.verticesIterator();
@@ -2435,8 +2432,7 @@ MainWindow::computeTotalBpEntriesBetweenness()
     return entry;
 }
 
-graphpp::Boxplotentry
-MainWindow::computeTotalBpEntriesDegreeDistribution()
+graphpp::Boxplotentry MainWindow::computeTotalBpEntriesDegreeDistribution()
 {
     Graph& g = graph;
     auto vit = g.verticesIterator();
@@ -2473,8 +2469,7 @@ MainWindow::computeTotalBpEntriesDegreeDistribution()
     return entry;
 }
 
-graphpp::Boxplotentry
-MainWindow::computeTotalBpEntriesShellIndex()
+graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex()
 {
     Graph& g = graph;
     auto vit = g.verticesIterator();
@@ -2561,8 +2556,7 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
         }
 
         GrapherUtils utils;
-        std::vector<graphpp::Boxplotentry> bpentries =
-            this->computeBpentries();
+        std::vector<graphpp::Boxplotentry> bpentries = this->computeBpentries();
         if (LogBinningDialog() == QMessageBox::Yes)
         {
             QString inputN = inputId("bins:");
@@ -2629,8 +2623,7 @@ void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered()
     else
     {  // Unweighted
 
-        std::vector<graphpp::Boxplotentry> bpentries =
-            this->computeBpentriesKnn();
+        std::vector<graphpp::Boxplotentry> bpentries = this->computeBpentriesKnn();
 
         if (LogBinningDialog() == QMessageBox::Yes)
         {
@@ -2650,8 +2643,7 @@ void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered()
     ui->textBrowser->append("Done\n");
 }
 
-std::vector<graphpp::Boxplotentry>
-MainWindow::computeBpentriesKnn()
+std::vector<graphpp::Boxplotentry> MainWindow::computeBpentriesKnn()
 {
     VariantsSet& degrees = propertyMap.getPropertySet("degreeDistribution");
     VariantsSet::const_iterator it = degrees.begin();
@@ -2732,8 +2724,7 @@ void MainWindow::on_actionExportKnnBoxplot_triggered()
         }
 
         GrapherUtils utils;
-        std::vector<graphpp::Boxplotentry> bpentries =
-            this->computeBpentriesKnn();
+        std::vector<graphpp::Boxplotentry> bpentries = this->computeBpentriesKnn();
         if (LogBinningDialog() == QMessageBox::Yes)
         {
             QString inputN = inputId("bins:");

@@ -37,9 +37,7 @@ public:
         std::vector<graphpp::Boxplotentry> bpentries,
         const bool logBin = false,
         unsigned int bins = 25);
-    bool addLogBins(
-        std::vector<graphpp::Boxplotentry>& vec,
-        unsigned int binsAmount);
+    bool addLogBins(std::vector<graphpp::Boxplotentry>& vec, unsigned int binsAmount);
     unsigned int findBin(const std::vector<double>& bins, const unsigned int value);
 
     // void closeDialog();

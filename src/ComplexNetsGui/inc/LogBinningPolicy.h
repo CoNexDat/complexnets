@@ -11,9 +11,7 @@ public:
     {
         return LogBin(set, binsAmount);
     }
-    static void transform(
-        std::vector<graphpp::Boxplotentry>& vec,
-        unsigned int binsAmount = 25)
+    static void transform(std::vector<graphpp::Boxplotentry>& vec, unsigned int binsAmount = 25)
     {
         return LogBin(vec, binsAmount);
     }
@@ -119,9 +117,7 @@ private:
         return lowerLimit;
     }
 
-    static void LogBin(
-        std::vector<graphpp::Boxplotentry>& vec,
-        unsigned int binsAmount)
+    static void LogBin(std::vector<graphpp::Boxplotentry>& vec, unsigned int binsAmount)
     {
         std::vector<double> toPlot;
         std::list<double> xPoints;
@@ -154,8 +150,7 @@ private:
             pointsInBin[i++] = 0;
         }
 
-        std::vector<graphpp::Boxplotentry>::iterator it =
-            vec.begin();
+        std::vector<graphpp::Boxplotentry>::iterator it = vec.begin();
         while (it != vec.end())
         {
             unsigned int binNum = findBin(bins, it->degree);

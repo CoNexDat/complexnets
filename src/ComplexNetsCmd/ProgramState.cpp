@@ -970,8 +970,7 @@ void ProgramState::setDirectedInOut(bool o, bool i)
     directed_in = i;
 }
 
-graphpp::Boxplotentry
-ProgramState::computeTotalBpEntriesDegreeDistribution()
+graphpp::Boxplotentry ProgramState::computeTotalBpEntriesDegreeDistribution()
 {
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
@@ -1009,8 +1008,7 @@ ProgramState::computeTotalBpEntriesDegreeDistribution()
     return entry;
 }
 
-graphpp::Boxplotentry
-ProgramState::computeTotalBpEntriesShellIndex()
+graphpp::Boxplotentry ProgramState::computeTotalBpEntriesShellIndex()
 {
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
@@ -1051,8 +1049,7 @@ ProgramState::computeTotalBpEntriesShellIndex()
     return entry;
 }
 
-graphpp::Boxplotentry
-ProgramState::computeTotalBpEntriesBetweenness()
+graphpp::Boxplotentry ProgramState::computeTotalBpEntriesBetweenness()
 {
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
@@ -1093,8 +1090,7 @@ ProgramState::computeTotalBpEntriesBetweenness()
     return entry;
 }
 
-graphpp::Boxplotentry
-ProgramState::computeTotalBpEntriesKnn()
+graphpp::Boxplotentry ProgramState::computeTotalBpEntriesKnn()
 {
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();

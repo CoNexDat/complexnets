@@ -1,13 +1,13 @@
 #pragma once
 
-#include "IGraphFactory.h"
-#include "WeightedBetweenness.h"
-#include "WeightedClusteringCoefficient.h"
-#include "WeightedNearestNeighborsDegree.h"
 #include "Betweenness.h"
 #include "IBetweenness.h"
+#include "IGraphFactory.h"
 #include "StrengthDistribution.h"
+#include "WeightedBetweenness.h"
+#include "WeightedClusteringCoefficient.h"
 #include "WeightedGraphReader.h"
+#include "WeightedNearestNeighborsDegree.h"
 
 namespace graphpp
 {
