@@ -22,10 +22,7 @@ class VertexComparator
 public:
     bool operator()(T* v1, T* v2) const
     {
-        bool ret = false;
-        if (v1->getVertexId() < v2->getVertexId())
-            ret = true;
-        return ret;
+        return v1->getVertexId() < v2->getVertexId();
     }
 };
 
