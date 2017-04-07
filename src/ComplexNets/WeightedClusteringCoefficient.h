@@ -8,15 +8,12 @@ template <class Graph, class Vertex>
 class WeightedClusteringCoefficient : public IClusteringCoefficient<Graph, Vertex>
 {
 public:
-    typedef typename IClusteringCoefficient<Graph, Vertex>::Coefficient Coefficient;
-    typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
-
     // TODO check if this method is implemented correctly
-    virtual Coefficient clusteringCoefficient(Graph& g, Degree d)
+    virtual double clusteringCoefficient(Graph& g, unsigned int d)
     {
         auto it = g.verticesIterator();
         unsigned int count = 0;
-        Coefficient clusteringCoefSums = 0.0;
+        double clusteringCoefSums = 0.0;
 
         while (!it.end())
         {
@@ -34,11 +31,11 @@ public:
         return count == 0 ? 0 : clusteringCoefSums / count;
     }
 
-    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex)
+    virtual double vertexClusteringCoefficient(Vertex* vertex)
     {
-        Coefficient links = 0.0;
+        double links = 0.0;
         auto it = vertex->neighborsIterator();
-        Coefficient ret;
+        double ret;
 
         while (!it.end())
         {

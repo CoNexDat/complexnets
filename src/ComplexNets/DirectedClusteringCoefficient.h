@@ -9,14 +9,11 @@ template <class Graph, class Vertex>
 class DirectedClusteringCoefficient : public IClusteringCoefficient<Graph, Vertex>
 {
 public:
-    typedef typename graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient Coefficient;
-    typedef typename IClusteringCoefficient<Graph, Vertex>::Degree Degree;
-
-    virtual Coefficient clusteringCoefficient(Graph& g, Degree d, bool out, bool in)
+    virtual double clusteringCoefficient(Graph& g, unsigned int d, bool out, bool in)
     {
         auto it = g.verticesIterator();
         unsigned int count = 0;
-        Coefficient clusteringCoefSums = 0.0;
+        double clusteringCoefSums = 0.0;
 
         if (!in && !out)
         {
@@ -40,12 +37,12 @@ public:
         return count == 0 ? 0 : clusteringCoefSums / count;
     }
 
-    virtual Coefficient clusteringCoefficient(Graph& g, Degree d)
+    virtual double clusteringCoefficient(Graph& g, unsigned int d)
     {
         return clusteringCoefficient(g, d, false, false);
     }
 
-    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex, bool out, bool in)
+    virtual double vertexClusteringCoefficient(Vertex* vertex, bool out, bool in)
     {
         DirectedVertex* directedVertex = static_cast<DirectedVertex*>(vertex);
 
@@ -55,8 +52,8 @@ public:
             out = true;
         }
 
-        Coefficient outLinks = 0.0;
-        Coefficient inLinks = 0.0;
+        double outLinks = 0.0;
+        double inLinks = 0.0;
 
         if (in)
         {
@@ -106,8 +103,8 @@ public:
             }
         }
 
-        Coefficient degree = 0.0;
-        Coefficient links = 0.0;
+        double degree = 0.0;
+        double links = 0.0;
 
         if (out && in)
         {
@@ -151,7 +148,7 @@ public:
         return false;
     }
 
-    virtual Coefficient vertexClusteringCoefficient(Vertex* vertex)
+    virtual double vertexClusteringCoefficient(Vertex* vertex)
     {
         return vertexClusteringCoefficient(vertex, false, false);
     }

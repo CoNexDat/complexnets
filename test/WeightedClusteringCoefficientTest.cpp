@@ -68,20 +68,18 @@ TEST_F(WeightedClusterCoefficientTest, GeneralTest)
     g.addEdge(v3, v1, 1);
     g.addEdge(x, v2, 1);
 
-    typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
-    typedef Clustering::Coefficient Coef;
-    Clustering clustering;
+    WeightedClusteringCoefficient<WeightedGraph, Vertex> clustering;
 
-    Coef c = clustering.vertexClusteringCoefficient(x);
+    double c = clustering.vertexClusteringCoefficient(x);
 
-    Coef epsilon = 0.001;
+    double epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 0.25) <  epsilon);
 
-    Coef c2 = clustering.clusteringCoefficient(g, Vertex::Degree(4));
+    double c2 = clustering.clusteringCoefficient(g, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.25) <  epsilon);
 
-    Coef c3 = clustering.clusteringCoefficient(g, Vertex::Degree(3));
+    double c3 = clustering.clusteringCoefficient(g, Vertex::Degree(3));
     ASSERT_TRUE(fabs(c3 - 1) <  epsilon);
 }
 
@@ -105,17 +103,15 @@ TEST_F(WeightedClusterCoefficientTest, AcyclicWeightedGraphTest)
     ig.addEdge(x, v3, 1);
     ig.addEdge(v4, x, 1);;
 
-    typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
-    typedef Clustering::Coefficient Coef;
-    Clustering clustering;
+    WeightedClusteringCoefficient<WeightedGraph, Vertex> clustering;
 
-    Coef c = clustering.vertexClusteringCoefficient(x);
+    double c = clustering.vertexClusteringCoefficient(x);
 
-    Coef epsilon = 0.001;
+    double epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
 
-    Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
+    double c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
 }
 
@@ -127,17 +123,15 @@ TEST_F(WeightedClusterCoefficientTest, SingleNodeGraph)
 
     ig.addVertex(x);
 
-    typedef WeightedClusteringCoefficient<WeightedGraph, Vertex> Clustering;
-    typedef Clustering::Coefficient Coef;
-    Clustering clustering;
+    WeightedClusteringCoefficient<WeightedGraph, Vertex> clustering;
 
-    Coef c = clustering.vertexClusteringCoefficient(x);
+    double c = clustering.vertexClusteringCoefficient(x);
 
-    Coef epsilon = 0.001;
+    double epsilon = 0.001;
 
     ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
 
-    Coef c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
+    double c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
     ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
 }
 

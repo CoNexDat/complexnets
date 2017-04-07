@@ -4,7 +4,6 @@
 #include "WeightedBetweenness.h"
 #include "WeightedClusteringCoefficient.h"
 #include "WeightedNearestNeighborsDegree.h"
-//#include "WeightedShellIndex.h"
 #include "Betweenness.h"
 #include "IBetweenness.h"
 #include "StrengthDistribution.h"

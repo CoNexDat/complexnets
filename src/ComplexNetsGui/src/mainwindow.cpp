@@ -2230,9 +2230,9 @@ MainWindow::computeBpentries()
         // everything here because the other way was not working.
 
         Graph& g = graph;
-        IClusteringCoefficient<Graph, Vertex>::Degree d = from_string<unsigned int>(it->first);
+        unsigned int d = from_string<unsigned int>(it->first);
         auto vit = g.verticesIterator();
-        std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
+        std::vector<double> clusteringCoefs;
 
         while (!vit.end())
         {
@@ -2240,8 +2240,7 @@ MainWindow::computeBpentries()
 
             if (v->degree() == d)
             {
-                graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c =
-                    clusteringCoefficient->vertexClusteringCoefficient(v);
+                double c = clusteringCoefficient->vertexClusteringCoefficient(v);
                 clusteringCoefs.push_back(c);
             }
 
@@ -2281,7 +2280,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
 {
     Graph& g = graph;
     auto vit = g.verticesIterator();
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
+    std::vector<double> clusteringCoefs;
     auto clusteringCoefficient = factory->createClusteringCoefficient();
     double coefSums = 0.0;
     unsigned int count = 0;
@@ -2301,8 +2300,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry MainWindow::compute
             oldCoef = propertyMap.getProperty<double>(
                 "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()));
         }
-        graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c =
-            clusteringCoefficient->vertexClusteringCoefficient(v);
+        double c = clusteringCoefficient->vertexClusteringCoefficient(v);
         propertyMap.addProperty<double>(
             "clusteringCoeficientForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)

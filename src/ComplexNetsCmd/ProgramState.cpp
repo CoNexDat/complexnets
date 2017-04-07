@@ -1159,7 +1159,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
 {
     Graph& g = graph;
     Graph::VerticesIterator vit = g.verticesIterator();
-    std::vector<graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient> clusteringCoefs;
+    std::vector<double> clusteringCoefs;
     PropertyMap propertyMap;
     computeDegreeDistribution(propertyMap);
 
@@ -1184,8 +1184,7 @@ graphpp::IClusteringCoefficient<Graph, Vertex>::Boxplotentry ProgramState::compu
             oldCoef = propertyMap.getProperty<double>(
                 "clusteringCoeficientForDegreeO", to_string<unsigned int>(v->degree()));
         }
-        graphpp::IClusteringCoefficient<Graph, Vertex>::Coefficient c =
-            clusteringCoefficient->vertexClusteringCoefficient(v);
+        double c = clusteringCoefficient->vertexClusteringCoefficient(v);
         propertyMap.addProperty<double>(
             "clusteringCoeficientForVertex", to_string<unsigned int>(v->getVertexId()), c);
         if (degree_exists == 0)
