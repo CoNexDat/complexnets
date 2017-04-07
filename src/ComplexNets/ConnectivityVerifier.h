@@ -5,6 +5,7 @@
 #pragma once
 
 #include <math.h>
+#include <algorithm>
 #include <vector>
 #include "TraverserBFS.h"
 #include "mili/mili.h"
@@ -18,8 +19,8 @@ template <class Graph, class Vertex>
 class ConnectivityVerifier
 {
 public:
-    std::vector<unsigned int> vertexesLeft;
-    std::vector<unsigned int> vertexesInComponent;
+    std::list<unsigned int> vertexesLeft;
+    std::list<unsigned int> vertexesInComponent;
 
     ConnectivityVerifier()
     {
@@ -28,15 +29,7 @@ public:
     void visited(unsigned int id)
     {
         vertexesInComponent.push_back(id);
-        // Erase vertex from vertexesLeft
-        for (unsigned int i = 0; i < vertexesLeft.size(); i++)
-        {
-            if (vertexesLeft[i] == id)
-            {
-                vertexesLeft.erase(vertexesLeft.begin() + i);
-                return;
-            }
-        }
+        vertexesLeft.remove(id);
     }
 
     void getBiggestComponent(Graph* graph)
@@ -58,28 +51,15 @@ public:
                 source, visitor);
         } while (!vertexesLeft.empty() && vertexesInComponent.size() < graph->verticesCount() / 2);
 
-        // if(vertexesInComponent.size() >= graph->verticesCount()/2)
-        // cout << "Component found\n";
-
         auto it2 = graph->verticesConstIterator();
         while (!it2.end())
         {
-            bool found = false;
-            for (unsigned int i = 0; i < vertexesInComponent.size(); i++)
-            {
-                if (vertexesInComponent[i] == (*it2)->getVertexId())
-                {
-                    found = true;
-                    break;
-                }
-            }
+            auto id = (*it2)->getVertexId();
+            auto found = std::find(begin(vertexesInComponent), end(vertexesInComponent), id) !=
+                         end(vertexesInComponent);
+
             if (!found)
-            {
-                // cout << "Remove ";
-                // cout << (*it2)->getVertexId();
-                // cout << "\n";
                 graph->removeVertex(*it2);
-            }
 
             ++it2;
         }
@@ -90,9 +70,8 @@ template <class Graph, class Vertex>
 class ConnectivityVisitor
 {
 public:
-    ConnectivityVisitor(ConnectivityVerifier<Graph, Vertex>* conexityVerifierObserver)
+    ConnectivityVisitor(ConnectivityVerifier<Graph, Vertex>* observer) : observer(observer)
     {
-        this->conexityVerifierObserver = conexityVerifierObserver;
     }
 
     /**
@@ -104,11 +83,11 @@ public:
      */
     bool visitVertex(Vertex* vertex)
     {
-        conexityVerifierObserver->visited(vertex->getVertexId());
+        observer->visited(vertex->getVertexId());
         return true;
     }
 
 private:
-    ConnectivityVerifier<Graph, Vertex>* conexityVerifierObserver;
+    ConnectivityVerifier<Graph, Vertex>* observer;
 };
 }
