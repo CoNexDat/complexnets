@@ -132,6 +132,7 @@ double ProgramState::betweenness(unsigned int vertex_id)
             ++wit;
         }
         delete wbetweenness;
+        delete wfactory;
         return ret;
     }
     else
@@ -151,6 +152,7 @@ double ProgramState::betweenness(unsigned int vertex_id)
             ++it;
         }
         delete betweenness;
+        delete factory;
         return ret;
     }
 }
@@ -167,6 +169,7 @@ std::list<int> ProgramState::maxCliqueAprox()
     }
 
     delete maxClique;
+    delete factory;
     return ret;
 }
 
@@ -181,6 +184,7 @@ std::list<int> ProgramState::maxCliqueExact(unsigned int max_time)
         ret = maxClique->getMaxCliqueList();
     }
     delete maxClique;
+    delete factory;
     return ret;
 }
 
@@ -197,6 +201,7 @@ double ProgramState::clustering(unsigned int vertex_id)
             auto clusteringCoefficient = factory->createClusteringCoefficient();
             ret = clusteringCoefficient->vertexClusteringCoefficient(vertex);
             delete clusteringCoefficient;
+            delete factory;
         }
     }
     else if (this->isDigraph())
@@ -220,6 +225,7 @@ double ProgramState::clustering(unsigned int vertex_id)
             auto clusteringCoefficient = factory->createClusteringCoefficient();
             ret = clusteringCoefficient->vertexClusteringCoefficient(vertex);
             delete clusteringCoefficient;
+            delete factory;
         }
     }
 
@@ -238,6 +244,7 @@ double ProgramState::knn(unsigned int vertex_id)
             auto nearestNeighborsDegree = factory->createNearestNeighborsDegree();
             ret = nearestNeighborsDegree->meanDegreeForVertex(vertex);
             delete nearestNeighborsDegree;
+            delete factory;
         }
     }
     else if (this->isDigraph())
@@ -249,6 +256,7 @@ double ProgramState::knn(unsigned int vertex_id)
             auto nearestNeighborsDegree = factory->createNearestNeighborsDegree();
             ret = nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_out, directed_in);
             delete nearestNeighborsDegree;
+            delete factory;
         }
     }
     else
@@ -260,6 +268,7 @@ double ProgramState::knn(unsigned int vertex_id)
             auto nearestNeighborsDegree = factory->createNearestNeighborsDegree();
             ret = nearestNeighborsDegree->meanDegreeForVertex(vertex);
             delete nearestNeighborsDegree;
+            delete factory;
         }
     }
     return ret;
@@ -282,6 +291,7 @@ double ProgramState::shellIndex(unsigned int vertex_id)
         ++it;
     }
     delete shellIndex;
+    delete factory;
     return ret;
 }
 
@@ -304,6 +314,7 @@ double ProgramState::degreeDistribution(unsigned int vertex_id)
             ++it;
         }
         delete degreeDistribution;
+        delete factory;
     }
     else
     {
@@ -321,6 +332,7 @@ double ProgramState::degreeDistribution(unsigned int vertex_id)
             ++it;
         }
         delete degreeDistribution;
+        delete factory;
     }
     return ret;
 }
@@ -346,6 +358,7 @@ double ProgramState::inDegreeDistribution(unsigned int vertex_id)
             ++it;
         }
         delete degreeDistribution;
+        delete directedFactory;
     }
     return ret;
 }
@@ -371,6 +384,7 @@ double ProgramState::outDegreeDistribution(unsigned int vertex_id)
             ++it;
         }
         delete degreeDistribution;
+        delete directedFactory;
     }
     return ret;
 }
@@ -407,6 +421,7 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
             ++degreeIterator;
         }
         delete wdegreeDistribution;
+        delete wfactory;
     }
     else
     {
@@ -439,6 +454,7 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
             ++degreeIterator;
         }
         delete degreeDistribution;
+        delete factory;
     }
 
     double betweennessAuxAcum;
@@ -503,6 +519,7 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
         }
 
         delete degreeDistribution;
+        delete weightedFactory;
     }
     else if (isDigraph())
     {
@@ -546,6 +563,7 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
         }
 
         delete degreeDistribution;
+        delete directedFactory;
     }
     else
     {
@@ -564,6 +582,7 @@ void ProgramState::computeDegreeDistribution(PropertyMap& propertyMap)
         }
 
         delete degreeDistribution;
+        delete factory;
     }
 }
 
@@ -610,6 +629,7 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
         }
 
         delete clusteringCoefficient;
+        delete weightedFactory;
     }
     else if (isDigraph())
     {
@@ -626,6 +646,7 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
         }
 
         delete clusteringCoefficient;
+        delete directedFactory;
     }
     else
     {
@@ -641,6 +662,7 @@ void ProgramState::computeClusteringCoefficient(PropertyMap& propertyMap)
         }
 
         delete clusteringCoefficient;
+        delete factory;
     }
 }
 
@@ -687,6 +709,7 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
         }
 
         delete nearestNeighborDegree;
+        delete weightedFactory;
     }
     else if (isDigraph())
     {
@@ -703,6 +726,7 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
         }
 
         delete nearestNeighborDegree;
+        delete directedFactory;
     }
     else
     {
@@ -717,6 +741,7 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
         }
 
         delete nearestNeighborDegree;
+        delete factory;
     }
 }
 
@@ -734,6 +759,7 @@ void ProgramState::computeShellIndex(PropertyMap& propertyMap)
     }
 
     delete shellIndex;
+    delete factory;
 }
 
 bool ProgramState::computeMaxCliqueDistr(
@@ -743,6 +769,8 @@ bool ProgramState::computeMaxCliqueDistr(
     auto maxClique =
         exact ? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(this->graph, max_time)
               : (IMaxClique<Graph, Vertex>*)factory->createMaxClique(this->graph);
+
+    delete factory;
 
     if (maxClique->finished())
     {
@@ -1102,6 +1130,8 @@ graphpp::Boxplotentry ProgramState::computeTotalBpEntriesKnn()
     double coefSums = 0.0;
     unsigned int count = 0;
 
+    delete factory;
+
     double oldCoef;
     int degree_exists = propertyMap.containsPropertySet("nearestNeighborDegreeForDegreeO") ? 1 : 0;
 
@@ -1161,6 +1191,8 @@ graphpp::Boxplotentry ProgramState::computeTotalBpEntries()
 
     auto factory = new GraphFactory<Graph, Vertex>();
     auto clusteringCoefficient = factory->createClusteringCoefficient();
+
+    delete factory;
 
     double coefSums = 0.0;
     unsigned int count = 0;
