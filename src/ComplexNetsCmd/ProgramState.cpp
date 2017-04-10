@@ -438,11 +438,9 @@ void ProgramState::computeBetweenness(PropertyMap& propertyMap)
         }
         delete betweenness;
 
-        IDegreeDistribution<Graph, Vertex>* degreeDistribution;
+        auto degreeDistribution = factory->createDegreeDistribution(graph);
+        auto degreeIterator = degreeDistribution->iterator();
 
-        degreeDistribution = factory->createDegreeDistribution(graph);
-        DegreeDistribution<Graph, Vertex>::DistributionIterator degreeIterator =
-            degreeDistribution->iterator();
         while (!degreeIterator.end())
         {
             propertyMap.addProperty<double>(
@@ -1125,7 +1123,7 @@ graphpp::Boxplotentry ProgramState::computeTotalBpEntriesKnn()
     std::vector<double> nnCoefs;
     PropertyMap propertyMap;
     computeDegreeDistribution(propertyMap);
-    IGraphFactory<Graph, Vertex>* factory = new GraphFactory<Graph, Vertex>();
+    auto factory = new GraphFactory<Graph, Vertex>();
     auto nearestNeighborDegree = factory->createNearestNeighborsDegree();
     double coefSums = 0.0;
     unsigned int count = 0;
