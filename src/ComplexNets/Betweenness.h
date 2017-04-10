@@ -87,11 +87,9 @@ private:
                 stack.pop();
 
                 std::list<typename Vertex::VertexId> vertices = p[w->getVertexId()];
-                typename std::list<typename Vertex::VertexId>::iterator it;
 
-                for (it = vertices.begin(); it != vertices.end(); ++it)
+                for (const auto& v : vertices)
                 {
-                    typename Vertex::VertexId v = *it;
                     delta[v] = delta[v] + ((1 + delta[w->getVertexId()]) *
                                            (sigma[v] / sigma[w->getVertexId()]));
                 }
