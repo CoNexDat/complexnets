@@ -14,12 +14,12 @@ public:
     virtual double clusteringCoefficient(Graph& g, unsigned int d) = 0;
     virtual double vertexClusteringCoefficient(Vertex* vertex) = 0;
 
-    virtual double vertexClusteringCoefficient(Vertex* vertex, bool out, bool in)
+    virtual double vertexClusteringCoefficient(Vertex* vertex, bool, bool)
     {
         return vertexClusteringCoefficient(vertex);
     }
 
-    virtual double clusteringCoefficient(Graph& g, unsigned int d, bool out, bool in)
+    virtual double clusteringCoefficient(Graph& g, unsigned int d, bool, bool)
     {
         return clusteringCoefficient(g, d);
     }

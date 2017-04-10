@@ -48,7 +48,7 @@ public:
         return new DegreeDistribution<Graph, Vertex>(g);
     }
 
-    virtual StrengthDistribution<Graph, Vertex>* createStrengthDistribution(Graph& g)
+    virtual StrengthDistribution<Graph, Vertex>* createStrengthDistribution(Graph&)
     {
         return nullptr;
     }

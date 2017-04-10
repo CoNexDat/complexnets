@@ -11,12 +11,12 @@ public:
     virtual double meanDegree(Graph& g, Degree d) = 0;
     virtual double meanDegreeForVertex(Vertex* vertex) = 0;
 
-    virtual double meanDegree(Graph& g, Degree d, bool out, bool in)
+    virtual double meanDegree(Graph& g, Degree d, bool, bool)
     {
         return meanDegree(g, d);
     }
 
-    virtual double meanDegreeForVertex(Vertex* vertex, bool out, bool in)
+    virtual double meanDegreeForVertex(Vertex* vertex, bool, bool)
     {
         return meanDegreeForVertex(vertex);
     }
