@@ -1779,7 +1779,7 @@ int MainWindow::ChooseDigraphDegreeDialog()
 {
     QMessageBox msgBox;
     msgBox.setText(tr("Which degree would you like to use?"));
-    QPushButton* pButtonYes = msgBox.addButton(tr("In"), QMessageBox::YesRole);
+    msgBox.addButton(tr("In"), QMessageBox::YesRole);
     msgBox.addButton(tr("Out"), QMessageBox::NoRole);
     return msgBox.exec();
 }
