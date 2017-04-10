@@ -503,7 +503,7 @@ void MainWindow::on_action_maxClique_plotting_generic_triggered(bool exact)
         return;
     }
 
-    ui->textBrowser->append("Done\n");
+    ui->textBrowser->append("Done.\n");
 }
 
 void MainWindow::on_actionMaxCliqueExact_triggered()
@@ -1028,7 +1028,7 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
     if (!ret)
         ui->textBrowser->append("An unexpected error has occured.\n");
 
-    ui->textBrowser->append("Done\n");
+    ui->textBrowser->append("Done.\n");
 }
 
 void MainWindow::on_actionClustering_coefficient_triggered()
@@ -2131,7 +2131,7 @@ void MainWindow::on_actionCumulativeDegree_distribution_plotting_triggered()
         this->computeCumulativeDegreeDistribution();
     }
 
-    ui->textBrowser->append("Done\n");
+    ui->textBrowser->append("Done.\n");
     ret = this->console->plotPropertySet(
         propertyMap.getPropertySet("cumulativeDegreeDistributionProbability"),
         "cumulativeDegreeDistribution");
@@ -2208,7 +2208,7 @@ void MainWindow::on_actionBoxplotCC_triggered()
             ui->textBrowser->append("An unexpected error has occured.\n");
     }
 
-    ui->textBrowser->append("Done\n");
+    ui->textBrowser->append("Done.\n");
 }
 
 std::vector<graphpp::Boxplotentry> MainWindow::computeBpentries()
@@ -2640,7 +2640,7 @@ void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered()
             ui->textBrowser->append("An unexpected error has occured.\n");
     }
 
-    ui->textBrowser->append("Done\n");
+    ui->textBrowser->append("Done.\n");
 }
 
 std::vector<graphpp::Boxplotentry> MainWindow::computeBpentriesKnn()
