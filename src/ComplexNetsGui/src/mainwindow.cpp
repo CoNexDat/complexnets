@@ -1035,7 +1035,6 @@ void MainWindow::on_actionClustering_coefficient_triggered()
 {
     QString vertexId = "2";
     QString ret;
-    double coefficient;
 
     std::string directedPostfix = "d";
     if (directed_out)
