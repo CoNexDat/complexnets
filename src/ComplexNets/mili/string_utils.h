@@ -326,7 +326,7 @@ inline std::string trim(const std::string& s)
 
 struct StringNotFound : std::exception {};
 
-inline std::string::size_type ensure_found(std::string::size_type found) throw(StringNotFound)
+inline std::string::size_type ensure_found(std::string::size_type found)
 {
     if (found != std::string::npos)
         return found;

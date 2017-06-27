@@ -71,7 +71,7 @@ public:
 
     /* returns the element called name */
     template <class T>
-    T get_element(const ElementName& name) const throw(BadElementType, BadElementName)
+    T get_element(const ElementName& name) const
     {
         const std::map<ElementName, std::string>::const_iterator it = elements.find(name);
         T element;
@@ -86,7 +86,7 @@ public:
     }
 
     template <class T>
-    void get_element(const ElementName& name, T& element) const throw(BadElementType, BadElementName)
+    void get_element(const ElementName& name, T& element) const
     {
         const std::map<ElementName, std::string>::const_iterator it = elements.find(name);
         if (it != elements.end())
@@ -101,7 +101,7 @@ public:
 
     /* get_element, nothrow versions */
     template <class T>
-    bool get_element(const ElementName& name, T& element, const std::nothrow_t&) const throw()
+    bool get_element(const ElementName& name, T& element, const std::nothrow_t&) const
     {
         const std::map<ElementName, std::string>::const_iterator it = elements.find(name);
         const bool success_name(it != elements.end());
@@ -123,7 +123,7 @@ public:
         return elements.empty();
     }
 
-    void erase(const ElementName& name) throw(BadElementName)
+    void erase(const ElementName& name)
     {
         const std::map<ElementName, std::string>::const_iterator it = elements.find(name);
         if (it != elements.end())
