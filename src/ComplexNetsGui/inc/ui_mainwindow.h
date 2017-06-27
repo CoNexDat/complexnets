@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.9.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -247,18 +247,26 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "ComplexNets++", Q_NULLPTR));
         actionOpen->setText(QApplication::translate("MainWindow", "Open new network...", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
         actionOpen->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionNewErdosRenyi->setText(QApplication::translate("MainWindow", "New Erdos-Renyi graph...", Q_NULLPTR));
         actionNewBarabasiAlbert->setText(QApplication::translate("MainWindow", "New Barabasi-Albert graph...", Q_NULLPTR));
         actionNewExtendedHOT->setText(QApplication::translate("MainWindow", "New Extended HOT graph...", Q_NULLPTR));
         actionNewMolloyReed->setText(QApplication::translate("MainWindow", "New Molloy-Reed graph...", Q_NULLPTR));
         actionNewHiperbolic->setText(QApplication::translate("MainWindow", "New Hyperbolic graph...", Q_NULLPTR));
         actionExport_current_network->setText(QApplication::translate("MainWindow", "Export current network...", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
         actionExport_current_network->setShortcut(QApplication::translate("MainWindow", "Ctrl+E", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionClose_current_network->setText(QApplication::translate("MainWindow", "Close current network...", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
         actionClose_current_network->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionQuit->setText(QApplication::translate("MainWindow", "Quit", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
         actionQuit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         action_maxClique_plotting->setText(QApplication::translate("MainWindow", "maxClique distribution", Q_NULLPTR));
         action_maxCliqueExact_plotting->setText(QApplication::translate("MainWindow", "maxCliqueExact distribution", Q_NULLPTR));
         actionDegree_distribution_plotting->setText(QApplication::translate("MainWindow", "Degree distribution", Q_NULLPTR));
