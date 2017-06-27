@@ -85,10 +85,10 @@ template <class Vertex, class VertexContainer = std::set<Vertex*, VertexComparat
 class AdjacencyListGraph
 {
 public:
-    typedef CAutonomousIterator<VertexContainer> VerticesConstIterator;
-    typedef AutonomousIterator<VertexContainer> VerticesIterator;
-    typedef typename Vertex::VerticesIterator NeighborsIterator;
-    typedef typename Vertex::VertexId VertexId;
+    using VerticesConstIterator = CAutonomousIterator<VertexContainer>;
+    using VerticesIterator = AutonomousIterator<VertexContainer>;
+    using NeighborsIterator = typename Vertex::VerticesIterator;
+    using VertexId = typename Vertex::VertexId;
 
     AdjacencyListGraph(const bool isDigraph = false, const bool isMultigraph = false)
     {

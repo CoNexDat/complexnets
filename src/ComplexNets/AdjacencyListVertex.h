@@ -17,12 +17,12 @@ namespace graphpp
 class AdjacencyListVertex
 {
 public:
-    typedef unsigned int VertexId;
-    typedef unsigned int Degree;
+    using VertexId = unsigned int;
+    using Degree = unsigned int;
 
-    typedef std::vector<AdjacencyListVertex*> VertexContainer;
-    typedef CAutonomousIterator<VertexContainer> VerticesConstIterator;
-    typedef AutonomousIterator<VertexContainer> VerticesIterator;
+    using VertexContainer = std::vector<AdjacencyListVertex*>;
+    using VerticesConstIterator = CAutonomousIterator<VertexContainer>;
+    using VerticesIterator = AutonomousIterator<VertexContainer>;
 
     AdjacencyListVertex(VertexId id) : vertexId(id), visited(false)
     {
