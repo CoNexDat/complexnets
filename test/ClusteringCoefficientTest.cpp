@@ -75,10 +75,10 @@ TEST_F(ClusteringCoefficientTest , VertexGeneralTest)
 
     double epsilon = 0.001;
 
-    ASSERT_TRUE(fabs(c - 0.16667) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.16667, c);
 
     double c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
-    ASSERT_TRUE(fabs(c2 - 0.16667) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.16667, c2);
 }
 
 TEST_F(ClusteringCoefficientTest, FullGraphTest)
@@ -108,12 +108,10 @@ TEST_F(ClusteringCoefficientTest, FullGraphTest)
 
     double c = clustering.vertexClusteringCoefficient(x);
 
-    double epsilon = 0.001;
-
-    ASSERT_TRUE(fabs(c - 1.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(1.0, c);
 
     double c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(3));
-    ASSERT_TRUE(fabs(c2 - 1.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(1.0, c2);
 }
 
 TEST_F(ClusteringCoefficientTest, AcyclicGraphTest)
@@ -142,12 +140,10 @@ TEST_F(ClusteringCoefficientTest, AcyclicGraphTest)
 
     double c = clustering.vertexClusteringCoefficient(x);
 
-    double epsilon = 0.001;
-
-    ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.0, c);
 
     double c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
-    ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.0, c2);
 }
 
 TEST_F(ClusteringCoefficientTest, RealWorldTest)
@@ -159,15 +155,13 @@ TEST_F(ClusteringCoefficientTest, RealWorldTest)
 
     ClusteringCoefficient<ListGraph, Vertex> clustering;
 
-    double epsilon = 0.001;
-
     Vertex * x = g->getVertexById(3);
     double c = clustering.vertexClusteringCoefficient(x);
-    ASSERT_TRUE(fabs(c - 0.6666667) <  epsilon);
+    ASSERT_DOUBLE_EQ(2.0/3, c);
 
     x = g->getVertexById(174);
     c = clustering.vertexClusteringCoefficient(x);
-    ASSERT_TRUE(fabs(c - 0.01141431) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.01141431, c);
 
     x = g->getVertexById(4);
     c = clustering.vertexClusteringCoefficient(x);
@@ -175,12 +169,12 @@ TEST_F(ClusteringCoefficientTest, RealWorldTest)
     /* This is 1.0 in Network Workbench, but because of how ComplexNets works
      * it throws error when supporting multiedges, so we either accept
      * this value, or we dont throw exception when reading multiedges*/
-    ASSERT_TRUE(fabs(c - 1.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(1.0, c);
 
     x = g->getVertexById(23148);
     c = clustering.vertexClusteringCoefficient(x);
     
-    ASSERT_TRUE(fabs(c - 0.3583333) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.3583333, c);
 }
 }
 

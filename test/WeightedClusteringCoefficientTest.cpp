@@ -72,15 +72,13 @@ TEST_F(WeightedClusterCoefficientTest, GeneralTest)
 
     double c = clustering.vertexClusteringCoefficient(x);
 
-    double epsilon = 0.001;
-
-    ASSERT_TRUE(fabs(c - 0.25) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.25, c);
 
     double c2 = clustering.clusteringCoefficient(g, Vertex::Degree(4));
-    ASSERT_TRUE(fabs(c2 - 0.25) <  epsilon);
+    ASSERT_DOUBLE_EQ(0.25, c2);
 
     double c3 = clustering.clusteringCoefficient(g, Vertex::Degree(3));
-    ASSERT_TRUE(fabs(c3 - 1) <  epsilon);
+    ASSERT_DOUBLE_EQ(1, c3);
 }
 
 TEST_F(WeightedClusterCoefficientTest, AcyclicWeightedGraphTest)
@@ -107,12 +105,10 @@ TEST_F(WeightedClusterCoefficientTest, AcyclicWeightedGraphTest)
 
     double c = clustering.vertexClusteringCoefficient(x);
 
-    double epsilon = 0.001;
-
-    ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(0, c);
 
     double c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
-    ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(0, c2);
 }
 
 TEST_F(WeightedClusterCoefficientTest, SingleNodeGraph)
@@ -127,12 +123,10 @@ TEST_F(WeightedClusterCoefficientTest, SingleNodeGraph)
 
     double c = clustering.vertexClusteringCoefficient(x);
 
-    double epsilon = 0.001;
-
-    ASSERT_TRUE(fabs(c - 0.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(0, c);
 
     double c2 = clustering.clusteringCoefficient(ig, Vertex::Degree(4));
-    ASSERT_TRUE(fabs(c2 - 0.0) <  epsilon);
+    ASSERT_DOUBLE_EQ(0, c2);
 }
 
 }
