@@ -5,54 +5,38 @@
 #pragma once
 
 #include "ComplexNets/MolloyReedGraphReader.h"
+#include "ComplexNets/NearestNeighbor.h"
+#include "ComplexNets/Position.h"
 #include "ComplexNets/typedefs.h"
 
 class GraphGenerator
 {
 private:
-    typedef struct PolarPosition
-    {
-        double r;
-        double theta;
-    } PolarPosition;
-
     GraphGenerator();
 
     static GraphGenerator* instance;
-    float distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id);
-    void addVertexPosition();
-    void addEdges(
-        Graph* graph,
-        Vertex* vertex,
-        std::map<float, unsigned int> distance,
-        unsigned int quant,
-        std::vector<unsigned int>* vertexIndexes);
-    inline double hiperbolicDistance(PolarPosition p1, PolarPosition p2);
-    inline double getMaxRadius(int i, float a, float c);
-    inline PolarPosition getRandomHyperbolicCoordinates(float a, double maxr);
+
+    // members related to hyperbolic graphs
+    double hiperbolicDistance(PolarPosition p1, PolarPosition p2);
+    double getMaxRadius(int i, float a, float c);
+    PolarPosition getRandomHyperbolicCoordinates(float a, double maxr);
+
+    // members related to HOT Extended graphs
+    void addPosition(Vertex* v);
+    NearestNeighbor* singleHopNN(unsigned hop);
+    NearestNeighbor* doubleHopNN(unsigned hop1, unsigned hop2);
+
+    void insertNN(NearestNeighbor* nn, Vertex *v);
+    void removeNN(NearestNeighbor* nn, Vertex *v);
+    Vertex* getNN(NearestNeighbor* nn, Vertex *v);
+
+    double distance(Vertex* v1, Vertex* v2);
+    double weightChange(Vertex* v);
+    unsigned childCount(Vertex* v);
+    Position position(Vertex* v);
 
 public:
     static GraphGenerator* getInstance();
-    void addOriginalVertex(Graph* graph);
-    void addFKPNode(
-        unsigned int vertexIndex,
-        Graph* graph,
-        unsigned int root,
-        float xi,
-        std::vector<unsigned int>* vertexIndexes,
-        unsigned int m);
-    void addExtendedEdges(
-        unsigned int q,
-        unsigned int vertexIndex,
-        Graph* graph,
-        unsigned int root,
-        float r,
-        std::vector<unsigned int>* vertexIndexes);
-    int chooseNewRoot(
-        unsigned int vertexIndex,
-        unsigned int t,
-        unsigned int root,
-        std::vector<unsigned int> vertexIndexes);
 
     Graph* generateGraphFromFile(std::string path, bool directed, bool multigraph);
     DirectedGraph* generateDirectedGraphFromFile(std::string path, bool multigraph);

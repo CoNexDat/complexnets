@@ -13,12 +13,6 @@
 
 using namespace graphpp;
 
-typedef struct Position
-{
-    float x;
-    float y;
-} Position;
-
 static const double PI = atan(1) * 4;
 std::vector<Position> vertexesPositions;
 
@@ -200,15 +194,16 @@ Graph* GraphGenerator::generateHotExtendedGraph(
         auto minVertex = root;
         auto minHop = 0;
 
-        // TODO: consider how maxHop is computed
+        // TODO: where is maxHop updated?
+        double maxHop = 0;
 
         // for hop j from 1 to maxHop
         for (unsigned hop = 1; hop <= maxHop; hop++)
         {
-            auto nn = singleHopNN(j)
-            nn->insert(v);
+            auto nn = singleHopNN(hop);
+            insertNN(nn, v);
 
-            auto neighbor = nn->get(v);
+            auto neighbor = getNN(nn, v);
             auto weight = distance(v, neighbor) + xi * hop;
 
             if (weight < minWeight)
@@ -218,22 +213,22 @@ Graph* GraphGenerator::generateHotExtendedGraph(
                 minHop = hop;
             }
 
-            nn->delete(v)
+            removeNN(nn, v);
         }
 
         auto nn = singleHopNN(minHop + 1);
-        nn->insert(v);
+        insertNN(nn, v);
 
         // TODO: update Ti to Tr?
         graph->addEdge(v, minVertex);
 
-        nn = doubleHopNN(minHop + 1, minHop + 3)
-        nn->insert(v);
+        nn = doubleHopNN(minHop + 1, minHop + 3);
+        insertNN(nn, v);
 
-        nn = doubleHopNN(minHop - 1, minHop + 1)
-        nn->insert(v);
+        nn = doubleHopNN(minHop - 1, minHop + 1);
+        insertNN(nn, v);
 
-        std::pair minEdge;
+        std::pair<Vertex*, Vertex*> minEdge;
         minWeight = INFINITY;
         minVertex = nullptr;
 
@@ -244,13 +239,13 @@ Graph* GraphGenerator::generateHotExtendedGraph(
             for (auto const& k : singleHopNN(hop))
             {
                 nn = doubleHopNN(hop, hop + 2);
-                v = nn->get(k);
+                v = getNN(nn, k);
                 
                 auto weight = distance(k, v) - (r / n) * childCount(v);
                 if (weight < minWeight)
                 {
                     minWeight = weight;
-                    minEdge = make_pair(k, v);
+                    minEdge = std::make_pair(k, v);
                     minVertex = v;
                 }
             }
@@ -263,30 +258,75 @@ Graph* GraphGenerator::generateHotExtendedGraph(
         // TODO: see whiteboard
         for (auto const& j : BFS(root))
         {
-            auto hj = computeWeightChange(j);
+            auto hj = weightChange(j);
             if (hj > hp)
             {
                 nn = doubleHopNN(hj - 2, hj);
-                nn->delete(j);
+                removeNN(nn, j);
 
                 nn = doubleHopNN(hj, hj + 2);
-                nn->delete(j);
+                removeNN(nn, j);
 
                 nn = singleHopNN(hj);
-                nn->delete(j);
+                removeNN(nn, j);
 
                 nn = doubleHopNN(hp - 2, hp);
-                nn->insert(j);
+                insertNN(nn, j);
 
                 nn = doubleHopNN(hp, hp + 2);
-                nn->insert(j);
+                insertNN(nn, j);
 
                 nn = singleHopNN(hp);
-                nn->insert(j);
+                insertNN(nn, j);
             }
         }
     }
     return graph;
+}
+
+void GraphGenerator::addPosition(Vertex* v)
+{
+    // TODO: stub
+}
+
+double GraphGenerator::distance(Vertex* v1, Vertex* v2)
+{
+    // TODO: stub
+    return 0;
+}
+
+void GraphGenerator::insertNN(NearestNeighbor* nn, Vertex* v)
+{
+    // TODO: stub
+}
+
+void GraphGenerator::removeNN(NearestNeighbor* nn, Vertex* v)
+{
+    // TODO: stub
+}
+
+Vertex* GraphGenerator::getNN(NearestNeighbor* nn, Vertex* v)
+{
+    // TODO: stub
+    return nullptr;
+}
+
+double GraphGenerator::weightChange(Vertex* v) 
+{
+    // TODO: stub
+    return 0;
+}
+
+unsigned GraphGenerator::childCount(Vertex* v)
+{
+    // TODO: stub
+    return 0;
+}
+
+Position GraphGenerator::position(Vertex* v)
+{
+    // TODO: stub
+    return {0, 0};
 }
 
 Graph* GraphGenerator::generateMolloyReedGraph(std::string path)
@@ -305,7 +345,7 @@ Graph* GraphGenerator::generateMolloyReedGraph(std::string path)
  * Computes the distance in a hiperbolic space between two points
  */
 
-inline double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition p2)
+double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition p2)
 {
     return acosh(
         cosh(p1.r) * cosh(p2.r) -
@@ -315,7 +355,7 @@ inline double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition
 /*
  * Computes random polar hyperbolic coordinates
  */
-inline GraphGenerator::PolarPosition GraphGenerator::getRandomHyperbolicCoordinates(
+PolarPosition GraphGenerator::getRandomHyperbolicCoordinates(
     float a, double maxr)
 {
     PolarPosition pos;

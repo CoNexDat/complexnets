@@ -8,6 +8,7 @@ SOURCES += ComplexNetsGui/src/*.cpp \
     ComplexNets/*.cpp \
     ComplexNetsCmd/*.cpp \
     ComplexNetsCmd/*.c
+    vendor/
 HEADERS += ComplexNetsGui/inc/*.h \
     ComplexNets/*.h \
     ComplexNetsCmd/*.h
