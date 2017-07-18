@@ -27,7 +27,7 @@ macx {
     message(Using macOS configuration)
     QMAKE_CXXFLAGS-= -stdlib=libc++
     QMAKE_LFLAGS-= -stdlib=libc++
-    QMAKE_CC = gcc-6
-    QMAKE_CXX = g++-6
-    QMAKE_LINK = g++-6
+    QMAKE_CC = gcc-7
+    QMAKE_CXX = g++-7
+    QMAKE_LINK = g++-7
 }

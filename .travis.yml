@@ -1,18 +1,22 @@
+dist: trusty
 language: cpp
+compiler: gcc
 cache:
   directories:
     - ${TRAVIS_BUILD_DIR}/deps/cmake
 addons:
   apt:
     packages:
-      - gcc-6
-      - g++-6
+      - gcc-7
+      - g++-7
       - qt5-default
-    sources: &sources
+    sources:
       - ubuntu-toolchain-r-test
       - sourceline: 'ppa:canonical-qt5-edgers/ubuntu1204-qt5'
+env:
+  - COMPILER=g++-7
 before_install:
-  - if [ "$TRAVIS_OS_NAME" == "linux"  ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux"  ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7; fi
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
