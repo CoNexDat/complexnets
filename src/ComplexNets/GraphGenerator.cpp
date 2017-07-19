@@ -203,7 +203,7 @@ Graph* GraphGenerator::generateHotExtendedGraph(
             auto nn = singleHopNN(hop);
             insertNN(nn, v);
 
-            auto neighbor = getNN(nn, v);
+            auto neighbor = getNN(graph, nn, v);
             auto weight = distance(v, neighbor) + xi * hop;
 
             if (weight < minWeight)
@@ -239,7 +239,7 @@ Graph* GraphGenerator::generateHotExtendedGraph(
             for (auto const& k : singleHopNN(hop))
             {
                 nn = doubleHopNN(hop, hop + 2);
-                v = getNN(nn, k);
+                v = getNN(graph, nn, k);
                 
                 auto weight = distance(k, v) - (r / n) * childCount(v);
                 if (weight < minWeight)
@@ -286,29 +286,41 @@ Graph* GraphGenerator::generateHotExtendedGraph(
 
 void GraphGenerator::addPosition(Vertex* v)
 {
-    // TODO: stub
+    // assert(vertex.id == vertexesPositions.size())
+    Position p = {
+        (float)rand() / RAND_MAX,
+        (float)rand() / RAND_MAX
+    };
+    vertexesPositions.push_back(p);
+}
+
+Position GraphGenerator::position(Vertex* v)
+{
+    return vertexesPositions[v->getVertexId()];
 }
 
 double GraphGenerator::distance(Vertex* v1, Vertex* v2)
 {
-    // TODO: stub
-    return 0;
+    Position p1 = position(v1);
+    Position p2 = position(v2);
+
+    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
 }
 
 void GraphGenerator::insertNN(NearestNeighbor* nn, Vertex* v)
 {
-    // TODO: stub
+    nn->insert(v->getVertexId(), position(v));
 }
 
 void GraphGenerator::removeNN(NearestNeighbor* nn, Vertex* v)
 {
-    // TODO: stub
+    nn->remove(v->getVertexId());
 }
 
-Vertex* GraphGenerator::getNN(NearestNeighbor* nn, Vertex* v)
+Vertex* GraphGenerator::getNN(Graph *g, NearestNeighbor* nn, Vertex* v)
 {
-    // TODO: stub
-    return nullptr;
+    auto id = nn->get(v->getVertexId());
+    return g->getVertexById(id);
 }
 
 double GraphGenerator::weightChange(Vertex* v) 
@@ -321,12 +333,6 @@ unsigned GraphGenerator::childCount(Vertex* v)
 {
     // TODO: stub
     return 0;
-}
-
-Position GraphGenerator::position(Vertex* v)
-{
-    // TODO: stub
-    return {0, 0};
 }
 
 Graph* GraphGenerator::generateMolloyReedGraph(std::string path)

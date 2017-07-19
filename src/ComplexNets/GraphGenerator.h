@@ -28,7 +28,7 @@ private:
 
     void insertNN(NearestNeighbor* nn, Vertex *v);
     void removeNN(NearestNeighbor* nn, Vertex *v);
-    Vertex* getNN(NearestNeighbor* nn, Vertex *v);
+    Vertex* getNN(Graph* g, NearestNeighbor* nn, Vertex *v);
 
     double distance(Vertex* v1, Vertex* v2);
     double weightChange(Vertex* v);
