@@ -62,12 +62,11 @@ public:
     typedef std::map<typename Vertex::VertexId, typename std::list<int>*> MaxCliqueContainer;
     typedef AutonomousIterator<MaxCliqueContainer> MaxCliqueIterator;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
-    typedef typename std::list<Vertex*> L_type;
-    typedef typename L_type::iterator L_iterator;
-    typedef typename std::map<Vertex*, L_type*> a_type;
-    typedef typename a_type::iterator a_iterator;
-    typedef typename std::map<Vertex*, a_type*> as_type;
-    typedef typename as_type::iterator as_iterator;
+    typedef typename std::list<Vertex*> LSet;
+    typedef typename LSet::iterator LIterator;
+    typedef typename std::map<Vertex*, LSet*> Attribute;
+    typedef typename Attribute::iterator AttributeIterator;
+    typedef typename std::map<Vertex*, Attribute*> AttributeMap;
 
     MaxClique(Graph& graph)
     {
@@ -86,11 +85,10 @@ public:
 
     void visit(Vertex* v)
     {
-        auto it1 = v->neighborsIterator();
-
-        while (!it1.end())
+        auto neighbors = v->neighborsIterator();
+        while (!neighbors.end())
         {
-            Vertex* x = *it1;
+            Vertex* x = *neighbors;
             if (x->getVisited())
             {
                 NeighborsIterator it2 = v->neighborsIterator();
@@ -99,7 +97,7 @@ public:
                     Vertex* i = *it2;
                     if (i->getVisited())
                     {
-                        L_type* L = new L_type();
+                        auto * L = new LSet();
 
                         if (as[x] == nullptr || (*as[x])[i] == nullptr)
                         {
@@ -111,7 +109,7 @@ public:
                             NeighborsIterator iterator1 = v->neighborsIterator();
                             while (!iterator1.end())
                             {
-                                L_iterator iterator2 = (*as[x])[i]->begin();
+                                LIterator iterator2 = (*as[x])[i]->begin();
                                 while (iterator2 != (*as[x])[i]->end())
                                 {
                                     if ((*iterator1)->getVertexId() == (*iterator2)->getVertexId())
@@ -126,11 +124,11 @@ public:
                         }
                         if (as[v] == nullptr)
                         {
-                            as[v] = new a_type();
+                            as[v] = new Attribute();
                         }
                         if (as[x] == nullptr)
                         {
-                            as[x] = new a_type();
+                            as[x] = new Attribute();
                         }
                         if ((*as[x])[v] == nullptr)
                         {
@@ -151,15 +149,15 @@ public:
                     it2++;
                 }
             }
-            it1++;
+            neighbors++;
         }
     }
 
     int getMaxCliqueSize(Vertex* vertex)
     {
         unsigned int max_size = 0;
-        std::list<int>* ids = new std::list<int>();
-        for (a_iterator iterator2 = as[vertex]->begin(); iterator2 != as[vertex]->end();
+        auto * ids = new std::list<int>();
+        for (AttributeIterator iterator2 = as[vertex]->begin(); iterator2 != as[vertex]->end();
              iterator2++)
         {
             if ((*iterator2).second && (*iterator2).second->size() > max_size)
@@ -168,7 +166,7 @@ public:
                 delete ids;
                 ids = new std::list<int>();
 
-                for (L_iterator it = (*iterator2).second->begin(); it != (*iterator2).second->end();
+                for (LIterator it = (*iterator2).second->begin(); it != (*iterator2).second->end();
                      it++)
                 {
                     ids->push_back((*it)->getVertexId());
@@ -184,12 +182,12 @@ public:
     {
         unsigned int max_size = 0;
         std::list<int>* ids = nullptr;
-        for (auto iterator1 = MaxCliqueIterator(container); !iterator1.end(); iterator1++)
+        for (auto it = MaxCliqueIterator(container); !it.end(); it++)
         {
-            if (iterator1->second->size() > max_size)
+            if (it->second->size() > max_size)
             {
-                max_size = iterator1->second->size();
-                ids = (iterator1->second);
+                max_size = it->second->size();
+                ids = (it->second);
             }
         }
 
@@ -205,14 +203,13 @@ private:
     void calculateMaxClique(Graph& graph)
     {
         MaxCliqueVisitor<Graph, Vertex> visitor(*this);
-        TraverserOrdered<Graph, Vertex, MaxCliqueVisitor<Graph, Vertex>, DegreeCompare>::traverse(
-            graph, visitor, DegreeCompare());
+        TraverserOrdered<Graph, Vertex, MaxCliqueVisitor<Graph, Vertex>, DegreeCompare>::traverse(graph, visitor, DegreeCompare());
 
         MaxCliqueMap<Graph, Vertex> map(*this);
         distribution.calculateDistribution(graph, &map);
     }
 
-    as_type as;
+    AttributeMap as;
     MaxCliqueContainer container;
     IntegerDistribution<Graph, Vertex, MaxCliqueMap<Graph, Vertex>> distribution;
 };
@@ -261,7 +258,7 @@ public:
     {
         maxCliquenObserver.visit(vertex);
 
-        if ((time(NULL) - maxCliquenObserver.start) > maxCliquenObserver.maxTime)
+        if ((time(nullptr) - maxCliquenObserver.start) > maxCliquenObserver.maxTime)
         {
             maxCliquenObserver.timeouted = true;
             return false;
@@ -478,13 +475,12 @@ public:
     {
         unsigned int max_size = 0;
         std::list<int>* ids = nullptr;
-        for (MaxCliqueIterator iterator1 = MaxCliqueIterator(container); !iterator1.end();
-             iterator1++)
+        for (MaxCliqueIterator it = MaxCliqueIterator(container); !it.end(); it++)
         {
-            if (iterator1->second->size() > max_size)
+            if (it->second->size() > max_size)
             {
-                max_size = iterator1->second->size();
-                ids = (iterator1->second);
+                max_size = it->second->size();
+                ids = (it->second);
             }
         }
 

@@ -13,8 +13,6 @@ public:
     virtual std::list<int> getMaxCliqueList() = 0;
     virtual bool finished() = 0;
 
-    virtual ~IMaxClique()
-    {
-    }
+    virtual ~IMaxClique() = default;
 };
 }

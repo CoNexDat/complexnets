@@ -13,41 +13,52 @@ public:
     typedef typename std::list<Vertex*> VertexList;
     typedef typename VertexList::iterator VertexListIterator;
 
-    static void traverse(Graph& graph, Visitor& visitor, Comparator compare)
+    /**
+     * Visit the vertexes in the graph in the order specified by the comparator in a decreasing order.
+     * All the vertexes may not be visited if the visitor decides it in the current vertex visit.
+     * @param graph         the graph with the vertexes to traverse
+     * @param visitor       the vertexes visitor
+     * @param comparator    defines the order in which the vertexes will be visited
+     */
+    static void traverse(Graph& graph, Visitor& visitor, Comparator comparator)
     {
-        VertexList orderedVertexs;
-        VertexListIterator orderedVertexsIterator;
-        VertexForwardIterator graphIterator = graph.verticesIterator();
-
-        while (!graphIterator.end())
+        VertexList orderedVertexes;
+        VertexForwardIterator vertexesIt = graph.verticesIterator();
+        while (!vertexesIt.end())
         {
-            Vertex* v = *graphIterator;
-            orderedVertexsIterator = orderedVertexs.begin();
-            while ((orderedVertexsIterator != orderedVertexs.end()) &&
-                   compare(v, (*orderedVertexsIterator)))
+            Vertex* v = *vertexesIt;
+            VertexListIterator orderedVertexesIt = orderedVertexes.begin();
+            while ((orderedVertexesIt != orderedVertexes.end()) && comparator(v, (*orderedVertexesIt)))
             {
-                orderedVertexsIterator++;
+                orderedVertexesIt++;
             }
             v->setVisited(false);
-            orderedVertexs.insert(orderedVertexsIterator, v);
+            orderedVertexes.insert(orderedVertexesIt, v);
 
-            graphIterator++;
+            vertexesIt++;
         }
 
-        traverse(orderedVertexs, visitor);
+        traverse(orderedVertexes, visitor);
     }
 
-    static void traverse(VertexList orderedVertexs, Visitor& visitor)
+    /**
+     * Visit the vertexes in the order in which they are in the list.
+     * All the vertexes may not be visited if the visitor decides it
+     * in the current vertex visit.
+     * @param orderedVertexes   the vertexes to visit
+     * @param visitor           visits the vertexes
+     */
+    static void traverse(VertexList orderedVertexes, Visitor& visitor)
     {
         bool keepTraversing = true;
-        VertexListIterator orderedVertexsIterator = orderedVertexs.begin();
+        VertexListIterator orderedVertexesIt = orderedVertexes.begin();
 
-        while ((orderedVertexsIterator != orderedVertexs.end()) && keepTraversing)
+        while ((orderedVertexesIt != orderedVertexes.end()) && keepTraversing)
         {
-            Vertex* v = *orderedVertexsIterator;
+            Vertex* v = *orderedVertexesIt;
             keepTraversing = visitor.visitVertex(v);
-            ++orderedVertexsIterator;
             v->setVisited(true);
+            orderedVertexesIt++;
         }
     }
 };
