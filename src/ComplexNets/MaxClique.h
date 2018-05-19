@@ -62,7 +62,7 @@ public:
     typedef std::map<typename Vertex::VertexId, typename std::list<int>*> MaxCliqueContainer;
     typedef AutonomousIterator<MaxCliqueContainer> MaxCliqueIterator;
     typedef typename Vertex::VerticesIterator NeighborsIterator;
-    typedef typename std::list<Vertex*> LSet;
+    typedef typename std::set<Vertex*> LSet;
     typedef typename LSet::iterator LIterator;
     typedef typename std::map<Vertex*, LSet*> Attribute;
     typedef typename Attribute::iterator AttributeIterator;
@@ -101,8 +101,8 @@ public:
 
                         if (as[x] == nullptr || (*as[x])[i] == nullptr)
                         {
-                            L->push_back(x);
-                            L->push_back(v);
+                            L->insert(x);
+                            L->insert(v);
                         }
                         else
                         {
@@ -114,13 +114,13 @@ public:
                                 {
                                     if ((*iterator1)->getVertexId() == (*iterator2)->getVertexId())
                                     {
-                                        L->push_back(*iterator1);
+                                        L->insert(*iterator1);
                                     }
                                     iterator2++;
                                 }
                                 iterator1++;
                             }
-                            L->push_back(v);
+                            L->insert(v);
                         }
                         if (as[v] == nullptr)
                         {
