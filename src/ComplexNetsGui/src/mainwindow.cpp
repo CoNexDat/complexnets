@@ -538,9 +538,12 @@ void MainWindow::on_actionMaxClique_generic_triggered(bool exact)
         std::string key = exact ? "maxCliqueExact" : "maxCliqueAprox";
         int maxCliqueSize = propertyMap.getProperty<int>(key, "size");
         std::list<int> list = propertyMap.getProperty<std::list<int>>(key, "list");
-        ui->textBrowser->append(exact ? "Exact Max clique" : "Aprox Max clique");
-        ret.append(" size is: ").append(to_string<int>(maxCliqueSize).c_str()).append(".\n");
-        ret.append("clique is: ");
+        ui->textBrowser->append(exact ? "Exact Max clique" : "Aprox Max clique"
+                                "\nReference: José Ignacio Alvarez-Hamelin. "
+                                "Is it possible to find the maximum clique in general graphs? "
+                                "arXiv e-print, abs/1110.5355, Oct 2011.");
+        ret.append("Size is: ").append(to_string<int>(maxCliqueSize).c_str()).append(".\n");
+        ret.append("Clique is: ");
         for (const auto& elem : list)
         {
             ret.append(to_string<int>(elem).c_str()).append(" ");
