@@ -13,12 +13,6 @@
 
 using namespace graphpp;
 
-typedef struct Position
-{
-    float x;
-    float y;
-} Position;
-
 static const double PI = atan(1) * 4;
 std::vector<Position> vertexesPositions;
 
@@ -175,7 +169,7 @@ Graph* GraphGenerator::generateBarabasiAlbertGraph(unsigned int m_0, unsigned in
  * minimizes the euclidean distance from U to V and the hoops distance from U to root. This process
  * is repeated m times for each new vertex added.
  * Step 3) Create q new edges on the graph for the vertex added
- * Step 4) A new root is chosen with probability dependant on the node degree every t rounds.
+ * Step 4) A new root is chosen with probability dependant on the node degree every t rounds. (@TODO)
  * */
 
 Graph* GraphGenerator::generateHotExtendedGraph(
@@ -183,218 +177,162 @@ Graph* GraphGenerator::generateHotExtendedGraph(
 {
     auto graph = new Graph();
 
-    // Every time an edge is added, two entries are added in vertexIndexes, the two indexes of the
-    // nodes joined.
-    std::vector<unsigned int> vertexIndexes;
-    unsigned int root = 1;
+    // add root vertex
+    Vertex* root = new Vertex(0);
+    graph->addVertex(root);
 
-    vertexesPositions.clear();
-    // Firts vertex
-
-    // Step 1
-
-    addOriginalVertex(graph);
-
-    // For each of the nodes we will be adding to the graph
-    for (unsigned int i = 2; i <= n; i++)
+    addPosition(root);
+    
+    // for each of the nodes we will be adding to the graph
+    for (unsigned i = 1; i < n; i++)
     {
-        // Step 2
+        Vertex* v = new Vertex(i);
+        addPosition(v);
 
-        addFKPNode(i, graph, root, xi, &vertexIndexes, m);
+        // setup minWeight, minVertex, minHop
+        auto minWeight = distance(v, root);
+        auto minVertex = root;
+        auto minHop = 0;
 
-        // Step 3
+        // TODO: where is maxHop updated?
+        double maxHop = 0;
 
-        addExtendedEdges(q, i, graph, root, r, &vertexIndexes);
-
-        // Step 4
-
-        root = chooseNewRoot(i, t, root, vertexIndexes);
-    }
-    return graph;
-}
-
-/**
-        The main Vertex is created, added to the graph and a position is generated
-*/
-void GraphGenerator::addOriginalVertex(Graph* graph)
-{
-    Vertex* newVertex = new Vertex(1);
-    graph->addVertex(newVertex);
-    addVertexPosition();
-}
-
-/**
-        A new vertex is created and added. Then m edges are added according to the original FKP
-   function
-
-        TODO: Optimize this function using Voronoi Diagrams
-*/
-void GraphGenerator::addFKPNode(
-    unsigned int vertexIndex,
-    Graph* graph,
-    unsigned int root,
-    float xi,
-    std::vector<unsigned int>* vertexIndexes,
-    unsigned int m)
-{
-    std::map<float, unsigned int> distance;
-
-    // Creation of vertex
-    Vertex* newVertex = new Vertex(vertexIndex);
-    graph->addVertex(newVertex);
-    addVertexPosition();
-
-    for (unsigned int j = 1; j < vertexIndex; j++)
-    {  // this for evaluated "w" for each vertex already in the graph
-        unsigned hopsDistance = graph->hops(
-            graph->getVertexById(j),
-            graph->getVertexById(root)
-        );  // distance between vertex evaluated and root vertex
-        float euclidianDistance = distanceBetweenVertex(j, vertexIndex);  // Distance between vertex evaluated and new vertex
-
-        // Original FKP Algorithm chooses a new connection between the new vertex and the one with
-        // minimum W
-
-        float w = euclidianDistance + xi * hopsDistance;
-        distance[w] = j;  // stores 'w' as key of a map
-    }
-    addEdges(
-        graph, newVertex, distance, m,
-        vertexIndexes);  // m edges are added acording to the minimum distances
-    distance.clear();
-}
-
-/**
-        q edges are added according to the function in the paper
-
-        TODO: Optimize the complexity of the algorithm using Voronoi diagrams.
-*/
-void GraphGenerator::addExtendedEdges(
-    unsigned int q,
-    unsigned int vertexIndex,
-    Graph* graph,
-    unsigned int root,
-    float r,
-    std::vector<unsigned int>* vertexIndexes)
-{
-    // We will go through this function q times, adding q edges
-    for (unsigned int qfinal = 0; qfinal < q; qfinal++)
-    {
-        // At the end of the loop we only add one edge, so we save the minimum distance and the
-        // indexes of the nodes
-        float minDist = 0;
-        unsigned int finalJ = 0;
-        unsigned int finalK = 0;
-
-        // We loop through every combination of nodes
-        for (unsigned int j = 1; j <= vertexIndex; j++)
+        // for hop j from 1 to maxHop
+        for (unsigned hop = 1; hop <= maxHop; hop++)
         {
-            for (unsigned int k = 1; k <= vertexIndex; k++)
+            auto nn = singleHopNN(hop);
+            insertNN(nn, v);
+
+            auto neighbor = getNN(graph, nn, v);
+            auto weight = distance(v, neighbor) + xi * hop;
+
+            if (weight < minWeight)
             {
-                // For each combination of nodes we calculate the function
-                float euclidianDistance = 0;
-                unsigned int HopsWithEdge = 0;
-                unsigned int HopsWithOutEdge = 0;
-                if (k != j && !graph->getVertexById(j)->isNeighbourOf(graph->getVertexById(k)))
+                minWeight = weight;
+                minVertex = neighbor;
+                minHop = hop;
+            }
+
+            removeNN(nn, v);
+        }
+
+        auto nn = singleHopNN(minHop + 1);
+        insertNN(nn, v);
+
+        // TODO: update Ti to Tr?
+        graph->addEdge(v, minVertex);
+
+        nn = doubleHopNN(minHop + 1, minHop + 3);
+        insertNN(nn, v);
+
+        nn = doubleHopNN(minHop - 1, minHop + 1);
+        insertNN(nn, v);
+
+        std::pair<Vertex*, Vertex*> minEdge;
+        minWeight = INFINITY;
+        minVertex = nullptr;
+
+        v = nullptr;
+
+        for (unsigned hop = 0; hop <= maxHop - 2; hop++)
+        {
+            for (auto const& k : singleHopNN(hop))
+            {
+                nn = doubleHopNN(hop, hop + 2);
+                v = getNN(graph, nn, k);
+                
+                auto weight = distance(k, v) - (r / n) * childCount(v);
+                if (weight < minWeight)
                 {
-                    for (unsigned int l = 1; l <= vertexIndex; l++)
-                    {
-                        // We calculate the hops to the root with and without the edge
-                        HopsWithOutEdge =
-                            graph->hops(graph->getVertexById(l), graph->getVertexById(root)) +
-                            HopsWithOutEdge;  // Hops between evaluated vertex and root vertex
-                                              // without new edge
-                        graph->addEdge(
-                            graph->getVertexById(j),
-                            graph->getVertexById(
-                                k));  // Add new edges only for evaluation, later will be removed
-                        HopsWithEdge =
-                            graph->hops(graph->getVertexById(l), graph->getVertexById(root)) +
-                            HopsWithEdge;  // Hops between evaluated vertex and root vertex with new
-                                           // edge
-                        graph->removeEdge(
-                            graph->getVertexById(j),
-                            graph->getVertexById(k));  // remove the edge previously added
-                    }
-
-                    euclidianDistance = distanceBetweenVertex(j, k);
-                    float w =
-                        euclidianDistance + (r / vertexIndex) * (HopsWithEdge - HopsWithOutEdge);
-
-                    // We save only the minimum
-
-                    if (minDist == 0 || w < minDist)
-                    {
-                        minDist = w;
-                        finalJ = j;
-                        finalK = k;
-                    }
+                    minWeight = weight;
+                    minEdge = std::make_pair(k, v);
+                    minVertex = v;
                 }
             }
         }
 
-        // Finally, we add a new edge
+        graph->addEdge(minEdge.first, minEdge.second);
 
-        if (minDist != 0)
+        auto hp = 0;
+
+        // TODO: see whiteboard
+        for (auto const& j : BFS(root))
         {
-            vertexIndexes->push_back(finalJ);
-            vertexIndexes->push_back(finalK);
-            graph->addEdge(graph->getVertexById(finalJ), graph->getVertexById(finalK));
+            auto hj = weightChange(j);
+            if (hj > hp)
+            {
+                nn = doubleHopNN(hj - 2, hj);
+                removeNN(nn, j);
+
+                nn = doubleHopNN(hj, hj + 2);
+                removeNN(nn, j);
+
+                nn = singleHopNN(hj);
+                removeNN(nn, j);
+
+                nn = doubleHopNN(hp - 2, hp);
+                insertNN(nn, j);
+
+                nn = doubleHopNN(hp, hp + 2);
+                insertNN(nn, j);
+
+                nn = singleHopNN(hp);
+                insertNN(nn, j);
+            }
         }
     }
+    return graph;
 }
 
-/**
-        A new root is choosen according to the parameter t and the indexes distribution
-*/
-int GraphGenerator::chooseNewRoot(
-    unsigned int vertexIndex,
-    unsigned int t,
-    unsigned int root,
-    std::vector<unsigned int> vertexIndexes)
+void GraphGenerator::addPosition(Vertex* v)
 {
-    if ((vertexIndex - 1) % t == 0)
-    {
-        return vertexIndexes[rand() % vertexIndexes.size()];
-    }
-    return root;
+    // assert(vertex.id == vertexesPositions.size())
+    Position p = {
+        (float)rand() / RAND_MAX,
+        (float)rand() / RAND_MAX
+    };
+    vertexesPositions.push_back(p);
 }
 
-void GraphGenerator::addEdges(
-    Graph* graph,
-    Vertex* vertex,
-    std::map<float, unsigned int> distance,
-    unsigned int q,
-    std::vector<unsigned int>* vertexIndexes)
+Position GraphGenerator::position(Vertex* v)
 {
-    for (unsigned int k = 0; k < q && !distance.empty(); k++)
-    {   // Adding "q" new edges. The processes is similar to added vertex.
-        if (!graph->getVertexById(distance.begin()->second)->isNeighbourOf(vertex))
-        {
-            vertexIndexes->push_back(distance.begin()->second);
-            vertexIndexes->push_back(vertex->getVertexId());
-            graph->addEdge(graph->getVertexById(distance.begin()->second), vertex);
-            distance.erase(distance.begin());  // Remove the lowest value of w from the list,
-                                               // because was used previously. This process repeat
-                                               // "q" times.
-            if (distance.empty())
-                break;
-        }
-    }
+    return vertexesPositions[v->getVertexId()];
 }
 
-float GraphGenerator::distanceBetweenVertex(unsigned int vertex1Id, unsigned int vertex2Id)
+double GraphGenerator::distance(Vertex* v1, Vertex* v2)
 {
-    return sqrt(
-        pow(vertexesPositions[vertex1Id - 1].x - vertexesPositions[vertex2Id - 1].x, 2) +
-        pow(vertexesPositions[vertex1Id - 1].y - vertexesPositions[vertex2Id - 1].y, 2));
+    Position p1 = position(v1);
+    Position p2 = position(v2);
+
+    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
 }
 
-void GraphGenerator::addVertexPosition()
+void GraphGenerator::insertNN(NearestNeighbor* nn, Vertex* v)
 {
-    vertexesPositions.push_back(Position());
-    vertexesPositions.back().x = (float)rand() / RAND_MAX;
-    vertexesPositions.back().y = (float)rand() / RAND_MAX;
+    nn->insert(v->getVertexId(), position(v));
+}
+
+void GraphGenerator::removeNN(NearestNeighbor* nn, Vertex* v)
+{
+    nn->remove(v->getVertexId());
+}
+
+Vertex* GraphGenerator::getNN(Graph *g, NearestNeighbor* nn, Vertex* v)
+{
+    auto id = nn->get(v->getVertexId());
+    return g->getVertexById(id);
+}
+
+double GraphGenerator::weightChange(Vertex* v) 
+{
+    // TODO: stub
+    return 0;
+}
+
+unsigned GraphGenerator::childCount(Vertex* v)
+{
+    // TODO: stub
+    return 0;
 }
 
 Graph* GraphGenerator::generateMolloyReedGraph(std::string path)
@@ -413,7 +351,7 @@ Graph* GraphGenerator::generateMolloyReedGraph(std::string path)
  * Computes the distance in a hiperbolic space between two points
  */
 
-inline double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition p2)
+double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition p2)
 {
     return acosh(
         cosh(p1.r) * cosh(p2.r) -
@@ -423,7 +361,7 @@ inline double GraphGenerator::hiperbolicDistance(PolarPosition p1, PolarPosition
 /*
  * Computes random polar hyperbolic coordinates
  */
-inline GraphGenerator::PolarPosition GraphGenerator::getRandomHyperbolicCoordinates(
+PolarPosition GraphGenerator::getRandomHyperbolicCoordinates(
     float a, double maxr)
 {
     PolarPosition pos;
