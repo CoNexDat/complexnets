@@ -325,7 +325,7 @@ public:
     {
         for (auto it1 = v->neighborsIterator(); !it1.end(); it1++)
         {
-            if ((time(NULL) - start) > maxTime)
+            if ((time(nullptr) - start) > maxTime)
             {
                 return;
             }
@@ -350,6 +350,10 @@ public:
                     else
                         for (a_iterator it3 = as[v]->begin(); it3 != as[v]->end(); it3++)
                         {
+                            if ((time(nullptr) - start) > maxTime)
+                            {
+                                return;
+                            }
                             L_type* B = (*it3);
                             if (B->size() < L->size())
                             {
@@ -376,6 +380,10 @@ public:
                     {
                         for (L_iterator itF = L->begin(); itF != L->end(); itF++)
                         {
+                            if ((time(nullptr) - start) > maxTime)
+                            {
+                                return;
+                            }
                             as[(*itF)]->push_back(L);
                         }
                     }
@@ -383,6 +391,10 @@ public:
                 else
                     for (a_iterator it2 = as[x]->begin(); it2 != as[x]->end(); it2++)
                     {
+                        if ((time(nullptr) - start) > maxTime)
+                        {
+                            return;
+                        }
                         L_type* A = (*it2);
                         bool _new = false;
                         bool _old = false;
@@ -394,6 +406,10 @@ public:
                             L_iterator iterator2 = A->begin();
                             while (iterator2 != A->end())
                             {
+                                if ((time(nullptr) - start) > maxTime)
+                                {
+                                    return;
+                                }
                                 if ((*iterator1)->getVertexId() == (*iterator2)->getVertexId())
                                 {
                                     L->push_back(*iterator1);
@@ -412,6 +428,10 @@ public:
                         else
                             for (a_iterator it3 = as[v]->begin(); it3 != as[v]->end(); it3++)
                             {
+                                if ((time(nullptr) - start) > maxTime)
+                                {
+                                    return;
+                                }
                                 L_type* B = (*it3);
                                 if (B->size() < L->size())
                                 {
@@ -438,6 +458,10 @@ public:
                         {
                             for (L_iterator itF = L->begin(); itF != L->end(); itF++)
                             {
+                                if ((time(nullptr) - start) > maxTime)
+                                {
+                                    return;
+                                }
                                 as[(*itF)]->push_back(L);
                             }
                         }
