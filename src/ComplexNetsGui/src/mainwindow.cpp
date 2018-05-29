@@ -1189,93 +1189,93 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
         key += directedPostfix;
     }
 
-        if (!propertyMap.containsProperty("nearestNeighborsDegreeForVertex", key))
+    if (!propertyMap.containsProperty("nearestNeighborsDegreeForVertex", key))
+    {
+        ui->textBrowser->append(
+            "Nearest neighbors degree has not been previously computed. Computing now.");
+        if (this->weightedgraph)
         {
-            ui->textBrowser->append(
-                "Nearest neighbors degree has not been previously computed. Computing now.");
-            if (this->weightedgraph)
+            WeightedVertex* vertex;
+            if ((vertex = weightedGraph.getVertexById(vertexId)) != nullptr)
             {
-                WeightedVertex* vertex;
-                if ((vertex = weightedGraph.getVertexById(vertexId)) != nullptr)
-                {
-                    auto nearestNeighborsDegree = weightedFactory->createNearestNeighborsDegree();
-                    propertyMap.addProperty<double>(
-                        "nearestNeighborsDegreeForVertex",
-                        to_string<unsigned int>(vertex->getVertexId()),
-                        nearestNeighborsDegree->meanDegreeForVertex(vertex));
-                    delete nearestNeighborsDegree;
-                }
-            }
-            else if (this->digraph)
-            {
-                DirectedVertex* vertex;
-                if ((vertex = directedGraph.getVertexById(vertexId)) != nullptr)
-                {
-                    auto nearestNeighborsDegree = directedFactory->createNearestNeighborsDegree();
-                    propertyMap.addProperty<double>(
-                        "nearestNeighborsDegreeForVertex",
-                        to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
-                        nearestNeighborsDegree->meanDegreeForVertex(
-                            vertex, directed_out, directed_in));
-                    delete nearestNeighborsDegree;
-                }
-            }
-            else
-            {
-                Vertex* vertex;
-                if ((vertex = graph.getVertexById(vertexId)) != nullptr)
-                {
-                    // INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree =
-                    // factory->createNearestNeighborsDegree();
-                    // propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex",
-                    // to_string<unsigned int>(vertex->getVertexId()),
-                    // nearestNeighborsDegree->meanDegreeForVertex(vertex));
-                    // delete nearestNeighborsDegree;
-                }
+                auto nearestNeighborsDegree = weightedFactory->createNearestNeighborsDegree();
+                propertyMap.addProperty<double>(
+                    "nearestNeighborsDegreeForVertex",
+                    to_string<unsigned int>(vertex->getVertexId()),
+                    nearestNeighborsDegree->meanDegreeForVertex(vertex));
+                delete nearestNeighborsDegree;
             }
         }
-        if ((graph.getVertexById(vertexId)) != nullptr ||
-            (this->digraph && directedGraph.getVertexById(vertexId) != nullptr))
+        else if (this->digraph)
         {
-            try
+            DirectedVertex* vertex;
+            if ((vertex = directedGraph.getVertexById(vertexId)) != nullptr)
             {
-                graphpp::Boxplotentry entry;
-
-                if (!propertyMap.containsProperty("KnnBPMean", to_string(0)))
-                {
-                    this->computeDegreeDistribution();
-                    entry = this->computeTotalBpEntriesKnn();
-                    propertyMap.addProperty<double>("KnnBPMean", to_string(0), entry.mean);
-                    propertyMap.addProperty<double>("KnnBPMin", to_string(0), entry.min);
-                    propertyMap.addProperty<double>("KnnBPQ1", to_string(0), entry.Q1);
-                    propertyMap.addProperty<double>("KnnBPQ2", to_string(0), entry.Q2);
-                    propertyMap.addProperty<double>("KnnBPQ3", to_string(0), entry.Q3);
-                    propertyMap.addProperty<double>("KnnBPMax", to_string(0), entry.max);
-                }
-                else
-                {
-                    ret.append("Data already calculated. \n");
-                    entry.mean = propertyMap.getProperty<double>("KnnBPMean", to_string(0));
-                    entry.min = propertyMap.getProperty<double>("KnnBPMin", to_string(0));
-                    entry.Q1 = propertyMap.getProperty<double>("KnnBPQ1", to_string(0));
-                    entry.Q2 = propertyMap.getProperty<double>("KnnBPQ2", to_string(0));
-                    entry.Q3 = propertyMap.getProperty<double>("KnnBPQ3", to_string(0));
-                    entry.max = propertyMap.getProperty<double>("KnnBPMax", to_string(0));
-                }
-
-                ui->textBrowser->append(entry.str().c_str());
-            }
-            catch (const BadElementName& ex)
-            {
-                ret.append("There is no vertices with id ").append(vertexId).append(".\n");
-                ui->textBrowser->append(ret);
+                auto nearestNeighborsDegree = directedFactory->createNearestNeighborsDegree();
+                propertyMap.addProperty<double>(
+                    "nearestNeighborsDegreeForVertex",
+                    to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
+                    nearestNeighborsDegree->meanDegreeForVertex(
+                        vertex, directed_out, directed_in));
+                delete nearestNeighborsDegree;
             }
         }
         else
         {
+            Vertex* vertex;
+            if ((vertex = graph.getVertexById(vertexId)) != nullptr)
+            {
+                // INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree =
+                // factory->createNearestNeighborsDegree();
+                // propertyMap.addProperty<double>("nearestNeighborsDegreeForVertex",
+                // to_string<unsigned int>(vertex->getVertexId()),
+                // nearestNeighborsDegree->meanDegreeForVertex(vertex));
+                // delete nearestNeighborsDegree;
+            }
+        }
+    }
+    if ((graph.getVertexById(vertexId)) != nullptr ||
+        (this->digraph && directedGraph.getVertexById(vertexId) != nullptr))
+    {
+        try
+        {
+            graphpp::Boxplotentry entry;
+
+            if (!propertyMap.containsProperty("KnnBPMean", to_string(0)))
+            {
+                this->computeDegreeDistribution();
+                entry = this->computeTotalBpEntriesKnn();
+                propertyMap.addProperty<double>("KnnBPMean", to_string(0), entry.mean);
+                propertyMap.addProperty<double>("KnnBPMin", to_string(0), entry.min);
+                propertyMap.addProperty<double>("KnnBPQ1", to_string(0), entry.Q1);
+                propertyMap.addProperty<double>("KnnBPQ2", to_string(0), entry.Q2);
+                propertyMap.addProperty<double>("KnnBPQ3", to_string(0), entry.Q3);
+                propertyMap.addProperty<double>("KnnBPMax", to_string(0), entry.max);
+            }
+            else
+            {
+                ret.append("Data already calculated. \n");
+                entry.mean = propertyMap.getProperty<double>("KnnBPMean", to_string(0));
+                entry.min = propertyMap.getProperty<double>("KnnBPMin", to_string(0));
+                entry.Q1 = propertyMap.getProperty<double>("KnnBPQ1", to_string(0));
+                entry.Q2 = propertyMap.getProperty<double>("KnnBPQ2", to_string(0));
+                entry.Q3 = propertyMap.getProperty<double>("KnnBPQ3", to_string(0));
+                entry.max = propertyMap.getProperty<double>("KnnBPMax", to_string(0));
+            }
+
+            ui->textBrowser->append(entry.str().c_str());
+        }
+        catch (const BadElementName& ex)
+        {
             ret.append("There is no vertices with id ").append(vertexId).append(".\n");
             ui->textBrowser->append(ret);
         }
+    }
+    else
+    {
+        ret.append("There is no vertices with id ").append(vertexId).append(".\n");
+        ui->textBrowser->append(ret);
+    }
 }
 
 void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
