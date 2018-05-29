@@ -18,8 +18,6 @@ public:
         s->addEdge(d, weight);
         if (!this->isDigraph())
             d->addEdge(s, weight);
-        // s->addEdge(d, weight);
-        // d->addEdge(s, weight);
     }
 };
 }

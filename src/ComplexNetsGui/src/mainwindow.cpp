@@ -1164,12 +1164,19 @@ void MainWindow::on_actionClustering_coefficient_triggered()
 
 void MainWindow::on_actionNearest_neighbors_degree_triggered()
 {
-    if (graph.verticesCount() <= 1) {
+    if (graph.verticesCount() <= 1 && directedGraph.verticesCount() <= 1 && weightedGraph.verticesCount() <= 1) {
         ui->textBrowser->append("Number of vertexes must be greater than 1.\n");
         return;
     }
     QString ret;
-    Vertex::VertexId vertexId = graph.getMinVertexId();
+    Vertex::VertexId vertexId;
+    if(digraph) {
+        vertexId = directedGraph.getMinVertexId();
+    } else if (weightedgraph) {
+        vertexId = weightedGraph.getMinVertexId();
+    } else {
+        vertexId = graph.getMinVertexId();
+    }
     double neighborsDegree;
     std::string directedPostfix = "d";
     if (directed_out)
