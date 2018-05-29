@@ -1164,23 +1164,23 @@ void MainWindow::on_actionClustering_coefficient_triggered()
 
 void MainWindow::on_actionNearest_neighbors_degree_triggered()
 {
-    QString vertexId = "2";
+    if (graph.verticesCount() <= 1) {
+        ui->textBrowser->append("Number of vertexes must be greater than 1.\n");
+        return;
+    }
     QString ret;
+    Vertex::VertexId vertexId = graph.getMinVertexId();
     double neighborsDegree;
-
     std::string directedPostfix = "d";
     if (directed_out)
         directedPostfix += "p";
     if (directed_in)
         directedPostfix += "n";
-
-    if (!vertexId.isEmpty())
+    std::string key = std::to_string(vertexId);
+    if (this->digraph)
     {
-        std::string key = vertexId.toStdString();
-        if (this->digraph)
-        {
-            key += directedPostfix;
-        }
+        key += directedPostfix;
+    }
 
         if (!propertyMap.containsProperty("nearestNeighborsDegreeForVertex", key))
         {
@@ -1189,8 +1189,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             if (this->weightedgraph)
             {
                 WeightedVertex* vertex;
-                if ((vertex = weightedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
+                if ((vertex = weightedGraph.getVertexById(vertexId)) != nullptr)
                 {
                     auto nearestNeighborsDegree = weightedFactory->createNearestNeighborsDegree();
                     propertyMap.addProperty<double>(
@@ -1203,8 +1202,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             else if (this->digraph)
             {
                 DirectedVertex* vertex;
-                if ((vertex = directedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
+                if ((vertex = directedGraph.getVertexById(vertexId)) != nullptr)
                 {
                     auto nearestNeighborsDegree = directedFactory->createNearestNeighborsDegree();
                     propertyMap.addProperty<double>(
@@ -1218,8 +1216,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             else
             {
                 Vertex* vertex;
-                if ((vertex = graph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
+                if ((vertex = graph.getVertexById(vertexId)) != nullptr)
                 {
                     // INearestNeighborsDegree<Graph, Vertex>* nearestNeighborsDegree =
                     // factory->createNearestNeighborsDegree();
@@ -1230,10 +1227,8 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 }
             }
         }
-
-        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != nullptr ||
-            (this->digraph && directedGraph.getVertexById(
-                                  from_string<unsigned int>(vertexId.toStdString())) != nullptr))
+        if ((graph.getVertexById(vertexId)) != nullptr ||
+            (this->digraph && directedGraph.getVertexById(vertexId) != nullptr))
         {
             try
             {
@@ -1274,7 +1269,6 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
             ret.append("There is no vertices with id ").append(vertexId).append(".\n");
             ui->textBrowser->append(ret);
         }
-    }
 }
 
 void MainWindow::on_actionClustering_Coefficient_vs_Degree_triggered()
