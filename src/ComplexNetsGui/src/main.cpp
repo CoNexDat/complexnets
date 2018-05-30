@@ -5,11 +5,14 @@
 #include <QtWidgets/QApplication>
 #include <cstdlib>
 #include <ctime>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "ComplexNetsCmd/ProgramState.h"
 #include "ComplexNetsCmd/cmdline.h"
 #include "ComplexNetsCmd/cmdmessages.h"
 #include "ComplexNetsGui/inc/mainwindow.h"
+#include "ComplexNetsCmd/cmdUtils.h"
 
 #define ERROR_EXIT \
     delete state;  \
@@ -268,8 +271,12 @@ int main(int argc, char* argv[])
         }
         else
         {
-            usageErrorMessage("A network must be specified in order to work.");
-            ERROR_EXIT;
+            if (!args_info->clear_results_given) 
+            {
+                usageErrorMessage("A network must be specified in order to work.");
+                ERROR_EXIT;
+            }
+            
         }
 
         if (args_info->betweenness_given)
@@ -466,75 +473,165 @@ int main(int argc, char* argv[])
             }
         }
 
+
+        std::string path;
         if (args_info->output_file_given)
         {
-            std::string path = args_info->output_file_arg;
-
-            if (args_info->betweenness_output_given || args_info->ddist_output_given ||
-                args_info->clustering_output_given || args_info->maxCliqueExact_output_given ||
-                args_info->maxCliqueAprox_output_given || args_info->knn_output_given ||
-                args_info->shell_output_given)
+            path = args_info->output_file_arg;
+        }
+        else
+        {
+            //Creation of the results directory and subsecuent files.
+            std::string filename = args_info->input_file_orig;
+            const size_t last_slash_idx = filename.find_last_of("\\/");
+            if (std::string::npos != last_slash_idx)
             {
-                std::string functionMessage = "";
-
-                if (args_info->betweenness_output_given)
-                {
-                    state->exportBetweennessVsDegree(path);
-                    functionMessage = "betweenness";
-                }
-                else if (args_info->ddist_output_given)
-                {
-                    state->exportDegreeDistribution(
-                        path, args_info->log_bin_given, args_info->log_bin_arg);
-                    functionMessage = "degreeDistribution";
-                }
-                else if (args_info->clustering_output_given)
-                {
-                    state->exportClusteringVsDegree(path);
-                    functionMessage = "clustering coefficient";
-                }
-                else if (args_info->knn_output_given)
-                {
-                    state->exportNearestNeighborsDegreeVsDegree(path);
-                    functionMessage = "nearest neighbors degree";
-                }
-                else if (args_info->shell_output_given)
-                {
-                    if (state->isWeighted())
-                    {
-                        errorMessage("Shell index for weighted graphs is not supported.");
-                        ERROR_EXIT;
-                    }
-                    else
-                    {
-                        state->exportShellIndexVsDegree(path);
-                        functionMessage = "shellIndex";
-                    }
-                }
-                if (args_info->maxCliqueExact_output_given)
-                {
-                    int max_time = args_info->maxCliqueExact_output_arg;
-                    if (!state->exportMaxCliqueExact(path, max_time))
-                    {
-                        errorMessage("Time out.");
-                        ERROR_EXIT;
-                    }
-                    functionMessage = "max clique distribution";
-                }
-                else if (args_info->maxCliqueAprox_output_given)
-                {
-                    state->exportMaxCliqueAprox(path);
-                    functionMessage = "max clique distribution aproximation";
-                }
-
-                std::cout << "Succesfully exported " + functionMessage + " in output file " + path +
-                                 ".\n";
+                filename.erase(0, last_slash_idx + 1);
             }
-            else
+
+            // Remove extension if present.
+            const size_t period_idx = filename.rfind('.');
+            if (std::string::npos != period_idx)
             {
-                state->exportCurrentGraph(path);
-                std::cout << "Succesfully saved graph in file " + path + ".\n";
+                filename.erase(period_idx);
             }
+
+            path = "results/" + filename + "/";
+            const int dir_err = system(("mkdir -p " + path).c_str());
+            if (-1 == dir_err)
+            {
+                printf("Error creating directory! \n");
+                exit(1);
+            }
+        }
+        
+        if (args_info->betweenness_output_given || args_info->ddist_output_given ||
+            args_info->clustering_output_given || args_info->maxCliqueExact_output_given ||
+            args_info->maxCliqueAprox_output_given || args_info->knn_output_given ||
+            args_info->shell_output_given)
+        {
+            std::string functionMessage = "";
+
+            if (args_info->betweenness_output_given)
+            {
+                functionMessage = "betweenness";
+                if (!args_info->output_file_given)
+                {
+                    path = path + functionMessage;
+                    if (access( path.c_str(), F_OK ) != -1 )
+                    {
+                        printf("Analysis already computed. Results found at %s\n", path.c_str());
+                        exit(1);
+                    }
+                }
+                state->exportBetweennessVsDegree(path);
+            }
+            else if (args_info->ddist_output_given)
+            {
+                functionMessage = "degree_distribution";
+                if (!args_info->output_file_given)
+                {
+                    path = path + functionMessage;
+                    if (access( path.c_str(), F_OK ) != -1 )
+                    {
+                        printf("Analysis already computed. Results found at %s\n", path.c_str());
+                        exit(1);
+                    }
+                }
+                state->exportDegreeDistribution(
+                    path, args_info->log_bin_given, args_info->log_bin_arg);
+            }
+            else if (args_info->clustering_output_given)
+            {
+                functionMessage = "clustering_coefficient";
+                if (!args_info->output_file_given)
+                {
+                    path = path + functionMessage;
+                    if (access( path.c_str(), F_OK ) != -1 )
+                    {
+                        printf("Analysis already computed. Results found at %s\n", path.c_str());
+                        exit(1);
+                    }
+                }
+                state->exportClusteringVsDegree(path);
+            }
+            else if (args_info->knn_output_given)
+            {
+                functionMessage = "nearest_neighbors_degree";
+                if (!args_info->output_file_given)
+                {
+                    path = path + functionMessage;
+                    if (access( path.c_str(), F_OK ) != -1 )
+                    {
+                        printf("Analysis already computed. Results found at %s\n", path.c_str());
+                        exit(1);
+                    }
+                }
+                state->exportNearestNeighborsDegreeVsDegree(path);
+            }
+            else if (args_info->shell_output_given)
+            {
+                if (state->isWeighted())
+                {
+                    errorMessage("Shell index for weighted graphs is not supported.");
+                    ERROR_EXIT;
+                }
+                else
+                {
+                    functionMessage = "shellIndex";
+                    if (!args_info->output_file_given)
+                    {
+                        path = path + functionMessage;
+                        if (access( path.c_str(), F_OK ) != -1 )
+                        {
+                            printf("Analysis already computed. Results found at %s\n", path.c_str());
+                            exit(1);
+                        }
+                    }
+                    state->exportShellIndexVsDegree(path);
+                }
+            }
+            if (args_info->maxCliqueExact_output_given)
+            {
+                functionMessage = "max_clique_distribution";
+                if (!args_info->output_file_given)
+                {
+                    path = path + functionMessage;
+                    if (access( path.c_str(), F_OK ) != -1 )
+                    {
+                        printf("Analysis already computed. Results found at %s\n", path.c_str());
+                        exit(1);
+                    }
+                }
+                int max_time = args_info->maxCliqueExact_output_arg;
+                if (!state->exportMaxCliqueExact(path, max_time))
+                {
+                    errorMessage("Time out.");
+                    ERROR_EXIT;
+                }
+            }
+            else if (args_info->maxCliqueAprox_output_given)
+            {
+                functionMessage = "max_clique_distribution_aproximation";
+                if (!args_info->output_file_given)
+                {
+                    path = path + functionMessage;
+                    if (access( path.c_str(), F_OK ) != -1 )
+                    {
+                        printf("Analysis already computed. Results found at %s\n", path.c_str());
+                        exit(1);
+                    }
+                }
+                state->exportMaxCliqueAprox(path);
+            }
+
+            std::cout << "Succesfully exported " + functionMessage + " in output file " + path +
+                             ".\n";
+        }
+        else
+        {
+            state->exportCurrentGraph(path);
+            std::cout << "Succesfully saved graph in file " + path + ".\n";
         }
     }
 }

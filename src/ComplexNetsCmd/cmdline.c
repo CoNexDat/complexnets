@@ -14,8 +14,10 @@
 #endif
 
 #include <stdio.h>
+#include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
+#include "cmdUtils.h"
 
 #ifndef FIX_UNUSED
 #define FIX_UNUSED(X) (void) (X) /* avoid warnings for unused params */
@@ -76,6 +78,9 @@ const char *gengetopt_args_info_help[] = {
   "      --maxCliqueAprox-output   ",
   "  -o, --output-file=<filename>  Save the result in an output file",
   "      --print-deg               Print node degree for power law regression",
+  "      --clear-results           Deletes the results calculated stored in the result folder",
+  "      --view-results            Shows all the analysis made on each graph",
+  "      --view <graph_name> <analysis_name>  Shows the corresponding result for a given graph and analysis previously made.",
     0
 };
 
@@ -142,6 +147,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->maxCliqueExact_output_given = 0 ;
   args_info->maxCliqueAprox_output_given = 0 ;
   args_info->output_file_given = 0 ;
+  args_info->clear_results_given = 0;
   args_info->print_deg_given = 0 ;
   args_info->analysis_group_counter = 0 ;
   args_info->directed_group_counter = 0 ;
@@ -456,6 +462,7 @@ cmdline_parser_file_save(const char *filename, struct gengetopt_args_info *args_
   int i = 0;
 
   outfile = fopen(filename, "w");
+  fprintf(stderr, "%s\n", filename);
 
   if (!outfile)
     {
@@ -657,44 +664,9 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       fprintf (stderr, "%s: '--a' ('-a') option depends on option 'hyperbolic'%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
-  if (args_info->betweenness_output_given && ! args_info->output_file_given)
-    {
-      fprintf (stderr, "%s: '--betweenness-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
-  if (args_info->ddist_output_given && ! args_info->output_file_given)
-    {
-      fprintf (stderr, "%s: '--ddist-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
   if (args_info->log_bin_given && ! args_info->ddist_output_given)
     {
       fprintf (stderr, "%s: '--log-bin' option depends on option 'ddist-output'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
-  if (args_info->clustering_output_given && ! args_info->output_file_given)
-    {
-      fprintf (stderr, "%s: '--clustering-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
-  if (args_info->knn_output_given && ! args_info->output_file_given)
-    {
-      fprintf (stderr, "%s: '--knn-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
-  if (args_info->shell_output_given && ! args_info->output_file_given)
-    {
-      fprintf (stderr, "%s: '--shell-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
-  if (args_info->maxCliqueExact_output_given && ! args_info->output_file_given)
-    {
-      fprintf (stderr, "%s: '--maxCliqueExact-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
-  if (args_info->maxCliqueAprox_output_given && ! args_info->output_file_given)
-    {
-      fprintf (stderr, "%s: '--maxCliqueAprox-output' option depends on option 'output-file'%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
 
@@ -821,7 +793,6 @@ int update_arg(void *field, char **orig_field,
   return 0; /* OK */
 }
 
-
 int
 cmdline_parser_internal (
   int argc, char **argv, struct gengetopt_args_info *args_info,
@@ -898,6 +869,9 @@ cmdline_parser_internal (
         { "maxCliqueAprox-output",	0, NULL, 0 },
         { "output-file",	1, NULL, 'o' },
         { "print-deg",	0, NULL, 0 },
+        { "clear-results", 0, NULL, 0},
+        { "view-results", 0, NULL, 0},
+        { "view", 2, NULL, 0},
         { 0,  0, 0, 0 }
       };
 
@@ -1448,7 +1422,38 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          
+          else if (strcmp (long_options[option_index].name, "clear-results") == 0)
+          {
+            const int dir_err = system("rm -rf results/ 2> /dev/null");
+            if (-1 == dir_err)
+            {
+                printf("Error clearing results directory! \n");
+            }
+            else if (256 == dir_err)
+            {
+                printf("Results directory is empty or doesn't exist. \n");
+            }
+            else
+            {
+                printf("Results directory cleared succesfully! \n");
+            }
+            exit(1);
+          }
+          else if (strcmp (long_options[option_index].name, "view-results") == 0) 
+          {
+              listdir("./results", 0);
+              exit(1);
+          }
+          else if (strcmp (long_options[option_index].name, "view") == 0) 
+          {
+              if (argc < 4) {
+                printf("Insufficient arguments ex: complexnets --view <graph_name> <analysis_name>\n");
+                exit(1);
+              }
+              printFile(argv[2], argv[3]);
+              exit(1);
+          }
+
           break;
         case '?':	/* Invalid option.  */
           /* `getopt_long' already printed an error message.  */
