@@ -538,10 +538,12 @@ void MainWindow::on_actionMaxClique_generic_triggered(bool exact)
         std::string key = exact ? "maxCliqueExact" : "maxCliqueAprox";
         int maxCliqueSize = propertyMap.getProperty<int>(key, "size");
         std::list<int> list = propertyMap.getProperty<std::list<int>>(key, "list");
-        ui->textBrowser->append(exact ? "Exact Max clique" : "Aprox Max clique"
-                                "\nReference: José Ignacio Alvarez-Hamelin. "
-                                "Is it possible to find the maximum clique in general graphs? "
-                                "arXiv e-print, abs/1110.5355, Oct 2011.");
+        ui->textBrowser->append(
+            exact ? "Exact Max clique"
+                  : "Aprox Max clique"
+                    "\nReference: José Ignacio Alvarez-Hamelin. "
+                    "Is it possible to find the maximum clique in general graphs? "
+                    "arXiv e-print, abs/1110.5355, Oct 2011.");
         ret.append("Size is: ").append(to_string<int>(maxCliqueSize).c_str()).append(".\n");
         ret.append("Clique is: ");
         for (const auto& elem : list)
@@ -1164,17 +1166,24 @@ void MainWindow::on_actionClustering_coefficient_triggered()
 
 void MainWindow::on_actionNearest_neighbors_degree_triggered()
 {
-    if (graph.verticesCount() <= 1 && directedGraph.verticesCount() <= 1 && weightedGraph.verticesCount() <= 1) {
+    if (graph.verticesCount() <= 1 && directedGraph.verticesCount() <= 1 &&
+        weightedGraph.verticesCount() <= 1)
+    {
         ui->textBrowser->append("Number of vertexes must be greater than 1.\n");
         return;
     }
     QString ret;
     Vertex::VertexId vertexId;
-    if(digraph) {
+    if (digraph)
+    {
         vertexId = directedGraph.getMinVertexId();
-    } else if (weightedgraph) {
+    }
+    else if (weightedgraph)
+    {
         vertexId = weightedGraph.getMinVertexId();
-    } else {
+    }
+    else
+    {
         vertexId = graph.getMinVertexId();
     }
     double neighborsDegree;
@@ -1215,8 +1224,7 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 propertyMap.addProperty<double>(
                     "nearestNeighborsDegreeForVertex",
                     to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
-                    nearestNeighborsDegree->meanDegreeForVertex(
-                        vertex, directed_out, directed_in));
+                    nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_out, directed_in));
                 delete nearestNeighborsDegree;
             }
         }

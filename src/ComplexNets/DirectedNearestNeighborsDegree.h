@@ -111,4 +111,4 @@ public:
         return meanDegreeForVertex(v, false, false);
     }
 };
-}
+}  // namespace graphpp

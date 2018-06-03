@@ -21,8 +21,6 @@ public:
         return meanDegreeForVertex(vertex);
     }
 
-    virtual ~INearestNeighborsDegree()
-    {
-    }
+    virtual ~INearestNeighborsDegree() {}
 };
-}
+}  // namespace graphpp

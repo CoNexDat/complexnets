@@ -11,8 +11,6 @@ public:
 
     virtual ShellIndexIterator iterator() = 0;
 
-    virtual ~IShellIndex()
-    {
-    }
+    virtual ~IShellIndex() {}
 };
-}
+}  // namespace graphpp

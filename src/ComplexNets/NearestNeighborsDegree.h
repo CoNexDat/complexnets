@@ -47,4 +47,4 @@ public:
         return v->degree() == 0 ? 0 : double(degreeSum) / v->degree();
     }
 };
-}
+}  // namespace graphpp

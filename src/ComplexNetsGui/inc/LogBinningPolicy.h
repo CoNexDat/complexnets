@@ -184,4 +184,4 @@ private:
         return;
     }
 };
-}
+}  // namespace ComplexNetsGui

@@ -14,9 +14,7 @@ public:
     typedef AdjacencyListVertex::VerticesConstIterator VerticesConstIterator;
     typedef AdjacencyListVertex::VerticesIterator VerticesIterator;
 
-    DirectedVertexAspect(VertexId id) : T(id)
-    {
-    }
+    DirectedVertexAspect(VertexId id) : T(id) {}
 
     void addEdge(DirectedVertexAspect<T>* other)
     {
@@ -82,4 +80,4 @@ private:
     VertexContainer inNeighbors;
     VertexContainer outNeighbors;
 };
-}
+}  // namespace graphpp

@@ -53,4 +53,4 @@ public:
         return nullptr;
     }
 };
-}
+}  // namespace graphpp

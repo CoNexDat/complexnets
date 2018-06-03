@@ -153,4 +153,4 @@ public:
         return vertexClusteringCoefficient(vertex, false, false);
     }
 };
-}
+}  // namespace graphpp

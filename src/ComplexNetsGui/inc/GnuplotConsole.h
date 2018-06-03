@@ -54,4 +54,4 @@ private:
     QGroupBox* groupBox_2;
     QLineEdit* lineEdit;
 };
-}
+}  // namespace ComplexNetsGui

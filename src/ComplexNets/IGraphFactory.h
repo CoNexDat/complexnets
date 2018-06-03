@@ -33,8 +33,6 @@ public:
 
     virtual MaxCliqueExact<Graph, Vertex>* createExactMaxClique(Graph& g, int max_time) = 0;
 
-    virtual ~IGraphFactory()
-    {
-    }
+    virtual ~IGraphFactory() {}
 };
-}
+}  // namespace graphpp

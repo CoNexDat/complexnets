@@ -5,9 +5,9 @@
 #pragma once
 
 #include <algorithm>
+#include <climits>
 #include <iostream>
 #include <memory>
-#include <climits>
 #include "GraphExceptions.h"
 #include "mili/mili.h"
 
@@ -198,9 +198,11 @@ public:
     {
         VertexId currMin = UINT_MAX;
         VerticesConstIterator it = verticesConstIterator();
-        while(!it.end()) {
-            VertexId currId = (*it) -> getVertexId();
-            if(currId < currMin) {
+        while (!it.end())
+        {
+            VertexId currId = (*it)->getVertexId();
+            if (currId < currMin)
+            {
                 currMin = currId;
             }
             it++;
@@ -288,4 +290,4 @@ private:
     bool _isMultigraph;
     VertexContainer vertices;
 };
-}
+}  // namespace graphpp

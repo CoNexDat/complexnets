@@ -22,9 +22,7 @@ public:
     std::list<unsigned int> vertexesLeft;
     std::list<unsigned int> vertexesInComponent;
 
-    ConnectivityVerifier()
-    {
-    }
+    ConnectivityVerifier() {}
 
     void visited(unsigned int id)
     {
@@ -70,9 +68,7 @@ template <class Graph, class Vertex>
 class ConnectivityVisitor
 {
 public:
-    ConnectivityVisitor(ConnectivityVerifier<Graph, Vertex>* observer) : observer(observer)
-    {
-    }
+    ConnectivityVisitor(ConnectivityVerifier<Graph, Vertex>* observer) : observer(observer) {}
 
     /**
      * Method: visitVertex
@@ -90,4 +86,4 @@ public:
 private:
     ConnectivityVerifier<Graph, Vertex>* observer;
 };
-}
+}  // namespace graphpp

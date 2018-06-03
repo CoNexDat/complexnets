@@ -79,4 +79,4 @@ private:
 
     DistributionContainer distribution;
 };
-}
+}  // namespace graphpp

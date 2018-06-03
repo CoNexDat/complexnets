@@ -118,4 +118,4 @@ private:
     DistributionContainer outDegreeDistribution;
     DistributionContainer inOutDegreeDistribution;
 };
-}
+}  // namespace graphpp

@@ -13,8 +13,6 @@ public:
 
     virtual DistributionIterator iterator() = 0;
 
-    virtual ~IDegreeDistribution()
-    {
-    }
+    virtual ~IDegreeDistribution() {}
 };
-}
+}  // namespace graphpp

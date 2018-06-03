@@ -47,4 +47,4 @@ public:
         return v->strength() == 0 ? 0 : double(degreeSum) / v->strength();
     }
 };
-}
+}  // namespace graphpp

@@ -24,9 +24,7 @@ public:
     using VerticesConstIterator = CAutonomousIterator<VertexContainer>;
     using VerticesIterator = AutonomousIterator<VertexContainer>;
 
-    AdjacencyListVertex(VertexId id) : vertexId(id), visited(false)
-    {
-    }
+    AdjacencyListVertex(VertexId id) : vertexId(id), visited(false) {}
 
     /**
      * Method: addEdge
@@ -138,4 +136,4 @@ private:
     VertexId vertexId;
     bool visited;
 };
-}
+}  // namespace graphpp

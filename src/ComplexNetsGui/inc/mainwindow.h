@@ -127,4 +127,4 @@ private slots:
     void on_actionBoxplotNearestNeighborsDegree_triggered();
     void on_actionExportKnnBoxplot_triggered();
 };
-}
+}  // namespace ComplexNetsGui

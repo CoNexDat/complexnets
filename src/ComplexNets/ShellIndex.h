@@ -151,4 +151,4 @@ private:
     std::list<Node*>* nodesByCurrentDegree;
     int totalVertexes;
 };
-}
+}  // namespace graphpp
