@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <memory>
+#include <climits>
 #include "GraphExceptions.h"
 #include "mili/mili.h"
 
@@ -185,6 +186,26 @@ public:
     Vertex* getVertexById(VertexId id) const
     {
         return VertexFinder<Vertex, VertexContainer>::find(id, vertices);
+    }
+
+    /**
+     * Method: getMinVertexId
+     * ----------------------
+     * Description: obtains the minimum vertex id in the graph.
+     * @return the minimum vertex id in the graph
+     */
+    VertexId getMinVertexId() const
+    {
+        VertexId currMin = UINT_MAX;
+        VerticesConstIterator it = verticesConstIterator();
+        while(!it.end()) {
+            VertexId currId = (*it) -> getVertexId();
+            if(currId < currMin) {
+                currMin = currId;
+            }
+            it++;
+        }
+        return currMin;
     }
 
     /**
