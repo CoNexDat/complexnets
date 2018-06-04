@@ -538,12 +538,10 @@ void MainWindow::on_actionMaxClique_generic_triggered(bool exact)
         std::string key = exact ? "maxCliqueExact" : "maxCliqueAprox";
         int maxCliqueSize = propertyMap.getProperty<int>(key, "size");
         std::list<int> list = propertyMap.getProperty<std::list<int>>(key, "list");
-        ui->textBrowser->append(
-            exact ? "Exact Max clique"
-                  : "Aprox Max clique"
-                    "\nReference: José Ignacio Alvarez-Hamelin. "
-                    "Is it possible to find the maximum clique in general graphs? "
-                    "arXiv e-print, abs/1110.5355, Oct 2011.");
+        ui->textBrowser->append(exact ? "Exact Max clique" : "Aprox Max clique"
+                                "\nReference: José Ignacio Alvarez-Hamelin. "
+                                "Is it possible to find the maximum clique in general graphs? "
+                                "arXiv e-print, abs/1110.5355, Oct 2011.");
         ret.append("Size is: ").append(to_string<int>(maxCliqueSize).c_str()).append(".\n");
         ret.append("Clique is: ");
         for (const auto& elem : list)
@@ -1038,7 +1036,18 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
 
 void MainWindow::on_actionClustering_coefficient_triggered()
 {
-    QString vertexId = "2";
+    if (graph.verticesCount() <= 1 && directedGraph.verticesCount() <= 1 && weightedGraph.verticesCount() <= 1) {
+        ui->textBrowser->append("Number of vertexes must be greater than 1.\n");
+        return;
+    }
+    Vertex::VertexId vertexId;
+    if(digraph) {
+        vertexId = directedGraph.getMinVertexId();
+    } else if (weightedgraph) {
+        vertexId = weightedGraph.getMinVertexId();
+    } else {
+        vertexId = graph.getMinVertexId();
+    }
     QString ret;
 
     std::string directedPostfix = "d";
@@ -1046,144 +1055,129 @@ void MainWindow::on_actionClustering_coefficient_triggered()
         directedPostfix += "p";
     if (directed_in)
         directedPostfix += "n";
-
-    if (!vertexId.isEmpty())
+    std::string key = std::to_string(vertexId);
+    if (this->digraph)
     {
-        std::string key = vertexId.toStdString();
-        if (this->digraph)
-        {
-            key += directedPostfix;
-        }
+        key += directedPostfix;
+    }
 
-        if (!propertyMap.containsProperty("clusteringCoeficientForVertex", key))
+    if (!propertyMap.containsProperty("clusteringCoeficientForVertex", key))
+    {
+        ui->textBrowser->append("Clustering coefficient has not been previously computed.");
+        if (this->weightedgraph)
         {
-            ui->textBrowser->append("Clustering coefficient has not been previously computed.");
-            if (this->weightedgraph)
+            WeightedVertex* vertex;
+            if ((vertex = weightedGraph.getVertexById(vertexId)) != nullptr)
             {
-                WeightedVertex* vertex;
-                if ((vertex = weightedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
-                {
-                    auto clusteringCoefficient = weightedFactory->createClusteringCoefficient();
-                    propertyMap.addProperty<double>(
+                auto clusteringCoefficient = weightedFactory->createClusteringCoefficient();
+                propertyMap.addProperty<double>(
                         "clusteringCoeficientForVertex",
                         to_string<unsigned int>(vertex->getVertexId()),
                         clusteringCoefficient->vertexClusteringCoefficient(vertex));
-                    delete clusteringCoefficient;
-                }
+                delete clusteringCoefficient;
             }
-            else if (this->digraph)
+        }
+        else if (this->digraph)
+        {
+            DirectedVertex* vertex;
+            if ((vertex = directedGraph.getVertexById(vertexId)) != nullptr)
             {
-                DirectedVertex* vertex;
-                if ((vertex = directedGraph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
-                {
-                    auto clusteringCoefficient = directedFactory->createClusteringCoefficient();
-                    propertyMap.addProperty<double>(
+                auto clusteringCoefficient = directedFactory->createClusteringCoefficient();
+                propertyMap.addProperty<double>(
                         "clusteringCoeficientForVertex",
                         to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
                         clusteringCoefficient->vertexClusteringCoefficient(
-                            vertex, directed_out, directed_in));
-                    delete clusteringCoefficient;
-                }
-            }
-            else
-            {
-                Vertex* vertex;
-                if ((vertex = graph.getVertexById(
-                         from_string<unsigned int>(vertexId.toStdString()))) != nullptr)
-                {
-                    // IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
-                    // factory->createClusteringCoefficient();
-                    // propertyMap.addProperty<double>("clusteringCoeficientForVertex",
-                    // to_string<unsigned int>(vertex->getVertexId()),
-                    // clusteringCoefficient->vertexClusteringCoefficient(vertex));
-                    // delete clusteringCoefficient;
-                }
-            }
-        }
-
-        if ((graph.getVertexById(from_string<unsigned int>(vertexId.toStdString()))) != nullptr ||
-            (this->digraph && directedGraph.getVertexById(
-                                  from_string<unsigned int>(vertexId.toStdString())) != nullptr))
-        {
-            try
-            {
-                // std::string key = vertexId.toStdString();
-                // if (this->digraph) {
-                //    key += directedPostfix;
-                //}
-                graphpp::Boxplotentry entry;
-                if (!propertyMap.containsProperty("ClusteringCoefficientBPMean", to_string(0)))
-                {
-                    this->computeDegreeDistribution();
-                    entry = this->computeTotalBpEntries();
-                    propertyMap.addProperty<double>(
-                        "ClusteringCoefficientBPMean", to_string(0), entry.mean);
-                    propertyMap.addProperty<double>(
-                        "ClusteringCoefficientBPMin", to_string(0), entry.min);
-                    propertyMap.addProperty<double>(
-                        "ClusteringCoefficientBPQ1", to_string(0), entry.Q1);
-                    propertyMap.addProperty<double>(
-                        "ClusteringCoefficientBPQ2", to_string(0), entry.Q2);
-                    propertyMap.addProperty<double>(
-                        "ClusteringCoefficientBPQ3", to_string(0), entry.Q3);
-                    propertyMap.addProperty<double>(
-                        "ClusteringCoefficientBPMax", to_string(0), entry.max);
-                }
-                else
-                {
-                    ret.append("Data already calculated. \n");
-                    entry.mean = propertyMap.getProperty<double>(
-                        "ClusteringCoefficientBPMean", to_string(0));
-                    entry.min =
-                        propertyMap.getProperty<double>("ClusteringCoefficientBPMin", to_string(0));
-                    entry.Q1 =
-                        propertyMap.getProperty<double>("ClusteringCoefficientBPQ1", to_string(0));
-                    entry.Q2 =
-                        propertyMap.getProperty<double>("ClusteringCoefficientBPQ2", to_string(0));
-                    entry.Q3 =
-                        propertyMap.getProperty<double>("ClusteringCoefficientBPQ3", to_string(0));
-                    entry.max =
-                        propertyMap.getProperty<double>("ClusteringCoefficientBPMax", to_string(0));
-                }
-
-                ui->textBrowser->append(entry.str().c_str());
-            }
-            catch (const BadElementName& ex)
-            {
-                ret.append("There is no vertices with id ").append(vertexId).append(".\n");
-                ui->textBrowser->append(ret);
+                                vertex, directed_out, directed_in));
+                delete clusteringCoefficient;
             }
         }
         else
+        {
+            Vertex* vertex;
+            if ((vertex = graph.getVertexById(vertexId)) != nullptr)
+            {
+                // IClusteringCoefficient<Graph, Vertex>* clusteringCoefficient =
+                // factory->createClusteringCoefficient();
+                // propertyMap.addProperty<double>("clusteringCoeficientForVertex",
+                // to_string<unsigned int>(vertex->getVertexId()),
+                // clusteringCoefficient->vertexClusteringCoefficient(vertex));
+                // delete clusteringCoefficient;
+            }
+        }
+    }
+
+    if ((graph.getVertexById(vertexId)) != nullptr ||
+        (this->digraph && directedGraph.getVertexById(vertexId) != nullptr))
+    {
+        try
+        {
+            // std::string key = vertexId.toStdString();
+            // if (this->digraph) {
+            //    key += directedPostfix;
+            //}
+            graphpp::Boxplotentry entry;
+            if (!propertyMap.containsProperty("ClusteringCoefficientBPMean", to_string(0)))
+            {
+                this->computeDegreeDistribution();
+                entry = this->computeTotalBpEntries();
+                propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPMean", to_string(0), entry.mean);
+                propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPMin", to_string(0), entry.min);
+                propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPQ1", to_string(0), entry.Q1);
+                propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPQ2", to_string(0), entry.Q2);
+                propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPQ3", to_string(0), entry.Q3);
+                propertyMap.addProperty<double>(
+                        "ClusteringCoefficientBPMax", to_string(0), entry.max);
+            }
+            else
+            {
+                ret.append("Data already calculated. \n");
+                entry.mean = propertyMap.getProperty<double>(
+                        "ClusteringCoefficientBPMean", to_string(0));
+                entry.min =
+                        propertyMap.getProperty<double>("ClusteringCoefficientBPMin", to_string(0));
+                entry.Q1 =
+                        propertyMap.getProperty<double>("ClusteringCoefficientBPQ1", to_string(0));
+                entry.Q2 =
+                        propertyMap.getProperty<double>("ClusteringCoefficientBPQ2", to_string(0));
+                entry.Q3 =
+                        propertyMap.getProperty<double>("ClusteringCoefficientBPQ3", to_string(0));
+                entry.max =
+                        propertyMap.getProperty<double>("ClusteringCoefficientBPMax", to_string(0));
+            }
+
+            ui->textBrowser->append(entry.str().c_str());
+        }
+        catch (const BadElementName& ex)
         {
             ret.append("There is no vertices with id ").append(vertexId).append(".\n");
             ui->textBrowser->append(ret);
         }
     }
+    else
+    {
+        ret.append("There is no vertices with id ").append(vertexId).append(".\n");
+        ui->textBrowser->append(ret);
+    }
 }
 
 void MainWindow::on_actionNearest_neighbors_degree_triggered()
 {
-    if (graph.verticesCount() <= 1 && directedGraph.verticesCount() <= 1 &&
-        weightedGraph.verticesCount() <= 1)
-    {
+    if (graph.verticesCount() <= 1 && directedGraph.verticesCount() <= 1 && weightedGraph.verticesCount() <= 1) {
         ui->textBrowser->append("Number of vertexes must be greater than 1.\n");
         return;
     }
     QString ret;
     Vertex::VertexId vertexId;
-    if (digraph)
-    {
+    if(digraph) {
         vertexId = directedGraph.getMinVertexId();
-    }
-    else if (weightedgraph)
-    {
+    } else if (weightedgraph) {
         vertexId = weightedGraph.getMinVertexId();
-    }
-    else
-    {
+    } else {
         vertexId = graph.getMinVertexId();
     }
     double neighborsDegree;
@@ -1224,7 +1218,8 @@ void MainWindow::on_actionNearest_neighbors_degree_triggered()
                 propertyMap.addProperty<double>(
                     "nearestNeighborsDegreeForVertex",
                     to_string<unsigned int>(vertex->getVertexId()) + directedPostfix,
-                    nearestNeighborsDegree->meanDegreeForVertex(vertex, directed_out, directed_in));
+                    nearestNeighborsDegree->meanDegreeForVertex(
+                        vertex, directed_out, directed_in));
                 delete nearestNeighborsDegree;
             }
         }
