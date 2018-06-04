@@ -24,8 +24,6 @@ public:
         return clusteringCoefficient(g, d);
     }
 
-    virtual ~IClusteringCoefficient()
-    {
-    }
+    virtual ~IClusteringCoefficient() {}
 };
-}
+}  // namespace graphpp

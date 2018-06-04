@@ -65,4 +65,4 @@ public:
 private:
     Properties properties;
 };
-}
+}  // namespace graphpp

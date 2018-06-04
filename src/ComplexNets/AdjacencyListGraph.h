@@ -5,9 +5,9 @@
 #pragma once
 
 #include <algorithm>
+#include <climits>
 #include <iostream>
 #include <memory>
-#include <climits>
 #include "GraphExceptions.h"
 #include "mili/mili.h"
 

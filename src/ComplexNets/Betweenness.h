@@ -126,4 +126,4 @@ private:
 
     BetweennessContainer betweenness;
 };
-}
+}  // namespace graphpp

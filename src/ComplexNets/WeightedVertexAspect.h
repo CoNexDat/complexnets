@@ -15,9 +15,7 @@ public:
     typedef AutonomousIterator<NeighborsWeights> WeightsIterator;
     double distance;
 
-    WeightedVertexAspect(VertexId id) : T(id)
-    {
-    }
+    WeightedVertexAspect(VertexId id) : T(id) {}
 
     void addEdge(WeightedVertexAspect<T>* other, Weight weight)
     {
@@ -55,4 +53,4 @@ public:
 private:
     NeighborsWeights weights;
 };
-}
+}  // namespace graphpp

@@ -46,4 +46,4 @@ private:
     QRadioButton* radioButton;
     QRadioButton* radioButton_2;
 };
-}
+}  // namespace ComplexNetsGui

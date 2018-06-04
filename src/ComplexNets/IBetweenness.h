@@ -17,8 +17,6 @@ public:
     typedef AutonomousIterator<BetweennessContainer> BetweennessIterator;
     virtual BetweennessIterator iterator() = 0;
 
-    virtual ~IBetweenness()
-    {
-    }
+    virtual ~IBetweenness() {}
 };
-}
+}  // namespace graphpp

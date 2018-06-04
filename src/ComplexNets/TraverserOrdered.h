@@ -14,8 +14,9 @@ public:
     typedef typename VertexList::iterator VertexListIterator;
 
     /**
-     * Visit the vertexes in the graph in the order specified by the comparator in a decreasing order.
-     * All the vertexes may not be visited if the visitor decides it in the current vertex visit.
+     * Visit the vertexes in the graph in the order specified by the comparator in a decreasing
+     * order. All the vertexes may not be visited if the visitor decides it in the current vertex
+     * visit.
      * @param graph         the graph with the vertexes to traverse
      * @param visitor       the vertexes visitor
      * @param comparator    defines the order in which the vertexes will be visited
@@ -28,7 +29,8 @@ public:
         {
             Vertex* v = *vertexesIt;
             VertexListIterator orderedVertexesIt = orderedVertexes.begin();
-            while ((orderedVertexesIt != orderedVertexes.end()) && comparator(v, (*orderedVertexesIt)))
+            while ((orderedVertexesIt != orderedVertexes.end()) &&
+                   comparator(v, (*orderedVertexesIt)))
             {
                 orderedVertexesIt++;
             }
@@ -62,4 +64,4 @@ public:
         }
     }
 };
-}
+}  // namespace graphpp

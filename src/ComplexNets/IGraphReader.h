@@ -37,8 +37,6 @@ public:
     typedef unsigned int LineNumber;
     virtual void read(Graph& g, std::string source) = 0;
 
-    virtual ~IGraphReader()
-    {
-    }
+    virtual ~IGraphReader() {}
 };
-}
+}  // namespace graphpp

@@ -121,4 +121,4 @@ public:
         destinationFile.close();
     }
 };
-}
+}  // namespace ComplexNetsGui

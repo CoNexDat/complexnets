@@ -63,4 +63,4 @@ public:
         return ret;
     }
 };
-}
+}  // namespace graphpp

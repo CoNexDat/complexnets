@@ -15,9 +15,7 @@ template <class Graph, class Vertex>
 class MaxCliqueVisitor
 {
 public:
-    MaxCliqueVisitor(MaxClique<Graph, Vertex>& observer) : maxCliqueObserver(observer)
-    {
-    }
+    MaxCliqueVisitor(MaxClique<Graph, Vertex>& observer) : maxCliqueObserver(observer) {}
 
     bool visitVertex(Vertex* vertex)
     {
@@ -33,9 +31,7 @@ template <class Graph, class Vertex>
 class MaxCliqueMap
 {
 public:
-    MaxCliqueMap(MaxClique<Graph, Vertex>& observer) : maxCliqueObserver(observer)
-    {
-    }
+    MaxCliqueMap(MaxClique<Graph, Vertex>& observer) : maxCliqueObserver(observer) {}
 
     int get(Vertex* vertex)
     {
@@ -97,7 +93,7 @@ public:
                     Vertex* i = *it2;
                     if (i->getVisited())
                     {
-                        auto * L = new LSet();
+                        auto* L = new LSet();
 
                         if (as[x] == nullptr || (*as[x])[i] == nullptr)
                         {
@@ -156,7 +152,7 @@ public:
     int getMaxCliqueSize(Vertex* vertex)
     {
         unsigned int max_size = 0;
-        auto * ids = new std::list<int>();
+        auto* ids = new std::list<int>();
         for (AttributeIterator iterator2 = as[vertex]->begin(); iterator2 != as[vertex]->end();
              iterator2++)
         {
@@ -203,7 +199,8 @@ private:
     void calculateMaxClique(Graph& graph)
     {
         MaxCliqueVisitor<Graph, Vertex> visitor(*this);
-        TraverserOrdered<Graph, Vertex, MaxCliqueVisitor<Graph, Vertex>, DegreeCompare>::traverse(graph, visitor, DegreeCompare());
+        TraverserOrdered<Graph, Vertex, MaxCliqueVisitor<Graph, Vertex>, DegreeCompare>::traverse(
+            graph, visitor, DegreeCompare());
 
         MaxCliqueMap<Graph, Vertex> map(*this);
         distribution.calculateDistribution(graph, &map);
@@ -250,9 +247,7 @@ template <class Graph, class Vertex>
 class MaxCliqueExactVisitor
 {
 public:
-    MaxCliqueExactVisitor(MaxCliqueExact<Graph, Vertex>& observer) : maxCliquenObserver(observer)
-    {
-    }
+    MaxCliqueExactVisitor(MaxCliqueExact<Graph, Vertex>& observer) : maxCliquenObserver(observer) {}
 
     bool visitVertex(Vertex* vertex)
     {
@@ -274,9 +269,7 @@ template <class Graph, class Vertex>
 class MaxCliqueExactMap
 {
 public:
-    MaxCliqueExactMap(MaxCliqueExact<Graph, Vertex>& observer) : maxCliqueObserver(observer)
-    {
-    }
+    MaxCliqueExactMap(MaxCliqueExact<Graph, Vertex>& observer) : maxCliqueObserver(observer) {}
 
     int get(Vertex* vertex)
     {
@@ -559,7 +552,7 @@ public:
     bool timeouted;
     int start;
 };
-}
+}  // namespace graphpp
 /*
         linea de commandos
         tiempo para exacto

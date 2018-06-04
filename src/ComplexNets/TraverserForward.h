@@ -23,4 +23,4 @@ public:
         }
     }
 };
-}
+}  // namespace graphpp

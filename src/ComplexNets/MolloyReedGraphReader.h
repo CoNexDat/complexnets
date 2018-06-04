@@ -440,4 +440,4 @@ private:
     LineNumber currentLineNumber;
     const char* character;
 };
-}
+}  // namespace graphpp

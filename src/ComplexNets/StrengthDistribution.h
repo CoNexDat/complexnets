@@ -72,9 +72,7 @@ public:
             distribution[d] = 1;
     }
 
-    virtual ~StrengthDistribution()
-    {
-    }
+    virtual ~StrengthDistribution() {}
 
 private:
     void calculateDistribution(Graph& graph)
@@ -86,4 +84,4 @@ private:
 
     DistributionContainer distribution;
 };
-}
+}  // namespace graphpp

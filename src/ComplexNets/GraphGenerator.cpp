@@ -248,9 +248,9 @@ void GraphGenerator::addFKPNode(
     {  // this for evaluated "w" for each vertex already in the graph
         unsigned hopsDistance = graph->hops(
             graph->getVertexById(j),
-            graph->getVertexById(root)
-        );  // distance between vertex evaluated and root vertex
-        float euclidianDistance = distanceBetweenVertex(j, vertexIndex);  // Distance between vertex evaluated and new vertex
+            graph->getVertexById(root));  // distance between vertex evaluated and root vertex
+        float euclidianDistance = distanceBetweenVertex(
+            j, vertexIndex);  // Distance between vertex evaluated and new vertex
 
         // Original FKP Algorithm chooses a new connection between the new vertex and the one with
         // minimum W
@@ -368,7 +368,7 @@ void GraphGenerator::addEdges(
     std::vector<unsigned int>* vertexIndexes)
 {
     for (unsigned int k = 0; k < q && !distance.empty(); k++)
-    {   // Adding "q" new edges. The processes is similar to added vertex.
+    {  // Adding "q" new edges. The processes is similar to added vertex.
         if (!graph->getVertexById(distance.begin()->second)->isNeighbourOf(vertex))
         {
             vertexIndexes->push_back(distance.begin()->second);

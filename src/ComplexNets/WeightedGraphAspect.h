@@ -20,4 +20,4 @@ public:
             d->addEdge(s, weight);
     }
 };
-}
+}  // namespace graphpp

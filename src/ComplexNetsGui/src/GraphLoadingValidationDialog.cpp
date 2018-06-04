@@ -113,6 +113,4 @@ void GraphLoadingValidationDialog::radioButton4Changed(bool checked)
     this->mainWindow->disableActions();
 }
 
-GraphLoadingValidationDialog::~GraphLoadingValidationDialog()
-{
-}
+GraphLoadingValidationDialog::~GraphLoadingValidationDialog() {}
