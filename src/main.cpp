@@ -6,10 +6,10 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "ComplexNetsCmd/ProgramState.h"
-#include "ComplexNetsCmd/cmdline.h"
-#include "ComplexNetsCmd/cmdmessages.h"
-#include "ComplexNetsGui/inc/mainwindow.h"
+#include "cmdline.h"
+#include "cmdmessages.h"
+#include "mainwindow.h"
+#include "ProgramState.h"
 
 #define ERROR_EXIT \
     delete state;  \
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
         ProgramState* state = new ProgramState();
 
         struct gengetopt_args_info* args_info =
-            (struct gengetopt_args_info*)malloc(sizeof(struct gengetopt_args_info));
+                (struct gengetopt_args_info*)malloc(sizeof(struct gengetopt_args_info));
 
         if (cmdline_parser(argc, argv, args_info) != 0)
         {
@@ -61,8 +61,8 @@ int main(int argc, char* argv[])
                 args_info->molloy_given || args_info->hyperbolic_given)
             {
                 usageErrorMessage(
-                    "Cannot load a graph from an input file and generate a model at the same "
-                    "time.");
+                        "Cannot load a graph from an input file and generate a model at the same "
+                        "time.");
                 ERROR_EXIT;
             }
 
@@ -123,22 +123,22 @@ int main(int argc, char* argv[])
 
             state->setErdosRenyiGraph(n, p);
             std::cout << "Succesfully created an Erdos-Renyi graph with " + to_string(n) +
-                             " nodes.\n";
+                         " nodes.\n";
         }
         else if (args_info->barabasi_given)
         {
             if (!args_info->m0_given)
             {
                 usageErrorMessage(
-                    "Barabasi-Albert graph generation requires an initial number of nodes.");
+                        "Barabasi-Albert graph generation requires an initial number of nodes.");
                 ERROR_EXIT;
             }
 
             if (!args_info->m_given)
             {
                 usageErrorMessage(
-                    "Barabasi-Albert graph generation requires a number of nodes to attach with "
-                    "new nodes.");
+                        "Barabasi-Albert graph generation requires a number of nodes to attach with "
+                        "new nodes.");
                 ERROR_EXIT;
             }
 
@@ -158,14 +158,14 @@ int main(int argc, char* argv[])
             if (m > m0)
             {
                 usageErrorMessage(
-                    "The number of nodes to attach cannot be greater than the initial number of "
-                    "nodes.");
+                        "The number of nodes to attach cannot be greater than the initial number of "
+                        "nodes.");
                 ERROR_EXIT;
             }
 
             state->setBarabasiAlbertGraph(m0, m, n);
             std::cout << "Succesfully created a Barabasi-Albert graph with " + to_string(n) +
-                             " nodes.\n";
+                         " nodes.\n";
         }
         else if (args_info->hot_given)
         {
@@ -178,32 +178,32 @@ int main(int argc, char* argv[])
             if (!args_info->m_given)
             {
                 usageErrorMessage(
-                    "Extended Hot graph generation requires the number of edges in each new "
-                    "vertex.");
+                        "Extended Hot graph generation requires the number of edges in each new "
+                        "vertex.");
                 ERROR_EXIT;
             }
 
             if (!args_info->xi_given)
             {
                 usageErrorMessage(
-                    "Extended Hot graph generation requires the parameter used to select the "
-                    "neighbors for a new vertex.");
+                        "Extended Hot graph generation requires the parameter used to select the "
+                        "neighbors for a new vertex.");
                 ERROR_EXIT;
             }
 
             if (!args_info->q_given)
             {
                 usageErrorMessage(
-                    "Extended Hot graph generation requires the number of edges added in the graph "
-                    "after of connect a vertex.");
+                        "Extended Hot graph generation requires the number of edges added in the graph "
+                        "after of connect a vertex.");
                 ERROR_EXIT;
             }
 
             if (!args_info->r_given)
             {
                 usageErrorMessage(
-                    "Extended Hot graph generation requires the parameter user to selected the "
-                    "edges in the graph after connecting a vertex.");
+                        "Extended Hot graph generation requires the parameter user to selected the "
+                        "edges in the graph after connecting a vertex.");
                 ERROR_EXIT;
             }
 
@@ -230,14 +230,14 @@ int main(int argc, char* argv[])
 
             state->setExtendedHotGraph(m, n, xi, q, r, t);
             std::cout << "Succesfully created an Extended Hot graph with " + to_string(n) +
-                             " nodes.\n";
+                         " nodes.\n";
         }
         else if (args_info->molloy_given)
         {
             if (!args_info->ks_given)
             {
                 usageErrorMessage(
-                    "A file with Ks and its nodes is needed to create a Molloy Reed graph.");
+                        "A file with Ks and its nodes is needed to create a Molloy Reed graph.");
                 ERROR_EXIT;
             }
 
@@ -325,7 +325,7 @@ int main(int argc, char* argv[])
                 if (ret1 != -1)
                 {
                     std::cout << "In-Degree distribution for degree " + to_string(degree) +
-                                     " is: " + to_string(ret1) + ".\n";
+                                 " is: " + to_string(ret1) + ".\n";
                 }
                 else
                 {
@@ -334,7 +334,7 @@ int main(int argc, char* argv[])
                 if (ret2 != -1)
                 {
                     std::cout << "Out-Degree distribution for degree " + to_string(degree) +
-                                     " is: " + to_string(ret2) + ".\n";
+                                 " is: " + to_string(ret2) + ".\n";
                 }
                 else
                 {
@@ -461,8 +461,8 @@ int main(int argc, char* argv[])
             else
             {
                 usageErrorMessage(
-                    "You have specified the print-deg options but no graph was loaded or "
-                    "generated. Ignoring.");
+                        "You have specified the print-deg options but no graph was loaded or "
+                        "generated. Ignoring.");
             }
         }
 
@@ -485,7 +485,7 @@ int main(int argc, char* argv[])
                 else if (args_info->ddist_output_given)
                 {
                     state->exportDegreeDistribution(
-                        path, args_info->log_bin_given, args_info->log_bin_arg);
+                            path, args_info->log_bin_given, args_info->log_bin_arg);
                     functionMessage = "degreeDistribution";
                 }
                 else if (args_info->clustering_output_given)
@@ -528,7 +528,7 @@ int main(int argc, char* argv[])
                 }
 
                 std::cout << "Succesfully exported " + functionMessage + " in output file " + path +
-                                 ".\n";
+                             ".\n";
             }
             else
             {

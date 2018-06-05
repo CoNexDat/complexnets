@@ -1,7 +1,7 @@
 #pragma once
 
 #include <list>
-#include "ComplexNets/mili/mili.h"
+#include "mili/mili.h"
 
 namespace graphpp
 {

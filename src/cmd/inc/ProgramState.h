@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "ComplexNets/PropertyMap.h"
-#include "ComplexNets/typedefs.h"
+#include "PropertyMap.h"
+#include "typedefs.h"
 
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/IGraphFactory.h"
+#include "AdjacencyListGraph.h"
+#include "AdjacencyListVertex.h"
+#include "IGraphFactory.h"
 
 using namespace graphpp;
 

@@ -4,12 +4,12 @@
 
 #include "GraphGenerator.h"
 #include <cmath>
-#include "ComplexNets/ConnectivityVerifier.h"
-#include "ComplexNets/DirectedGraphFactory.h"
-#include "ComplexNets/GraphFactory.h"
-#include "ComplexNets/IGraphReader.h"
-#include "ComplexNets/TraverserBFS.h"
-#include "ComplexNets/WeightedGraphFactory.h"
+#include "ConnectivityVerifier.h"
+#include "DirectedGraphFactory.h"
+#include "GraphFactory.h"
+#include "IGraphReader.h"
+#include "TraverserBFS.h"
+#include "WeightedGraphFactory.h"
 
 using namespace graphpp;
 

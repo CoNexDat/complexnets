@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "ComplexNets/MolloyReedGraphReader.h"
-#include "ComplexNets/typedefs.h"
+#include "MolloyReedGraphReader.h"
+#include "typedefs.h"
 
 class GraphGenerator
 {

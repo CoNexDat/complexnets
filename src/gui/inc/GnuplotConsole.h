@@ -12,12 +12,14 @@
 #include <cstdio>
 #include <fstream>
 #include <iostream>
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/Boxplotentry.h"
-#include "ComplexNets/IClusteringCoefficient.h"
-#include "ComplexNets/mili/mili.h"
-#include "ComplexNets/typedefs.h"
+
+#include "AdjacencyListGraph.h"
+#include "AdjacencyListVertex.h"
+#include "Boxplotentry.h"
+#include "IClusteringCoefficient.h"
+#include "mili/mili.h"
+#include "typedefs.h"
+#include "GrapherUtils.h"
 
 namespace ComplexNetsGui
 {

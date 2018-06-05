@@ -1,4 +1,4 @@
-#include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
+#include "GraphLoadingValidationDialog.h"
 
 using namespace ComplexNetsGui;
 
