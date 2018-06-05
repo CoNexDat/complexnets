@@ -4,12 +4,12 @@
 #include <vector>
 #include <list>
 
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/GraphExceptions.h"
-#include "ComplexNets/WeightedGraphAspect.h"
-#include "ComplexNets/WeightedVertexAspect.h"
-#include "ComplexNets/WeightedNearestNeighborsDegree.h"
+#include "AdjacencyListVertex.h"
+#include "AdjacencyListGraph.h"
+#include "GraphExceptions.h"
+#include "WeightedGraphAspect.h"
+#include "WeightedVertexAspect.h"
+#include "WeightedNearestNeighborsDegree.h"
 
 namespace weightedNearestNeighborsDegreeTest
 {

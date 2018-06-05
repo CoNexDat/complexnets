@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.1)
 project(complexnets VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_C_COMPILER "gcc-7")
-set(CMAKE_CXX_COMPILER "g++-7")
+
+set(CXX_FLAGS "-Wextra -Wno-unused-variable -Wno-unused-parameter -Wno-long-long -I -fprofile-arcs -ftest-coverage -ggdb3")
+set(CMAKE_CXX_FLAGS ${CXX_FLAGS})
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -15,11 +16,15 @@ if(WIN32)
   set(CMAKE_WIN32_EXECUTABLE ON)
 endif()
 
+# Preprocessor definitions. These ones avoid loading certain modules of mili's library.
+add_definitions("-DNO_BITWISE_ENUMS -DNO_PROMOTION_DISABLE -DNO_RANKER")
+
 # Find the QtWidgets library
 find_package(Qt5 COMPONENTS Widgets Gui Core REQUIRED)
 
 # Generate code from ui files
 qt5_wrap_ui(UI_HEADERS src/gui/forms/mainwindow.ui)
+set_property(SOURCE ${UI_HEADERS} PROPERTY SKIP_AUTOMOC ON)
 
 # Group files into categories
 #[[
@@ -173,3 +178,39 @@ target_include_directories(complexnets PRIVATE ${CORE_DIR_HEADERS} ${GUI_DIR_HEA
 
 # Add the Qt5 Widgets for linking
 target_link_libraries(complexnets PRIVATE Qt5::Widgets Qt5::Gui Qt5::Core)
+
+# ================================ Test executable target ================================ #
+
+set(GTEST_ROOT vendor/googletest/googletest)
+
+set(TEST_SRC
+  test/TestMain.cpp
+  test/AdjacencyListGraphTest.cpp
+  test/AdjacencyListVertexTest.cpp
+  test/BetweennessTest.cpp
+  test/ClusteringCoefficientTest.cpp
+  test/DegreeDistributionTest.cpp
+  test/DirectedDegreeDistributionTest.cpp
+  test/NearestNeighborsDegreeTest.cpp
+  test/PropertyMapTest.cpp
+  test/ShellIndexTest.cpp
+  test/TraverserBFSTest.cpp
+  test/TraverserForwardTest.cpp
+  test/TraverserOrderedTest.cpp
+  test/WeightedClusteringCoefficientTest.cpp
+  test/WeightedNearestNeighborsDegreeTest.cpp
+  )
+
+add_subdirectory(${GTEST_ROOT} gtest)
+
+add_executable(runUnitTests ${TEST_SRC})
+
+# Include all the necessary header directories for the `complexnets` target (only for compile time).
+target_include_directories(runUnitTests PRIVATE
+  ${CORE_DIR_HEADERS} ${GUI_DIR_HEADERS} ${CMD_DIR_HEADERS} ${LIBS_DIR} ${GTEST_ROOT}/include
+  )
+
+# Add the necessary libraries for linking
+target_link_libraries(runUnitTests gtest gtest_main pthread)
+
+file(COPY test/TestTrees DESTINATION .)

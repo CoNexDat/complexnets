@@ -2,14 +2,12 @@
 
 set -e
 
-if [ -e test/build ]; then
-  rm -rf test/build
+if [ ! -e build ]; then
+    mkdir -p build
 fi
 
-mkdir -p test/build
-cd test/build
-
+cd build
 CC=gcc-7 CXX=g++-7 cmake ..
-make
+make runUnitTests
 
 exec ./runUnitTests

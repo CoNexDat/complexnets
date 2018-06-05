@@ -4,11 +4,11 @@
 #include <vector>
 #include <list>
 
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/GraphExceptions.h"
-#include "ComplexNets/NearestNeighborsDegree.h"
-#include "ComplexNets/GraphReader.h"
+#include "AdjacencyListVertex.h"
+#include "AdjacencyListGraph.h"
+#include "GraphExceptions.h"
+#include "NearestNeighborsDegree.h"
+#include "GraphReader.h"
 
 namespace nearestNeighborsDegreeTest
 {

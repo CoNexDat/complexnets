@@ -2,7 +2,11 @@
 
 set -e
 
-cd src
+if [ ! -e build ]; then
+    mkdir -p build
+fi
 
-QT_SELECT=qt5 qmake
-exec make all
+cd build
+
+CC=gcc-7 CXX=g++-7 cmake ..
+make complexnets
