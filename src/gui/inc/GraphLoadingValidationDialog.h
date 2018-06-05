@@ -14,7 +14,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "ComplexNetsGui/inc/mainwindow.h"
+#include "mainwindow.h"
 
 namespace ComplexNetsGui
 {

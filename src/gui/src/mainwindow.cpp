@@ -13,23 +13,22 @@
 #include <string>
 #include <vector>
 
-// File ui_mainwindow.h will be generated on compile time. Don't look for it, unless you have
-// already compiled the project.
-#include "ComplexNets/DegreeDistribution.h"
-#include "ComplexNets/DirectedDegreeDistribution.h"
-#include "ComplexNets/DirectedGraphFactory.h"
-#include "ComplexNets/GraphFactory.h"
-#include "ComplexNets/GraphGenerator.h"
-#include "ComplexNets/IBetweenness.h"
-#include "ComplexNets/IGraphReader.h"
-#include "ComplexNets/IShellIndex.h"
-#include "ComplexNets/MaxClique.h"
-#include "ComplexNets/WeightedGraphFactory.h"
-#include "ComplexNetsGui/inc/GnuplotConsole.h"
-#include "ComplexNetsGui/inc/GraphLoadingValidationDialog.h"
-#include "ComplexNetsGui/inc/LogBinningPolicy.h"
-#include "ComplexNetsGui/inc/mainwindow.h"
-#include "ComplexNetsGui/inc/ui_mainwindow.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h" // Generated at compile-time.
+
+#include "DegreeDistribution.h"
+#include "DirectedDegreeDistribution.h"
+#include "DirectedGraphFactory.h"
+#include "GraphFactory.h"
+#include "GraphGenerator.h"
+#include "IBetweenness.h"
+#include "IGraphReader.h"
+#include "IShellIndex.h"
+#include "MaxClique.h"
+#include "WeightedGraphFactory.h"
+#include "GnuplotConsole.h"
+#include "GraphLoadingValidationDialog.h"
+#include "LogBinningPolicy.h"
 
 using namespace ComplexNetsGui;
 using namespace graphpp;

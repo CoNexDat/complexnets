@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/DirectedGraphAspect.h"
-#include "ComplexNets/DirectedVertexAspect.h"
-#include "ComplexNets/WeightedGraphAspect.h"
-#include "ComplexNets/WeightedVertexAspect.h"
+#include "AdjacencyListGraph.h"
+#include "DirectedGraphAspect.h"
+#include "DirectedVertexAspect.h"
+#include "WeightedGraphAspect.h"
+#include "WeightedVertexAspect.h"
 
 typedef graphpp::AdjacencyListVertex Vertex;
 typedef graphpp::AdjacencyListGraph<Vertex> Graph;

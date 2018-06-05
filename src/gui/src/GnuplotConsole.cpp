@@ -1,7 +1,5 @@
-#include "ComplexNetsGui/inc/GnuplotConsole.h"
-#include "ComplexNetsGui/inc/GrapherUtils.h"
-
-#include "ComplexNetsGui/inc/LogBinningPolicy.h"
+#include "GnuplotConsole.h"
+#include "LogBinningPolicy.h"
 
 using namespace ComplexNetsGui;
 
@@ -54,7 +52,7 @@ GnuplotConsole::~GnuplotConsole()
 
 // TODO should be const
 bool GnuplotConsole::plotPropertySet(
-    const VariantsSet& set, const std::string& propertyName, const bool logBin, unsigned int bins)
+        const VariantsSet& set, const std::string& propertyName, const bool logBin, unsigned int bins)
 {
     GrapherUtils utils;
     if (pipe == nullptr)
@@ -68,7 +66,7 @@ bool GnuplotConsole::plotPropertySet(
     writeCommand("set logscale y");
     writeCommand("set style data linespoints");
     std::string command =
-        std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
+            std::string("plot ").append("\"/tmp/").append(propertyName).append("\"\n");
     std::string file = "/tmp/";
     file.append(propertyName);
     /*
@@ -133,7 +131,7 @@ void GnuplotConsole::writeCommand(const std::string& command)
 }
 
 bool GnuplotConsole::boxplotCC(
-    std::vector<graphpp::Boxplotentry> bpentries, const bool logBin, unsigned int bins)
+        std::vector<graphpp::Boxplotentry> bpentries, const bool logBin, unsigned int bins)
 {
     std::vector<double> Q1, Q2, Q3, d, m;
     std::vector<unsigned int> bin;

@@ -4,20 +4,23 @@
 
 #pragma once
 
+#include <QtCore/QEvent>
 #include <QMainWindow>
+#include "GnuplotConsole.h"
+#include "mili/mili.h"
 
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/DirectedGraphAspect.h"
-#include "ComplexNets/DirectedVertexAspect.h"
-#include "ComplexNets/GraphWriter.h"
-#include "ComplexNets/IGraphFactory.h"
-#include "ComplexNets/PropertyMap.h"
-#include "ComplexNets/WeightedGraphAspect.h"
-#include "ComplexNets/WeightedVertexAspect.h"
-#include "ComplexNets/typedefs.h"
-#include "ComplexNetsGui/inc/GnuplotConsole.h"
-#include "ComplexNetsGui/inc/GrapherUtils.h"
+#include "AdjacencyListGraph.h"
+#include "AdjacencyListVertex.h"
+#include "DirectedGraphAspect.h"
+#include "DirectedVertexAspect.h"
+#include "GraphWriter.h"
+#include "IGraphFactory.h"
+#include "PropertyMap.h"
+#include "WeightedGraphAspect.h"
+#include "WeightedVertexAspect.h"
+#include "typedefs.h"
+#include "GnuplotConsole.h"
+#include "GrapherUtils.h"
 
 namespace Ui
 {

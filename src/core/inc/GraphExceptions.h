@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ComplexNets/mili/mili.h"
+#include "mili/mili.h"
 
 class GraphExceptionHierarchy
 {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream> // Required to avoid compilation issue with ctype_base library.
 #include "mili/mili.h"
 
 namespace graphpp

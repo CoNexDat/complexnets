@@ -7,7 +7,7 @@
 #include <iostream>
 #include <queue>
 
-#include "ComplexNets/typedefs.h"
+#include "typedefs.h"
 
 namespace graphpp
 {
