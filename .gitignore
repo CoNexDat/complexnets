@@ -97,5 +97,6 @@ fabric.properties
 ## Custom
 .idea/
 
-# Test build
+# Script Build directories
+build/
 test/build

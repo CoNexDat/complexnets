@@ -8,15 +8,15 @@
 #include <list>
 
 
-#include "ComplexNets/DirectedVertexAspect.h"
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/GraphExceptions.h"
-#include "ComplexNets/typedefs.h"
-#include "ComplexNets/IGraphFactory.h"
-#include "ComplexNets/DirectedDegreeDistribution.h"
-#include "ComplexNets/GraphGenerator.h"
-#include "ComplexNets/DirectedGraphFactory.h"
+#include "DirectedVertexAspect.h"
+#include "AdjacencyListVertex.h"
+#include "AdjacencyListGraph.h"
+#include "GraphExceptions.h"
+#include "typedefs.h"
+#include "IGraphFactory.h"
+#include "DirectedDegreeDistribution.h"
+#include "GraphGenerator.h"
+#include "DirectedGraphFactory.h"
 
 
 namespace directedDegreeDistributionTest

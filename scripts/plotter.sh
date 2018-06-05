@@ -24,7 +24,7 @@
 # $8: use y logscale.
 savePlot ()
 {
-	./complexnets -i $1 $2 -o $3
+	../build/complexnets -i $1 $2 -o $3
 
 	# Uncomment to generate a PS file.
 	# gnuplotCommand="set style data linespoint; set term postscript color; set title '$4'; set xlabel '$5'; set ylabel '$6'; set output '$3.ps'; plot '$3'"
