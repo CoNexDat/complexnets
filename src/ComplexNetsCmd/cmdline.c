@@ -147,7 +147,6 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->maxCliqueExact_output_given = 0 ;
   args_info->maxCliqueAprox_output_given = 0 ;
   args_info->output_file_given = 0 ;
-  args_info->clear_results_given = 0;
   args_info->print_deg_given = 0 ;
   args_info->analysis_group_counter = 0 ;
   args_info->directed_group_counter = 0 ;

@@ -269,15 +269,6 @@ int main(int argc, char* argv[])
             float c = args_info->deg_arg;
             state->setHiperbolicGraph(n, a, c);
         }
-        else
-        {
-            if (!args_info->clear_results_given) 
-            {
-                usageErrorMessage("A network must be specified in order to work.");
-                ERROR_EXIT;
-            }
-            
-        }
 
         if (args_info->betweenness_given)
         {

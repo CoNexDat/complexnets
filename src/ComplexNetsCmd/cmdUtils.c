@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "cmdUtils.h"
 
 void listdir(const char *name, int indent)
 {
@@ -43,6 +44,19 @@ char * stringcat(char *out, const char *in)
   return anchor;
 }
 
+int findIndex(char *analysis_name)
+{
+    int index = 0;
+    while (index < ANALYSIS_CANT)
+    {
+        if (strcmp(analysis_names[index], analysis_name) == 0) {
+            return index;
+        }
+        index++;
+    } 
+    return -1;
+}
+
 void printFile(char *graph_name, char *analysis_name)
 {
     char c;
@@ -57,7 +71,8 @@ void printFile(char *graph_name, char *analysis_name)
       printf("Result file not found for graph %s and analysis %s \n", graph_name, analysis_name);
       exit(0);
     }
-    printf("Reading file from %s\n", dir);
+    int header_index = findIndex(analysis_name);
+    printf("%s\n", header_name[header_index]);
     c = fgetc(f);
     while (c != EOF)
     {
