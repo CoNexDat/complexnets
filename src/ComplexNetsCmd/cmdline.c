@@ -80,6 +80,7 @@ const char *gengetopt_args_info_help[] = {
   "      --print-deg               Print node degree for power law regression",
   "      --clear-results           Deletes the results calculated stored in the result folder",
   "      --view-results            Shows all the analysis made on each graph",
+  "      --plot-results <graph_name>          Uses gnuplot to plot the analysis made for agiven graph",
   "      --view <graph_name> <analysis_name>  Shows the corresponding result for a given graph and analysis previously made.",
     0
 };
@@ -871,6 +872,7 @@ cmdline_parser_internal (
         { "clear-results", 0, NULL, 0},
         { "view-results", 0, NULL, 0},
         { "view", 2, NULL, 0},
+        { "plot-results", 1, NULL, 0},
         { 0,  0, 0, 0 }
       };
 
@@ -1450,6 +1452,16 @@ cmdline_parser_internal (
                 exit(1);
               }
               printFile(argv[2], argv[3]);
+              exit(1);
+          }
+          else if (strcmp (long_options[option_index].name, "plot-results") == 0)
+          {
+              
+              if (argc < 3) {
+                printf("Insufficient arguments ex: complexnets --plot-results <graph_name>\n");
+                exit(1);
+              }
+              plotResults(argv[2]);
               exit(1);
           }
 

@@ -2,6 +2,7 @@
 #define CMDUTILS_H
 
 void listdir(const char *name, int indent);
+void plotResults(const char *graph_name);
 char * stringcat(char *out, const char *in);
 void printFile(char *graph_name, char *analysis_name);
 int findIndex(char *analysis_name);
@@ -18,12 +19,12 @@ static const char *analysis_names[] = {
 };
 
 static const char *header_name[] = {
-	"Betweenness Degree",
-	"#Nodes Degree",
-	"Clustering Degree",
-	"NearestNeighborsDegree Degree",
-	"ShellIndex Degree",
-	"#Cliques #Nodes",
-	"#Cliques #Nodes"
+	"#Betweenness Degree",
+	"#Node p(d)",
+	"#Clustering Degree",
+	"#NearestNeighborsDegree Degree",
+	"#ShellIndex Degree",
+	"#Cliques Nodes",
+	"#Cliques Nodes"
 };
 #endif
