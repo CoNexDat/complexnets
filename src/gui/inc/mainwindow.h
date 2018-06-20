@@ -89,8 +89,8 @@ private:
     bool closeCurrentGraph();
     std::string getSavePath() const;
     QString inputId(std::string const& label);
-    int intInputId(std::string const& label);
-    double doubleInputId(std::string const& label);
+    int intInputId(std::string const& label, int defaultNum);
+    double doubleInputId(std::string const& label, double defaultNum);
 
 private slots:
     void on_actionExportPowerLawDegreeDistribution_triggered();
