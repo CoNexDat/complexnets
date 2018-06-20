@@ -76,9 +76,25 @@ void MainWindow::on_actionOpen_triggered()
 
     if (this->graphLoaded)
     {
-        ui->textBrowser->append(
-            "Action canceled: Only one network can be loaded at any given time.\n");
-        return;
+        QMessageBox msg(
+                QMessageBox::Question, "Close current network",
+                "Are you sure you want to close the current network?",
+                QMessageBox::Ok | QMessageBox::Cancel, this);
+        if (msg.exec() == QMessageBox::Ok)
+        {
+            graph = Graph();
+            weightedGraph = WeightedGraph();
+            this->deleteGraphFactory();
+            propertyMap.clear();
+            this->onNetworkUnload();
+            ui->textBrowser->append("Done.\n");
+        }
+        else {
+            ui->textBrowser->append("Action canceled by user.\n");
+            ui->textBrowser->append(
+                    "Action canceled: Only one network can be loaded at any given time.\n");
+            return;
+        }
     }
 
     // If no network is loaded user may procede to load a new network.
