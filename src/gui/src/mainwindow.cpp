@@ -201,8 +201,8 @@ void MainWindow::on_actionExportPowerLawDegreeDistribution_triggered()
         return;
     }
 
-    int alfa = intInputId("alfa:");
-    int n = intInputId("nodes:");
+    int alfa = intInputId("alfa:", 0);
+    int n = intInputId("nodes:", 0);
 
     double dmax = pow(n, 1.0 / alfa);
     std::cout << "dmax: " << dmax << "\n";
@@ -425,7 +425,7 @@ QString MainWindow::inputId(std::string const& label)
     return ret;
 }
 
-int MainWindow::intInputId(std::string const& label)
+int MainWindow::intInputId(std::string const& label, int defaultNum)
 {
     QString ret;
     QInputDialog inputVertexIdDialog(this);
@@ -433,25 +433,25 @@ int MainWindow::intInputId(std::string const& label)
     inputVertexIdDialog.setIntMinimum(0);
     inputVertexIdDialog.setIntMaximum(INT_MAX);
     inputVertexIdDialog.setLabelText(label.c_str());
-    inputVertexIdDialog.setCancelButtonText("Default = 0");
+    inputVertexIdDialog.setCancelButtonText("Default = " + QString::number(defaultNum));
     if (inputVertexIdDialog.exec())
         return inputVertexIdDialog.intValue();
     else
-        return 0;
+        return defaultNum;
 }
 
-double MainWindow::doubleInputId(std::string const& label)
+double MainWindow::doubleInputId(std::string const& label, double defaultNum)
 {
     QString ret;
     QInputDialog inputVertexIdDialog(this);
     inputVertexIdDialog.setInputMode(QInputDialog::DoubleInput);
     inputVertexIdDialog.setDoubleDecimals(8);
     inputVertexIdDialog.setLabelText(label.c_str());
-    inputVertexIdDialog.setCancelButtonText("Default = 0.0");
+    inputVertexIdDialog.setCancelButtonText("Default = " + QString::number(defaultNum));
     if (inputVertexIdDialog.exec())
         return inputVertexIdDialog.doubleValue();
     else
-        return 0.0;
+        return defaultNum;
 }
 
 void MainWindow::on_actionExportMaxCliqueExact_distribution_triggered()
@@ -512,7 +512,7 @@ void MainWindow::on_action_maxClique_plotting_generic_triggered(bool exact)
     if (LogBinningDialog() == QMessageBox::Yes)
     {
         logBin = true;
-        bins = intInputId("bins:");
+        bins = intInputId("bins:", 25);
     }
 
     bool ret = this->console->plotPropertySet(
@@ -733,7 +733,7 @@ void MainWindow::computeMaxClique(bool exact)
         int timeout = 0;
         if (exact)
         {
-            timeout = intInputId("Time out (seconds):");
+            timeout = intInputId("Time out (seconds):", 0);
         }
         IMaxClique<Graph, Vertex>* maxClique =
             exact ? (IMaxClique<Graph, Vertex>*)factory->createExactMaxClique(graph, timeout)
@@ -1001,7 +1001,7 @@ void MainWindow::on_actionDegree_distribution_plotting_triggered()
     if (LogBinningDialog() == QMessageBox::Yes)
     {
         logBin = true;
-        bins = intInputId("bins:");
+        bins = intInputId("bins:", 25);
     }
     if (!this->digraph)
     {
@@ -1827,10 +1827,9 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
     if (!closeCurrentGraph())
         return;
 
-    int n = intInputId("n:");
-    double p = doubleInputId("p:");
+    int n = intInputId("n:", 1000);
+    double p = doubleInputId("p:", 0.01);
     QString ret;
-
 
     try
     {
@@ -1866,9 +1865,9 @@ void MainWindow::on_actionNewHiperbolic_triggered()
     if (!closeCurrentGraph())
         return;
     QString ret;
-    unsigned int n = intInputId("n:");
-    double a = doubleInputId("a:");
-    double deg = doubleInputId("deg:");
+    unsigned int n = intInputId("n:", 10000);
+    double a = doubleInputId("a:", 0.75);
+    double deg = doubleInputId("deg:", 0.0014);
 
     try
     {
@@ -2200,7 +2199,7 @@ void MainWindow::on_actionBoxplotCC_triggered()
         if (LogBinningDialog() == QMessageBox::Yes)
         {
             logBin = true;
-            bins = intInputId("bins:");
+            bins = intInputId("bins:", 10);
         }
 
         ret = this->console->boxplotCC(bpentries, logBin, bins);
@@ -2559,7 +2558,7 @@ void MainWindow::on_actionExportCCBoxplot_triggered()
         std::vector<graphpp::Boxplotentry> bpentries = this->computeBpentries();
         if (LogBinningDialog() == QMessageBox::Yes)
         {
-            bins = intInputId("bins:");
+            bins = intInputId("bins:", 10);
             LogBinningPolicy policy;
             policy.transform(bpentries, bins);
             std::vector<double> d, m;
@@ -2624,7 +2623,7 @@ void MainWindow::on_actionBoxplotNearestNeighborsDegree_triggered()
         if (LogBinningDialog() == QMessageBox::Yes)
         {
             logBin = true;
-            bins = intInputId("bins:");
+            bins = intInputId("bins:", 10);
         }
 
         ret = this->console->boxplotCC(bpentries, logBin, bins);
@@ -2719,7 +2718,7 @@ void MainWindow::on_actionExportKnnBoxplot_triggered()
         std::vector<graphpp::Boxplotentry> bpentries = this->computeBpentriesKnn();
         if (LogBinningDialog() == QMessageBox::Yes)
         {
-            bins = intInputId("bins:");
+            bins = intInputId("bins:", 10);
             LogBinningPolicy policy;
             policy.transform(bpentries, bins);
             std::vector<double> d, m;
