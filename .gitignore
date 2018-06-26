@@ -1,45 +1,102 @@
-# https://github.com/github/gitignore/blob/master/Qt.gitignore
-# C++ objects and libs
+# C++ exclude rules
+## Prerequisites
+*.d
 
+## Compiled Object files
 *.slo
 *.lo
 *.o
-*.a
-*.la
-*.lai
+*.obj
+
+## Precompiled Headers
+*.gch
+*.pch
+
+## Compiled Dynamic libraries
 *.so
-*.dll
 *.dylib
+*.dll
 
-# Qt-es
+## Fortran module files
+*.mod
+*.smod
 
-/.qmake.cache
-/.qmake.stash
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qbs.user.*
-*.moc
-moc_*.cpp
-qrc_*.cpp
-ui_*.h
-Makefile*
-*build-*
+## Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
 
-# QtCreator
+## Executables
+*.exe
+*.out
+*.app
 
-*.autosave
+# CMake exclude rules
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
 
-# QtCtreator Qml
-*.qmlproject.user
-*.qmlproject.user.*
+# JetBrain exclude rules
+## User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
 
-# QtCtreator CMake
-CMakeLists.txt.user
+## Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
 
-# complexnets
-*.h.gch
-src/Makefile
-src/complexnetspp
+## Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
 
+## CMake
+cmake-build-debug/
+cmake-build-release/
+
+## Mongo Explorer plugin
+.idea/**/mongoSettings.xml
+
+## File-based project format
+*.iws
+
+## IntelliJ
+out/
+
+## mpeltonen/sbt-idea plugin
+.idea_modules/
+
+## JIRA plugin
+atlassian-ide-plugin.xml
+
+## Cursive Clojure plugin
+.idea/replstate.xml
+
+## Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+## Editor-based Rest Client
+.idea/httpRequests
+
+## Custom
+.idea/
+
+# Script Build directories
+build/
 test/build

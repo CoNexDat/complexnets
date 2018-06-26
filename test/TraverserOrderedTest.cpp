@@ -8,11 +8,11 @@
 #include <vector>
 #include <list>
 
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/GraphExceptions.h"
-#include "ComplexNets/typedefs.h"
-#include "ComplexNets/TraverserOrdered.h"
+#include "AdjacencyListVertex.h"
+#include "AdjacencyListGraph.h"
+#include "GraphExceptions.h"
+#include "typedefs.h"
+#include "TraverserOrdered.h"
 
 namespace traverserOrderedTest
 {
