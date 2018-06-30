@@ -4,7 +4,7 @@
 #include "IShellIndex.h"
 #include "IShellIndexNode.h"
 #include "ShellIndexSimpleNode.h"
-//#include "ShellIndexDirectedNode.h"
+#include "ShellIndexDirectedNode.h"
 #include "typedefs.h"
 
 namespace graphpp {
@@ -53,7 +53,6 @@ namespace graphpp {
                 // Will mark it as removed from the structure, since the coreness is already calculated
                 nodesByVertexId[nextNode->getVertexId()]->markAsRemove();
                 nodesByCurrentDegree[degree].remove(nextNode);
-
                 NeighbourIdsIterator neighborsIt = nextNode->getNeighbourIdsIterator();
                 // Iterate through each of it's neighbors to reduce their degree by 1, since v was
                 // removed.
@@ -103,8 +102,8 @@ namespace graphpp {
             while (!it.end()) {
                 Vertex *v = *it;
                 INode<Graph, Vertex> *newNode = getNodeFromType(v, type);//new Node();
-                nodesByVertexId[v->getVertexId()] = newNode;
-                nodesByCurrentDegree[v->degree()].push_back(newNode);
+                nodesByVertexId[newNode->getVertexId()] = newNode;
+                nodesByCurrentDegree[newNode->getDegree()].push_back(newNode);
                 ++it;
             }
         }
@@ -114,19 +113,18 @@ namespace graphpp {
                 case ShellIndexTypeSimple: {
                     return new SimpleNode<Graph, Vertex>(v, type);
                 }
-                    /*
-
                 case ShellIndexTypeInDegree:
                 case ShellIndexTypeOutDegree:{
                     return new DirectedNode<Graph,Vertex>(v, type);
                 }
-                case ShellIndexTypeWeightedEqualStrength:
-                case ShellIndexTypeWeightedEqualPopulation:{
-                    Vertex vertex = *v;
-                    WeightedVertex weightedVertex= static_cast<WeightedVertex>(vertex);
-                    return new WeightedNode(weightedVertex, type);
-                }
-                  */
+                    /*
+case ShellIndexTypeWeightedEqualStrength:
+case ShellIndexTypeWeightedEqualPopulation:{
+    Vertex vertex = *v;
+    WeightedVertex weightedVertex= static_cast<WeightedVertex>(vertex);
+    return new WeightedNode(weightedVertex, type);
+}
+  */
             }
         }
 

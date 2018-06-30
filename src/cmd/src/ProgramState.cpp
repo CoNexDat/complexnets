@@ -278,7 +278,15 @@ double ProgramState::shellIndex(unsigned int vertex_id)
 {
     double ret = -1;
     auto factory = new GraphFactory<Graph, Vertex>();
-    auto shellIndex = factory->createShellIndex(graph, ShellIndexTypeSimple);
+
+    ShellIndexType type = ShellIndexTypeSimple;
+    if(this->isWeighted()){
+        type = ShellIndexTypeWeightedEqualPopulation;
+    }else if(this->isDigraph()){
+        type = ShellIndexTypeInDegree;
+    }
+
+    auto shellIndex = factory->createShellIndex(graph, type);
     auto it = shellIndex->iterator();
 
     while (!it.end())

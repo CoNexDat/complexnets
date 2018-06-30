@@ -5,19 +5,19 @@
 #include "IShellIndexNode.h"
 
 namespace graphpp {
-    template <class Graph, class Vertex>
+    template<class Graph, class Vertex>
 
-    class DirectedNode : public INode {
+    class DirectedNode : public INode<Graph, Vertex> {
     public:
-        DirectedNode(Vertex* v, ShellIndexType type) {
-            DirectedVertex* directedVertex = static_cast<DirectedVertex*>(v);
+        DirectedNode(Vertex *v, ShellIndexType type) {
+            DirectedVertex *directedVertex = static_cast<DirectedVertex *>(v);
             vertex = directedVertex;
 
             shellIndexType = type;
 
-            if(type == ShellIndexTypeInDegree){
+            if (type == ShellIndexTypeInDegree) {
                 currentDegree = vertex->inDegree();
-            }else{
+            } else {
                 currentDegree = vertex->outDegree();
             }
         }
@@ -35,21 +35,38 @@ namespace graphpp {
             return currentDegree;
         };
 
-        NeighbourConstIterator getNeighboursIterator(){
-            if(shellIndexType  == ShellIndexTypeInDegree){
-                return vertex->inNeighborsConstIterator();
-            }else{
-                return vertex->outNeighborsConstIterator();
+
+        NeighbourIdsIterator getNeighbourIdsIterator() {
+            NeighbourConstIterator neighborsIt = getIterator();
+
+
+            std::vector<unsigned int> idsVector;
+            while (!neighborsIt.end()) {
+                AdjacencyListVertex *neigh = *neighborsIt;
+                insert_into(idsVector, neigh->getVertexId());
+                ++neighborsIt;
             }
+
+            return idsVector;
         }
 
-        unsigned int getVertexId(){
+
+
+        unsigned int getVertexId() {
             return vertex->getVertexId();
         }
 
     private:
+        NeighbourConstIterator getIterator() {
+            if (shellIndexType == ShellIndexTypeOutDegree) {
+                return vertex->outNeighborsConstIterator();
+            }
+            return vertex->inNeighborsConstIterator();
+        }
+
         int currentDegree;
         DirectedVertex *vertex;
+        ShellIndexType shellIndexType;
     };
 
 }  // namespace graphpp

@@ -302,7 +302,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
         ui->action_maxClique_plotting->setEnabled(false);
         ui->actionMaxCliqueExact->setEnabled(false);
         ui->action_maxCliqueExact_plotting->setEnabled(false);
-        ui->actionShell_index->setEnabled(false);
+        ui->actionShell_index->setEnabled(true);
         ui->actionShell_Index_vs_Degree->setEnabled(false);
         // export menue
         ui->actionExportBetweenness_vs_Degree->setEnabled(true);
@@ -321,7 +321,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
         ui->actionClustering_coefficient->setEnabled(true);
         ui->actionNearest_neighbors_degree->setEnabled(true);
         ui->actionConfigure_Directed_Degree_sign->setEnabled(true);
-
+        ui->actionShell_index->setEnabled(true);
         ui->actionClustering_Coefficient_vs_Degree->setEnabled(true);
         ui->actionNearest_Neighbors_Degree_vs_Degree->setEnabled(true);
 
@@ -703,16 +703,31 @@ void MainWindow::computeShellIndex()
     }
     else
     {
-        auto shellIndex = factory->createShellIndex(graph, ShellIndexTypeSimple);
-        auto it = shellIndex->iterator();
+        if(this->weightedgraph){
+       //     type = ShellIndexTypeWeightedEqualPopulation;
+        }else if(this->digraph){
+            auto shellIndex = directedFactory->createShellIndex(directedGraph, ShellIndexTypeInDegree);
+            auto it = shellIndex->iterator();
 
-        while (!it.end())
-        {
-            propertyMap.addProperty<unsigned int>(
-                "shellIndex", to_string<unsigned int>(it->first), it->second);
-            ++it;
+            while (!it.end())
+            {
+                propertyMap.addProperty<unsigned int>(
+                        "shellIndex", to_string<unsigned int>(it->first), it->second);
+                ++it;
+            }
+            delete shellIndex;
+        }else{
+            auto shellIndex = factory->createShellIndex(graph, ShellIndexTypeSimple);
+            auto it = shellIndex->iterator();
+
+            while (!it.end())
+            {
+                propertyMap.addProperty<unsigned int>(
+                        "shellIndex", to_string<unsigned int>(it->first), it->second);
+                ++it;
+            }
+            delete shellIndex;
         }
-        delete shellIndex;
     }
 }
 
@@ -2470,24 +2485,42 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesDegreeDistribution()
 
 graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex()
 {
-    Graph& g = graph;
-    auto vit = g.verticesIterator();
     std::vector<double> bCoefs;
-    // TODO: is this needed?
-    auto betweenness = factory->createShellIndex(g, ShellIndexTypeSimple);
+
     double coefSums = 0.0;
     unsigned int count = 0;
 
-    while (!vit.end())
-    {
-        Vertex* v = *vit;
-        int c =
-            propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
-        bCoefs.push_back(c);
-        coefSums += c;
-        ++vit;
-        count++;
+    if (this->digraph){
+        DirectedGraph& g = directedGraph;
+        auto vit = g.verticesIterator();
+
+        while (!vit.end())
+        {
+            Vertex* v = *vit;
+            int c =
+                    propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+            bCoefs.push_back(c);
+            coefSums += c;
+            ++vit;
+            count++;
+        }
+    }else{
+        Graph& g = graph;
+        auto vit = g.verticesIterator();
+
+
+        while (!vit.end())
+        {
+            Vertex* v = *vit;
+            int c =
+                    propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+            bCoefs.push_back(c);
+            coefSums += c;
+            ++vit;
+            count++;
+        }
     }
+
     std::sort(bCoefs.begin(), bCoefs.end());
     graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
