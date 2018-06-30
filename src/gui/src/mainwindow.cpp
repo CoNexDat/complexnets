@@ -703,7 +703,7 @@ void MainWindow::computeShellIndex()
     }
     else
     {
-        auto shellIndex = factory->createShellIndex(graph);
+        auto shellIndex = factory->createShellIndex(graph, ShellIndexTypeSimple);
         auto it = shellIndex->iterator();
 
         while (!it.end())
@@ -2474,7 +2474,7 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex()
     auto vit = g.verticesIterator();
     std::vector<double> bCoefs;
     // TODO: is this needed?
-    auto betweenness = factory->createShellIndex(g);
+    auto betweenness = factory->createShellIndex(g, ShellIndexTypeSimple);
     double coefSums = 0.0;
     unsigned int count = 0;
 

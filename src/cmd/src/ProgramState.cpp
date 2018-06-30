@@ -278,7 +278,7 @@ double ProgramState::shellIndex(unsigned int vertex_id)
 {
     double ret = -1;
     auto factory = new GraphFactory<Graph, Vertex>();
-    auto shellIndex = factory->createShellIndex(graph);
+    auto shellIndex = factory->createShellIndex(graph, ShellIndexTypeSimple);
     auto it = shellIndex->iterator();
 
     while (!it.end())
@@ -746,7 +746,7 @@ void ProgramState::computeNearestNeighborsDegree(PropertyMap& propertyMap)
 void ProgramState::computeShellIndex(PropertyMap& propertyMap)
 {
     auto factory = new GraphFactory<Graph, Vertex>();
-    auto shellIndex = factory->createShellIndex(graph);
+    auto shellIndex = factory->createShellIndex(graph, ShellIndexTypeSimple);
     auto it = shellIndex->iterator();
 
     while (!it.end())

@@ -1,13 +1,13 @@
 #pragma once
 
 //PlainNode is a node for an undirected and unweighted graph
-namespace graphpp
-{
-    class SimpleNode : public INode {
+namespace graphpp {
 
+    template<class Graph, class Vertex>
+    class SimpleNode : public INode<Graph, Vertex> {
     public:
 
-        SimpleNode(Vertex *v, ShellIndexType type){
+        SimpleNode(Vertex *v, ShellIndexType type) {
             vertex = v;
             shellIndexType = type;
             currentDegree = v->degree();
@@ -26,11 +26,20 @@ namespace graphpp
             return currentDegree;
         };
 
-        NeighbourConstIterator getNeighboursIterator(){
-            return vertex->neighborsConstIterator();
+        NeighbourIdsIterator getNeighbourIdsIterator() {
+            NeighbourConstIterator neighborsIt = vertex->neighborsConstIterator();
+
+            std::vector<unsigned int> idsVector;
+            while (!neighborsIt.end()) {
+                AdjacencyListVertex *neigh = *neighborsIt;
+                insert_into(idsVector, neigh->getVertexId());
+                ++neighborsIt;
+            }
+
+            return idsVector;
         }
 
-        unsigned int getVertexId(){
+        unsigned int getVertexId() {
             return vertex->getVertexId();
         }
 
@@ -38,6 +47,7 @@ namespace graphpp
     private:
         int currentDegree;
         Vertex *vertex;
+        ShellIndexType shellIndexType;
     };
 
 }  // namespace graphpp

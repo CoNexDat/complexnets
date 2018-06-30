@@ -2,8 +2,11 @@
 
 #include "typedefs.h"
 
-namespace graphpp
-{
+
+namespace graphpp {
+
+    typedef typename std::vector<unsigned int> NeighbourIdsIterator;
+
     enum ShellIndexType {
         // For an graph not directed or weighted
                 ShellIndexTypeSimple,
@@ -17,15 +20,18 @@ namespace graphpp
                 ShellIndexTypeWeightedEqualStrength
     };
 
+    template<class Graph, class Vertex>
     class INode {
     public:
-        ShellIndexType shellIndexType;
-
         // getDegree returns the current "bin" for the node to be inserted in, the current shell index
         virtual void markAsRemove()  = 0;
+
         virtual int getDegree()  = 0;
+
         virtual int decreaseDegree()  = 0;
-        virtual NeighbourConstIterator getNeighboursIterator()  = 0;
+
+        virtual NeighbourIdsIterator getNeighbourIdsIterator()  = 0;
+
         virtual unsigned int getVertexId() = 0;
 
         virtual ~INode() {}

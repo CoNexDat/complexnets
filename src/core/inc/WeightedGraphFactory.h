@@ -31,7 +31,7 @@ public:
     {
         return new WeightedNearestNeighborsDegree<Graph, Vertex>();
     }
-    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph&)
+    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph&, ShellIndexType type)
     {
         // return new WeightedShellIndex<Graph,Vertex>();
         return nullptr;
