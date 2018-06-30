@@ -40,7 +40,7 @@ public:
     }
     virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph& g)
     {
-        return new ShellIndex<Graph, Vertex>(g);
+        return new ShellIndex<Graph, Vertex>(g, ShellIndexTypeSimple);
     }
 
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
