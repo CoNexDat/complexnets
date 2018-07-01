@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QtGui/qopengl.h>
 #include "IShellIndex.h"
 #include "IShellIndexNode.h"
 #include "ShellIndexSimpleNode.h"
 #include "ShellIndexDirectedNode.h"
+#include "ShellIndexWeightedNode.h"
 #include "typedefs.h"
 
 namespace graphpp {
@@ -113,18 +113,15 @@ namespace graphpp {
                 case ShellIndexTypeSimple: {
                     return new SimpleNode<Graph, Vertex>(v, type);
                 }
-                case ShellIndexTypeInDegree:
-                case ShellIndexTypeOutDegree:{
-                    return new DirectedNode<Graph,Vertex>(v, type);
+                case ShellIndexTypeWeightedEqualStrength:
+                case ShellIndexTypeWeightedEqualPopulation: {
+                   return new WeightedNode<Graph, Vertex>(v, type);
                 }
-                    /*
-case ShellIndexTypeWeightedEqualStrength:
-case ShellIndexTypeWeightedEqualPopulation:{
-    Vertex vertex = *v;
-    WeightedVertex weightedVertex= static_cast<WeightedVertex>(vertex);
-    return new WeightedNode(weightedVertex, type);
-}
-  */
+                case ShellIndexTypeInDegree:
+                case ShellIndexTypeOutDegree: {
+                    return new DirectedNode<Graph, Vertex>(v, type);
+                }
+
             }
         }
 

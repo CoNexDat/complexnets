@@ -3,33 +3,56 @@
 //PlainNode is a node for an undirected and unweighted graph
 #include "IShellIndexNode.h"
 
-namespace graphpp
-{
-    class WeightedNode: public INode {
+namespace graphpp {
+    template<class Graph, class Vertex>
 
+    class WeightedNode : public INode<Graph, Vertex> {
     public:
+        WeightedNode(Vertex *v, ShellIndexType type) {
+           WeightedVertex *weightedVertex= reinterpret_cast<WeightedVertex*>(v);
 
-        WeightedNode(WeightedVertex v, ShellIndexType type){
+            vertex = weightedVertex;
+
             shellIndexType = type;
-            vertex = &v;
-            currentDegree =  (int)(v->strength()) +1;
+            currentStrength = vertex->strength();
         }
 
         void markAsRemove() {
-            currentDegree = 0;
+            isRemoved = true;
+            currentStrength = 0;
         }
 
         int getDegree() {
-            return currentDegree;
+            return 3;
         };
 
         int decreaseDegree() {
-            currentDegree--;
-            return currentDegree;
+            return 3;
         };
 
+
+        NeighbourIdsIterator getNeighbourIdsIterator() {
+            NeighbourConstIterator neighborsIt = vertex->neighborsConstIterator();
+
+            std::vector<unsigned int> idsVector;
+            while (!neighborsIt.end()) {
+                AdjacencyListVertex *neigh = *neighborsIt;
+                insert_into(idsVector, neigh->getVertexId());
+                ++neighborsIt;
+            }
+
+            return idsVector;
+        }
+
+        unsigned int getVertexId() {
+            return vertex->getVertexId();
+        }
+
     private:
-        int currentDegree;
+        bool isRemoved = false;
+        double currentStrength;
+        WeightedVertex *vertex;
+        ShellIndexType shellIndexType;
     };
 
 }  // namespace graphpp

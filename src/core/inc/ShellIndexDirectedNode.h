@@ -1,6 +1,5 @@
 #pragma once
 
-
 //PlainNode is a node for an undirected and unweighted graph
 #include "IShellIndexNode.h"
 
@@ -10,7 +9,7 @@ namespace graphpp {
     class DirectedNode : public INode<Graph, Vertex> {
     public:
         DirectedNode(Vertex *v, ShellIndexType type) {
-            DirectedVertex *directedVertex = static_cast<DirectedVertex *>(v);
+            DirectedVertex *directedVertex = reinterpret_cast<DirectedVertex*>(v);
             vertex = directedVertex;
 
             shellIndexType = type;
@@ -49,8 +48,6 @@ namespace graphpp {
 
             return idsVector;
         }
-
-
 
         unsigned int getVertexId() {
             return vertex->getVertexId();
