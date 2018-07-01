@@ -8,13 +8,14 @@ namespace graphpp {
 
     class WeightedNode : public INode<Graph, Vertex> {
     public:
-        WeightedNode(Vertex *v, ShellIndexType type) {
+        WeightedNode(Vertex *v, ShellIndexType type, std::vector<unsigned int> binLimits) {
            WeightedVertex *weightedVertex= reinterpret_cast<WeightedVertex*>(v);
 
             vertex = weightedVertex;
 
             shellIndexType = type;
             currentStrength = vertex->strength();
+            weightedBinsLimits = binLimits;
         }
 
         void markAsRemove() {
@@ -23,11 +24,15 @@ namespace graphpp {
         }
 
         int getDegree() {
-            return 3;
+            if(isRemoved || currentStrength <=0){
+                return 0;
+            }
+            return strengthToBin();
         };
 
-        int decreaseDegree() {
-            return 3;
+        int decreaseDegree(unsigned int vertexId) {
+            currentStrength -= vertex->edgeWeightByNeighbour(vertexId);
+            return getDegree();
         };
 
 
@@ -57,10 +62,23 @@ namespace graphpp {
 
         //TO CALL SORT --> list.sort(compareNodes);
 
+        int strengthToBin(){
+            if(shellIndexType == ShellIndexTypeWeightedEqualStrength){
+                int currentBin = 1;
+                int binIndex = 0;
+                while(weightedBinsLimits.at(currentBin) < currentStrength){
+                    currentBin++;
+                }
+                return currentBin;
+            }
+            return 0;
+        }
+
         bool isRemoved = false;
         double currentStrength;
         WeightedVertex *vertex;
         ShellIndexType shellIndexType;
+        std::vector<unsigned int> weightedBinsLimits;
     };
 
 }  // namespace graphpp

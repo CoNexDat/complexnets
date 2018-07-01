@@ -546,10 +546,6 @@ void MainWindow::on_actionBetweenness_triggered() {
 }
 
 void MainWindow::on_actionShell_index_triggered() {
-    if (this->weightedgraph) {
-        ui->textBrowser->append("Shell index for weighted graphs is not supported.");
-        return;
-    }
 
     QString vertexId = "2";
     QString ret;

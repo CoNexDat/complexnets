@@ -16,6 +16,10 @@ namespace graphpp {
         typedef typename IShellIndex<Graph, Vertex>::ShellIndexIterator ShellIndexIterator;
 
         ShellIndex(Graph &g, ShellIndexType type) {
+            if(type == ShellIndexTypeWeightedEqualStrength){
+                weightedBinsLimits = getEqualStrengthBinning(g);
+            }
+
             totalVertexes = initMap(g);
             initMultimapSet(g, type);
             calculateShellIndex();
@@ -26,6 +30,9 @@ namespace graphpp {
         }
 
     private:
+
+
+
         INode<Graph, Vertex> *getNextNode() {
             for (int i = 0; i < totalVertexes; i++) {
                 if (!nodesByCurrentDegree[i].empty()) {
@@ -63,7 +70,7 @@ namespace graphpp {
                     if (neighNode->getDegree() > 0) {
                         // Remove it from the current level
                         nodesByCurrentDegree[neighNode->getDegree()].remove(neighNode);
-                        neighNode->decreaseDegree();
+                        neighNode->decreaseDegree(nextNode->getVertexId());
 
                         if (neighNode->getDegree() > 0) {
                             // Re add it to a lower level if it still has a valid degree
@@ -98,12 +105,18 @@ namespace graphpp {
             nodesByCurrentDegree =
                     new std::list<INode<Graph, Vertex> *>[totalVertexes];  // 0 won't exist, still max degree possible is n-1
 
+
             // initialize all elements using the vertex id and the vertex degree
             while (!it.end()) {
                 Vertex *v = *it;
                 INode<Graph, Vertex> *newNode = getNodeFromType(v, type);//new Node();
                 nodesByVertexId[newNode->getVertexId()] = newNode;
-                nodesByCurrentDegree[newNode->getDegree()].push_back(newNode);
+
+                unsigned int nodeDegree = (unsigned int)(newNode->getDegree());
+                if(nodesByCurrentDegree->size() < nodeDegree+1){
+                    nodesByCurrentDegree->resize(nodeDegree+1);
+                }
+                nodesByCurrentDegree[nodeDegree].push_back(newNode);
                 ++it;
             }
         }
@@ -114,15 +127,34 @@ namespace graphpp {
                     return new SimpleNode<Graph, Vertex>(v, type);
                 }
                 case ShellIndexTypeWeightedEqualStrength:
-                case ShellIndexTypeWeightedEqualPopulation: {
-                   return new WeightedNode<Graph, Vertex>(v, type);
-                }
+                    return new WeightedNode<Graph, Vertex>(v, type, weightedBinsLimits);
+                case ShellIndexTypeWeightedEqualPopulation:
+                    // TODO: DEFINE bins by equal population
+                    return new WeightedNode<Graph, Vertex>(v, type, weightedBinsLimits);
                 case ShellIndexTypeInDegree:
                 case ShellIndexTypeOutDegree: {
                     return new DirectedNode<Graph, Vertex>(v, type);
                 }
-
             }
+        }
+
+        std::vector<unsigned int> getEqualStrengthBinning(Graph g){
+            VerticesConstIterator it = g.verticesConstIterator();
+            double maxStrength = 0;
+            while (!it.end()) {
+                WeightedVertex *weightedVertex= reinterpret_cast<WeightedVertex*>(*it);
+                if(weightedVertex->strength() > maxStrength){
+                    maxStrength = weightedVertex->strength();
+                }
+                ++it;
+            }
+
+            std::vector<unsigned int> binsVector;
+            for(double bin = 1; bin <=weightedEqualStrengthBins; bin++){
+                binsVector.push_back(maxStrength * bin/weightedEqualStrengthBins);
+            }
+
+            return binsVector;
         }
 
         typedef typename Graph::VerticesConstIterator VerticesConstIterator;
@@ -140,5 +172,10 @@ namespace graphpp {
         // The lists are doubly-linked lists to allow a node representation to be easily removed.
         std::list<INode<Graph, Vertex> *> *nodesByCurrentDegree;
         int totalVertexes;
+        std::vector<unsigned int> weightedBinsLimits;
+
+        const int weightedEqualStrengthBins = 10;
+
+
     };
 }  // namespace graphpp

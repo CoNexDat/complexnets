@@ -29,7 +29,7 @@ namespace graphpp {
             return currentDegree;
         };
 
-        int decreaseDegree() {
+        int decreaseDegree(unsigned int vertexId) {
             currentDegree--;
             return currentDegree;
         };

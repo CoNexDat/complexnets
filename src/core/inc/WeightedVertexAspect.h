@@ -29,6 +29,11 @@ public:
         return weights[neighbour->getVertexId()];
     }
 
+    Weight edgeWeightByNeighbour(unsigned int neighbourId)
+    {
+        return weights[neighbourId];
+    }
+
     WeightsIterator weightsIterator()
     {
         WeightsIterator iter(weights);

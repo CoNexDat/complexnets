@@ -31,10 +31,9 @@ public:
     {
         return new WeightedNearestNeighborsDegree<Graph, Vertex>();
     }
-    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph&, ShellIndexType type)
+    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph& g, ShellIndexType type)
     {
-        // return new WeightedShellIndex<Graph,Vertex>();
-        return nullptr;
+        return new ShellIndex<Graph, Vertex>(g, type);
     }
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {

@@ -28,7 +28,7 @@ namespace graphpp {
 
         virtual int getDegree()  = 0;
 
-        virtual int decreaseDegree()  = 0;
+        virtual int decreaseDegree(unsigned int vertexId)  = 0;
 
         virtual NeighbourIdsIterator getNeighbourIdsIterator()  = 0;
 
