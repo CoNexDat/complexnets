@@ -49,6 +49,14 @@ namespace graphpp {
         }
 
     private:
+
+        bool compareNodes (WeightedVertex* first, WeightedVertex* second)
+        {
+            return ( first->strength() < second->strength() );
+        }
+
+        //TO CALL SORT --> list.sort(compareNodes);
+
         bool isRemoved = false;
         double currentStrength;
         WeightedVertex *vertex;
