@@ -16,11 +16,11 @@ namespace graphpp {
         typedef typename IShellIndex<Graph, Vertex>::ShellIndexIterator ShellIndexIterator;
 
         ShellIndex(Graph &g, ShellIndexType type) {
+
+            totalVertexes = initMap(g);
             if(type == ShellIndexTypeWeightedEqualStrength){
                 weightedBinsLimits = getEqualStrengthBinning(g);
             }
-
-            totalVertexes = initMap(g);
             initMultimapSet(g, type);
             calculateShellIndex();
         }
@@ -102,23 +102,31 @@ namespace graphpp {
         void initMultimapSet(Graph &g, ShellIndexType type) {
             VerticesConstIterator it = g.verticesConstIterator();
             nodesByVertexId = new INode<Graph, Vertex> *[totalVertexes + 1];  // will not use index 0
-            nodesByCurrentDegree =
-                    new std::list<INode<Graph, Vertex> *>[totalVertexes];  // 0 won't exist, still max degree possible is n-1
 
-
+            if (type == ShellIndexTypeWeightedEqualPopulation || type == ShellIndexTypeWeightedEqualStrength) {
+                nodesByCurrentDegree = new std::list<INode<Graph, Vertex> *> [totalVertexes > weightedEqualStrengthBins ? totalVertexes : weightedEqualStrengthBins];
+                weightedVertexVector = new std::list<WeightedVertex*> [totalVertexes];
+            } else {
+                nodesByCurrentDegree =
+                        new std::list<INode<Graph, Vertex> *>[totalVertexes];
+            }
             // initialize all elements using the vertex id and the vertex degree
             while (!it.end()) {
                 Vertex *v = *it;
                 INode<Graph, Vertex> *newNode = getNodeFromType(v, type);//new Node();
                 nodesByVertexId[newNode->getVertexId()] = newNode;
-
                 unsigned int nodeDegree = (unsigned int)(newNode->getDegree());
-                if(nodesByCurrentDegree->size() < nodeDegree+1){
-                    nodesByCurrentDegree->resize(nodeDegree+1);
-                }
                 nodesByCurrentDegree[nodeDegree].push_back(newNode);
+                if (type == ShellIndexTypeWeightedEqualPopulation) {
+                    WeightedVertex *weightedVertex= reinterpret_cast<WeightedVertex*>(*it);
+                    weightedVertexVector->push_back(weightedVertex);
+                }
                 ++it;
             }
+            if (type == ShellIndexTypeWeightedEqualPopulation) {
+                weightedVertexVector->sort(compareNodes);
+            }
+
         }
 
         INode<Graph, Vertex> *getNodeFromType(Vertex *v, ShellIndexType type) {
@@ -148,14 +156,20 @@ namespace graphpp {
                 }
                 ++it;
             }
-
             std::vector<unsigned int> binsVector;
             for(double bin = 1; bin <=weightedEqualStrengthBins; bin++){
                 binsVector.push_back(maxStrength * bin/weightedEqualStrengthBins);
             }
-
             return binsVector;
         }
+
+        static bool compareNodes (WeightedVertex* first, WeightedVertex* second)
+        {
+            return ( first->strength() < second->strength() );
+        }
+
+
+        //TO CALL SORT --> list.sort(compareNodes);
 
         typedef typename Graph::VerticesConstIterator VerticesConstIterator;
 
@@ -176,6 +190,7 @@ namespace graphpp {
 
         const int weightedEqualStrengthBins = 10;
 
+        std::list<WeightedVertex*> *weightedVertexVector;
 
     };
 }  // namespace graphpp

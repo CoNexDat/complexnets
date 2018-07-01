@@ -12,9 +12,9 @@ namespace graphpp {
            WeightedVertex *weightedVertex= reinterpret_cast<WeightedVertex*>(v);
 
             vertex = weightedVertex;
-
+            vertexId = vertex->getVertexId();
             shellIndexType = type;
-            currentStrength = vertex->strength();
+            currentStrength = vertex->getInitialStrength();
             weightedBinsLimits = binLimits;
         }
 
@@ -50,17 +50,10 @@ namespace graphpp {
         }
 
         unsigned int getVertexId() {
-            return vertex->getVertexId();
+            return vertexId;
         }
 
     private:
-
-        bool compareNodes (WeightedVertex* first, WeightedVertex* second)
-        {
-            return ( first->strength() < second->strength() );
-        }
-
-        //TO CALL SORT --> list.sort(compareNodes);
 
         int strengthToBin(){
             if(shellIndexType == ShellIndexTypeWeightedEqualStrength){
@@ -75,6 +68,7 @@ namespace graphpp {
         }
 
         bool isRemoved = false;
+        unsigned int vertexId;
         double currentStrength;
         WeightedVertex *vertex;
         ShellIndexType shellIndexType;

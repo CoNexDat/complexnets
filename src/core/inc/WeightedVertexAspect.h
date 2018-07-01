@@ -20,6 +20,7 @@ public:
     void addEdge(WeightedVertexAspect<T>* other, Weight weight)
     {
         T::template addEdge<WeightedVertexAspect<T>>(other);
+        myStrength += weight;
         weights.insert(std::pair<VertexId, Weight>(other->getVertexId(), weight));
     }
 
@@ -55,7 +56,12 @@ public:
         return str;
     }
 
+    Weight getInitialStrength() {
+        return myStrength;
+    }
+
 private:
+    double myStrength = 0.0;
     NeighborsWeights weights;
 };
 }  // namespace graphpp
