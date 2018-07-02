@@ -167,7 +167,6 @@ set(LIB_MILI
         ${LIB_MILI_DIR}/variants_set.h
         ${LIB_MILI_DIR}/random_gen.h
         )
-
 set(LIBS_ALL ${LIB_MILI})
 
 # Build an executable target called `complexnets`
@@ -199,7 +198,8 @@ set(TEST_SRC
         test/TraverserOrderedTest.cpp
         test/WeightedClusteringCoefficientTest.cpp
         test/WeightedNearestNeighborsDegreeTest.cpp
-        test/DirectedClusteringCoefficientTest.cpp)
+        test/DirectedClusteringCoefficientTest.cpp
+        test/ConnectivityVerifierTest.cpp)
 
 add_subdirectory(${GTEST_ROOT} gtest)
 
