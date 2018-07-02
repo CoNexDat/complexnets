@@ -38,7 +38,6 @@ namespace graphpp {
         NeighbourIdsIterator getNeighbourIdsIterator() {
             NeighbourConstIterator neighborsIt = getIterator();
 
-
             std::vector<unsigned int> idsVector;
             while (!neighborsIt.end()) {
                 AdjacencyListVertex *neigh = *neighborsIt;

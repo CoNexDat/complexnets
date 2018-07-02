@@ -2171,7 +2171,20 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex() {
     double coefSums = 0.0;
     unsigned int count = 0;
 
-    if (this->digraph) {
+    if (this->weightedgraph) {
+        WeightedGraph &g = weightedGraph;
+        auto vit = g.verticesIterator();
+
+        while (!vit.end()) {
+            Vertex *v = *vit;
+            int c =
+                    propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+            bCoefs.push_back(c);
+            coefSums += c;
+            ++vit;
+            count++;
+        }
+    } else if (this->digraph) {
         DirectedGraph &g = directedGraph;
         auto vit = g.verticesIterator();
 

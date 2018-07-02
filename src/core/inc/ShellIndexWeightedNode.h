@@ -2,6 +2,7 @@
 
 //PlainNode is a node for an undirected and unweighted graph
 #include "IShellIndexNode.h"
+#include "WeightedVertexAspect.h"
 
 namespace graphpp {
     template<class Graph, class Vertex>
@@ -9,13 +10,14 @@ namespace graphpp {
     class WeightedNode : public INode<Graph, Vertex> {
     public:
         WeightedNode(Vertex *v, ShellIndexType type, std::vector<unsigned int> binLimits) {
-           WeightedVertex *weightedVertex= reinterpret_cast<WeightedVertex*>(v);
+            WeightedVertex *weightedVertex = reinterpret_cast<WeightedVertex *>(v);
 
             vertex = weightedVertex;
             vertexId = vertex->getVertexId();
             shellIndexType = type;
             currentStrength = vertex->getInitialStrength();
             weightedBinsLimits = binLimits;
+            neighbourIdsVector = loadNeighbourIdsVector();
         }
 
         void markAsRemove() {
@@ -24,7 +26,7 @@ namespace graphpp {
         }
 
         int getDegree() {
-            if(isRemoved || currentStrength <=0){
+            if (isRemoved || currentStrength <= 0) {
                 return 0;
             }
             return strengthToBin();
@@ -37,16 +39,7 @@ namespace graphpp {
 
 
         NeighbourIdsIterator getNeighbourIdsIterator() {
-            NeighbourConstIterator neighborsIt = vertex->neighborsConstIterator();
-
-            std::vector<unsigned int> idsVector;
-            while (!neighborsIt.end()) {
-                AdjacencyListVertex *neigh = *neighborsIt;
-                insert_into(idsVector, neigh->getVertexId());
-                ++neighborsIt;
-            }
-
-            return idsVector;
+            return neighbourIdsVector;
         }
 
         unsigned int getVertexId() {
@@ -55,11 +48,22 @@ namespace graphpp {
 
     private:
 
-        int strengthToBin(){
-            if(shellIndexType == ShellIndexTypeWeightedEqualStrength){
+        std::vector<unsigned int> loadNeighbourIdsVector() {
+            std::list<unsigned int>* neighbourIds = vertex->getNeighborsIds();
+            std::vector<unsigned int> idsVector;
+
+            for (unsigned int neigh : (*neighbourIds)){
+                insert_into(idsVector, neigh);
+            }
+
+            return idsVector;
+        }
+
+        int strengthToBin() {
+            if (shellIndexType == ShellIndexTypeWeightedEqualStrength) {
                 int currentBin = 1;
                 int binIndex = 0;
-                while(weightedBinsLimits.at(currentBin) < currentStrength){
+                while (weightedBinsLimits.at(currentBin) < currentStrength) {
                     currentBin++;
                 }
                 return currentBin;
@@ -73,6 +77,7 @@ namespace graphpp {
         WeightedVertex *vertex;
         ShellIndexType shellIndexType;
         std::vector<unsigned int> weightedBinsLimits;
+        std::vector<unsigned int> neighbourIdsVector;
     };
 
 }  // namespace graphpp

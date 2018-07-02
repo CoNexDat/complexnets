@@ -16,12 +16,13 @@ namespace graphpp {
         typedef typename IShellIndex<Graph, Vertex>::ShellIndexIterator ShellIndexIterator;
 
         ShellIndex(Graph &g, ShellIndexType type) {
-
+            shellIndexType = type;
             totalVertexes = initMap(g);
             if(type == ShellIndexTypeWeightedEqualStrength){
                 weightedBinsLimits = getEqualStrengthBinning(g);
             }
             initMultimapSet(g, type);
+            shellIndexType = type;
             calculateShellIndex();
         }
 
@@ -32,9 +33,13 @@ namespace graphpp {
     private:
 
 
-
         INode<Graph, Vertex> *getNextNode() {
-            for (int i = 0; i < totalVertexes; i++) {
+            int iterationLimit = totalVertexes;
+            if(shellIndexType == ShellIndexTypeWeightedEqualStrength){
+                iterationLimit = weightedEqualStrengthBins;
+            }
+
+            for (int i = 0; i < iterationLimit; i++) {
                 if (!nodesByCurrentDegree[i].empty()) {
                     return nodesByCurrentDegree[i].front();
                 }
@@ -191,6 +196,6 @@ namespace graphpp {
         const int weightedEqualStrengthBins = 10;
 
         std::list<WeightedVertex*> *weightedVertexVector;
-
+        ShellIndexType shellIndexType;
     };
 }  // namespace graphpp
