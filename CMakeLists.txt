@@ -199,7 +199,7 @@ set(TEST_SRC
         test/TraverserOrderedTest.cpp
         test/WeightedClusteringCoefficientTest.cpp
         test/WeightedNearestNeighborsDegreeTest.cpp
-        )
+        test/DirectedClusteringCoefficientTest.cpp)
 
 add_subdirectory(${GTEST_ROOT} gtest)
 
