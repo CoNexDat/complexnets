@@ -9,7 +9,7 @@ namespace graphpp {
 
     class WeightedNode : public INode<Graph, Vertex> {
     public:
-        WeightedNode(Vertex *v, ShellIndexType type, std::vector<unsigned int> binLimits) {
+        WeightedNode(Vertex *v, ShellIndexType type, std::vector<double> *binLimits) {
             WeightedVertex *weightedVertex = reinterpret_cast<WeightedVertex *>(v);
 
             vertex = weightedVertex;
@@ -26,14 +26,15 @@ namespace graphpp {
         }
 
         int getDegree() {
-            if (isRemoved || currentStrength <= 0) {
+            if (isRemoved) {
                 return 0;
             }
             return strengthToBin();
         };
 
         int decreaseDegree(unsigned int vertexId) {
-            currentStrength -= vertex->edgeWeightByNeighbour(vertexId);
+            double edgeWeight = vertex->getNeighbourWeight(vertexId);
+            currentStrength -= edgeWeight;
             return getDegree();
         };
 
@@ -49,10 +50,10 @@ namespace graphpp {
     private:
 
         std::vector<unsigned int> loadNeighbourIdsVector() {
-            std::list<unsigned int>* neighbourIds = vertex->getNeighborsIds();
+            std::list<unsigned int> *neighbourIds = vertex->getNeighborsIds();
             std::vector<unsigned int> idsVector;
 
-            for (unsigned int neigh : (*neighbourIds)){
+            for (unsigned int neigh : (*neighbourIds)) {
                 insert_into(idsVector, neigh);
             }
 
@@ -60,15 +61,11 @@ namespace graphpp {
         }
 
         int strengthToBin() {
-            if (shellIndexType == ShellIndexTypeWeightedEqualStrength) {
-                int currentBin = 1;
-                int binIndex = 0;
-                while (weightedBinsLimits.at(currentBin) < currentStrength) {
-                    currentBin++;
-                }
-                return currentBin;
+            int currentBin = 1;
+            while (currentStrength > weightedBinsLimits->at(currentBin) ) {
+                currentBin++;
             }
-            return 0;
+            return currentBin;
         }
 
         bool isRemoved = false;
@@ -76,7 +73,7 @@ namespace graphpp {
         double currentStrength;
         WeightedVertex *vertex;
         ShellIndexType shellIndexType;
-        std::vector<unsigned int> weightedBinsLimits;
+        std::vector<double> *weightedBinsLimits;
         std::vector<unsigned int> neighbourIdsVector;
     };
 

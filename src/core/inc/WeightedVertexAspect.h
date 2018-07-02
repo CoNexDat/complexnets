@@ -12,8 +12,6 @@ public:
     typedef AdjacencyListVertex::VertexId VertexId;
     typedef double Weight;
     typedef std::map<VertexId, Weight> NeighborsWeights;
-    typedef std::list<VertexId> NeighborsIdsList;
-    typedef std::list<Weight> NeighborsWeightsList;
     typedef AutonomousIterator<NeighborsWeights> WeightsIterator;
     typedef AdjacencyListVertex::VertexContainer VertexContainer;
     typedef AdjacencyListVertex::VerticesConstIterator VerticesConstIterator;
@@ -21,7 +19,8 @@ public:
     double distance;
 
     WeightedVertexAspect(VertexId id) : T(id) {
-        neighborIds = new std::list<unsigned int>[20000];
+        neighborIds = new std::list<unsigned int>[200];
+        neighboursWeight = new std::vector<double>(200);
     }
 
     void addEdge(WeightedVertexAspect<T>* other, Weight weight)
@@ -29,7 +28,7 @@ public:
         T::template addEdge<WeightedVertexAspect<T>>(other);
         myStrength += weight;
         weights.insert(std::pair<VertexId, Weight>(other->getVertexId(), weight));
-        neighboursWeight.push_back(weight);
+        neighboursWeight-> push_back(weight);
         neighborIds->push_back(other->getVertexId());
     }
 
@@ -42,6 +41,17 @@ public:
     Weight edgeWeightByNeighbour(unsigned int neighbourId)
     {
         return weights[neighbourId];
+    }
+
+    Weight getNeighbourWeight(unsigned int neighbourId){
+        int index = 0;
+        for (unsigned int neigh : (*neighborIds)){
+            if(neigh == neighbourId){
+                return neighboursWeight->at(index);
+            }
+            index++;
+        }
+        return index;
     }
 
     WeightsIterator weightsIterator()
@@ -72,13 +82,21 @@ public:
     }
 
     Weight getInitialStrength() {
-        return myStrength;
+        if(!strengthComputed){
+            double currentStrength = 0.0;
+            for(auto it = neighboursWeight->begin(); it != neighboursWeight->end(); ++it) {
+                currentStrength += *it;
+            }
+            myStrength = currentStrength;
+        }
+        return myStrength ;
     }
 
 private:
     double myStrength = 0.0;
     NeighborsWeights weights;
     std::list<unsigned int> * neighborIds;
-    NeighborsWeightsList neighboursWeight = {};
+    std::vector<double>* neighboursWeight;
+    bool strengthComputed;
 };
 }  // namespace graphpp

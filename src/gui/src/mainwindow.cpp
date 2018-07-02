@@ -550,10 +550,10 @@ void MainWindow::on_actionShell_index_triggered() {
     QString vertexId = "2";
     if (!vertexId.isEmpty()) {
         if (this->weightedgraph) {
-            this->computeShellIndex(ShellIndexTypeWeightedEqualStrength, "weighEqStrength");
-            this->postComputeShellIndex("weighEqStrength");
-            this->computeShellIndex(ShellIndexTypeWeightedEqualPopulation, "weighEqPopulation");
-            this->postComputeShellIndex("weighEqPopulation");
+            this->computeShellIndex(ShellIndexTypeWeightedEqualPopulation, "weightEqPopulation");
+            this->postComputeShellIndex("weightEqPopulation");
+//            this->computeShellIndex(ShellIndexTypeWeightedEqualStrength, "weightEqStrength");
+//            this->postComputeShellIndex("weightEqStrength");
         } else if (this->digraph) {
             this->computeShellIndex(ShellIndexTypeInDegree, "inDegree");
             this->postComputeShellIndex("inDegree");
@@ -2187,6 +2187,7 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex(std::string pr
 
     double coefSums = 0.0;
     unsigned int count = 0;
+    unsigned int lastVertexId;
 
     if (this->weightedgraph) {
         WeightedGraph &g = weightedGraph;
@@ -2194,12 +2195,16 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex(std::string pr
 
         while (!vit.end()) {
             Vertex *v = *vit;
-            int c =
-                    propertyMap.getProperty<int>(prefix + "shellIndex", to_string<unsigned int>(v->getVertexId()));
-            bCoefs.push_back(c);
-            coefSums += c;
+            // If the iterator works correctly, the next id will always be greater than the current one
+            if(v->getVertexId() > lastVertexId){
+                int c =
+                        propertyMap.getProperty<int>(prefix + "shellIndex", to_string<unsigned int>(v->getVertexId()));
+                bCoefs.push_back(c);
+                coefSums += c;
+                count++;
+                lastVertexId = v->getVertexId();
+            }
             ++vit;
-            count++;
         }
     } else if (this->digraph) {
         DirectedGraph &g = directedGraph;
