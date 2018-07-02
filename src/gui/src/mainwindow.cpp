@@ -548,83 +548,100 @@ void MainWindow::on_actionBetweenness_triggered() {
 void MainWindow::on_actionShell_index_triggered() {
 
     QString vertexId = "2";
-    QString ret;
-    unsigned int vertexShellIndex;
     if (!vertexId.isEmpty()) {
-        this->computeShellIndex();
-        if (vertexId.toStdString() == "all") {
-            try {
-                ret.append("Looking for all the vertexes starting from 1\n");
-                unsigned int i = 1;
-                while (true) {
-                    vertexShellIndex = propertyMap.getProperty<unsigned int>(
-                            "shellIndex", to_string<unsigned int>(i));
-                    ret.append("Shell index for vertex ").append(to_string<int>(i).c_str());
-                    ret.append(" is: ")
-                            .append(to_string<unsigned int>(vertexShellIndex).c_str())
-                            .append(".\n");
-                    i++;
-                }
-            }
-            catch (const BadElementName &ex) {
-                ui->textBrowser->append(ret);
-            }
+        if (this->weightedgraph) {
+            this->computeShellIndex(ShellIndexTypeWeightedEqualStrength, "weighEqStrength");
+            this->postComputeShellIndex("weighEqStrength");
+            this->computeShellIndex(ShellIndexTypeWeightedEqualPopulation, "weighEqPopulation");
+            this->postComputeShellIndex("weighEqPopulation");
+        } else if (this->digraph) {
+            this->computeShellIndex(ShellIndexTypeInDegree, "inDegree");
+            this->postComputeShellIndex("inDegree");
+            this->computeShellIndex(ShellIndexTypeOutDegree, "outDegree");
+            this->postComputeShellIndex("outDegree");
         } else {
-            try {
-                graphpp::Boxplotentry entry;
-                if (!propertyMap.containsProperty("ShellIndexBPMean", to_string(0))) {
-                    entry = this->computeTotalBpEntriesShellIndex();
-                    propertyMap.addProperty<double>("ShellIndexBPMean", to_string(0), entry.mean);
-                    propertyMap.addProperty<double>("ShellIndexBPMin", to_string(0), entry.min);
-                    propertyMap.addProperty<double>("ShellIndexBPQ1", to_string(0), entry.Q1);
-                    propertyMap.addProperty<double>("ShellIndexBPQ2", to_string(0), entry.Q2);
-                    propertyMap.addProperty<double>("ShellIndexBPQ3", to_string(0), entry.Q3);
-                    propertyMap.addProperty<double>("ShellIndexBPMax", to_string(0), entry.max);
-                } else {
-                    ret.append("Data already calculated. \n");
-                    entry.mean = propertyMap.getProperty<double>("ShellIndexBPMean", to_string(0));
-                    entry.min = propertyMap.getProperty<double>("ShellIndexBPMin", to_string(0));
-                    entry.Q1 = propertyMap.getProperty<double>("ShellIndexBPQ1", to_string(0));
-                    entry.Q2 = propertyMap.getProperty<double>("ShellIndexBPQ2", to_string(0));
-                    entry.Q3 = propertyMap.getProperty<double>("ShellIndexBPQ3", to_string(0));
-                    entry.max = propertyMap.getProperty<double>("ShellIndexBPMax", to_string(0));
-                }
-
-                ui->textBrowser->append(entry.str().c_str());
-            }
-            catch (const BadElementName &ex) {
-                ret.append("Shell index: Vertex with id ")
-                        .append(vertexId)
-                        .append(" was not found.");
-                ui->textBrowser->append(ret);
-            }
+            this->computeShellIndex(ShellIndexTypeSimple, "simple");
+            this->postComputeShellIndex("simple");
         }
     }
 }
 
-void MainWindow::computeShellIndex() {
-    if (propertyMap.containsPropertySet("shellIndex"))
+void MainWindow::postComputeShellIndex(std::string prefix) {
+    QString vertexId = "2";
+    QString ret;
+    unsigned int vertexShellIndex;
+    if (vertexId.toStdString() == "all") {
+        try {
+            ret.append("Looking for all the vertexes starting from 1\n");
+            unsigned int i = 1;
+            while (true) {
+                vertexShellIndex = propertyMap.getProperty<unsigned int>(
+                        prefix + "shellIndex", to_string<unsigned int>(i));
+                ret.append("Shell index for vertex ").append(to_string<int>(i).c_str());
+                ret.append(" is: ")
+                        .append(to_string<unsigned int>(vertexShellIndex).c_str())
+                        .append(".\n");
+                i++;
+            }
+        }
+        catch (const BadElementName &ex) {
+            ui->textBrowser->append(ret);
+        }
+    } else {
+        try {
+            graphpp::Boxplotentry entry;
+            if (!propertyMap.containsProperty(prefix + "ShellIndexBPMean", to_string(0))) {
+                entry = this->computeTotalBpEntriesShellIndex(prefix);
+                propertyMap.addProperty<double>(prefix + "ShellIndexBPMean", to_string(0), entry.mean);
+                propertyMap.addProperty<double>(prefix + "ShellIndexBPMin", to_string(0), entry.min);
+                propertyMap.addProperty<double>(prefix + "ShellIndexBPQ1", to_string(0), entry.Q1);
+                propertyMap.addProperty<double>(prefix + "ShellIndexBPQ2", to_string(0), entry.Q2);
+                propertyMap.addProperty<double>(prefix + "ShellIndexBPQ3", to_string(0), entry.Q3);
+                propertyMap.addProperty<double>(prefix + "ShellIndexBPMax", to_string(0), entry.max);
+            } else {
+                ret.append("Data already calculated. \n");
+                entry.mean = propertyMap.getProperty<double>(prefix + "ShellIndexBPMean", to_string(0));
+                entry.min = propertyMap.getProperty<double>(prefix + "ShellIndexBPMin", to_string(0));
+                entry.Q1 = propertyMap.getProperty<double>(prefix + "ShellIndexBPQ1", to_string(0));
+                entry.Q2 = propertyMap.getProperty<double>(prefix + "ShellIndexBPQ2", to_string(0));
+                entry.Q3 = propertyMap.getProperty<double>(prefix + "ShellIndexBPQ3", to_string(0));
+                entry.max = propertyMap.getProperty<double>(prefix + "ShellIndexBPMax", to_string(0));
+            }
+
+            ui->textBrowser->append(entry.str().c_str());
+        }
+        catch (const BadElementName &ex) {
+            ret.append("Shell index: Vertex with id ")
+                    .append(vertexId)
+                    .append(" was not found.");
+            ui->textBrowser->append(ret);
+        }
+    }
+}
+
+void MainWindow::computeShellIndex(graphpp::ShellIndexType type, std::string prefix) {
+    if (propertyMap.containsPropertySet(prefix + "shellIndex"))
         return;
 
     ui->textBrowser->append("Shell index has not been previously computed. Computing now.");
 
     if (this->weightedgraph) {
-        auto shellIndex = weightedFactory->createShellIndex(weightedGraph, ShellIndexTypeWeightedEqualStrength);
+        auto shellIndex = weightedFactory->createShellIndex(weightedGraph, type);
         auto it = shellIndex->iterator();
 
         while (!it.end()) {
             propertyMap.addProperty<unsigned int>(
-                    "shellIndex", to_string<unsigned int>(it->first), it->second);
+                    prefix + "shellIndex", to_string<unsigned int>(it->first), it->second);
             ++it;
         }
         delete shellIndex;
     } else if (this->digraph) {
-        auto shellIndex = directedFactory->createShellIndex(directedGraph, ShellIndexTypeInDegree);
+        auto shellIndex = directedFactory->createShellIndex(directedGraph, type);
         auto it = shellIndex->iterator();
 
         while (!it.end()) {
             propertyMap.addProperty<unsigned int>(
-                    "shellIndex", to_string<unsigned int>(it->first), it->second);
+                    prefix + "shellIndex", to_string<unsigned int>(it->first), it->second);
             ++it;
         }
         delete shellIndex;
@@ -634,7 +651,7 @@ void MainWindow::computeShellIndex() {
 
         while (!it.end()) {
             propertyMap.addProperty<unsigned int>(
-                    "shellIndex", to_string<unsigned int>(it->first), it->second);
+                    prefix + "shellIndex", to_string<unsigned int>(it->first), it->second);
             ++it;
         }
         delete shellIndex;
@@ -1275,13 +1292,13 @@ void MainWindow::on_actionShell_Index_vs_Degree_triggered() {
         ui->textBrowser->append("Shell index for weighted graphs is not supported.");
         return;
     }
-    this->computeShellIndex();
+    this->computeShellIndex(ShellIndexTypeSimple, "simple");
     this->computeDegreeDistribution();
     double shellAuxAcum;
     unsigned int degreeAmount, vertedId;
     int ret;
     VariantsSet shellIndexVsDegree;
-    VariantsSet &shellIndex = propertyMap.getPropertySet("shellIndex");
+    VariantsSet &shellIndex = propertyMap.getPropertySet("simpleshellIndex");
     VariantsSet &degreeDistribution = propertyMap.getPropertySet("degreeDistribution");
     VariantsSet::const_iterator it = degreeDistribution.begin();
     VariantsSet::const_iterator shellIt = shellIndex.begin();
@@ -2165,7 +2182,7 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesDegreeDistribution() {
     return entry;
 }
 
-graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex() {
+graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex(std::string prefix) {
     std::vector<double> bCoefs;
 
     double coefSums = 0.0;
@@ -2178,7 +2195,7 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex() {
         while (!vit.end()) {
             Vertex *v = *vit;
             int c =
-                    propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+                    propertyMap.getProperty<int>(prefix + "shellIndex", to_string<unsigned int>(v->getVertexId()));
             bCoefs.push_back(c);
             coefSums += c;
             ++vit;
@@ -2191,7 +2208,7 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex() {
         while (!vit.end()) {
             Vertex *v = *vit;
             int c =
-                    propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+                    propertyMap.getProperty<int>(prefix + "shellIndex", to_string<unsigned int>(v->getVertexId()));
             bCoefs.push_back(c);
             coefSums += c;
             ++vit;
@@ -2205,7 +2222,7 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesShellIndex() {
         while (!vit.end()) {
             Vertex *v = *vit;
             int c =
-                    propertyMap.getProperty<int>("shellIndex", to_string<unsigned int>(v->getVertexId()));
+                    propertyMap.getProperty<int>(prefix + "shellIndex", to_string<unsigned int>(v->getVertexId()));
             bCoefs.push_back(c);
             coefSums += c;
             ++vit;
