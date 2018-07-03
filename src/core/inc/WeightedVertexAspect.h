@@ -19,8 +19,8 @@ public:
     double distance;
 
     WeightedVertexAspect(VertexId id) : T(id) {
-        neighborIds = new std::list<unsigned int>[200];
-        neighboursWeight = new std::vector<double>(200);
+        neighborIds = new std::list<unsigned int>[20000];
+        neighboursWeight = new std::vector<double>(20000);
     }
 
     void addEdge(WeightedVertexAspect<T>* other, Weight weight)
