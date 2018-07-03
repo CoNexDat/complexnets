@@ -64,7 +64,7 @@ private:
     void computeDegreeDistribution();
     void computeClusteringCoefficient(QString vertexId);
     void computeCumulativeDegreeDistribution();
-    void postComputeShellIndex(std::string prefix);
+    void postComputeShellIndex(graphpp::ShellIndexType type, std::string prefix);
     void computeShellIndex(graphpp::ShellIndexType type, std::string prefix);
     void computeMaxClique(bool exact);
     void on_actionMaxClique_generic_triggered(bool);

@@ -550,23 +550,23 @@ void MainWindow::on_actionShell_index_triggered() {
     QString vertexId = "2";
     if (!vertexId.isEmpty()) {
         if (this->weightedgraph) {
-            this->computeShellIndex(ShellIndexTypeWeightedEqualPopulation, "Weighted Equal Population");
-            this->postComputeShellIndex("Weighted Equal Population");
-//            this->computeShellIndex(ShellIndexTypeWeightedEqualStrength, "Weighted Equal Strength");
-//            this->postComputeShellIndex("Weighted Equal Strength");
+//            this->computeShellIndex(ShellIndexTypeWeightedEqualPopulation, "Weighted Equal Population");
+//            this->postComputeShellIndex(ShellIndexTypeWeightedEqualPopulation,"Weighted Equal Population");
+            this->computeShellIndex(ShellIndexTypeWeightedEqualStrength, "Weighted Equal Strength");
+            this->postComputeShellIndex(ShellIndexTypeWeightedEqualStrength,"Weighted Equal Strength");
         } else if (this->digraph) {
             this->computeShellIndex(ShellIndexTypeInDegree, "In Degree");
-            this->postComputeShellIndex("In Degree");
+            this->postComputeShellIndex(ShellIndexTypeInDegree, "In Degree");
             this->computeShellIndex(ShellIndexTypeOutDegree, "Out Degree");
-            this->postComputeShellIndex("Out Degree");
+            this->postComputeShellIndex(ShellIndexTypeOutDegree, "Out Degree");
         } else {
             this->computeShellIndex(ShellIndexTypeSimple, "Simple Graph");
-            this->postComputeShellIndex("Simple Graph");
+            this->postComputeShellIndex(ShellIndexTypeSimple, "Simple Graph");
         }
     }
 }
 
-void MainWindow::postComputeShellIndex(std::string prefix) {
+void MainWindow::postComputeShellIndex(graphpp::ShellIndexType type, std::string prefix) {
     QString vertexId = "2";
     QString ret;
     unsigned int vertexShellIndex;
@@ -610,6 +610,24 @@ void MainWindow::postComputeShellIndex(std::string prefix) {
 
             QString qStringprefix = QString::fromStdString("Shell index with strategy: "+prefix);
             ui->textBrowser->append(qStringprefix);
+            if(type == ShellIndexTypeInDegree){
+                std::string paperMentionStr = "D-cores: Measuring Collaboration of Directed.";
+                paperMentionStr += "Graphs Based on Degeneracy.\nGiatsidis, Thilikos, Vazirgiannis\n";
+                paperMentionStr += "Computing (k,0)-shells";
+                QString paperMention = QString::fromStdString(paperMentionStr);
+                ui->textBrowser->append(paperMention);
+            }else if(type == ShellIndexTypeOutDegree){
+                std::string paperMentionStr = "D-cores: Measuring Collaboration of Directed.";
+                paperMentionStr += "Graphs Based on Degeneracy.\nGiatsidis, Thilikos, Vazirgiannis\n";
+                paperMentionStr += "Computing (0,l)-shells";
+                QString paperMention = QString::fromStdString(paperMentionStr);
+                ui->textBrowser->append(paperMention);
+            }else if(type != ShellIndexTypeSimple){
+                std::string paperMentionStr = "A low complexity visualization tool that helps to";
+                paperMentionStr += "perform complex systems analysis. (Beiró, Alvarez-Hamelin and Busch - 2008)\n";
+                QString paperMention = QString::fromStdString(paperMentionStr);
+                ui->textBrowser->append(paperMention);
+            }
             ui->textBrowser->append(entry.str().c_str());
         }
         catch (const BadElementName &ex) {
