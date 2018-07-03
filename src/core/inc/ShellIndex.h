@@ -131,9 +131,6 @@ namespace graphpp {
 
         INode<Graph, Vertex> *getNodeFromType(Vertex *v, ShellIndexType type) {
             switch (type) {
-                case ShellIndexTypeSimple: {
-                    return new SimpleNode<Graph, Vertex>(v, type);
-                }
                 case ShellIndexTypeWeightedEqualStrength:{
                     return new WeightedNode<Graph, Vertex>(v, type, weightedBinsLimitsEqStrength);
                 }
@@ -143,6 +140,9 @@ namespace graphpp {
                 case ShellIndexTypeInDegree:
                 case ShellIndexTypeOutDegree: {
                     return new DirectedNode<Graph, Vertex>(v, type);
+                }
+                default:{
+                    return new SimpleNode<Graph, Vertex>(v, type);
                 }
             }
         }

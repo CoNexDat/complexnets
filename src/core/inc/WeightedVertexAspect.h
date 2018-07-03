@@ -13,9 +13,6 @@ public:
     typedef double Weight;
     typedef std::map<VertexId, Weight> NeighborsWeights;
     typedef AutonomousIterator<NeighborsWeights> WeightsIterator;
-    typedef AdjacencyListVertex::VertexContainer VertexContainer;
-    typedef AdjacencyListVertex::VerticesConstIterator VerticesConstIterator;
-    typedef AdjacencyListVertex::VerticesIterator VerticesIterator;
     double distance;
 
     WeightedVertexAspect(VertexId id) : T(id) {
@@ -26,7 +23,6 @@ public:
     void addEdge(WeightedVertexAspect<T>* other, Weight weight)
     {
         T::template addEdge<WeightedVertexAspect<T>>(other);
-        myStrength += weight;
         weights.insert(std::pair<VertexId, Weight>(other->getVertexId(), weight));
         neighboursWeight-> push_back(weight);
         neighborIds->push_back(other->getVertexId());
