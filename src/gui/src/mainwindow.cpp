@@ -550,18 +550,18 @@ void MainWindow::on_actionShell_index_triggered() {
     QString vertexId = "2";
     if (!vertexId.isEmpty()) {
         if (this->weightedgraph) {
-            this->computeShellIndex(ShellIndexTypeWeightedEqualPopulation, "weightEqPopulation");
-            this->postComputeShellIndex("weightEqPopulation");
-//            this->computeShellIndex(ShellIndexTypeWeightedEqualStrength, "weightEqStrength");
-//            this->postComputeShellIndex("weightEqStrength");
+            this->computeShellIndex(ShellIndexTypeWeightedEqualPopulation, "Weighted Equal Population");
+            this->postComputeShellIndex("Weighted Equal Population");
+//            this->computeShellIndex(ShellIndexTypeWeightedEqualStrength, "Weighted Equal Strength");
+//            this->postComputeShellIndex("Weighted Equal Strength");
         } else if (this->digraph) {
-            this->computeShellIndex(ShellIndexTypeInDegree, "inDegree");
-            this->postComputeShellIndex("inDegree");
-            this->computeShellIndex(ShellIndexTypeOutDegree, "outDegree");
-            this->postComputeShellIndex("outDegree");
+            this->computeShellIndex(ShellIndexTypeInDegree, "In Degree");
+            this->postComputeShellIndex("In Degree");
+            this->computeShellIndex(ShellIndexTypeOutDegree, "Out Degree");
+            this->postComputeShellIndex("Out Degree");
         } else {
-            this->computeShellIndex(ShellIndexTypeSimple, "simple");
-            this->postComputeShellIndex("simple");
+            this->computeShellIndex(ShellIndexTypeSimple, "Simple Graph");
+            this->postComputeShellIndex("Simple Graph");
         }
     }
 }
@@ -608,6 +608,8 @@ void MainWindow::postComputeShellIndex(std::string prefix) {
                 entry.max = propertyMap.getProperty<double>(prefix + "ShellIndexBPMax", to_string(0));
             }
 
+            QString qStringprefix = QString::fromStdString("Shell index with strategy: "+prefix);
+            ui->textBrowser->append(qStringprefix);
             ui->textBrowser->append(entry.str().c_str());
         }
         catch (const BadElementName &ex) {
