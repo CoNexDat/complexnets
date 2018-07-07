@@ -1,7 +1,3 @@
-//
-// Created by agop on 03/07/18.
-//
-
 #include <gtest/gtest.h>
 #include <set>
 #include <vector>
