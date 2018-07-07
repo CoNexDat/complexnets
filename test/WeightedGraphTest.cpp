@@ -1,80 +1,85 @@
+//
+// Created by agop.
+//
+
+//
+// Created by agop
+//
 
 #include <gtest/gtest.h>
 #include <set>
 #include <vector>
 #include <list>
 
-#include "ComplexNets/AdjacencyListVertex.h"
-#include "ComplexNets/AdjacencyListGraph.h"
-#include "ComplexNets/GraphExceptions.h"
-#include "ComplexNets/WeightedGraphAspect.h"
-#include "ComplexNets/WeightedVertexAspect.h"
+#include "AdjacencyListVertex.h"
+#include "AdjacencyListGraph.h"
+#include "GraphExceptions.h"
+#include "WeightedGraphAspect.h"
+#include "WeightedVertexAspect.h"
+#include "WeightedBetweenness.h"
 
-namespace weightedAspectsTest
-{
+namespace weightedGraphTest {
 
-using namespace graphpp;
-using namespace std;
-using ::testing::Test;
+    using namespace graphpp;
+    using namespace std;
+    using ::testing::Test;
 
-class WeightedGraphTest : public Test
-{
+    class WeightedGraphTest : public Test {
 
-protected:
+    protected:
 
-    WeightedGraphTest() { }
+        WeightedGraphTest() {}
 
-    virtual ~WeightedGraphTest() { }
+        virtual ~WeightedGraphTest() {}
 
 
-    virtual void SetUp()
+        virtual void SetUp() {
+
+        }
+
+        virtual void TearDown() {
+
+        }
+
+    public:
+        typedef WeightedVertexAspect<AdjacencyListVertex> Vertex;
+        typedef AdjacencyListGraph<Vertex> Graph;
+        typedef WeightedGraphAspect<Vertex, Graph> WeightedGraph;
+
+    };
+
+    TEST_F(WeightedGraphTest , WeightedGraphTest)
     {
+        WeightedGraph g;
+        //Create vertex
+        Vertex* x = new Vertex(1);
 
+        //create neighbor vertices
+        Vertex* v1 = new Vertex(2);
+        Vertex* v2 = new Vertex(3);
+        Vertex* v3 = new Vertex(4);
+        Vertex* v4 = new Vertex(5);
+        Vertex* v5 = new Vertex(6);
+
+        g.addVertex(x);
+        g.addVertex(v1);
+        g.addVertex(v2);
+        g.addVertex(v3);
+        g.addVertex(v4);
+        g.addVertex(v5);
+
+        g.addEdge(x, v1, 4);
+        g.addEdge(x, v2, 1);
+        g.addEdge(x, v3, 4);
+        g.addEdge(x, v4, 2);
+        g.addEdge(v1, v2, 2);
+        g.addEdge(v4, v5, 1);
+
+        ASSERT_TRUE(x->edgeWeight(v1) == 4);
+        ASSERT_TRUE(x->edgeWeight(v2) == 1);
+        ASSERT_TRUE(x->edgeWeight(v3) == 4);
+        ASSERT_TRUE(v1->edgeWeight(v2) == 2);
+        ASSERT_TRUE(x->edgeWeight(v4) == 2);
+        ASSERT_TRUE(v4->edgeWeight(v5) == 1);
     }
-
-    virtual void TearDown()
-    {
-
-    }
-public:
-    typedef WeightedVertexAspect<AdjacencyListVertex> Vertex;
-    typedef AdjacencyListGraph<Vertex> IndexedGraph;
-    typedef AdjacencyListGraph<Vertex, list<Vertex*> > ListGraph;
-    typedef AdjacencyListGraph<Vertex, vector<Vertex*> > VectorGraph;
-    typedef WeightedGraphAspect<Vertex, VectorGraph> WeightedGraph;
-
-};
-
-
-TEST_F(WeightedGraphTest, AddWeightedEdgeTest)
-{
-    WeightedGraph ig;
-    //Create vertex
-    Vertex* x = new Vertex(1);
-
-    //create neighbor vertices
-    Vertex* v1 = new Vertex(2);
-    Vertex* v2 = new Vertex(3);
-    Vertex* v3 = new Vertex(4);
-    Vertex* v4 = new Vertex(5);
-
-    ig.addVertex(x);
-    ig.addVertex(v1);
-    ig.addVertex(v2);
-    ig.addVertex(v3);
-    ig.addVertex(v4);
-
-    ig.addEdge(x, v1, 1);
-    ig.addEdge(x, v2, 2);
-    ig.addEdge(x, v3, 3);
-    ig.addEdge(v1, v2, 4);
-    ig.addEdge(x, v4, 5);
-
-    delete x;
-    delete v1;
-    delete v2;
-    delete v3;
 }
-
-}
-
