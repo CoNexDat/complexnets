@@ -318,6 +318,7 @@ void MainWindow::onNetworkLoad(const bool weightedgraph, const bool digraph, con
 
     if (digraph)
     {
+        ui->actionBetweenness->setEnabled(true);
         ui->actionClustering_coefficient->setEnabled(true);
         ui->actionNearest_neighbors_degree->setEnabled(true);
         ui->actionConfigure_Directed_Degree_sign->setEnabled(true);
@@ -776,23 +777,35 @@ void MainWindow::computeBetweenness()
         while (!it.end())
         {
             propertyMap.addProperty<double>(
-                "betweenness", to_string<unsigned int>(it->first), it->second);
+                    "betweenness", to_string<unsigned int>(it->first), it->second);
             ++it;
         }
         delete betweenness;
     }
     else
     {
-        auto betweenness = factory->createBetweenness(graph);
-        auto it = betweenness->iterator();
-
-        while (!it.end())
-        {
-            propertyMap.addProperty<double>(
-                "betweenness", to_string<unsigned int>(it->first), it->second);
-            ++it;
+        if(digraph) {
+            auto betweenness = directedFactory->createBetweenness(directedGraph);
+            auto it = betweenness->iterator();
+            while (!it.end())
+            {
+                propertyMap.addProperty<double>(
+                        "betweenness", to_string<unsigned int>(it->first), (it->second));
+                ++it;
+            }
+            delete betweenness;
         }
-        delete betweenness;
+        else {
+            auto betweenness = factory->createBetweenness(graph);
+            auto it = betweenness->iterator();
+            while (!it.end())
+            {
+                propertyMap.addProperty<double>(
+                        "betweenness", to_string<unsigned int>(it->first), (it->second) / 2);
+                ++it;
+            }
+            delete betweenness;
+        }
     }
 }
 
@@ -2390,27 +2403,46 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesKnn()
 
 graphpp::Boxplotentry MainWindow::computeTotalBpEntriesBetweenness()
 {
-    Graph& g = graph;
-    auto vit = g.verticesIterator();
     std::vector<double> bCoefs;
-
-    auto betweenness = factory->createBetweenness(g);
-    // TODO: replace with smart pointer
-    delete betweenness;
-
     double coefSums = 0.0;
     unsigned int count = 0;
 
-    while (!vit.end())
-    {
-        Vertex* v = *vit;
-        double c = propertyMap.getProperty<double>(
-            "betweenness", to_string<unsigned int>(v->getVertexId()));
-        bCoefs.push_back(c);
-        coefSums += c;
-        ++vit;
-        count++;
+    if(weightedgraph) {
+        WeightedGraph& wg = weightedGraph;
+        auto vit = weightedGraph.verticesIterator();
+        if (! propertyMap.containsPropertySet("betweenness")) {
+            auto betweenness = weightedFactory->createBetweenness(wg);
+            delete betweenness;
+        }
+        while (!vit.end())
+        {
+            Vertex* v = *vit;
+            double c = propertyMap.getProperty<double>(
+                    "betweenness", to_string<unsigned int>(v->getVertexId()));
+            bCoefs.push_back(c);
+            coefSums += c;
+            ++vit;
+            count++;
+        }
+    } else {
+        Graph& g = graph;
+        auto vit = graph.verticesIterator();
+        if (! propertyMap.containsPropertySet("betweenness")) {
+            auto betweenness = factory->createBetweenness(g);
+            delete betweenness;
+        }
+        while (!vit.end())
+        {
+            Vertex* v = *vit;
+            double c = propertyMap.getProperty<double>(
+                    "betweenness", to_string<unsigned int>(v->getVertexId()));
+            bCoefs.push_back(c);
+            coefSums += c;
+            ++vit;
+            count++;
+        }
     }
+
     std::sort(bCoefs.begin(), bCoefs.end());
     graphpp::Boxplotentry entry;
     if (bCoefs.size() > 0)
