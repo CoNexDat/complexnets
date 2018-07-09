@@ -2424,6 +2424,24 @@ graphpp::Boxplotentry MainWindow::computeTotalBpEntriesBetweenness()
             ++vit;
             count++;
         }
+    }
+    else if(digraph) {
+        DirectedGraph& dg = directedGraph;
+        auto vit = directedGraph.verticesIterator();
+        if (! propertyMap.containsPropertySet("betweenness")) {
+            auto betweenness = directedFactory->createBetweenness(dg);
+            delete betweenness;
+        }
+        while (!vit.end())
+        {
+            Vertex* v = *vit;
+            double c = propertyMap.getProperty<double>(
+                    "betweenness", to_string<unsigned int>(v->getVertexId()));
+            bCoefs.push_back(c);
+            coefSums += c;
+            ++vit;
+            count++;
+        }
     } else {
         Graph& g = graph;
         auto vit = graph.verticesIterator();

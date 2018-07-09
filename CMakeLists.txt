@@ -60,8 +60,8 @@ set(CORE_HEADERS
   src/core/inc/NearestNeighborsDegree.h
   src/core/inc/WeightedNearestNeighborsDegree.h
   src/core/inc/GraphGenerator.h
+  src/core/inc/DirectedBetweenness.h
   src/core/inc/Betweenness.h
-  src/core/inc/IBetweenness.h
   src/core/inc/Boxplotentry.h
   src/core/inc/WeightedGraphFactory.h
   src/core/inc/WeightedClusteringCoefficient.h

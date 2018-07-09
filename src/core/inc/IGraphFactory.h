@@ -8,6 +8,7 @@
 #include "IShellIndex.h"
 #include "MaxClique.h"
 #include "StrengthDistribution.h"
+#include "typedefs.h"
 
 namespace graphpp
 {

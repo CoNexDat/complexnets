@@ -5,6 +5,7 @@
 #include "DirectedNearestNeighborsDegree.h"
 #include "GraphReader.h"
 #include "IGraphFactory.h"
+#include "DirectedBetweenness.h"
 
 namespace graphpp
 {
@@ -16,11 +17,9 @@ public:
     {
         return new GraphReader<Graph, Vertex>();
     }
-    virtual IBetweenness<Graph, Vertex>* createBetweenness(Graph&)
+    virtual IBetweenness<Graph, Vertex>* createBetweenness(DirectedGraph& g)
     {
-        // TODO Implement this
-        // return new DirectedBetweenness<Graph,Vertex>();
-        return nullptr;
+        return new DirectedBetweenness<Graph,Vertex>(g);
     }
     virtual IClusteringCoefficient<Graph, Vertex>* createClusteringCoefficient()
     {
