@@ -1849,7 +1849,7 @@ void MainWindow::on_actionNewErdosRenyi_triggered()
     {
         this->onNetworkLoad(false, false, false);
         buildGraphFactory(false, false);
-
+        propertyMap.clear();
         graph = *(GraphGenerator::getInstance()->generateErdosRenyiGraph(n, p));
 
         QString text("Network created using Erdos-Renyi algorithm");
@@ -1887,6 +1887,7 @@ void MainWindow::on_actionNewHiperbolic_triggered()
     {
         this->onNetworkLoad(false, false, false);
         buildGraphFactory(false, false);
+        propertyMap.clear();
 
         QString text("Creating a network using a Papadopoulos hyperbolic graph algorithm...");
         text.append("\nexpected avg node deg: ");
@@ -1932,6 +1933,7 @@ void MainWindow::on_actionNewBarabasiAlbert_triggered()
 
     try
     {
+        propertyMap.clear();
         this->onNetworkLoad(false, false, false);
         buildGraphFactory(false, false);
 
@@ -1984,7 +1986,7 @@ void MainWindow::on_actionNewExtendedHOT_triggered()
 
     // The default parameters are taken from the paper
     // (http://cnet.fi.uba.ar/ignacio.alvarez-hamelin/pdf/model_internet_jiah_ns.pdf)
-
+    propertyMap.clear();
     unsigned int m = 1;
     unsigned int n = 50;
     unsigned int q = 1;
@@ -2057,6 +2059,7 @@ void MainWindow::on_actionNewMolloyReed_triggered()
     {
         try
         {
+            propertyMap.clear();
             this->onNetworkLoad(false, false, false);
             buildGraphFactory(false, false);
 
