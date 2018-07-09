@@ -771,13 +771,14 @@ void MainWindow::computeBetweenness()
 
     if (this->weightedgraph)
     {
+        // TODO Asumes there are no directed wieghted graphs
         auto betweenness = weightedFactory->createBetweenness(weightedGraph);
         auto it = betweenness->iterator();
 
         while (!it.end())
         {
             propertyMap.addProperty<double>(
-                    "betweenness", to_string<unsigned int>(it->first), it->second);
+                    "betweenness", to_string<unsigned int>(it->first), (it->second)/2);
             ++it;
         }
         delete betweenness;
