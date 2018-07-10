@@ -21,6 +21,7 @@
 #include "typedefs.h"
 #include "GnuplotConsole.h"
 #include "GrapherUtils.h"
+#include "IShellIndexNode.h"
 
 namespace Ui
 {
@@ -63,7 +64,8 @@ private:
     void computeDegreeDistribution();
     void computeClusteringCoefficient(QString vertexId);
     void computeCumulativeDegreeDistribution();
-    void computeShellIndex();
+    void postComputeShellIndex(graphpp::ShellIndexType type, std::string prefix);
+    void computeShellIndex(graphpp::ShellIndexType type, std::string prefix);
     void computeMaxClique(bool exact);
     void on_actionMaxClique_generic_triggered(bool);
     void on_action_maxClique_plotting_generic_triggered(bool exact);
@@ -74,7 +76,7 @@ private:
     graphpp::Boxplotentry computeTotalBpEntriesKnn();
     graphpp::Boxplotentry computeTotalBpEntriesBetweenness();
     graphpp::Boxplotentry computeTotalBpEntriesDegreeDistribution();
-    graphpp::Boxplotentry computeTotalBpEntriesShellIndex();
+    graphpp::Boxplotentry computeTotalBpEntriesShellIndex(std::string prefix);
 
     //    void computeMaxCliqueExact();
     void computeBetweenness();

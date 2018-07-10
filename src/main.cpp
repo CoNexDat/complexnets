@@ -509,7 +509,7 @@ int main(int argc, char* argv[])
                     {
                         state->exportShellIndexVsDegree(path);
                         functionMessage = "shellIndex";
-                    }
+                   }
                 }
                 if (args_info->maxCliqueExact_output_given)
                 {

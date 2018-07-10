@@ -8,6 +8,7 @@
 #include "IShellIndex.h"
 #include "MaxClique.h"
 #include "StrengthDistribution.h"
+#include "IShellIndexNode.h"
 
 namespace graphpp
 {
@@ -21,7 +22,7 @@ public:
 
     virtual INearestNeighborsDegree<Graph, Vertex>* createNearestNeighborsDegree() = 0;
 
-    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph& g) = 0;
+    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph& g, ShellIndexType type) = 0;
 
     virtual IGraphReader<Graph, Vertex>* createGraphReader() = 0;
 
