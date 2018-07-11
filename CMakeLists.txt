@@ -118,16 +118,18 @@ set(CMD_DIR_SRC ${CMD_DIR}/src)
 set(CMD_DIR_HEADERS ${CMD_DIR}/inc)
 
 set(CMD_SRC
-        src/cmd/src/cmdline.cpp
-        src/cmd/src/cmdmessages.cpp
-        src/cmd/src/ProgramState.cpp
-        )
+  src/cmd/src/cmdline.cpp
+  src/cmd/src/cmdmessages.cpp
+  src/cmd/src/ProgramState.cpp
+  src/cmd/src/cmdUtils.cpp
+  )
 
 set(CMD_HEADERS
-        src/cmd/inc/cmdline.h
-        src/cmd/inc/cmdmessages.h
-        src/cmd/inc/ProgramState.h
-        )
+  src/cmd/inc/cmdline.h
+  src/cmd/inc/cmdmessages.h
+  src/cmd/inc/ProgramState.h
+  src/cmd/inc/cmdUtils.h
+  )
 
 set(CMD_ALL ${CMD_SRC} ${CMD_HEADERS})
 ## --------------------- LIB: MILI --------------------- ##
