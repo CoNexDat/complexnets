@@ -280,7 +280,7 @@ TEST_F(DirectedDegreeDistributionTest, DirectedDegreeDistributionRealWorldTest)
     ++itOut;
 
     ASSERT_EQ(itIn->first,3);
-    ASSERT_EQ(itIn->second,3);
+    ASSERT_EQ(itIn->second,4);
     ++itIn;
 
     ASSERT_EQ(itOut->first,4);

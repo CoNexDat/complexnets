@@ -63,6 +63,10 @@ public:
         properties.clear();
     }
 
+    void deleteProperty(const PropertyName& name) {
+        properties.erase(name);
+    }
+
 private:
     Properties properties;
 };

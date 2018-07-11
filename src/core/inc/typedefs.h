@@ -18,3 +18,5 @@ typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph
 typedef graphpp::DirectedVertexAspect<Vertex> DirectedVertex;
 typedef graphpp::DirectedGraphAspect<DirectedVertex, graphpp::AdjacencyListGraph<DirectedVertex>>
     DirectedGraph;
+
+typedef graphpp::AdjacencyListVertex::VerticesConstIterator NeighbourConstIterator;

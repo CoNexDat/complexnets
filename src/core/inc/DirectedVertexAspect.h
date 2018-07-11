@@ -14,18 +14,25 @@ public:
     typedef AdjacencyListVertex::VerticesConstIterator VerticesConstIterator;
     typedef AdjacencyListVertex::VerticesIterator VerticesIterator;
 
-    DirectedVertexAspect(VertexId id) : T(id) {}
+    DirectedVertexAspect(VertexId id) : T(id) {
+        vertexId = id;
+    }
 
     void addEdge(DirectedVertexAspect<T>* other)
     {
         T::template addEdge<DirectedVertexAspect<T>>(other);
         insert_into(outNeighbors, other);
-        other->addIncomingEdge(this);
+        if(!isAlreadyNeighbor(other->inNeighborsIterator())){
+            other->addIncomingEdge(this);
+        }
     }
 
     void addIncomingEdge(DirectedVertexAspect<T>* other)
     {
         insert_into(inNeighbors, other);
+        if(!isAlreadyNeighbor(other->outNeighborsIterator())){
+            other->addEdge(this);
+        }
     }
 
     void removeEdge(DirectedVertexAspect<T>* v)
@@ -79,5 +86,22 @@ public:
 private:
     VertexContainer inNeighbors;
     VertexContainer outNeighbors;
+    VertexId vertexId;
+
+    bool isAlreadyNeighbor(VerticesIterator it){
+
+        while (!it.end())
+        {
+            DirectedVertexAspect* v = static_cast<DirectedVertexAspect*>(*it);
+
+            if (v->getVertexId() == vertexId)
+            {
+                return true;
+            }
+
+            ++it;
+        }
+    }
+
 };
 }  // namespace graphpp
