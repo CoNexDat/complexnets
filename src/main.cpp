@@ -487,11 +487,11 @@ int main(int argc, char* argv[])
                 filename.erase(period_idx);
             }
 
-            path = "results/" + filename + "/";
+            path = std::string(RESULTS_DIR) + "/" + filename + "/";
             const int dir_err = system(("mkdir -p " + path).c_str());
             if (-1 == dir_err)
             {
-                printf("Error creating directory! \n");
+                std::cout << "Error creating directory! \n";
                 exit(1);
             }
         }
@@ -511,8 +511,8 @@ int main(int argc, char* argv[])
                     path = path + functionMessage;
                     if (access( path.c_str(), F_OK ) != -1 )
                     {
-                        printf("Analysis already computed. Results found at %s\n", path.c_str());
-                        exit(1);
+                        std::cout << "Analysis already computed. Results found at " << path;
+                        exit(0);
                     }
                 }
                 state->exportBetweennessVsDegree(path);
@@ -525,8 +525,8 @@ int main(int argc, char* argv[])
                     path = path + functionMessage;
                     if (access( path.c_str(), F_OK ) != -1 )
                     {
-                        printf("Analysis already computed. Results found at %s\n", path.c_str());
-                        exit(1);
+                        std::cout << "Analysis already computed. Results found at " << path;
+                        exit(0);
                     }
                 }
                 state->exportDegreeDistribution(
@@ -540,8 +540,8 @@ int main(int argc, char* argv[])
                     path = path + functionMessage;
                     if (access( path.c_str(), F_OK ) != -1 )
                     {
-                        printf("Analysis already computed. Results found at %s\n", path.c_str());
-                        exit(1);
+                        std::cout << "Analysis already computed. Results found at " << path;
+                        exit(0);
                     }
                 }
                 state->exportClusteringVsDegree(path);
@@ -554,8 +554,8 @@ int main(int argc, char* argv[])
                     path = path + functionMessage;
                     if (access( path.c_str(), F_OK ) != -1 )
                     {
-                        printf("Analysis already computed. Results found at %s\n", path.c_str());
-                        exit(1);
+                        std::cout << "Analysis already computed. Results found at " << path;
+                        exit(0);
                     }
                 }
                 state->exportNearestNeighborsDegreeVsDegree(path);
@@ -575,8 +575,8 @@ int main(int argc, char* argv[])
                         path = path + functionMessage;
                         if (access( path.c_str(), F_OK ) != -1 )
                         {
-                            printf("Analysis already computed. Results found at %s\n", path.c_str());
-                            exit(1);
+                            std::cout << "Analysis already computed. Results found at " << path;
+                            exit(0);
                         }
                     }
                     state->exportShellIndexVsDegree(path);
@@ -590,8 +590,8 @@ int main(int argc, char* argv[])
                     path = path + functionMessage;
                     if (access( path.c_str(), F_OK ) != -1 )
                     {
-                        printf("Analysis already computed. Results found at %s\n", path.c_str());
-                        exit(1);
+                        std::cout << "Analysis already computed. Results found at " << path;
+                        exit(0);
                     }
                 }
                 int max_time = args_info->maxCliqueExact_output_arg;
@@ -611,8 +611,8 @@ int main(int argc, char* argv[])
                     path = path + functionMessage;
                     if (access( path.c_str(), F_OK ) != -1 )
                     {
-                        printf("Analysis already computed. Results found at %s\n", path.c_str());
-                        exit(1);
+                        std::cout << "Analysis already computed. Results found at " << path;
+                        exit(0);
                     }
                 }
                 state->exportMaxCliqueAprox(path);

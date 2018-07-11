@@ -5,36 +5,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sstream>
+#include <algorithm>
+#include <string>
 #include "cmdUtils.h"
-
-char * stringcat(char *out, const char *in)
-{
-  char *anchor = out;
-  size_t olen;
-
-  if(out == NULL || in == NULL)
-    return NULL;
-
-  olen = strlen(out);
-  out += olen;
-  while((*out++ = *in++))
-    ;
-  return anchor;
-}
-
-char* strreplace(char s[], char chr, char repl_chr)
-{
-     int i=0;
-     while(s[i]!='\0')
-     {
-           if(s[i]==chr)
-           {
-               s[i]=repl_chr;
-           }  
-           i++; 
-     }
-    return s;
-}
 
 void listdir(const char *name, int indent)
 {
@@ -64,24 +38,22 @@ void plotResults(const char *graph_name)
     DIR *dir;
     struct dirent *entry;
 
-    char dir_name[100] = "./results/";
+    std::string dir_name = RESULTS_DIR;
 
-    stringcat(dir_name, graph_name);
+    dir_name += std::string(graph_name);
 
-    if (!(dir = opendir(dir_name)))
+    if (!(dir = opendir(dir_name.c_str())))
         return;
 
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_type != DT_DIR) {
-            char plot_cmd[200] = "./complexnetspp --view ";
-            stringcat(plot_cmd, graph_name);
-            stringcat(plot_cmd, " ");
-            stringcat(plot_cmd, entry->d_name);
-            stringcat(plot_cmd, " | gnuplot -p -e \" set title '");
-            stringcat(plot_cmd, strreplace(entry->d_name, '_', ' '));
-            stringcat(plot_cmd, "'; set logscale; plot '-' w linespoints;\"");
-
-            const int sys_err = system(plot_cmd);
+            std::stringstream plot_cmd;
+            std::string d_name = std::string(entry->d_name);
+            std::string d_name_with_space = d_name;
+            std::replace(d_name_with_space.begin(), d_name_with_space.end(), '_', ' ');
+            plot_cmd << "./complexnetspp --view " << std::string(graph_name) << " " << d_name << " | gnuplot -p -e \" set title '" << d_name_with_space << "'; set logscale; plot '-' w linespoints;\"";
+            const std::string aux = plot_cmd.str();
+            const int sys_err = system(aux.c_str());
             if (sys_err == -1 || sys_err == 256) {
                 printf("An error ocurred\n");
             }
@@ -106,13 +78,11 @@ void printFile(char *graph_name, char *analysis_name)
 {
 
     char c;
-    char dir[100] = "./results/";
-
-    stringcat(dir, graph_name);
-    stringcat(dir, "/");
-    stringcat(dir, analysis_name);
+    std::stringstream dir;
+    dir << RESULTS_DIR << std::string(graph_name) << "/" << std::string(analysis_name);
     FILE *f;
-    f = fopen(dir, "r");
+    const std::string dir_aux = dir.str();
+    f = fopen(dir_aux.c_str(), "r");
     if (f == NULL)
     {
       printf("Result file not found for graph %s and analysis %s \n", graph_name, analysis_name);

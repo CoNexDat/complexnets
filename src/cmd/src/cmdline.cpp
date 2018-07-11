@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "cmdUtils.h"
+#include <experimental/filesystem>
+#include <cstdint>
 
 #ifndef FIX_UNUSED
 #define FIX_UNUSED(X) (void) (X) /* avoid warnings for unused params */
@@ -154,6 +156,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->model_group_counter = 0 ;
   args_info->network_load_group_counter = 0 ;
   args_info->output_group_counter = 0 ;
+
 }
 
 static
@@ -1425,7 +1428,14 @@ cmdline_parser_internal (
           }
           else if (strcmp (long_options[option_index].name, "clear-results") == 0)
           {
-            const int dir_err = system("rm -rf results/ 2> /dev/null");
+            #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+            std::string rm_cmd = "rmdir /S /Q " + std::string(RESULTS_DIR);
+            #else
+            std::string rm_cmd = "rm -rf " + std::string(RESULTS_DIR) + " 2> /dev/null";
+            #endif
+            
+            const int dir_err = system(rm_cmd.c_str());
+            //std::experimental::filesystem::path::remove_all(RESULTS_DIR);
             if (-1 == dir_err)
             {
                 printf("Error clearing results directory! \n");
@@ -1438,12 +1448,12 @@ cmdline_parser_internal (
             {
                 printf("Results directory cleared succesfully! \n");
             }
-            exit(1);
+            exit(0);
           }
           else if (strcmp (long_options[option_index].name, "view-results") == 0) 
           {
-              listdir("./results", 0);
-              exit(1);
+              listdir(RESULTS_DIR, 0);
+              exit(0);
           }
           else if (strcmp (long_options[option_index].name, "view") == 0) 
           {
@@ -1452,7 +1462,7 @@ cmdline_parser_internal (
                 exit(1);
               }
               printFile(argv[2], argv[3]);
-              exit(1);
+              exit(0);
           }
           else if (strcmp (long_options[option_index].name, "plot-results") == 0)
           {
@@ -1462,7 +1472,7 @@ cmdline_parser_internal (
                 exit(1);
               }
               plotResults(argv[2]);
-              exit(1);
+              exit(0);
           }
 
           break;

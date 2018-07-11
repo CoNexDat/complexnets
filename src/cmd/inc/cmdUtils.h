@@ -1,13 +1,12 @@
-#ifndef CMDUTILS_H
-#define CMDUTILS_H
+#pragma once
 
 void listdir(const char *name, int indent);
 void plotResults(const char *graph_name);
-char * stringcat(char *out, const char *in);
 void printFile(char *graph_name, char *analysis_name);
 int findIndex(char *analysis_name);
 
 static const int ANALYSIS_CANT = 7;
+static const char *RESULTS_DIR = "./results";
 static const char *analysis_names[] = {
 	"betweenness",
 	"degree_distribution",
@@ -27,4 +26,3 @@ static const char *header_name[] = {
 	"#Cliques Nodes",
 	"#Cliques Nodes"
 };
-#endif
