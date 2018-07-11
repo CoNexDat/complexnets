@@ -1,8 +1,4 @@
 //
-// Created by agop.
-//
-
-//
 // Created by agop
 //
 
@@ -18,19 +14,19 @@
 #include "WeightedVertexAspect.h"
 #include "WeightedBetweenness.h"
 
-namespace weightedGraphTest {
+namespace weightedClusterCoefficientTest {
 
     using namespace graphpp;
     using namespace std;
     using ::testing::Test;
 
-    class WeightedGraphTest : public Test {
+    class WeightedBetweennessTest : public Test {
 
     protected:
 
-        WeightedGraphTest() {}
+        WeightedBetweennessTest() {}
 
-        virtual ~WeightedGraphTest() {}
+        virtual ~WeightedBetweennessTest() {}
 
 
         virtual void SetUp() {
@@ -48,7 +44,7 @@ namespace weightedGraphTest {
 
     };
 
-    TEST_F(WeightedGraphTest , WeightedGraphTest)
+    TEST_F(WeightedBetweennessTest , WeightedBetweennessTest)
     {
         WeightedGraph g;
         //Create vertex
@@ -75,11 +71,18 @@ namespace weightedGraphTest {
         g.addEdge(v1, v2, 2);
         g.addEdge(v4, v5, 1);
 
-        ASSERT_TRUE(x->edgeWeight(v1) == 4);
-        ASSERT_TRUE(x->edgeWeight(v2) == 1);
-        ASSERT_TRUE(x->edgeWeight(v3) == 4);
-        ASSERT_TRUE(v1->edgeWeight(v2) == 2);
-        ASSERT_TRUE(x->edgeWeight(v4) == 2);
-        ASSERT_TRUE(v4->edgeWeight(v5) == 1);
+        WeightedBetweenness<WeightedGraph, Vertex> betweenness {g};
+
+        auto it = betweenness.iterator();
+
+        while (!it.end())
+        {
+            std::cout << "----------" << std::endl;
+            std::cout << "Id" << std::endl;
+            std::cout << it->first << std::endl;
+            std::cout << "Betweenness" << std::endl;
+            std::cout << it->second << std::endl;
+            ++it;
+        }
     }
 }

@@ -5,6 +5,7 @@
 #include "mili/mili.h"
 
 #include <time.h>
+#include "typedefs.h"
 
 namespace graphpp
 {
