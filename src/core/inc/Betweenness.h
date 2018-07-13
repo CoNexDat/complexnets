@@ -19,7 +19,7 @@ public:
 
     Betweenness(Graph& g)
     {
-        initMap(g, 1, betweenness, 0.0, 0.0);
+        initMap(g, (*g.verticesIterator())->getVertexId(), betweenness, 0.0, 0.0);
         calculateBetweenness(g);
     }
 

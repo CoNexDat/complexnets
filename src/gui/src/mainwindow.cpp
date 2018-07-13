@@ -817,7 +817,7 @@ void MainWindow::computeDegreeDistribution()
 
     if (this->weightedgraph)
     {
-        auto degreeDistribution = weightedFactory->createStrengthDistribution(weightedGraph);
+        auto degreeDistribution = weightedFactory->createDegreeDistribution(weightedGraph);
         auto it = degreeDistribution->iterator();
 
         while (!it.end())
